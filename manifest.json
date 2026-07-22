@@ -1,0 +1,14 @@
+{
+  "name": "Het Bio Lijstje",
+  "short_name": "Bio Lijstje",
+  "description": "Wekelijkse bio groente & fruit aanbiedingen: AH, Jumbo, Lidl",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1c2b23",
+  "theme_color": "#1c2b23",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "icon.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
