@@ -26,6 +26,8 @@
     --ah: #5b8fd6;
     --jumbo: #e0b23c;
     --lidl: #d9645a;
+    --aldi: #7a6fd0;
+    --ekoplaza: #6b9e4a;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -72,7 +74,7 @@
 
   main{ max-width: 620px; margin: 0 auto; padding: 0 1rem; }
   @media (min-width: 760px){
-    main{ max-width: 940px; }
+    main{ max-width: 1180px; }
   }
 
   .summary-bar{
@@ -91,7 +93,7 @@
     display: grid; grid-template-columns: 1fr; gap: 1.8rem;
   }
   @media (min-width: 760px){
-    .store-columns{ grid-template-columns: repeat(3, 1fr); align-items: start; }
+    .store-columns{ grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); align-items: start; }
   }
 
   .store-section{ margin-bottom: 1.6rem; }
@@ -200,8 +202,8 @@
 </footer>
 
 <script>
-const STORE_COLORS = { AH: 'var(--ah)', Jumbo: 'var(--jumbo)', Lidl: 'var(--lidl)' };
-const STORE_BADGES = { AH: 'ah', Jumbo: 'J', Lidl: 'L' };
+const STORE_COLORS = { AH: 'var(--ah)', Jumbo: 'var(--jumbo)', Lidl: 'var(--lidl)', Aldi: 'var(--aldi)', Ekoplaza: 'var(--ekoplaza)' };
+const STORE_BADGES = { AH: 'ah', Jumbo: 'J', Lidl: 'L', Aldi: 'A', Ekoplaza: 'E' };
 let data = null;
 
 function fmtDate(iso) {
