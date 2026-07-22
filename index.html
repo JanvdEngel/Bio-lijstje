@@ -148,6 +148,12 @@
   .savings{
     margin-top:0.3rem; font-size:0.74rem; color: var(--sage);
   }
+  .history-note{
+    margin-top:0.4rem; font-size:0.74rem; padding-top:0.4rem;
+    border-top: 1px dashed var(--line);
+  }
+  .history-good{ color: var(--sage); }
+  .history-warn{ color: var(--tomato); }
 
   .empty-note{
     font-size: 0.82rem; color: var(--chalk-dim); font-style: italic;
@@ -205,6 +211,21 @@ function fmtDate(iso) {
          ' om ' + d.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
 }
 
+function fmtShortDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' });
+}
+
+function renderHistoryNote(item) {
+  if (item.laagste_ooit_prijs === undefined || item.laagste_ooit_prijs === null) return '';
+  if (item.actieprijs <= item.laagste_ooit_prijs) {
+    return `<div class="history-note history-good">&#127942; Laagste prijs die ik zag (eerder ${item.eerder_gezien}x langsgekomen)</div>`;
+  }
+  const verschil = (item.actieprijs - item.laagste_ooit_prijs).toFixed(2);
+  return `<div class="history-note history-warn">&#9888;&#65039; Eerder goedkoper: &euro;${item.laagste_ooit_prijs.toFixed(2)} op ${fmtShortDate(item.laagste_ooit_datum)} (nu &euro;${verschil} duurder)</div>`;
+}
+
 function renderAanbiedingCard(item, storeColor) {
   const savingsPct = item.normale_prijs
     ? Math.round((1 - item.actieprijs / item.normale_prijs) * 100)
@@ -217,6 +238,7 @@ function renderAanbiedingCard(item, storeColor) {
         ${item.normale_prijs ? `<span class="price-was">&euro;${item.normale_prijs.toFixed(2)}</span>` : ''}
       </div>
       ${savingsPct && savingsPct > 0 ? `<div class="savings">${savingsPct}% korting</div>` : ''}
+      ${renderHistoryNote(item)}
     </div>`;
 }
 
