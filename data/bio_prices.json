@@ -1,93 +1,36 @@
 {
-  "laatst_bijgewerkt": "2026-07-27T18:54:42.059154",
+  "laatst_bijgewerkt": "2026-08-02T08:00:58.384860",
   "aanbiedingen": {
     "AH": [],
     "Jumbo": [
       {
-        "naam": "Hak Gesneden Bonen Bio 670 g",
-        "actieprijs": 2.24,
-        "normale_prijs": 2.99,
-        "laagste_ooit_prijs": 2.24,
-        "laagste_ooit_datum": "2026-07-22",
-        "eerder_gezien": 7
-      },
-      {
         "naam": "Hak Rode Bieten Bio 705 g",
-        "actieprijs": 2.24,
+        "actieprijs": 2.0,
         "normale_prijs": 2.99,
         "laagste_ooit_prijs": 2.24,
         "laagste_ooit_datum": "2026-07-22",
-        "eerder_gezien": 7
+        "eerder_gezien": 8
       },
       {
-        "naam": "Hak Spinazie met Room Bio 345 g",
-        "actieprijs": 2.24,
+        "naam": "Hak Gesneden Bonen Bio 670 g",
+        "actieprijs": 2.0,
         "normale_prijs": 2.99,
         "laagste_ooit_prijs": 2.24,
         "laagste_ooit_datum": "2026-07-22",
-        "eerder_gezien": 7
-      },
-      {
-        "naam": "Hak Rode Bieten Sticks Bio 355 g",
-        "actieprijs": 1.94,
-        "normale_prijs": 2.59,
-        "laagste_ooit_prijs": 1.94,
-        "laagste_ooit_datum": "2026-07-22",
-        "eerder_gezien": 7
-      },
-      {
-        "naam": "Hak Gesneden Bonen Bio 340 g",
-        "actieprijs": 1.79,
-        "normale_prijs": 2.39,
-        "laagste_ooit_prijs": 1.79,
-        "laagste_ooit_datum": "2026-07-22",
-        "eerder_gezien": 7
-      },
-      {
-        "naam": "Hak Rode Bieten Schijven Bio 355 g",
-        "actieprijs": 1.64,
-        "normale_prijs": 2.19,
-        "laagste_ooit_prijs": 1.64,
-        "laagste_ooit_datum": "2026-07-22",
-        "eerder_gezien": 7
-      },
-      {
-        "naam": "Hak Rode Bieten Schijven Bio 180 g",
-        "actieprijs": 1.49,
-        "normale_prijs": 1.99,
-        "laagste_ooit_prijs": 1.49,
-        "laagste_ooit_datum": "2026-07-22",
-        "eerder_gezien": 7
+        "eerder_gezien": 8
       }
     ],
     "Lidl": [
       {
         "naam": "Bio blauwe bessen",
-        "actieprijs": 1.99,
+        "actieprijs": 1.49,
         "normale_prijs": 2.49,
         "laagste_ooit_prijs": 1.99,
         "laagste_ooit_datum": "2026-07-26",
-        "eerder_gezien": 3
+        "eerder_gezien": 4
       }
     ],
     "Aldi": [],
-    "Ekoplaza": [
-      {
-        "naam": "Feel great gembershot",
-        "actieprijs": 1.94,
-        "normale_prijs": 2.29,
-        "laagste_ooit_prijs": 1.94,
-        "laagste_ooit_datum": "2026-07-22",
-        "eerder_gezien": 5
-      },
-      {
-        "naam": "Groene olijven met knoflook",
-        "actieprijs": 3.19,
-        "normale_prijs": 3.19,
-        "laagste_ooit_prijs": 3.19,
-        "laagste_ooit_datum": "2026-07-22",
-        "eerder_gezien": 5
-      }
-    ]
+    "Ekoplaza": []
   }
 }
