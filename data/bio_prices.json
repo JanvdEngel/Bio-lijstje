@@ -1,36 +1,67 @@
 {
-  "laatst_bijgewerkt": "2026-08-02T08:00:58.384860",
+  "laatst_bijgewerkt": "2026-08-09T08:00:49.892040",
   "aanbiedingen": {
     "AH": [],
     "Jumbo": [
       {
+        "naam": "Café Bio Intención Crema Aromatico Bonen 500 g",
+        "actieprijs": 10.12,
+        "normale_prijs": 13.49
+      },
+      {
+        "naam": "Nestlé Yogolino Bio Mango-Kiwi met Kokosmelk 6m-36m 4 x 90 g",
+        "actieprijs": 2.99,
+        "normale_prijs": 3.99
+      },
+      {
         "naam": "Hak Rode Bieten Bio 705 g",
         "actieprijs": 2.0,
         "normale_prijs": 2.99,
-        "laagste_ooit_prijs": 2.24,
-        "laagste_ooit_datum": "2026-07-22",
-        "eerder_gezien": 8
+        "laagste_ooit_prijs": 2.0,
+        "laagste_ooit_datum": "2026-08-02",
+        "eerder_gezien": 9
       },
       {
         "naam": "Hak Gesneden Bonen Bio 670 g",
         "actieprijs": 2.0,
         "normale_prijs": 2.99,
-        "laagste_ooit_prijs": 2.24,
-        "laagste_ooit_datum": "2026-07-22",
-        "eerder_gezien": 8
+        "laagste_ooit_prijs": 2.0,
+        "laagste_ooit_datum": "2026-08-02",
+        "eerder_gezien": 9
+      },
+      {
+        "naam": "Bambix Knijpzakje Appel, Banaan, Sinaasappel & Koekjes Bio 6M+ 100g",
+        "actieprijs": 1.09,
+        "normale_prijs": 1.45
+      },
+      {
+        "naam": "Bambix Knijpzakje Appel, Perzik, Banaan, Peer & Haver Bio 10M+ 100g",
+        "actieprijs": 1.09,
+        "normale_prijs": 1.45
+      },
+      {
+        "naam": "Bambix Knijpzakje Appel, Banaan, Framboos & Blauwe Bes Bio 6M+ 100g",
+        "actieprijs": 0.75,
+        "normale_prijs": 1.0
       }
     ],
     "Lidl": [
       {
-        "naam": "Bio blauwe bessen",
+        "naam": "Bio Hokkaido pompoen",
         "actieprijs": 1.49,
-        "normale_prijs": 2.49,
-        "laagste_ooit_prijs": 1.99,
-        "laagste_ooit_datum": "2026-07-26",
-        "eerder_gezien": 4
+        "normale_prijs": 1.99
       }
     ],
     "Aldi": [],
-    "Ekoplaza": []
+    "Ekoplaza": [
+      {
+        "naam": "Groene olijven met knoflook",
+        "actieprijs": 3.19,
+        "normale_prijs": 3.19,
+        "laagste_ooit_prijs": 3.19,
+        "laagste_ooit_datum": "2026-07-22",
+        "eerder_gezien": 6
+      }
+    ]
   }
 }
