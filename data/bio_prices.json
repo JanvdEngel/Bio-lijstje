@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-08-14T21:16:49.147774",
+  "laatst_bijgewerkt": "2026-08-14T21:20:11.895206",
   "aanbiedingen": {
     "AH": [],
     "Jumbo": [
@@ -9,7 +9,7 @@
         "normale_prijs": 13.49,
         "laagste_ooit_prijs": 10.12,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "Nestlé Yogolino Bio Mango-Kiwi met Kokosmelk 6m-36m 4 x 90 g",
@@ -17,7 +17,7 @@
         "normale_prijs": 3.99,
         "laagste_ooit_prijs": 2.99,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "ORGANIX BIO babyvoeding fruitpuree mango, yoghurt,banaan & haver 12+M 100g",
@@ -25,7 +25,7 @@
         "normale_prijs": 1.75,
         "laagste_ooit_prijs": 1.31,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "ORGANIX BIO babyvoeding fruitpuree Mango, Peer & Granola 6+M 100g",
@@ -33,7 +33,7 @@
         "normale_prijs": 1.49,
         "laagste_ooit_prijs": 1.12,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "ORGANIX BIO fruitpuree Appel, peer, kaneel, rijst & spelt 12+M 100g",
@@ -41,7 +41,7 @@
         "normale_prijs": 1.49,
         "laagste_ooit_prijs": 1.12,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "Bambix Knijpzakje Appel, Banaan, Sinaasappel & Koekjes Bio 6M+ 100g",
@@ -49,7 +49,7 @@
         "normale_prijs": 1.45,
         "laagste_ooit_prijs": 1.09,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "Bambix Knijpzakje Appel, Perzik, Banaan, Peer & Haver Bio 10M+ 100g",
@@ -57,7 +57,7 @@
         "normale_prijs": 1.45,
         "laagste_ooit_prijs": 1.09,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "ORGANIX BIO babyvoeding fruitpuree Havermout, Appel,Banaan, Framboos en blauwe bes 12+M 100g",
@@ -65,7 +65,7 @@
         "normale_prijs": 1.35,
         "laagste_ooit_prijs": 1.01,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "Bambix Knijpzakje Appel, Banaan, Framboos & Blauwe Bes Bio 6M+ 100g",
@@ -73,7 +73,7 @@
         "normale_prijs": 1.0,
         "laagste_ooit_prijs": 0.75,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       }
     ],
     "Lidl": [
@@ -83,7 +83,7 @@
         "normale_prijs": 2.69,
         "laagste_ooit_prijs": 1.79,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "Bio Hokkaido pompoen",
@@ -91,7 +91,7 @@
         "normale_prijs": 1.99,
         "laagste_ooit_prijs": 1.49,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "Bio wortels",
@@ -99,7 +99,7 @@
         "normale_prijs": 1.69,
         "laagste_ooit_prijs": 1.19,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "Bio snack-wortels",
@@ -107,11 +107,17 @@
         "normale_prijs": 0.99,
         "laagste_ooit_prijs": 0.79,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       }
     ],
     "Aldi": [],
-    "Dirk": [],
+    "Dirk": [
+      {
+        "naam": "Bio+ Oesterzwammen bio",
+        "actieprijs": 1.79,
+        "normale_prijs": 1.99
+      }
+    ],
     "Ekoplaza": [
       {
         "naam": "Groene olijven met knoflook",
@@ -119,7 +125,7 @@
         "normale_prijs": 3.19,
         "laagste_ooit_prijs": 3.19,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "Groene thee citroen",
@@ -127,7 +133,7 @@
         "normale_prijs": 3.79,
         "laagste_ooit_prijs": 3.79,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       }
     ]
   }
