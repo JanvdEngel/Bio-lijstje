@@ -174,6 +174,26 @@
   .history-good{ color: var(--leaf); }
   .history-warn{ color: var(--warn); }
 
+  .card-extra{ display:none; }
+  .store-section.expanded .card-extra{ display:block; }
+  .toggle-more{
+    display:block;
+    width:100%;
+    margin-top:0.7rem;
+    font-family:'Space Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    background:none;
+    border:1px dashed var(--line);
+    border-radius:10px;
+    color:var(--muted);
+    padding:0.5rem;
+    cursor:pointer;
+    transition:border-color .2s, color .2s;
+  }
+  .toggle-more:hover{ border-color:var(--harvest); color:var(--harvest); }
+
   .empty-note{
     font-size: 0.82rem; color: var(--muted); font-style: italic;
     padding: 0.6rem 0;
@@ -246,12 +266,14 @@ function renderHistoryNote(item) {
   return `<div class="history-note history-warn">&#9888;&#65039; Eerder goedkoper: &euro;${item.laagste_ooit_prijs.toFixed(2)} op ${fmtShortDate(item.laagste_ooit_datum)} (nu &euro;${verschil} duurder)</div>`;
 }
 
-function renderAanbiedingCard(item, storeColor) {
+const STORE_VISIBLE_CAP = 4;
+
+function renderAanbiedingCard(item, storeColor, isExtra) {
   const savingsPct = item.normale_prijs
     ? Math.round((1 - item.actieprijs / item.normale_prijs) * 100)
     : null;
   return `
-    <div class="card" style="--card-accent:${storeColor}">
+    <div class="card${isExtra ? ' card-extra' : ''}" style="--card-accent:${storeColor}">
       <div class="name">${item.naam.toLowerCase()}</div>
       <div class="price-row">
         <span class="price-now">&euro;${item.actieprijs.toFixed(2)}</span>
@@ -303,8 +325,10 @@ function render() {
   const sectionsHtml = stores.map(s => {
     const items = aanbiedingen[s] || [];
     const color = STORE_COLORS[s] || 'var(--leaf)';
+    const extraCount = Math.max(0, items.length - STORE_VISIBLE_CAP);
     const body = items.length
-      ? `<div class="grid">${items.map(i => renderAanbiedingCard(i, color)).join('')}</div>`
+      ? `<div class="grid">${items.map((i, idx) => renderAanbiedingCard(i, color, idx >= STORE_VISIBLE_CAP)).join('')}</div>` +
+        (extraCount > 0 ? `<button class="toggle-more" type="button" data-more="+${extraCount} meer tonen" data-less="Toon minder">+${extraCount} meer tonen</button>` : '')
       : `<p class="empty-note">Geen bio-acties bij ${s} deze week.</p>`;
     return `
       <div class="store-section">
@@ -326,6 +350,14 @@ function render() {
     <div class="store-columns">${sectionsHtml}</div>
   `;
 }
+
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.toggle-more');
+  if (!btn) return;
+  const section = btn.closest('.store-section');
+  const expanded = section.classList.toggle('expanded');
+  btn.textContent = expanded ? btn.dataset.less : btn.dataset.more;
+});
 
 fetch('data/bio_prices.json', { cache: 'no-store' })
   .then(r => { if (!r.ok) throw new Error('geen data'); return r.json(); })
