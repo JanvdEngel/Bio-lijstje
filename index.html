@@ -71,7 +71,7 @@
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--leaf);
-    margin: 0 0 0.4rem;
+    margin: 0.6rem 0 0;
   }
   h1{
     font-family: 'Fraunces', serif;
@@ -84,7 +84,7 @@
   .updated{
     font-size: 0.78rem;
     color: var(--muted);
-    margin-top: 0.6rem;
+    margin: 0 0 0.8rem;
   }
 
   main{ max-width: 620px; margin: 0 auto; padding: 0 1rem; }
@@ -235,9 +235,8 @@
 
 <header>
   <a class="sibling-link" href="https://JanvdEngel.github.io/Seizoenswijzer/">← Seizoenswijzer</a>
-  <p class="eyebrow">Deze week</p>
   <h1>Het Bio Lijstje</h1>
-  <p class="updated" id="updated">nog niets geladen...</p>
+  <p class="eyebrow">Deze week</p>
 </header>
 
 <main>
@@ -250,7 +249,9 @@
 </main>
 
 <footer>
-  Bijgewerkt elke zondag &middot; bio groente &amp; fruit-aanbiedingen<br>
+  <p class="updated" id="updated">nog niets geladen...</p>
+  <p>Alle winkels in één overzicht &mdash; geen onderlinge vergelijking, want bio-acties zijn te schaars om eerlijk te matchen.</p>
+  bio groente &amp; fruit-aanbiedingen<br>
   Aanbiedingen via <a href="https://www.prijsprofeet.nl/" style="color:inherit">PrijsProfeet</a>
   &amp; <a href="https://www.folderz.nl/" style="color:inherit">Folderz.nl</a>
 </footer>
@@ -372,10 +373,6 @@ function render() {
   }).join('');
 
   content.innerHTML = `
-    <p class="section-sub" style="text-align:center;color:var(--muted);font-size:0.78rem;margin:0 0 1rem;">
-      Alle winkels in één overzicht &mdash; geen onderlinge vergelijking, want
-      bio-acties zijn te schaars om eerlijk te matchen.
-    </p>
     ${summaryHtml}
     <div class="store-columns">${sectionsHtml}</div>
   `;
