@@ -24,9 +24,9 @@
     --line: #35322a;
     --ah: #5b8fd6;
     --jumbo: #e0b23c;
-    --lidl: #d9645a;
+    --lidl: #4fb0a6;
     --aldi: #7a6fd0;
-    --dirk: #c9598f;
+    --dirk: #d43a3a;
     --ekoplaza: #6b9e4a;
   }
   *{box-sizing:border-box;}
@@ -97,12 +97,29 @@
     margin: 0.4rem 0 1.6rem;
     flex-wrap: wrap;
   }
-  .summary-stat{ text-align: center; }
-  .summary-stat .n{
-    font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.9rem; line-height: 1;
-    display: block;
+  .store-toggle{
+    display:flex; align-items:center; gap:0.45rem;
+    background:none;
+    cursor:pointer;
+    border:1px solid var(--tc, var(--line));
+    border-radius:999px;
+    padding:0.3rem 0.75rem 0.3rem 0.3rem;
+    font-family:'Space Mono', monospace;
+    color: var(--text);
+    transition: opacity .2s, border-color .2s;
   }
-  .summary-stat .label{ font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .store-toggle-badge{
+    width:1.5rem; height:1.5rem; border-radius:50%;
+    background: var(--tc, var(--muted));
+    color: var(--bg); font-weight:700; font-size:0.65rem;
+    display:flex; align-items:center; justify-content:center;
+    flex:0 0 auto;
+  }
+  .store-toggle-label{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.03em; }
+  .store-toggle-count{ font-size:0.68rem; color:var(--muted); }
+  .store-toggle.off{ opacity:0.4; }
+  .store-toggle.off .store-toggle-badge{ background: var(--muted); }
+  .store-toggle:hover{ border-color: var(--tc, var(--harvest)); }
 
   .store-columns{
     display: grid; grid-template-columns: 1fr; gap: 1.8rem;
@@ -243,6 +260,16 @@ const STORE_COLORS = { AH: 'var(--ah)', Jumbo: 'var(--jumbo)', Lidl: 'var(--lidl
 const STORE_BADGES = { AH: 'ah', Jumbo: 'J', Lidl: 'L', Aldi: 'A', Dirk: 'D', Ekoplaza: 'E' };
 let data = null;
 
+const HIDDEN_STORES_KEY = 'bioBordHiddenStores';
+let hiddenStores = new Set();
+try {
+  hiddenStores = new Set(JSON.parse(localStorage.getItem(HIDDEN_STORES_KEY) || '[]'));
+} catch (e) { /* corrupte opslag negeren, alles blijft zichtbaar */ }
+
+function saveHiddenStores() {
+  try { localStorage.setItem(HIDDEN_STORES_KEY, JSON.stringify([...hiddenStores])); } catch (e) {}
+}
+
 function fmtDate(iso) {
   if (!iso) return '';
   const d = new Date(iso);
@@ -314,11 +341,15 @@ function render() {
 
   const summaryHtml = `
     <div class="summary-bar">
-      ${stores.map(s => `
-        <div class="summary-stat">
-          <span class="n" style="color:${STORE_COLORS[s] || 'var(--text)'}">${(aanbiedingen[s] || []).length}</span>
-          <span class="label">${s}</span>
-        </div>`).join('')}
+      ${stores.map(s => {
+        const off = hiddenStores.has(s);
+        return `
+        <button class="store-toggle${off ? ' off' : ''}" type="button" data-store="${s}" style="--tc:${STORE_COLORS[s] || 'var(--muted)'}" aria-pressed="${!off}">
+          <span class="store-toggle-badge" aria-hidden="true">${STORE_BADGES[s] || s[0]}</span>
+          <span class="store-toggle-label">${s}</span>
+          <span class="store-toggle-count">${(aanbiedingen[s] || []).length}</span>
+        </button>`;
+      }).join('')}
     </div>`;
 
   const sectionsHtml = stores.map(s => {
@@ -330,7 +361,7 @@ function render() {
         (extraCount > 0 ? `<button class="toggle-more" type="button" data-more="+${extraCount} meer tonen" data-less="Toon minder">+${extraCount} meer tonen</button>` : '')
       : `<p class="empty-note">Geen bio-acties bij ${s} deze week.</p>`;
     return `
-      <div class="store-section">
+      <div class="store-section" data-store="${s}"${hiddenStores.has(s) ? ' style="display:none"' : ''}>
         <div class="store-header">
           <span class="store-badge" style="background:${color}" aria-hidden="true">${STORE_BADGES[s] || s[0]}</span>
           <h2>${s}</h2>
@@ -351,11 +382,24 @@ function render() {
 }
 
 document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.toggle-more');
-  if (!btn) return;
-  const section = btn.closest('.store-section');
-  const expanded = section.classList.toggle('expanded');
-  btn.textContent = expanded ? btn.dataset.less : btn.dataset.more;
+  const moreBtn = e.target.closest('.toggle-more');
+  if (moreBtn) {
+    const section = moreBtn.closest('.store-section');
+    const expanded = section.classList.toggle('expanded');
+    moreBtn.textContent = expanded ? moreBtn.dataset.less : moreBtn.dataset.more;
+    return;
+  }
+
+  const toggleBtn = e.target.closest('.store-toggle');
+  if (toggleBtn) {
+    const store = toggleBtn.dataset.store;
+    const nowOff = toggleBtn.classList.toggle('off');
+    toggleBtn.setAttribute('aria-pressed', String(!nowOff));
+    if (nowOff) hiddenStores.add(store); else hiddenStores.delete(store);
+    saveHiddenStores();
+    const section = document.querySelector(`.store-section[data-store="${CSS.escape(store)}"]`);
+    if (section) section.style.display = nowOff ? 'none' : '';
+  }
 });
 
 fetch('data/bio_prices.json', { cache: 'no-store' })
