@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-08-09T08:00:49.892040",
+  "laatst_bijgewerkt": "2026-08-14T20:24:40.398267",
   "aanbiedingen": {
     "AH": [],
     "Jumbo": [
@@ -14,20 +14,19 @@
         "normale_prijs": 3.99
       },
       {
-        "naam": "Hak Rode Bieten Bio 705 g",
-        "actieprijs": 2.0,
-        "normale_prijs": 2.99,
-        "laagste_ooit_prijs": 2.0,
-        "laagste_ooit_datum": "2026-08-02",
-        "eerder_gezien": 9
+        "naam": "ORGANIX BIO babyvoeding fruitpuree mango, yoghurt,banaan & haver 12+M 100g",
+        "actieprijs": 1.31,
+        "normale_prijs": 1.75
       },
       {
-        "naam": "Hak Gesneden Bonen Bio 670 g",
-        "actieprijs": 2.0,
-        "normale_prijs": 2.99,
-        "laagste_ooit_prijs": 2.0,
-        "laagste_ooit_datum": "2026-08-02",
-        "eerder_gezien": 9
+        "naam": "ORGANIX BIO babyvoeding fruitpuree Mango, Peer & Granola 6+M 100g",
+        "actieprijs": 1.12,
+        "normale_prijs": 1.49
+      },
+      {
+        "naam": "ORGANIX BIO fruitpuree Appel, peer, kaneel, rijst & spelt 12+M 100g",
+        "actieprijs": 1.12,
+        "normale_prijs": 1.49
       },
       {
         "naam": "Bambix Knijpzakje Appel, Banaan, Sinaasappel & Koekjes Bio 6M+ 100g",
@@ -40,6 +39,11 @@
         "normale_prijs": 1.45
       },
       {
+        "naam": "ORGANIX BIO babyvoeding fruitpuree Havermout, Appel,Banaan, Framboos en blauwe bes 12+M 100g",
+        "actieprijs": 1.01,
+        "normale_prijs": 1.35
+      },
+      {
         "naam": "Bambix Knijpzakje Appel, Banaan, Framboos & Blauwe Bes Bio 6M+ 100g",
         "actieprijs": 0.75,
         "normale_prijs": 1.0
@@ -47,9 +51,24 @@
     ],
     "Lidl": [
       {
+        "naam": "Bio blauwe bessen, bramen of frambozen",
+        "actieprijs": 1.79,
+        "normale_prijs": 2.69
+      },
+      {
         "naam": "Bio Hokkaido pompoen",
         "actieprijs": 1.49,
         "normale_prijs": 1.99
+      },
+      {
+        "naam": "Bio wortels",
+        "actieprijs": 1.19,
+        "normale_prijs": 1.69
+      },
+      {
+        "naam": "Bio snack-wortels",
+        "actieprijs": 0.79,
+        "normale_prijs": 0.99
       }
     ],
     "Aldi": [],
@@ -57,10 +76,12 @@
       {
         "naam": "Groene olijven met knoflook",
         "actieprijs": 3.19,
-        "normale_prijs": 3.19,
-        "laagste_ooit_prijs": 3.19,
-        "laagste_ooit_datum": "2026-07-22",
-        "eerder_gezien": 6
+        "normale_prijs": 3.19
+      },
+      {
+        "naam": "Groene thee citroen",
+        "actieprijs": 3.79,
+        "normale_prijs": 3.79
       }
     ]
   }
