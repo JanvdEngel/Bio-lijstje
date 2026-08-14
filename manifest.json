@@ -4,8 +4,8 @@
   "description": "Wekelijkse bio groente & fruit aanbiedingen: AH, Jumbo, Lidl",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#1c2b23",
-  "theme_color": "#1c2b23",
+  "background_color": "#1b1a15",
+  "theme_color": "#1b1a15",
   "orientation": "portrait",
   "icons": [
     { "src": "icon.png", "sizes": "192x192", "type": "image/png" },
