@@ -24,9 +24,9 @@
     --line: #35322a;
     --ah: #5b8fd6;
     --jumbo: #e0b23c;
-    --lidl: #d9645a;
+    --lidl: #4fb0a6;
     --aldi: #7a6fd0;
-    --dirk: #c9598f;
+    --dirk: #d43a3a;
     --ekoplaza: #6b9e4a;
   }
   *{box-sizing:border-box;}
@@ -61,9 +61,8 @@
     padding:5px 12px;
     text-decoration:none;
     white-space:nowrap;
-    position:absolute;
-    top:1.2rem;
-    right:1.2rem;
+    display:inline-block;
+    margin-bottom:0.9rem;
     transition:border-color .2s;
   }
   .sibling-link:hover{ border-color:var(--harvest); }
@@ -72,7 +71,7 @@
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--leaf);
-    margin: 0 0 0.4rem;
+    margin: 0.6rem 0 0;
   }
   h1{
     font-family: 'Fraunces', serif;
@@ -85,7 +84,7 @@
   .updated{
     font-size: 0.78rem;
     color: var(--muted);
-    margin-top: 0.6rem;
+    margin: 0 0 0.8rem;
   }
 
   main{ max-width: 620px; margin: 0 auto; padding: 0 1rem; }
@@ -98,12 +97,29 @@
     margin: 0.4rem 0 1.6rem;
     flex-wrap: wrap;
   }
-  .summary-stat{ text-align: center; }
-  .summary-stat .n{
-    font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.9rem; line-height: 1;
-    display: block;
+  .store-toggle{
+    display:flex; align-items:center; gap:0.45rem;
+    background:none;
+    cursor:pointer;
+    border:1px solid var(--tc, var(--line));
+    border-radius:999px;
+    padding:0.3rem 0.75rem 0.3rem 0.3rem;
+    font-family:'Space Mono', monospace;
+    color: var(--text);
+    transition: opacity .2s, border-color .2s;
   }
-  .summary-stat .label{ font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .store-toggle-badge{
+    width:1.5rem; height:1.5rem; border-radius:50%;
+    background: var(--tc, var(--muted));
+    color: var(--bg); font-weight:700; font-size:0.65rem;
+    display:flex; align-items:center; justify-content:center;
+    flex:0 0 auto;
+  }
+  .store-toggle-label{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.03em; }
+  .store-toggle-count{ font-size:0.68rem; color:var(--muted); }
+  .store-toggle.off{ opacity:0.4; }
+  .store-toggle.off .store-toggle-badge{ background: var(--muted); }
+  .store-toggle:hover{ border-color: var(--tc, var(--harvest)); }
 
   .store-columns{
     display: grid; grid-template-columns: 1fr; gap: 1.8rem;
@@ -174,6 +190,26 @@
   .history-good{ color: var(--leaf); }
   .history-warn{ color: var(--warn); }
 
+  .card-extra{ display:none; }
+  .store-section.expanded .card-extra{ display:block; }
+  .toggle-more{
+    display:block;
+    width:100%;
+    margin-top:0.7rem;
+    font-family:'Space Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    background:none;
+    border:1px dashed var(--line);
+    border-radius:10px;
+    color:var(--muted);
+    padding:0.5rem;
+    cursor:pointer;
+    transition:border-color .2s, color .2s;
+  }
+  .toggle-more:hover{ border-color:var(--harvest); color:var(--harvest); }
+
   .empty-note{
     font-size: 0.82rem; color: var(--muted); font-style: italic;
     padding: 0.6rem 0;
@@ -199,9 +235,8 @@
 
 <header>
   <a class="sibling-link" href="https://JanvdEngel.github.io/Seizoenswijzer/">← Seizoenswijzer</a>
-  <p class="eyebrow">Deze week</p>
   <h1>Het Bio Lijstje</h1>
-  <p class="updated" id="updated">nog niets geladen...</p>
+  <p class="eyebrow">Deze week</p>
 </header>
 
 <main>
@@ -214,7 +249,9 @@
 </main>
 
 <footer>
-  Bijgewerkt elke zondag &middot; bio groente &amp; fruit-aanbiedingen<br>
+  <p class="updated" id="updated">nog niets geladen...</p>
+  <p>Alle winkels in één overzicht &mdash; geen onderlinge vergelijking, want bio-acties zijn te schaars om eerlijk te matchen.</p>
+  bio groente &amp; fruit-aanbiedingen<br>
   Aanbiedingen via <a href="https://www.prijsprofeet.nl/" style="color:inherit">PrijsProfeet</a>
   &amp; <a href="https://www.folderz.nl/" style="color:inherit">Folderz.nl</a>
 </footer>
@@ -223,6 +260,16 @@
 const STORE_COLORS = { AH: 'var(--ah)', Jumbo: 'var(--jumbo)', Lidl: 'var(--lidl)', Aldi: 'var(--aldi)', Dirk: 'var(--dirk)', Ekoplaza: 'var(--ekoplaza)' };
 const STORE_BADGES = { AH: 'ah', Jumbo: 'J', Lidl: 'L', Aldi: 'A', Dirk: 'D', Ekoplaza: 'E' };
 let data = null;
+
+const HIDDEN_STORES_KEY = 'bioBordHiddenStores';
+let hiddenStores = new Set();
+try {
+  hiddenStores = new Set(JSON.parse(localStorage.getItem(HIDDEN_STORES_KEY) || '[]'));
+} catch (e) { /* corrupte opslag negeren, alles blijft zichtbaar */ }
+
+function saveHiddenStores() {
+  try { localStorage.setItem(HIDDEN_STORES_KEY, JSON.stringify([...hiddenStores])); } catch (e) {}
+}
 
 function fmtDate(iso) {
   if (!iso) return '';
@@ -246,12 +293,14 @@ function renderHistoryNote(item) {
   return `<div class="history-note history-warn">&#9888;&#65039; Eerder goedkoper: &euro;${item.laagste_ooit_prijs.toFixed(2)} op ${fmtShortDate(item.laagste_ooit_datum)} (nu &euro;${verschil} duurder)</div>`;
 }
 
-function renderAanbiedingCard(item, storeColor) {
+const STORE_VISIBLE_CAP = 4;
+
+function renderAanbiedingCard(item, storeColor, isExtra) {
   const savingsPct = item.normale_prijs
     ? Math.round((1 - item.actieprijs / item.normale_prijs) * 100)
     : null;
   return `
-    <div class="card" style="--card-accent:${storeColor}">
+    <div class="card${isExtra ? ' card-extra' : ''}" style="--card-accent:${storeColor}">
       <div class="name">${item.naam.toLowerCase()}</div>
       <div class="price-row">
         <span class="price-now">&euro;${item.actieprijs.toFixed(2)}</span>
@@ -293,21 +342,27 @@ function render() {
 
   const summaryHtml = `
     <div class="summary-bar">
-      ${stores.map(s => `
-        <div class="summary-stat">
-          <span class="n" style="color:${STORE_COLORS[s] || 'var(--text)'}">${(aanbiedingen[s] || []).length}</span>
-          <span class="label">${s}</span>
-        </div>`).join('')}
+      ${stores.map(s => {
+        const off = hiddenStores.has(s);
+        return `
+        <button class="store-toggle${off ? ' off' : ''}" type="button" data-store="${s}" style="--tc:${STORE_COLORS[s] || 'var(--muted)'}" aria-pressed="${!off}">
+          <span class="store-toggle-badge" aria-hidden="true">${STORE_BADGES[s] || s[0]}</span>
+          <span class="store-toggle-label">${s}</span>
+          <span class="store-toggle-count">${(aanbiedingen[s] || []).length}</span>
+        </button>`;
+      }).join('')}
     </div>`;
 
   const sectionsHtml = stores.map(s => {
     const items = aanbiedingen[s] || [];
     const color = STORE_COLORS[s] || 'var(--leaf)';
+    const extraCount = Math.max(0, items.length - STORE_VISIBLE_CAP);
     const body = items.length
-      ? `<div class="grid">${items.map(i => renderAanbiedingCard(i, color)).join('')}</div>`
+      ? `<div class="grid">${items.map((i, idx) => renderAanbiedingCard(i, color, idx >= STORE_VISIBLE_CAP)).join('')}</div>` +
+        (extraCount > 0 ? `<button class="toggle-more" type="button" data-more="+${extraCount} meer tonen" data-less="Toon minder">+${extraCount} meer tonen</button>` : '')
       : `<p class="empty-note">Geen bio-acties bij ${s} deze week.</p>`;
     return `
-      <div class="store-section">
+      <div class="store-section" data-store="${s}"${hiddenStores.has(s) ? ' style="display:none"' : ''}>
         <div class="store-header">
           <span class="store-badge" style="background:${color}" aria-hidden="true">${STORE_BADGES[s] || s[0]}</span>
           <h2>${s}</h2>
@@ -318,14 +373,31 @@ function render() {
   }).join('');
 
   content.innerHTML = `
-    <p class="section-sub" style="text-align:center;color:var(--muted);font-size:0.78rem;margin:0 0 1rem;">
-      Alle winkels in één overzicht &mdash; geen onderlinge vergelijking, want
-      bio-acties zijn te schaars om eerlijk te matchen.
-    </p>
     ${summaryHtml}
     <div class="store-columns">${sectionsHtml}</div>
   `;
 }
+
+document.addEventListener('click', (e) => {
+  const moreBtn = e.target.closest('.toggle-more');
+  if (moreBtn) {
+    const section = moreBtn.closest('.store-section');
+    const expanded = section.classList.toggle('expanded');
+    moreBtn.textContent = expanded ? moreBtn.dataset.less : moreBtn.dataset.more;
+    return;
+  }
+
+  const toggleBtn = e.target.closest('.store-toggle');
+  if (toggleBtn) {
+    const store = toggleBtn.dataset.store;
+    const nowOff = toggleBtn.classList.toggle('off');
+    toggleBtn.setAttribute('aria-pressed', String(!nowOff));
+    if (nowOff) hiddenStores.add(store); else hiddenStores.delete(store);
+    saveHiddenStores();
+    const section = document.querySelector(`.store-section[data-store="${CSS.escape(store)}"]`);
+    if (section) section.style.display = nowOff ? 'none' : '';
+  }
+});
 
 fetch('data/bio_prices.json', { cache: 'no-store' })
   .then(r => { if (!r.ok) throw new Error('geen data'); return r.json(); })
