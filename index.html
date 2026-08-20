@@ -28,7 +28,6 @@
     --aldi: #7a6fd0;
     --dirk: #d43a3a;
     --plus: #4a8f5c;
-    --ekoplaza: #8fb84a;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -184,6 +183,12 @@
   .savings{
     margin-top:0.3rem; font-size:0.74rem; color: var(--leaf);
   }
+  /* Actieprijs geldt pas bij meerdere stuks — hoort pal bij de prijs, anders
+     lijkt het een gewone stuksprijs. */
+  .voorwaarde{
+    margin-top:0.3rem; font-size:0.74rem; color: var(--harvest);
+    font-family:'Space Mono', monospace; line-height:1.35;
+  }
   .history-note{
     margin-top:0.4rem; font-size:0.74rem; padding-top:0.4rem;
     border-top: 1px dashed var(--line);
@@ -308,6 +313,7 @@ function renderAanbiedingCard(item, storeColor, isExtra) {
         ${item.normale_prijs ? `<span class="price-was">&euro;${item.normale_prijs.toFixed(2)}</span>` : ''}
       </div>
       ${savingsPct && savingsPct > 0 ? `<div class="savings">${savingsPct}% korting</div>` : ''}
+      ${item.voorwaarde ? `<div class="voorwaarde">&#9888;&#65039; alleen bij: ${item.voorwaarde.toLowerCase()}</div>` : ''}
       ${renderHistoryNote(item)}
     </div>`;
 }
