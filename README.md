@@ -1,9 +1,9 @@
-# Het Bio Lijstje — bio-aanbiedingen bij AH / Jumbo / Lidl / Aldi / Dirk / Plus / Ekoplaza
+# Het Bio Lijstje — bio-aanbiedingen bij AH / Jumbo / Lidl / Aldi / Dirk / Plus
 
 ![Preview](bio_bord_preview.png)
 
 Toont wekelijks de lopende bio groente/fruit-aanbiedingen bij AH, Jumbo,
-Lidl, Aldi, Dirk, Plus en Ekoplaza, per winkel naast elkaar in één overzicht
+Lidl, Aldi, Dirk en Plus, per winkel naast elkaar in één overzicht
 (geen tabs, geen klikken). Live te bekijken op
 [janvdengel.github.io/Bio-lijstje](https://janvdengel.github.io/Bio-lijstje/).
 
@@ -145,25 +145,52 @@ Per winkel worden twee bronnen gecombineerd en op naam gedupliceerd:
   (`/winkels/<winkel>/aanbiedingen`) gaven gewoon HTTP 200 met een simpele
   `requests`-aanroep — geen headless browser nodig.
 
-  **Alleen ingeschakeld voor Lidl.** Bij AH (~99 pagina's) en Jumbo (~36
-  pagina's) leverde de volledige paginering vrijwel nooit iets op dat
-  PrijsProfeet niet al had — puur tijd kosten (2-4 minuten) zonder
-  toegevoegde waarde. Bij Lidl vult het wél een structurele blinde vlek:
-  PrijsProfeet's Lidl-catalogus bleek merkbaar dunner. Dit bracht de
-  totale fetch-tijd terug van ~3-5 minuten naar **~45 seconden**.
+  **Alleen ingeschakeld voor Lidl.** Bij AH en Jumbo leverde de volledige
+  paginering vrijwel nooit iets op dat PrijsProfeet niet al had — puur tijd
+  kosten (2-4 minuten) zonder toegevoegde waarde. Bij Lidl vult het wél een
+  structurele blinde vlek: PrijsProfeet's Lidl-catalogus bleek merkbaar
+  dunner. Dit bracht de totale fetch-tijd terug van ~3-5 minuten naar
+  **~45 seconden**.
 
-Beide bronnen filteren op: bevat "bio" als los woord, én matcht een
-AGF-trefwoord (`AGF_KEYWORDS`). Woordgrenzen zijn bewust asymmetrisch: de
-meeste keywords matchen als voorvoegsel (nodig voor Nederlandse
-samenstellingen als "tomat**enpulp**", "appel**moes**"), maar een paar
-korte, dubbelzinnige keywords ("ui", "uien", "kool") matchen alleen als heel
-woord — anders zou "ui" ook binnen "inlegkru**ui**sjes" matchen, en "kool"
-ook binnen "**kool**zuurhoudend" (allebei live gevonden tijdens testen).
+  In augustus 2026 opnieuw volledig getest, en de conclusie houdt stand: bij
+  AH gaven 60 pagina's (2040 producten) 7 bio-treffers, allemaal wijn, thee en
+  crackers. Bij Jumbo 45 pagina's (1499 producten) voor 10 treffers die
+  PrijsProfeet op één na al had. Alleen bij Lidl levert Folderz écht verse
+  producten (wortels, bieten, courgette, bessen) — daar komt vrijwel al het
+  verse groente/fruit op de pagina vandaan.
 
-**Aldi, Dirk, Plus en Ekoplaza** draaien alleen via PrijsProfeet (geen
-Folderz-scraping nodig). Bij Ekoplaza is de "bio"-woordeis uitgeschakeld
-(`vereist_bio_woord = False` in `AANBIEDINGEN_STORES`) — hun assortiment is al vrijwel volledig
-biologisch, dus daar is alleen het AGF-keyword-filter nog nodig.
+### Hoe er gefilterd wordt
+
+Een product moet een AGF-trefwoord in de naam hebben (`AGF_KEYWORDS`) én als
+biologisch te herkennen zijn. Woordgrenzen zijn bewust asymmetrisch: de meeste
+keywords matchen als voorvoegsel (nodig voor Nederlandse samenstellingen als
+"tomat**enpulp**", "appel**moes**"), maar een paar korte, dubbelzinnige
+keywords matchen alleen als heel woord (`_AGF_WHOLE_WORD_ONLY`) — anders zou
+"ui" ook binnen "inlegkru**ui**sjes" matchen, "kool" binnen
+"**kool**zuurhoudend", en "sla" binnen "**Sla**vinken" en
+"**Sla**gershamburgers" (alle vier live gevonden tijdens testen).
+
+Voor de PrijsProfeet-bron komen daar drie checks bij, alle drie ingevoerd na
+een controleronde in augustus 2026:
+
+- **Bio bepalen via het `dietary_tags`-label**, met de productnaam als
+  terugvaloptie. Het label is betrouwbaarder dan de naam.
+- **"biologisch" naast "bio"**, zowel als zoekterm als in `BIO_PATTERN`. AH,
+  Jumbo en Plus noemen hun huismerk namelijk "Biologisch", en de fuzzy search
+  op "bio" geeft die producten niet terug — daardoor bleef bijvoorbeeld een
+  halveprijsactie op *AH Biologisch Blauwe bessen* volledig onzichtbaar.
+- **`promotion_status` moet `active` zijn.** De API levert ook `upcoming` en
+  `historical` acties; zonder deze check konden nog niet geldige aanbiedingen
+  als lopende actie op de pagina komen.
+
+Daarnaast worden een paar categorieën uitgesloten (`EXCLUDED_CATEGORIES`),
+waar een AGF-trefwoord vrijwel altijd een valse treffer is: *Lavazza Bio
+**Bonen*** is koffie, babyvoeding staat onder Drogisterij, en wijn heet vaak
+naar fruit.
+
+**Aldi, Dirk en Plus** draaien alleen via PrijsProfeet (geen Folderz-scraping
+nodig). **Ekoplaza is verwijderd**: hun items bleken geen echte aanbiedingen —
+actieprijs gelijk aan de normale prijs, met een `valid_from` uit 2024.
 
 ## Prijsgeschiedenis — "was ik genaaid?"
 
@@ -225,7 +252,11 @@ bleken na live testen niet haalbaar:
   "groente/fruit", en welke daarvan alleen als heel woord mogen matchen.
 - `AANBIEDINGEN_STORES`: welke winkels meedoen (PrijsProfeet-slug +
   Folderz-slug per winkel, of `None` om Folderz voor die winkel over te
-  slaan).
+  slaan, + de zoektermen). PrijsProfeet ontsluit 10 ketens; nog niet in
+  gebruik zijn **DekaMarkt, Hoogvliet en Vomar**.
+- `EXCLUDED_CATEGORIES`: categorieën waarin een AGF-trefwoord als valse
+  treffer wordt beschouwd. Logische volgende kandidaten zijn `frisdrank`
+  (vruchtensap) en `huishouden` (diervoer met groente erin).
 - `FOLDERZ_MAX_PAGES`: veiligheidsgrens voor de Folderz-paginering.
 - `HISTORY_MAX_PER_PRODUCT`: hoeveel weken geschiedenis per product bewaard
   blijft.

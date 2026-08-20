@@ -43,16 +43,44 @@ AGF_KEYWORDS = [
     "mandarijn", "radijs", "witlof", "boon", "bonen", "knoflook", "venkel",
     "asperge", "mango", "meloen", "sperzieboon", "rucola", "andijvie",
     "koolraap", "pompoen", "biet", "selderij", "gember", "limoen", "kool",
+    "mais", "maïs",  # ontbraken; kwamen live langs als "BIO+ Mais zoet" en "Maïskolven"
 ]
 
-BIO_PATTERN = re.compile(r"\bbio\b", re.IGNORECASE)
+# Matcht "bio", maar ook "biologisch"/"biologische" — AH, Jumbo en Plus noemen
+# hun bio-huismerk namelijk "Biologisch" ("AH Biologisch Blauwe bessen"), en met
+# een kale \bbio\b vielen die allemaal buiten de boot. De optionele staart is
+# bewust smal: "biobrandstof" of "bioscoop" matcht nog steeds niet, want daar
+# ontbreekt de woordgrens na "bio" én de "logisch"-tussenstap.
+BIO_PATTERN = re.compile(r"\bbio(?:logisch\w*)?\b", re.IGNORECASE)
+
+# Categorieën van PrijsProfeet (slugs uit /api/v1/categories) waar een
+# AGF-trefwoord vrijwel altijd een valse treffer is: "Lavazza Bio Bonen" is
+# koffie, "Bonbebe pompoen aardappel kip" is babyvoeding, en wijn heet nu eenmaal
+# vaak naar fruit. Uitbreidbaar — "frisdrank" (vruchtensap) en "huishouden"
+# (diervoer met groente erin) zijn logische volgende kandidaten.
+EXCLUDED_CATEGORIES = {
+    "koffie-thee",
+    "drogisterij",
+    "bier-wijn-sterke-drank",
+    # Vlees, vis en kaas/vleeswaren horen per definitie niet in een
+    # groente&fruit-lijst; hier kwamen bij het testen o.a. biologische
+    # hamburgers, olijven en tomatentapenade uit.
+    "vlees",
+    "vis",
+    "kaas",
+}
 
 # Nederlandse samenstellingen plakken vast (bv. "tomatenpulp", "appelmoes"), dus de
 # meeste keywords mogen als voorvoegsel matchen (alleen een woordgrens vóór het
 # keyword, geen grens erna). Een paar korte keywords zijn dat te riskant voor —
 # "ui" zou dan ook "uitverkoop" matchen, "kool" ook "koolzuurhoudend" — die
 # blijven hele-woord-only.
-_AGF_WHOLE_WORD_ONLY = {"ui", "uien", "kool"}
+#
+# "sla" hoort hier ook bij (augustus 2026): als voorvoegsel matchte het
+# "Slavinken" en "Slagershamburgers" — allebei vlees. En het kostte niets, want
+# de echte samenstellingen ("kropsla", "veldsla") eindigen op "sla" en werden
+# door een voorvoegselregel toch al niet gevonden.
+_AGF_WHOLE_WORD_ONLY = {"ui", "uien", "kool", "sla"}
 _agf_prefix = [k for k in AGF_KEYWORDS if k not in _AGF_WHOLE_WORD_ONLY]
 _agf_whole = [k for k in AGF_KEYWORDS if k in _AGF_WHOLE_WORD_ONLY]
 AGF_PATTERN = re.compile(
@@ -63,23 +91,28 @@ AGF_PATTERN = re.compile(
 
 # Feature 1: bio-aanbiedingen per winkel, via twee gecombineerde bronnen (zie README)
 # store_label -> (prijsprofeet_retailer_slug, folderz_winkel_slug of None,
-#                  PrijsProfeet-zoektermen, vereist "bio" als los woord in de titel)
+#                  PrijsProfeet-zoektermen)
 # Folderz staat alleen nog aan voor Lidl: bij AH/Jumbo leverde de volledige
 # paginering (~99 resp. ~36 pagina's) vrijwel nooit iets op dat PrijsProfeet
 # niet al had — enkel tijd kosten (2-4 min) zonder toegevoegde waarde. Bij
 # Lidl vult Folderz een structurele blinde vlek van PrijsProfeet (zie README).
-# Ekoplaza is 100% bio (live geverifieerd: alle steekproef-resultaten op
-# "groente"/"fruit" droegen dietary_tags:["bio",...]) — daar zou eisen dat
-# "bio" letterlijk in de titel staat een hoop echte bio-producten missen,
-# dus daar zoeken we op AGF-categorieën i.p.v. "bio" en slaan de woordcheck over.
+# Hertest augustus 2026 bevestigt dit nog steeds: 2040 AH-producten over 60
+# pagina's leverden 7 bio-treffers op, allemaal wijn/thee/crackers.
+#
+# "biologisch" staat als aparte zoekterm naast "bio", want de fuzzy search van
+# PrijsProfeet geeft op "bio" de "Biologisch"-huismerken níet terug — daardoor
+# bleef bv. een halve-prijs-actie op AH Biologisch Blauwe bessen onzichtbaar.
+#
+# Ekoplaza is eruit gehaald: hun items bleken geen echte acties (actieprijs
+# gelijk aan normale prijs, met een valid_from uit 2024) — die hoorden dus niet
+# in een aanbiedingenlijst thuis.
 AANBIEDINGEN_STORES = {
-    "AH": ("albert_heijn", None, ["bio"], True),
-    "Jumbo": ("jumbo", None, ["bio"], True),
-    "Lidl": ("lidl", "lidl", ["bio"], True),
-    "Aldi": ("aldi", None, ["bio"], True),
-    "Dirk": ("dirk", None, ["bio"], True),
-    "Plus": ("plus", None, ["bio"], True),
-    "Ekoplaza": ("ekoplaza", None, ["groente", "fruit", "aardappel"], False),
+    "AH": ("albert_heijn", None, ["bio", "biologisch"]),
+    "Jumbo": ("jumbo", None, ["bio", "biologisch"]),
+    "Lidl": ("lidl", "lidl", ["bio", "biologisch"]),
+    "Aldi": ("aldi", None, ["bio", "biologisch"]),
+    "Dirk": ("dirk", None, ["bio", "biologisch"]),
+    "Plus": ("plus", None, ["bio", "biologisch"]),
 }
 PRIJSPROFEET_SEARCH_URL = "https://www.prijsprofeet.nl/api/v1/search"
 FOLDERZ_MAX_PAGES = 120  # veiligheidsgrens; Lidl had er ~34-36 tijdens het bouwen
@@ -96,7 +129,7 @@ GITHUB_PUBLISH_FILES = ["index.html", "manifest.json", "icon.png", "sw.js", "dat
 # Feature 1: bio-aanbiedingen per winkel (PrijsProfeet-API + Folderz.nl)
 # ---------------------------------------------------------------------------
 
-def fetch_aanbiedingen(store_label, retailer_slug, folderz_slug, search_terms, vereist_bio_woord):
+def fetch_aanbiedingen(store_label, retailer_slug, folderz_slug, search_terms):
     """Combineert twee bronnen voor de bio-aanbiedingen van één winkel:
     - PrijsProfeet-API: schoon, snel, gratis, sleutelloos JSON.
     - Folderz.nl: trager (scraping, pagineert door alle lopende acties),
@@ -106,7 +139,7 @@ def fetch_aanbiedingen(store_label, retailer_slug, folderz_slug, search_terms, v
     Resultaten van beide worden samengevoegd en op (genormaliseerde) naam
     gededupliceerd, zodat een product dat in beide bronnen voorkomt maar
     één keer getoond wordt."""
-    resultaten = fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug, search_terms, vereist_bio_woord)
+    resultaten = fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug, search_terms)
     if folderz_slug:
         resultaten += fetch_aanbiedingen_folderz(store_label, folderz_slug)
 
@@ -119,9 +152,9 @@ def fetch_aanbiedingen(store_label, retailer_slug, folderz_slug, search_terms, v
         gezien.add(sleutel)
         gededupliceerd.append(item)
 
-    # Cap per winkel, grootste korting eerst — anders kan een winkel met
-    # bredere zoektermen (bv. Ekoplaza op "groente"/"fruit" i.p.v. het
-    # smallere "bio") de pagina domineren t.o.v. de andere winkels.
+    # Cap per winkel, grootste korting eerst — anders kan een winkel met veel
+    # treffers (Plus gaf er 19 op "bio") de pagina domineren t.o.v. de andere
+    # winkels.
     def _korting(item):
         if item.get("normale_prijs"):
             return item["normale_prijs"] - item["actieprijs"]
@@ -133,7 +166,7 @@ def fetch_aanbiedingen(store_label, retailer_slug, folderz_slug, search_terms, v
     return gededupliceerd
 
 
-def fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug, search_terms, vereist_bio_woord):
+def fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug, search_terms):
     """Haalt lopende bio AGF-aanbiedingen van één winkel op via de publieke
     PrijsProfeet-API (prijsprofeet.nl/api) — een gratis, sleutelloos JSON-
     endpoint dat 10 NL-supermarkten uniform ontsluit, met producten al
@@ -141,14 +174,24 @@ def fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug, search_terms, ve
     een acties-database (elk resultaat bleek live "is_promotional": true)
     — er is geen doorlopende (niet-actie) prijscatalogus voor Jumbo/Lidl
     beschikbaar, zie README. Bronvermelding conform de gebruiksvoorwaarden
-    van de gratis publieke endpoints staat in www/index.html.
+    van de gratis publieke endpoints staat in index.html.
 
     search_terms: meerdere zoektermen worden na elkaar bevraagd en
-    samengevoegd (dedup gebeurt later in fetch_aanbiedingen) — nodig voor
-    winkels als Ekoplaza waar "bio" zelf te weinig oplevert.
-    vereist_bio_woord: bij False wordt het "bio"-woord in de titel niet
-    geëist (voor 100%-bio winkels als Ekoplaza), de AGF-check blijft wel
-    gelden."""
+    samengevoegd (dedup gebeurt later in fetch_aanbiedingen) — nodig omdat de
+    fuzzy search op "bio" de "Biologisch"-huismerken niet meeneemt.
+
+    Een item moet vier checks halen:
+    1. AGF-trefwoord in de naam;
+    2. categorie niet in EXCLUDED_CATEGORIES (weert koffie/wijn/babyvoeding
+       die toevallig een AGF-woord in de naam hebben);
+    3. bio volgens het dietary_tags-label van PrijsProfeet, óf anders volgens
+       de naam — het label is betrouwbaarder dan de naam, maar niet elk
+       bio-product blijkt getagd, dus de naam blijft een terugvaloptie;
+    4. promotion_status niet 'upcoming' of 'historical' — de API levert
+       namelijk ook nog-niet-geldige en verlopen acties (Aldi's bio-items
+       stonden bij het testen allebei op 'upcoming'). Ontbreekt het veld
+       helemaal, dan laten we het item door: dat is het oude gedrag, en
+       liever dat dan een lege site als de API van vorm verandert."""
     import requests
 
     headers = {"User-Agent": "BioBordPi/1.0 (Home Assistant add-on, persoonlijk gebruik)"}
@@ -167,7 +210,13 @@ def fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug, search_terms, ve
                 title = item.get("name") or ""
                 if not title or not _is_agf(title):
                     continue
-                if vereist_bio_woord and not BIO_PATTERN.search(title):
+                if item.get("unified_category") in EXCLUDED_CATEGORIES:
+                    continue
+                tags = item.get("dietary_tags") or []
+                if "bio" not in tags and not BIO_PATTERN.search(title):
+                    continue
+                status = item.get("promotion_status")
+                if status is not None and status != "active":
                     continue
                 actieprijs = item.get("price")
                 if not isinstance(actieprijs, (int, float)):
@@ -365,8 +414,8 @@ def main():
     history = load_history()
 
     aanbiedingen = {}
-    for store_label, (retailer_slug, folderz_slug, search_terms, vereist_bio_woord) in AANBIEDINGEN_STORES.items():
-        items = fetch_aanbiedingen(store_label, retailer_slug, folderz_slug, search_terms, vereist_bio_woord)
+    for store_label, (retailer_slug, folderz_slug, search_terms) in AANBIEDINGEN_STORES.items():
+        items = fetch_aanbiedingen(store_label, retailer_slug, folderz_slug, search_terms)
         aanbiedingen[store_label] = enrich_and_record_history(store_label, items, history, vandaag)
 
     save_history(history)
