@@ -1,82 +1,59 @@
 {
-  "laatst_bijgewerkt": "2026-08-16T08:00:49.860867",
+  "laatst_bijgewerkt": "2026-08-20T19:54:58.130025",
   "aanbiedingen": {
     "AH": [],
     "Jumbo": [
       {
-        "naam": "Café Bio Intención Crema Aromatico Bonen 500 g",
-        "actieprijs": 10.12,
-        "normale_prijs": 13.49,
-        "laagste_ooit_prijs": 10.12,
-        "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 3
-      },
-      {
-        "naam": "Nestlé Yogolino Bio Mango-Kiwi met Kokosmelk 6m-36m 4 x 90 g",
-        "actieprijs": 2.99,
-        "normale_prijs": 3.99,
-        "laagste_ooit_prijs": 2.99,
-        "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 3
-      },
-      {
-        "naam": "Bambix Knijpzakje Appel, Banaan, Sinaasappel & Koekjes Bio 6M+ 100g",
-        "actieprijs": 1.09,
-        "normale_prijs": 1.45,
-        "laagste_ooit_prijs": 1.09,
-        "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 3
-      },
-      {
-        "naam": "Bambix Knijpzakje Appel, Perzik, Banaan, Peer & Haver Bio 10M+ 100g",
-        "actieprijs": 1.09,
-        "normale_prijs": 1.45,
-        "laagste_ooit_prijs": 1.09,
-        "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 3
-      },
-      {
-        "naam": "Bambix Knijpzakje Appel, Banaan, Framboos & Blauwe Bes Bio 6M+ 100g",
-        "actieprijs": 0.75,
-        "normale_prijs": 1.0,
-        "laagste_ooit_prijs": 0.75,
-        "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 3
-      },
-      {
-        "naam": "Hak Gesneden Bonen Bio 340 g",
-        "actieprijs": 2.39,
-        "normale_prijs": null
+        "naam": "Lavazza Tierra Premium Blend Bio Bonen 500g",
+        "actieprijs": 6.0,
+        "normale_prijs": 8.0,
+        "laagste_ooit_prijs": 8.0,
+        "laagste_ooit_datum": "2026-08-16",
+        "eerder_gezien": 1
       },
       {
         "naam": "Hak Spinazie met Room Bio 345 g",
-        "actieprijs": 2.99,
-        "normale_prijs": null
-      },
-      {
-        "naam": "Hak Rode Bieten Schijven Bio 355 g",
-        "actieprijs": 2.19,
-        "normale_prijs": null
+        "actieprijs": 1.0,
+        "normale_prijs": 2.99,
+        "laagste_ooit_prijs": 2.99,
+        "laagste_ooit_datum": "2026-08-16",
+        "eerder_gezien": 1
       },
       {
         "naam": "Hak Rode Bieten Sticks Bio 355 g",
-        "actieprijs": 2.59,
-        "normale_prijs": null
+        "actieprijs": 1.0,
+        "normale_prijs": 2.59,
+        "laagste_ooit_prijs": 2.59,
+        "laagste_ooit_datum": "2026-08-16",
+        "eerder_gezien": 1
       },
       {
-        "naam": "Lavazza Tierra Premium Blend Bio Bonen 500g",
-        "actieprijs": 8.0,
-        "normale_prijs": null
+        "naam": "Hak Gesneden Bonen Bio 340 g",
+        "actieprijs": 1.0,
+        "normale_prijs": 2.39,
+        "laagste_ooit_prijs": 2.39,
+        "laagste_ooit_datum": "2026-08-16",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "Hak Rode Bieten Schijven Bio 355 g",
+        "actieprijs": 1.0,
+        "normale_prijs": 2.19,
+        "laagste_ooit_prijs": 2.19,
+        "laagste_ooit_datum": "2026-08-16",
+        "eerder_gezien": 1
       }
     ],
     "Lidl": [
       {
-        "naam": "Bio Hokkaido pompoen",
+        "naam": "Bio gesneden bieten",
         "actieprijs": 1.49,
-        "normale_prijs": 1.99,
-        "laagste_ooit_prijs": 1.49,
-        "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 3
+        "normale_prijs": 2.29
+      },
+      {
+        "naam": "Bio gesneden rode bieten",
+        "actieprijs": 1.49,
+        "normale_prijs": 2.29
       },
       {
         "naam": "Bio wortels",
@@ -84,7 +61,7 @@
         "normale_prijs": 1.69,
         "laagste_ooit_prijs": 1.19,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 3
+        "eerder_gezien": 4
       },
       {
         "naam": "Bio snack-wortels",
@@ -92,7 +69,12 @@
         "normale_prijs": 0.99,
         "laagste_ooit_prijs": 0.79,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 3
+        "eerder_gezien": 4
+      },
+      {
+        "naam": "Bio courgette",
+        "actieprijs": 0.79,
+        "normale_prijs": 0.99
       },
       {
         "naam": "Bio blauwe bessen, bramen of frambozen",
@@ -100,18 +82,41 @@
         "normale_prijs": null,
         "laagste_ooit_prijs": 1.79,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 3
+        "eerder_gezien": 4
       }
     ],
     "Aldi": [],
-    "Dirk": [
+    "Dirk": [],
+    "Plus": [
       {
-        "naam": "Bio+ Oesterzwammen bio",
-        "actieprijs": 1.79,
-        "normale_prijs": 1.99,
-        "laagste_ooit_prijs": 1.79,
-        "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 1
+        "naam": "Heinz Tomatenblokjes bio",
+        "actieprijs": 1.0,
+        "normale_prijs": 2.29
+      },
+      {
+        "naam": "Bonbebe Bio 6+ appel aardbei multipack",
+        "actieprijs": 2.49,
+        "normale_prijs": 2.99
+      },
+      {
+        "naam": "Bonbebe Bio M1515 mais doperwt aardappel kip",
+        "actieprijs": 1.0,
+        "normale_prijs": 1.39
+      },
+      {
+        "naam": "BIO+ Zwarte bonen",
+        "actieprijs": 1.0,
+        "normale_prijs": 1.29
+      },
+      {
+        "naam": "BIO+ Gemengde bonen",
+        "actieprijs": 1.0,
+        "normale_prijs": 1.19
+      },
+      {
+        "naam": "Bonbebe Bio M0612 pompoen aardappel kip",
+        "actieprijs": 1.0,
+        "normale_prijs": 1.09
       }
     ],
     "Ekoplaza": [
@@ -121,15 +126,7 @@
         "normale_prijs": 3.19,
         "laagste_ooit_prijs": 3.19,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 3
-      },
-      {
-        "naam": "Groene thee citroen",
-        "actieprijs": 3.79,
-        "normale_prijs": 3.79,
-        "laagste_ooit_prijs": 3.79,
-        "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 3
+        "eerder_gezien": 4
       }
     ]
   }
