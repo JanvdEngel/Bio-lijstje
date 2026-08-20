@@ -1,0 +1,20 @@
+{
+  "laatst_bijgewerkt": "2026-07-19T08:03:00",
+  "aanbiedingen": {
+    "AH": [
+      { "naam": "AH Biologisch Rode Kool", "actieprijs": 1.29, "normale_prijs": 1.59 }
+    ],
+    "Jumbo": [],
+    "Lidl": [
+      { "naam": "Freshona Bio Rode Kool", "actieprijs": 1.49, "normale_prijs": 1.59 },
+      { "naam": "Freshona Bio Appels", "actieprijs": 1.99, "normale_prijs": 2.49 }
+    ]
+  },
+  "ah_prijzen_top": [
+    { "naam": "Het sapgilde Appelsap bio", "prijs": 1.79 },
+    { "naam": "AH Biologisch Halfvolle melk", "prijs": 1.85 },
+    { "naam": "AH Biologisch Komkommer", "prijs": 1.65 },
+    { "naam": "AH Biologisch Fairtrade bananen", "prijs": 2.39 },
+    { "naam": "AH Biologisch Roomboter ongezouten", "prijs": 2.89 }
+  ]
+}

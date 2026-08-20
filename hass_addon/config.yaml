@@ -1,0 +1,21 @@
+name: "Het Bio Lijstje"
+version: "1.4.0"
+slug: "bio_bord"
+description: "Wekelijkse bio groente/fruit aanbiedingen (AH/Jumbo/Lidl), losstaande webpagina op het lokale netwerk + optioneel publiek via GitHub Pages"
+arch:
+  - aarch64
+startup: application
+boot: auto
+init: false
+map:
+  - share:rw
+ports:
+  8099/tcp: 8099
+ports_description:
+  8099/tcp: "Het Bio Lijstje webinterface (http://<pi-ip>:8099)"
+options:
+  github_token: ""
+  github_repo: ""
+schema:
+  github_token: password
+  github_repo: str

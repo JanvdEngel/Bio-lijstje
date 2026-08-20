@@ -1,0 +1,4 @@
+# Local env / editor cruft
+__pycache__/
+*.pyc
+.DS_Store
