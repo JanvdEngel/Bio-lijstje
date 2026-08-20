@@ -132,9 +132,26 @@ Per winkel worden twee bronnen gecombineerd en op naam gedupliceerd:
 
 - **PrijsProfeet-API** (`prijsprofeet.nl/api`) — een gratis, sleutelloos
   JSON-endpoint dat 10 NL-supermarkten uniform ontsluit, producten al
-  getagd met `dietary_tags` (o.a. `"bio"`). Snel (één request per winkel),
-  maar bleek voor Lidl een merkbaar dunnere catalogus te hebben dan voor
-  AH/Jumbo.
+  getagd met `dietary_tags` (o.a. `"bio"`) en met een categorie. Bleek voor
+  Lidl een merkbaar dunnere catalogus te hebben (~180 producten) dan voor
+  AH (~2400).
+
+  We halen per winkel de volledige actiecatalogus op via `/products`
+  (gepagineerd, 100 per keer) en filteren zelf, in plaats van `/search` met
+  zoektermen te bevragen. Zoeken vereist namelijk dat je het juiste woord
+  raadt, en dat miste stil producten: *Jumbo Biologisch Voorgekookte
+  Maïskolven* kwam bij geen enkele zoekterm terug maar staat wél in de
+  bulk-lijst. Bij Jumbo geeft bulk 39 bio-getagde items tegen 11 via zoeken.
+  Kosten: ~71 pagina's per ronde, met 2,5s pauze ≈ 3 minuten.
+
+  > **Let op bij hergebruik:** de publieke endpoints zijn gratis en vereisen
+  > geen key, maar **commercieel gebruik is alleen toegestaan op hun Pro- of
+  > Business-plan**. Dit project heeft geen winstoogmerk en blijft dus binnen
+  > de gratis voorwaarden; ga je hiermee geld verdienen, regel dan een plan.
+  > Verder vragen ze een herkenbare User-Agent (die stuurt dit script mee) en
+  > geldt: controleer prijzen altijd bij de winkel zelf. Breaking changes
+  > worden alleen op de *betaalde* endpoints 30 dagen vooraf aangekondigd — de
+  > gratis endpoints kunnen dus zonder waarschuwing veranderen.
 - **Folderz.nl** (reclamefolder-aggregator, gevonden via het open-source
   project [`nl-supermarkt-mcp`](https://github.com/Samvox1/nl-supermarkt-mcp)) —
   trager (scraping, pagineert door alle lopende acties per winkel), maar
@@ -241,10 +258,25 @@ bleken na live testen niet haalbaar:
 - Folderz.nl toont actieprijzen (en de doorgestreepte oude prijs als
   referentie) — geen doorlopende "normale prijs" voor producten die niet
   toevallig deze week in de folder staan.
-- Geen productmatching tussen winkels (bewust — zie hierboven).
+- Geen productmatching tussen winkels (bewust — zie hierboven). De EAN-dekking
+  die daarvoor nodig zou zijn ontbreekt bovendien bij Aldi en Lidl.
 - Prijsgeschiedenis vergelijkt op exacte productnaam per winkel — een
   kleine naamswijziging door de winkel (bv. andere verpakkingsgrootte in de
   titel) telt als een nieuw product zonder geschiedenis.
+- **Stapelkortingen worden gemeld, niet omgerekend.** Sommige acties gelden
+  pas bij meerdere stuks: *AH Biologisch Blauwe bessen* stond op €2,19 van
+  €4,39, maar met de voorwaarde "4 STAPELEN TOT 50%" — één bakje kost dus
+  meer. De velden `multi_buy_quantity`/`multi_buy_price` van de API zijn daar
+  leeg, dus de voorwaarde staat alleen in de vrije tekst van
+  `promotional_keywords`. Het script vist die eruit (`_actievoorwaarde()`) en
+  de pagina zet 'm onder de prijs als "⚠️ alleen bij: …". De getoonde
+  prijs en het kortingspercentage blijven wél die van de actie — reken dus
+  zelf na wat één stuk kost.
+
+  Die labels zijn niet uniform: bij Jumbo staat er vaak alleen "voor 1,00"
+  (gewoon de prijs, geen voorwaarde), bij AH "4 STAPELEN TOT 50%" of
+  "5 + 1 GRATIS", bij Aldi "OP=OP" en bij Lidl een percentage. Alleen echte
+  aantal-patronen worden als voorwaarde gemeld.
 
 ## Aanpassen
 
@@ -257,6 +289,13 @@ bleken na live testen niet haalbaar:
 - `EXCLUDED_CATEGORIES`: categorieën waarin een AGF-trefwoord als valse
   treffer wordt beschouwd. Logische volgende kandidaten zijn `frisdrank`
   (vruchtensap) en `huishouden` (diervoer met groente erin).
+- `_VOORWAARDE_PATRONEN`: patronen die verraden dat een actieprijs pas bij
+  meerdere stuks geldt ("4 stapelen", "5 + 1 gratis", "2 voor 2.99"). Let op
+  dat het een *aantal*-patroon moet zijn: het label "voor 1,00" is gewoon een
+  prijs en geen voorwaarde, terwijl "2 VOOR 2.99" dat wél is.
+- `PRIJSPROFEET_PAGE_PAUZE`: pauze tussen bulk-requests. Zonder key mag je 30
+  requests/min; 2,5s houdt je op ~24/min. Met een gratis key mag 150/min en
+  kan dit omlaag.
 - `FOLDERZ_MAX_PAGES`: veiligheidsgrens voor de Folderz-paginering.
 - `HISTORY_MAX_PER_PRODUCT`: hoeveel weken geschiedenis per product bewaard
   blijft.

@@ -1,18 +1,27 @@
 #!/usr/bin/env python3
 """
-Bio Groente & Fruit — AH / Jumbo / Lidl
-=========================================================
+Bio Groente & Fruit — AH / Jumbo / Lidl / Aldi / Dirk / Plus
+===========================================================
 Standalone script (GEEN Home Assistant nodig). Draait via cron, 1x per week,
 en schrijft een JSON-bestand dat de telefoon-app (www/index.html) uitleest.
 
 Eén feature (zie README voor de achtergrond van deze opzet): "aanbiedingen"
-— lopende bio AGF-acties per winkel (AH/Jumbo/Lidl), via twee gecombineerde
-bronnen: de publieke PrijsProfeet-API (schoon, snel, maar met merkbaar
-dunnere Lidl-dekking) en Folderz.nl (scraping, trager, maar met een
-volledige doorzoeking van alle lopende acties per winkel). Resultaten
-worden samengevoegd en op naam gedupliceerd. Geen cross-store matching —
-acties zijn te schaars om een zinnig prijsverschil-overzicht op te bouwen
-(soms enkele bio-items per winkel per week).
+— lopende bio AGF-acties per winkel, via twee gecombineerde bronnen:
+
+1. De publieke PrijsProfeet-API. We halen per winkel de volledige
+   actiecatalogus op via /products (gepagineerd) en filteren die zelf. Dat is
+   bewust géén /search meer: zoeken vereist dat je het juiste woord raadt, en
+   dat bleek producten stil te missen — "Jumbo Biologisch Voorgekookte
+   Maïskolven" kwam bij geen enkele zoekterm terug maar staat wel in
+   /products. Bulk geeft ~3,5x meer bio-treffers per winkel.
+2. Folderz.nl (scraping) als aanvulling, alléén voor Lidl: PrijsProfeet heeft
+   voor Lidl maar ~180 producten tegen ~2400 voor AH, en vrijwel al het verse
+   groente/fruit op de pagina komt uit deze bron.
+
+Resultaten worden samengevoegd en op naam gededupliceerd. Geen cross-store
+matching — acties zijn te schaars om een zinnig prijsverschil-overzicht op te
+bouwen (soms enkele bio-items per winkel per week), en de EAN-dekking die
+daarvoor nodig is ontbreekt bij Aldi en Lidl.
 
 Gebruik:
     python3 fetch_bio_prices.py
@@ -23,6 +32,7 @@ Installatie & cron: zie README.md.
 import os
 import re
 import json
+import time
 import logging
 from datetime import datetime
 from pathlib import Path
@@ -68,6 +78,11 @@ EXCLUDED_CATEGORIES = {
     "vlees",
     "vis",
     "kaas",
+    # Snoep/koek/chips: hier zaten "Zonnatura Maiswafel chocolade" (via "mais")
+    # en "Leev Linzenwafels paprika" (via "paprika"). Dit is ook de reden dat
+    # "mais" wél een voorvoegsel mag blijven, anders dan "sla": "Maïskolven"
+    # heeft die voorvoegselregel nodig, en de wafels vangen we hier op.
+    "snoep-koek-chips",
 }
 
 # Nederlandse samenstellingen plakken vast (bv. "tomatenpulp", "appelmoes"), dus de
@@ -89,32 +104,35 @@ AGF_PATTERN = re.compile(
     re.IGNORECASE,
 )
 
-# Feature 1: bio-aanbiedingen per winkel, via twee gecombineerde bronnen (zie README)
-# store_label -> (prijsprofeet_retailer_slug, folderz_winkel_slug of None,
-#                  PrijsProfeet-zoektermen)
-# Folderz staat alleen nog aan voor Lidl: bij AH/Jumbo leverde de volledige
-# paginering (~99 resp. ~36 pagina's) vrijwel nooit iets op dat PrijsProfeet
-# niet al had — enkel tijd kosten (2-4 min) zonder toegevoegde waarde. Bij
-# Lidl vult Folderz een structurele blinde vlek van PrijsProfeet (zie README).
-# Hertest augustus 2026 bevestigt dit nog steeds: 2040 AH-producten over 60
-# pagina's leverden 7 bio-treffers op, allemaal wijn/thee/crackers.
+# Welke winkels meedoen: store_label -> (prijsprofeet_retailer_slug,
+# folderz_winkel_slug of None om Folderz voor die winkel over te slaan).
 #
-# "biologisch" staat als aparte zoekterm naast "bio", want de fuzzy search van
-# PrijsProfeet geeft op "bio" de "Biologisch"-huismerken níet terug — daardoor
-# bleef bv. een halve-prijs-actie op AH Biologisch Blauwe bessen onzichtbaar.
+# Folderz staat alleen aan voor Lidl. Bij AH en Jumbo leverde de volledige
+# paginering vrijwel nooit iets op dat PrijsProfeet niet al had — puur tijd
+# kosten zonder toegevoegde waarde. Hertest augustus 2026 bevestigt dat: 2040
+# AH-producten over 60 pagina's gaven 7 bio-treffers, allemaal wijn, thee en
+# crackers. Bij Lidl vult Folderz wél een structurele blinde vlek — daar heeft
+# PrijsProfeet maar ~180 producten, en vrijwel al het verse groente/fruit op de
+# pagina komt uit Folderz.
 #
-# Ekoplaza is eruit gehaald: hun items bleken geen echte acties (actieprijs
-# gelijk aan normale prijs, met een valid_from uit 2024) — die hoorden dus niet
-# in een aanbiedingenlijst thuis.
+# PrijsProfeet ontsluit 10 ketens; nog niet in gebruik: DekaMarkt, Hoogvliet,
+# Vomar. Ekoplaza is eruit gehaald omdat hun items geen echte acties bleken
+# (actieprijs gelijk aan de normale prijs, met een valid_from uit 2024).
 AANBIEDINGEN_STORES = {
-    "AH": ("albert_heijn", None, ["bio", "biologisch"]),
-    "Jumbo": ("jumbo", None, ["bio", "biologisch"]),
-    "Lidl": ("lidl", "lidl", ["bio", "biologisch"]),
-    "Aldi": ("aldi", None, ["bio", "biologisch"]),
-    "Dirk": ("dirk", None, ["bio", "biologisch"]),
-    "Plus": ("plus", None, ["bio", "biologisch"]),
+    "AH": ("albert_heijn", None),
+    "Jumbo": ("jumbo", None),
+    "Lidl": ("lidl", "lidl"),
+    "Aldi": ("aldi", None),
+    "Dirk": ("dirk", None),
+    "Plus": ("plus", None),
 }
-PRIJSPROFEET_SEARCH_URL = "https://www.prijsprofeet.nl/api/v1/search"
+
+PRIJSPROFEET_PRODUCTS_URL = "https://www.prijsprofeet.nl/api/v1/products"
+PRIJSPROFEET_PAGE_SIZE = 100  # harde grens van de API; 200 en 500 geven 0 resultaten
+PRIJSPROFEET_MAX_PAGES = 60  # veiligheidsgrens; AH is de grootste met ~24 pagina's
+# Zonder API-key geldt 30 requests/min op de bulk-endpoints (per IP). 2,5s pauze
+# houdt ons op ~24/min, dus met marge. De hele ronde is ~71 pagina's ≈ 3 minuten.
+PRIJSPROFEET_PAGE_PAUZE = 2.5
 FOLDERZ_MAX_PAGES = 120  # veiligheidsgrens; Lidl had er ~34-36 tijdens het bouwen
 MAX_ITEMS_PER_STORE = 15  # cap na dedup, grootste korting eerst — houdt winkels in verhouding
 
@@ -129,9 +147,9 @@ GITHUB_PUBLISH_FILES = ["index.html", "manifest.json", "icon.png", "sw.js", "dat
 # Feature 1: bio-aanbiedingen per winkel (PrijsProfeet-API + Folderz.nl)
 # ---------------------------------------------------------------------------
 
-def fetch_aanbiedingen(store_label, retailer_slug, folderz_slug, search_terms):
+def fetch_aanbiedingen(store_label, retailer_slug, folderz_slug):
     """Combineert twee bronnen voor de bio-aanbiedingen van één winkel:
-    - PrijsProfeet-API: schoon, snel, gratis, sleutelloos JSON.
+    - PrijsProfeet-API: schoon, gratis, sleutelloos JSON.
     - Folderz.nl: trager (scraping, pagineert door alle lopende acties),
       maar vult structurele gaten van PrijsProfeet op. Alleen ingeschakeld
       voor winkels waar dat nodig bleek (folderz_slug niet None) — zie
@@ -139,7 +157,7 @@ def fetch_aanbiedingen(store_label, retailer_slug, folderz_slug, search_terms):
     Resultaten van beide worden samengevoegd en op (genormaliseerde) naam
     gededupliceerd, zodat een product dat in beide bronnen voorkomt maar
     één keer getoond wordt."""
-    resultaten = fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug, search_terms)
+    resultaten = fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug)
     if folderz_slug:
         resultaten += fetch_aanbiedingen_folderz(store_label, folderz_slug)
 
@@ -152,9 +170,9 @@ def fetch_aanbiedingen(store_label, retailer_slug, folderz_slug, search_terms):
         gezien.add(sleutel)
         gededupliceerd.append(item)
 
-    # Cap per winkel, grootste korting eerst — anders kan een winkel met veel
-    # treffers (Plus gaf er 19 op "bio") de pagina domineren t.o.v. de andere
-    # winkels.
+    # Cap per winkel, grootste korting eerst — anders kan een winkel met een
+    # grote catalogus (AH en Plus hebben er elk ~2300) de pagina domineren
+    # t.o.v. de andere winkels.
     def _korting(item):
         if item.get("normale_prijs"):
             return item["normale_prijs"] - item["actieprijs"]
@@ -166,69 +184,133 @@ def fetch_aanbiedingen(store_label, retailer_slug, folderz_slug, search_terms):
     return gededupliceerd
 
 
-def fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug, search_terms):
-    """Haalt lopende bio AGF-aanbiedingen van één winkel op via de publieke
-    PrijsProfeet-API (prijsprofeet.nl/api) — een gratis, sleutelloos JSON-
-    endpoint dat 10 NL-supermarkten uniform ontsluit, met producten al
-    getagd op dietary_tags (o.a. "bio"). Let op: PrijsProfeet is zelf ook
-    een acties-database (elk resultaat bleek live "is_promotional": true)
-    — er is geen doorlopende (niet-actie) prijscatalogus voor Jumbo/Lidl
-    beschikbaar, zie README. Bronvermelding conform de gebruiksvoorwaarden
-    van de gratis publieke endpoints staat in index.html.
+# Patronen die verraden dat een actieprijs pas geldt bij méér dan één stuk.
+# Zonder dit tonen we een halveprijs-actie als gewone stuksprijs: "AH Biologisch
+# Blauwe bessen" stond op 2,19 van 4,39, maar de voorwaarde was "4 STAPELEN TOT
+# 50%" — één bakje kost dus meer. De velden multi_buy_quantity/multi_buy_price
+# van de API zijn bij die actie leeg, dus de voorwaarde staat alléén in de vrije
+# tekst van promotional_keywords; daarom kijken we daar zelf naar.
+#
+# Het moet een aantal-patroon zijn, niet los een cijfer plus een trefwoord: het
+# label "voor 1,00" is gewoon een prijs ("nu voor 1,00") en géén voorwaarde,
+# terwijl "2 VOOR 2.99" dat wél is. Daar zit een cijfer vóór het woord.
+_VOORWAARDE_PATRONEN = (
+    re.compile(r"\b\d+\s*x?\s*voor\b", re.IGNORECASE),   # "2 voor 2.99"
+    re.compile(r"\b\d+\s*\+\s*\d+", re.IGNORECASE),      # "5 + 1 gratis"
+    re.compile(r"\b\d+\s*stapel", re.IGNORECASE),        # "4 stapelen tot 50%"
+    re.compile(r"\b\d+\s*e?\s*halve\b", re.IGNORECASE),  # "2e halve prijs"
+    re.compile(r"\b\d+\s*hal(?:en|f)\b", re.IGNORECASE), # "3 halen 2 betalen"
+)
 
-    search_terms: meerdere zoektermen worden na elkaar bevraagd en
-    samengevoegd (dedup gebeurt later in fetch_aanbiedingen) — nodig omdat de
-    fuzzy search op "bio" de "Biologisch"-huismerken niet meeneemt.
 
-    Een item moet vier checks halen:
-    1. AGF-trefwoord in de naam;
-    2. categorie niet in EXCLUDED_CATEGORIES (weert koffie/wijn/babyvoeding
-       die toevallig een AGF-woord in de naam hebben);
-    3. bio volgens het dietary_tags-label van PrijsProfeet, óf anders volgens
-       de naam — het label is betrouwbaarder dan de naam, maar niet elk
-       bio-product blijkt getagd, dus de naam blijft een terugvaloptie;
-    4. promotion_status niet 'upcoming' of 'historical' — de API levert
-       namelijk ook nog-niet-geldige en verlopen acties (Aldi's bio-items
-       stonden bij het testen allebei op 'upcoming'). Ontbreekt het veld
-       helemaal, dan laten we het item door: dat is het oude gedrag, en
-       liever dat dan een lege site als de API van vorm verandert."""
+def _actievoorwaarde(item):
+    """Geeft een korte, leesbare voorwaarde terug ("5 + 1 gratis") als de
+    actieprijs pas bij meerdere stuks geldt, of None als er niets aan de hand is.
+    Zuivere labels als "Actie", "OP=OP" of "20% korting" tellen niet als
+    voorwaarde: die zeggen niets over een minimum-aantal."""
+    aantal = item.get("multi_buy_quantity")
+    prijs = item.get("multi_buy_price")
+    if isinstance(aantal, int) and aantal > 1 and isinstance(prijs, (int, float)):
+        return f"{aantal} voor €{prijs:.2f}"
+
+    for label in item.get("promotional_keywords") or []:
+        if not isinstance(label, str):
+            continue
+        if any(p.search(label) for p in _VOORWAARDE_PATRONEN):
+            return label.strip()
+    return None
+
+
+def _als_bio_agf_actie(item):
+    """Beoordeelt één PrijsProfeet-record en geeft het terug in ons eigen
+    formaat, of None als het niet door de filters komt. Vier checks:
+
+    1. AGF-trefwoord in de naam (AGF_PATTERN);
+    2. categorie niet in EXCLUDED_CATEGORIES — weert koffie, wijn, vlees en
+       babyvoeding die toevallig een AGF-woord in de naam hebben;
+    3. bio volgens het dietary_tags-label, óf anders volgens de naam. Het label
+       is betrouwbaarder, maar niet elk bio-product blijkt getagd, dus de naam
+       blijft een terugvaloptie;
+    4. promotion_status niet 'upcoming' of 'historical' — de API levert ook
+       nog-niet-geldige en verlopen acties (Aldi's bio-items stonden bij het
+       testen allebei op 'upcoming'). Ontbreekt het veld helemaal, dan laten we
+       het item door: liever dat dan een lege pagina als de API van vorm
+       verandert."""
+    naam = item.get("name") or ""
+    if not naam or not _is_agf(naam):
+        return None
+    if item.get("unified_category") in EXCLUDED_CATEGORIES:
+        return None
+    tags = item.get("dietary_tags") or []
+    if "bio" not in tags and not BIO_PATTERN.search(naam):
+        return None
+    status = item.get("promotion_status")
+    if status is not None and status != "active":
+        return None
+    actieprijs = item.get("price")
+    if not isinstance(actieprijs, (int, float)):
+        return None
+    actie = {
+        "naam": naam,
+        "actieprijs": float(actieprijs),
+        "normale_prijs": item.get("original_price"),
+    }
+    voorwaarde = _actievoorwaarde(item)
+    if voorwaarde:
+        actie["voorwaarde"] = voorwaarde
+    return actie
+
+
+def fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug):
+    """Haalt de volledige actiecatalogus van één winkel op via de publieke
+    PrijsProfeet-API (prijsprofeet.nl/api) — gratis en sleutelloos, met
+    producten al getagd op dietary_tags (o.a. "bio") en op categorie.
+    Bronvermelding conform hun gebruiksvoorwaarden staat in index.html.
+
+    We pagineren door /products en filteren zelf, in plaats van /search met
+    zoektermen te bevragen. Zoeken vereist namelijk dat je het juiste woord
+    raadt: "Jumbo Biologisch Voorgekookte Maïskolven" kwam bij geen enkele
+    zoekterm terug, maar staat wel in de bulk-lijst. Bij Jumbo gaf bulk 39
+    bio-getagde items tegen 11 via zoeken.
+
+    Let op: PrijsProfeet bevat alleen lopende acties, geen volledige
+    prijscatalogus — er is dus geen doorlopende "normale prijs" beschikbaar
+    voor producten die deze week niet in de actie staan (zie README)."""
     import requests
 
     headers = {"User-Agent": "BioBordPi/1.0 (Home Assistant add-on, persoonlijk gebruik)"}
     resultaten = []
-    for term in search_terms:
-        try:
+    pagina = 1
+    try:
+        while pagina <= PRIJSPROFEET_MAX_PAGES:
             resp = requests.get(
-                PRIJSPROFEET_SEARCH_URL,
+                PRIJSPROFEET_PRODUCTS_URL,
                 headers=headers,
-                timeout=15,
-                params={"q": term, "retailer": retailer_slug, "page_size": 100},
+                timeout=20,
+                params={
+                    "retailer": retailer_slug,
+                    "page": pagina,
+                    "page_size": PRIJSPROFEET_PAGE_SIZE,
+                },
             )
             resp.raise_for_status()
-            data = resp.json()
-            for item in data.get("results", []):
-                title = item.get("name") or ""
-                if not title or not _is_agf(title):
-                    continue
-                if item.get("unified_category") in EXCLUDED_CATEGORIES:
-                    continue
-                tags = item.get("dietary_tags") or []
-                if "bio" not in tags and not BIO_PATTERN.search(title):
-                    continue
-                status = item.get("promotion_status")
-                if status is not None and status != "active":
-                    continue
-                actieprijs = item.get("price")
-                if not isinstance(actieprijs, (int, float)):
-                    continue
-                resultaten.append({
-                    "naam": title,
-                    "actieprijs": float(actieprijs),
-                    "normale_prijs": item.get("original_price"),
-                })
-        except Exception as e:
-            log.warning(f"Aanbiedingen ophalen mislukt voor {store_label} (PrijsProfeet, q={term}): {e}")
-    log.info(f"{store_label} aanbiedingen: {len(resultaten)} bio AGF-acties (PrijsProfeet)")
+            # /products zet de lijst onder "products", /search onder "results".
+            # Beide accepteren, zodat een verkeerde aanname hier niet stil tot
+            # een lege pagina leidt (precies wat er bij het bouwen gebeurde).
+            body = resp.json()
+            producten = body.get("products") or body.get("results") or []
+            if not producten:
+                break
+            for item in producten:
+                actie = _als_bio_agf_actie(item)
+                if actie:
+                    resultaten.append(actie)
+            pagina += 1
+            time.sleep(PRIJSPROFEET_PAGE_PAUZE)  # onder de 30 requests/min blijven
+    except Exception as e:
+        # Wat we tot hier hadden houden we: een halve winkel is beter dan geen.
+        log.warning(f"Aanbiedingen ophalen mislukt voor {store_label} (PrijsProfeet, pagina {pagina}): {e}")
+    log.info(f"{store_label} aanbiedingen: {len(resultaten)} bio AGF-acties (PrijsProfeet, {pagina - 1} pagina's)")
     return resultaten
 
 
@@ -237,8 +319,11 @@ def fetch_aanbiedingen_folderz(store_label, folderz_slug):
     een reclamefolder-aggregator. Live geverifieerd: gewone requests werken
     hier prima op de daadwerkelijke aanbiedingen-pagina's (geen headless
     browser nodig) — een AWS-botcheck bleek alleen op /robots.txt te zitten,
-    niet op de content zelf. We pagineren tot een lege of 404-pagina."""
-    import time
+    niet op de content zelf. We pagineren tot een lege of 404-pagina.
+
+    Hier is de productnaam de enige beschikbare informatie: Folderz geeft geen
+    categorie of dieetlabel, dus de bio-check kan alleen op de naam. Vandaar dat
+    _als_bio_agf_actie() hier niet gebruikt wordt."""
     import requests
     from bs4 import BeautifulSoup
 
@@ -414,8 +499,8 @@ def main():
     history = load_history()
 
     aanbiedingen = {}
-    for store_label, (retailer_slug, folderz_slug, search_terms) in AANBIEDINGEN_STORES.items():
-        items = fetch_aanbiedingen(store_label, retailer_slug, folderz_slug, search_terms)
+    for store_label, (retailer_slug, folderz_slug) in AANBIEDINGEN_STORES.items():
+        items = fetch_aanbiedingen(store_label, retailer_slug, folderz_slug)
         aanbiedingen[store_label] = enrich_and_record_history(store_label, items, history, vandaag)
 
     save_history(history)
