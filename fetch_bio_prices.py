@@ -96,6 +96,23 @@ EXCLUDED_CATEGORIES = {
 # de echte samenstellingen ("kropsla", "veldsla") eindigen op "sla" en werden
 # door een voorvoegselregel toch al niet gevonden.
 _AGF_WHOLE_WORD_ONLY = {"ui", "uien", "kool", "sla"}
+
+# Producten die een AGF-trefwoord in de naam hebben maar toch geen groente of
+# fruit zijn. Nodig omdat de categorie van PrijsProfeet hier niet helpt: AH zet
+# ook thee en vruchtensap onder "groente-fruit", vermoedelijk omdat het in het
+# AGF-schap ligt. Zo kwamen "Groene thee citroengras" (via "citroen") en "Vers
+# geperst sap appel aardbei" (via "appel") in de lijst.
+#
+# Gedroogd fruit en notenmixen blijven bewust wél staan: dat ís fruit.
+#
+# Let op de woordgrenzen. "sap" mag alleen als achtervoegsel of los woord
+# matchen — als kale substring sneuvelt "sinaaSAPpel" ook, en dat is precies
+# wél groente/fruit.
+_NIET_AGF_PATRONEN = (
+    re.compile(r"sap\b", re.IGNORECASE),          # "appelsap", "vers geperst sap"
+    re.compile(r"\bthee|thee\b", re.IGNORECASE),  # "groene thee", "kruidenthee"
+)
+
 _agf_prefix = [k for k in AGF_KEYWORDS if k not in _AGF_WHOLE_WORD_ONLY]
 _agf_whole = [k for k in AGF_KEYWORDS if k in _AGF_WHOLE_WORD_ONLY]
 AGF_PATTERN = re.compile(
@@ -482,10 +499,19 @@ def publish_to_github():
 # ---------------------------------------------------------------------------
 
 def _is_agf(title):
-    """Woordgrens-check (niet kale substring-check): "ui" als kaal substring
+    """Is dit groente of fruit, op basis van de productnaam?
+
+    Woordgrens-check (niet kale substring-check): "ui" als kaal substring
     matchte per ongeluk ook "inlegkruisjes" (kr-UI-sjes) — een echte
-    false-positive uit live-testen."""
-    return bool(AGF_PATTERN.search(title))
+    false-positive uit live-testen.
+
+    Daarna nog een tegencheck op _NIET_AGF_PATRONEN, voor namen die wél een
+    AGF-trefwoord bevatten maar geen groente/fruit zijn (thee, vruchtensap).
+    Deze functie wordt door beide bronnen gebruikt, dus de uitsluiting geldt
+    ook voor Folderz — waar de naam trouwens de enige informatie is."""
+    if not AGF_PATTERN.search(title):
+        return False
+    return not any(p.search(title) for p in _NIET_AGF_PATRONEN)
 
 
 # ---------------------------------------------------------------------------
