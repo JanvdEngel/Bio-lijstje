@@ -292,7 +292,7 @@ function fmtShortDate(iso) {
 function renderHistoryNote(item) {
   if (item.laagste_ooit_prijs === undefined || item.laagste_ooit_prijs === null) return '';
   if (item.actieprijs <= item.laagste_ooit_prijs) {
-    return `<div class="history-note history-good">&#127942; Laagste prijs die ik zag (eerder ${item.eerder_gezien}x langsgekomen)</div>`;
+    return `<div class="history-note history-good">&#127942; Laagste prijs die ik zag (${item.eerder_gezien} eerdere ${item.eerder_gezien === 1 ? 'prijs' : 'prijzen'} gezien)</div>`;
   }
   const verschil = (item.actieprijs - item.laagste_ooit_prijs).toFixed(2);
   return `<div class="history-note history-warn">&#9888;&#65039; Eerder goedkoper: &euro;${item.laagste_ooit_prijs.toFixed(2)} op ${fmtShortDate(item.laagste_ooit_datum)} (nu &euro;${verschil} duurder)</div>`;
