@@ -1,43 +1,31 @@
 {
-  "laatst_bijgewerkt": "2026-08-24T15:51:59.685835",
+  "laatst_bijgewerkt": "2026-08-24T16:04:51.034515",
   "aanbiedingen": {
     "AH": [
       {
         "naam": "AH Biologisch Rozijn, ananas, mango, amandel mix",
         "actieprijs": 2.58,
-        "normale_prijs": 3.69
+        "normale_prijs": 3.69,
+        "laagste_ooit_prijs": 2.58,
+        "laagste_ooit_datum": "2026-08-24",
+        "eerder_gezien": 1
       },
       {
         "naam": "AH Biologisch Mango gedroogd & ongezoet",
         "actieprijs": 2.44,
-        "normale_prijs": 3.49
+        "normale_prijs": 3.49,
+        "laagste_ooit_prijs": 2.44,
+        "laagste_ooit_datum": "2026-08-24",
+        "eerder_gezien": 1
       },
       {
         "naam": "AH Biologisch Rode bieten gekookt",
         "actieprijs": 1.09,
         "normale_prijs": 1.49,
-        "voorwaarde": "2 VOOR 2.19"
-      },
-      {
-        "naam": "AH Biologisch Groene thee citroengras",
-        "actieprijs": 1.5,
-        "normale_prijs": 1.89,
-        "voorwaarde": "2 VOOR 3.00",
-        "laagste_ooit_prijs": 1.5,
-        "laagste_ooit_datum": "2026-08-23",
+        "voorwaarde": "2 VOOR 2.19",
+        "laagste_ooit_prijs": 1.09,
+        "laagste_ooit_datum": "2026-08-24",
         "eerder_gezien": 1
-      },
-      {
-        "naam": "AH Biologisch Vers geperst sap appel aardbei",
-        "actieprijs": 1.67,
-        "normale_prijs": 1.99,
-        "voorwaarde": "3 VOOR 5.00"
-      },
-      {
-        "naam": "AH Biologisch Vers geperst sap sinaasappel appel mango",
-        "actieprijs": 1.67,
-        "normale_prijs": 1.99,
-        "voorwaarde": "3 VOOR 5.00"
       }
     ],
     "Jumbo": [
@@ -47,7 +35,7 @@
         "normale_prijs": 2.99,
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 8
+        "eerder_gezien": 9
       },
       {
         "naam": "Hak Rode Bieten Sticks Bio 355 g",
@@ -55,7 +43,7 @@
         "normale_prijs": 2.59,
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 8
+        "eerder_gezien": 9
       },
       {
         "naam": "Hak Gesneden Bonen Bio 340 g",
@@ -63,7 +51,7 @@
         "normale_prijs": 2.39,
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 8
+        "eerder_gezien": 9
       },
       {
         "naam": "Hak Rode Bieten Schijven Bio 355 g",
@@ -71,7 +59,7 @@
         "normale_prijs": 2.19,
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 8
+        "eerder_gezien": 9
       },
       {
         "naam": "Heinz Tomaten gezeefd biologisch",
@@ -79,7 +67,7 @@
         "normale_prijs": 1.79,
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 6
+        "eerder_gezien": 7
       },
       {
         "naam": "Jumbo Biologisch Voorgekookte Maïskolven 2 Stuks",
@@ -87,7 +75,7 @@
         "normale_prijs": 2.99,
         "laagste_ooit_prijs": 2.29,
         "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 6
+        "eerder_gezien": 7
       },
       {
         "naam": "Heinz Tomaten gepeld biologisch",
@@ -95,7 +83,7 @@
         "normale_prijs": 1.59,
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 6
+        "eerder_gezien": 7
       }
     ],
     "Lidl": [
@@ -105,7 +93,7 @@
         "normale_prijs": 2.29,
         "laagste_ooit_prijs": 1.49,
         "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 8
+        "eerder_gezien": 9
       },
       {
         "naam": "Bio gesneden rode bieten",
@@ -113,7 +101,7 @@
         "normale_prijs": 2.29,
         "laagste_ooit_prijs": 1.49,
         "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 8
+        "eerder_gezien": 9
       },
       {
         "naam": "Bio courgette",
@@ -121,7 +109,7 @@
         "normale_prijs": 0.99,
         "laagste_ooit_prijs": 0.79,
         "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 8
+        "eerder_gezien": 9
       }
     ],
     "Aldi": [],
@@ -133,7 +121,7 @@
         "normale_prijs": 2.29,
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 7
+        "eerder_gezien": 8
       },
       {
         "naam": "Heinz Tomaten gepeld biologisch",
@@ -141,7 +129,7 @@
         "normale_prijs": 1.59,
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 6
+        "eerder_gezien": 7
       },
       {
         "naam": "BIO+ Mais zoet",
@@ -149,7 +137,7 @@
         "normale_prijs": 1.59,
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 6
+        "eerder_gezien": 7
       },
       {
         "naam": "BIO+ Zwarte bonen",
@@ -157,7 +145,7 @@
         "normale_prijs": 1.29,
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 7
+        "eerder_gezien": 8
       },
       {
         "naam": "BIO+ Gemengde bonen",
@@ -165,7 +153,7 @@
         "normale_prijs": 1.19,
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 7
+        "eerder_gezien": 8
       }
     ]
   }
