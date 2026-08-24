@@ -2,7 +2,7 @@
 
 ![Preview](bio_bord_preview.png)
 
-Toont wekelijks de lopende bio groente/fruit-aanbiedingen bij AH, Jumbo,
+Toont dagelijks de lopende bio groente/fruit-aanbiedingen bij AH, Jumbo,
 Lidl, Aldi, Dirk en Plus, per winkel naast elkaar in één overzicht
 (geen tabs, geen klikken). Live te bekijken op
 [janvdengel.github.io/Bio-lijstje](https://janvdengel.github.io/Bio-lijstje/).
@@ -27,7 +27,7 @@ website via GitHub Pages vanuit de repo-root wordt geserveerd:
 - **Website** (staat in de root, want GitHub Pages serveert vanaf `/`):
   `index.html`, `manifest.json`, `sw.js`, `icon.png`. Op de Pi horen deze
   vier in een `www/`-submap onder `/addons/bio_bord/`.
-- **Data** (automatisch overschreven door de Pi, elke zondag):
+- **Data** (automatisch overschreven door de Pi, elke ochtend):
   `data/bio_prices.json`.
 
 De Pi pusht bij elke fetch alleen die laatste twee groepen terug naar deze
@@ -71,7 +71,7 @@ versiebump in `config.yaml`: `ha apps update local_bio_bord`) — een
 container-image zonder de broncode opnieuw in te bouwen.
 
 **Sla dat kopiëren naar de Pi niet over.** Een wijziging die alleen in deze
-repo staat, wordt bij de eerstvolgende wekelijkse fetch overschreven door de
+repo staat, wordt bij de eerstvolgende fetch overschreven door de
 versie die de Pi nog heeft — die pusht namelijk zijn eigen kopie van de
 website terug.
 
@@ -110,7 +110,7 @@ liever gescheiden houdt:
 Het token staat bewust niet in de broncode — het wordt gelezen uit
 `/data/options.json` (de add-on's eigen, door Supervisor beheerde
 optie-opslag) en als env var doorgegeven aan zowel de startup-fetch als de
-wekelijkse cron-fetch (via `/etc/bio_bord_env.sh`, dat cron anders niet zou
+dagelijkse cron-fetch (via `/etc/bio_bord_env.sh`, dat cron anders niet zou
 zien — cron-jobs draaien met een kale omgeving).
 
 ## Testen
@@ -120,7 +120,7 @@ ha apps logs local_bio_bord
 ```
 
 Handmatig opnieuw fetchen (bv. om te debuggen) — draait automatisch bij elke
-herstart van de add-on, daarna elke zondag 08:00 via cron:
+herstart van de add-on, daarna elke dag 06:00 via cron:
 
 ```
 ha apps restart local_bio_bord
@@ -211,17 +211,25 @@ actieprijs gelijk aan de normale prijs, met een `valid_from` uit 2024.
 
 ## Prijsgeschiedenis — "was ik genaaid?"
 
-Elke fetch schrijft per product (per winkel) de datum + actieprijs +
-normale_prijs weg naar `geschiedenis.json` (persistent, in
-`/share/bio_bord/data/`, max. 30 records per product — ~7 maanden bij 1x
-per week). Bij elke volgende fetch wordt de laagste ooit geziene prijs voor
-dat product erbij gezet, **voordat** vandaag's prijs meetelt:
+Per product (per winkel) wordt de datum + actieprijs + normale_prijs
+weggeschreven naar `geschiedenis.json` (persistent, in
+`/share/bio_bord/data/`, max. 30 records per product). Bij elke volgende fetch
+wordt de laagste ooit geziene prijs voor dat product erbij gezet, **voordat**
+vandaag's prijs meetelt:
 
 - Is de actieprijs van vandaag de laagste die ooit gezien is → 🏆-badge.
 - Is 'm hoger dan een eerder geziene prijs → ⚠️-badge met de laagste prijs
   en datum. Dat betekent: de winkel claimt een "aanbieding" t.o.v. zijn
   eigen normale_prijs, maar je hebt dit product al eens goedkoper gezien
   (actie of niet) — een indicatie van opgeblazen referentieprijzen.
+
+Er wordt alleen een record bijgeschreven als de prijs is **veranderd**. Sinds
+de fetch dagelijks draait zou anders elke dag hetzelfde record erbij komen: die
+30 records zouden dan nog maar een maand omvatten in plaats van jaren, en
+"7 eerdere prijzen gezien" zou eigenlijk "7 dagen dezelfde actie" betekenen. Nu
+meet de geschiedenis prijs*wijzigingen* en is hij onafhankelijk van hoe vaak er
+gefetcht wordt. De bewaarde datum is dus de dag dat een prijs voor het eerst op
+dat niveau stond.
 
 Werkt pas echt na een paar weken data — de eerste keer heeft nog niets om
 mee te vergelijken. Zie `bio_prices.sample.json` voor een voorbeeld van het
@@ -300,7 +308,7 @@ bleken na live testen niet haalbaar:
 - `HISTORY_MAX_PER_PRODUCT`: hoeveel weken geschiedenis per product bewaard
   blijft.
 - Cron-tijd: in `hass_addon/Dockerfile`, de regel met
-  `echo '0 8 * * 0 ...' > /etc/crontabs/root` (nu elke zondag 08:00).
+  `echo '0 6 * * * ...' > /etc/crontabs/root` (nu elke dag 06:00).
 - Poort: `hass_addon/config.yaml` (`ports:`, standaard 8099).
 - Layout/kleuren per winkel: `STORE_COLORS` / `STORE_BADGES` in `index.html`
   (plus de bijbehorende `--<winkel>`-kleurvariabelen bovenaan de CSS).

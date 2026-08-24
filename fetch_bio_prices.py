@@ -155,7 +155,9 @@ MAX_ITEMS_PER_STORE = 15  # cap na dedup, grootste korting eerst — houdt winke
 
 OUTPUT_PATH = Path(__file__).parent / "www" / "data" / "bio_prices.json"
 HISTORY_PATH = Path(__file__).parent / "www" / "data" / "geschiedenis.json"
-HISTORY_MAX_PER_PRODUCT = 30  # ~7 maanden bij 1x per week
+# 30 prijs*wijzigingen* per product, niet 30 fetches — zie
+# enrich_and_record_history(). Bij een actie die per week wisselt is dat jaren.
+HISTORY_MAX_PER_PRODUCT = 30
 WWW_DIR = Path(__file__).parent / "www"
 GITHUB_PUBLISH_FILES = ["index.html", "manifest.json", "icon.png", "sw.js", "data/bio_prices.json"]
 
@@ -425,7 +427,15 @@ def enrich_and_record_history(store, items, history, vandaag):
     vandaag's prijs meetellen, anders vergelijk je met jezelf), en schrijft
     daarna vandaag's prijs bij in de geschiedenis. Zo kun je zien of een
     'aanbieding' eigenlijk duurder is dan wat je hem al eerder zag — de
-    normale_prijs die de winkel toont is een claim, dit is de check."""
+    normale_prijs die de winkel toont is een claim, dit is de check.
+
+    We schrijven alleen weg als de prijs is veranderd. Sinds de fetch dagelijks
+    draait zou anders elke dag hetzelfde record erbij komen: de limiet van
+    HISTORY_MAX_PER_PRODUCT zou dan nog maar een maand omvatten in plaats van
+    jaren, en "eerder 7x gezien" zou betekenen "7 dagen dezelfde actie". Nu meet
+    de geschiedenis prijs*wijzigingen* en is hij onafhankelijk van hoe vaak we
+    fetchen. De bewaarde datum is dus de dag dat een prijs voor het eerst op dat
+    niveau stond — precies wat je wil weten bij "eerder goedkoper gezien op X"."""
     for item in items:
         key = _history_key(store, item["naam"])
         eerdere = history.get(key, [])
@@ -439,7 +449,14 @@ def enrich_and_record_history(store, items, history, vandaag):
             "actieprijs": item["actieprijs"],
             "normale_prijs": item.get("normale_prijs"),
         }
-        history[key] = (eerdere + [nieuw_record])[-HISTORY_MAX_PER_PRODUCT:]
+        vorige = eerdere[-1] if eerdere else None
+        onveranderd = (
+            vorige is not None
+            and vorige.get("actieprijs") == nieuw_record["actieprijs"]
+            and vorige.get("normale_prijs") == nieuw_record["normale_prijs"]
+        )
+        if not onveranderd:
+            history[key] = (eerdere + [nieuw_record])[-HISTORY_MAX_PER_PRODUCT:]
     return items
 
 
@@ -519,7 +536,7 @@ def _is_agf(title):
 # ---------------------------------------------------------------------------
 
 def main():
-    log.info("Start wekelijkse bio-update...")
+    log.info("Start bio-update...")
 
     vandaag = datetime.now().date().isoformat()
     history = load_history()

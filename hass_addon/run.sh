@@ -19,7 +19,7 @@ with open('/etc/bio_bord_env.sh', 'w') as out:
 "
 . /etc/bio_bord_env.sh
 
-echo "[bio_bord] Start crond (wekelijkse fetch: zondag 08:00)..."
+echo "[bio_bord] Start crond (dagelijkse fetch: 06:00)..."
 crond -b -l 2
 
 echo "[bio_bord] Webserver starten op poort 8099 (met laatst bekende data)..."
