@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-08-27T06:03:55.771094",
+  "laatst_bijgewerkt": "2026-08-28T06:05:06.947909",
   "aanbiedingen": {
     "AH": [
       {
@@ -42,14 +42,17 @@
         "naam": "Jumbo Biologisch Aardappelen Vastkokend 2,5KG",
         "actieprijs": 2.49,
         "normale_prijs": 4.55,
-        "laagste_ooit_prijs": 4.55,
-        "laagste_ooit_datum": "2026-08-26",
-        "eerder_gezien": 1
+        "laagste_ooit_prijs": 2.49,
+        "laagste_ooit_datum": "2026-08-27",
+        "eerder_gezien": 2
       },
       {
         "naam": "Jumbo Biologisch Aardappelen Kruimig 2,5 kg",
         "actieprijs": 2.49,
-        "normale_prijs": 4.55
+        "normale_prijs": 4.55,
+        "laagste_ooit_prijs": 2.49,
+        "laagste_ooit_datum": "2026-08-27",
+        "eerder_gezien": 1
       },
       {
         "naam": "Jumbo's Verse Pasta Girasoli Ricotta Citroen 250 g",
@@ -133,7 +136,7 @@
         "eerder_gezien": 1
       },
       {
-        "naam": "Jumbo's Spinazie Pesto Pastasaus 250 g",
+        "naam": "Jumbo's Pastasaus Tomaat Spekjes 250 g",
         "actieprijs": 1.34,
         "normale_prijs": 2.69,
         "voorwaarde": "1+1 gratis",
@@ -142,7 +145,7 @@
         "eerder_gezien": 1
       },
       {
-        "naam": "Jumbo's Pastasaus Tomaat Spekjes 250 g",
+        "naam": "Jumbo's Spinazie Pesto Pastasaus 250 g",
         "actieprijs": 1.34,
         "normale_prijs": 2.69,
         "voorwaarde": "1+1 gratis",
@@ -178,12 +181,27 @@
         "eerder_gezien": 10
       },
       {
+        "naam": "Bio kastanje-champignons",
+        "actieprijs": 1.49,
+        "normale_prijs": 1.99
+      },
+      {
         "naam": "Bio courgette",
         "actieprijs": 0.79,
         "normale_prijs": 0.99,
         "laagste_ooit_prijs": 0.79,
         "laagste_ooit_datum": "2026-08-20",
         "eerder_gezien": 10
+      },
+      {
+        "naam": "Accentino Bio appelciderazijn",
+        "actieprijs": 1.99,
+        "normale_prijs": null
+      },
+      {
+        "naam": "Alesto Bio Mango",
+        "actieprijs": 3.49,
+        "normale_prijs": null
       }
     ],
     "Aldi": [],
