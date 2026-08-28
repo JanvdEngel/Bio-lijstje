@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-08-28T06:05:06.947909",
+  "laatst_bijgewerkt": "2026-08-28T18:59:52.586382",
   "aanbiedingen": {
     "AH": [
       {
@@ -183,7 +183,10 @@
       {
         "naam": "Bio kastanje-champignons",
         "actieprijs": 1.49,
-        "normale_prijs": 1.99
+        "normale_prijs": 1.99,
+        "laagste_ooit_prijs": 1.49,
+        "laagste_ooit_datum": "2026-08-28",
+        "eerder_gezien": 1
       },
       {
         "naam": "Bio courgette",
@@ -196,12 +199,18 @@
       {
         "naam": "Accentino Bio appelciderazijn",
         "actieprijs": 1.99,
-        "normale_prijs": null
+        "normale_prijs": null,
+        "laagste_ooit_prijs": 1.99,
+        "laagste_ooit_datum": "2026-08-28",
+        "eerder_gezien": 1
       },
       {
         "naam": "Alesto Bio Mango",
         "actieprijs": 3.49,
-        "normale_prijs": null
+        "normale_prijs": null,
+        "laagste_ooit_prijs": 3.49,
+        "laagste_ooit_datum": "2026-08-28",
+        "eerder_gezien": 1
       }
     ],
     "Aldi": [],
