@@ -159,7 +159,17 @@ HISTORY_PATH = Path(__file__).parent / "www" / "data" / "geschiedenis.json"
 # enrich_and_record_history(). Bij een actie die per week wisselt is dat jaren.
 HISTORY_MAX_PER_PRODUCT = 30
 WWW_DIR = Path(__file__).parent / "www"
-GITHUB_PUBLISH_FILES = ["index.html", "manifest.json", "icon.png", "sw.js", "data/bio_prices.json"]
+# Alleen de data pushen, niet de website-bestanden. Die stonden hier eerst ook
+# in (index.html, manifest.json, icon.png, sw.js), en dat heeft in augustus 2026
+# drie keer het ontwerp overschreven: een wijziging die naar GitHub was gepusht
+# maar nog niet naar de Pi, werd de volgende ochtend teruggedraaid door de kopie
+# die de Pi nog had. De data is het enige dat hier daadwerkelijk verandert.
+#
+# Gevolg: website-wijzigingen zijn nu puur een git-push. Wil je ze ook op de
+# lokale pagina (http://<pi-ip>:8099) zien, kopieer ze dan alsnog naar
+# /addons/bio_bord/www/ en draai een rebuild — maar vergeten kan de publieke
+# site niet meer stukmaken.
+GITHUB_PUBLISH_FILES = ["data/bio_prices.json"]
 
 
 # ---------------------------------------------------------------------------
