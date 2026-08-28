@@ -97,6 +97,11 @@
     margin: 0.4rem 0 1.6rem;
     flex-wrap: wrap;
   }
+  /* De aan/uit-staat wordt bewust met kleuren aangegeven en niet met opacity.
+     Op iPhone/iPad bleef de knop er "aan" uitzien terwijl de sectie wél
+     verdween; kleurwissels zijn overal betrouwbaar, een opacity-dimming
+     blijkbaar niet. Bijkomend voordeel: 40% doorzichtige tekst was toch al
+     slecht leesbaar. */
   .store-toggle{
     display:flex; align-items:center; gap:0.45rem;
     background:none;
@@ -106,7 +111,12 @@
     padding:0.3rem 0.75rem 0.3rem 0.3rem;
     font-family:'Space Mono', monospace;
     color: var(--text);
-    transition: opacity .2s, border-color .2s;
+    /* iOS geeft buttons eigen platformstyling; die zou onze rand en
+       achtergrond kunnen overrulen. */
+    -webkit-appearance:none;
+    appearance:none;
+    -webkit-tap-highlight-color:transparent;
+    transition: border-color .2s, color .2s;
   }
   .store-toggle-badge{
     width:1.5rem; height:1.5rem; border-radius:50%;
@@ -114,12 +124,27 @@
     color: var(--bg); font-weight:700; font-size:0.65rem;
     display:flex; align-items:center; justify-content:center;
     flex:0 0 auto;
+    transition: background .2s, color .2s;
   }
   .store-toggle-label{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.03em; }
   .store-toggle-count{ font-size:0.68rem; color:var(--muted); }
-  .store-toggle.off{ opacity:0.4; }
-  .store-toggle.off .store-toggle-badge{ background: var(--muted); }
-  .store-toggle:hover{ border-color: var(--tc, var(--harvest)); }
+
+  .store-toggle.off{
+    border-color: var(--line);
+    color: var(--muted);
+  }
+  .store-toggle.off .store-toggle-badge{
+    background: var(--line);
+    color: var(--muted);
+  }
+  .store-toggle.off .store-toggle-count{ color: var(--line); }
+
+  /* Alleen op apparaten die echt hoveren. Zonder deze guard blijft de
+     hover-stijl op een touchscreen "hangen" na een tik, en dan lijkt een
+     uitgeschakelde winkel alsnog actief. */
+  @media (hover: hover) {
+    .store-toggle:hover{ border-color: var(--tc, var(--harvest)); }
+  }
 
   .store-columns{
     display: grid; grid-template-columns: 1fr; gap: 1.8rem;
