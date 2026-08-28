@@ -414,5 +414,10 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
 </script>
+<!-- GoatCounter: privacyvriendelijke bezoekersstatistiek (geen cookies, geen
+     persoonsgegevens). Expliciet https i.p.v. protocol-relatief //, zodat het
+     script ook versleuteld laadt zolang de site nog via http bereikbaar is. -->
+<script data-goatcounter="https://hetbiolijstje.goatcounter.com/count"
+        async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>
