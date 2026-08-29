@@ -144,6 +144,14 @@ AANBIEDINGEN_STORES = {
     "Plus": ("plus", None),
 }
 
+# Winkels waar het hele assortiment biologisch is. Daar volstaat het
+# dietary_tags-label, want hun productnamen zeggen vaak niet "bio" — bij een
+# 100%-bio winkel is dat immers geen onderscheid. Bij alle andere winkels eisen
+# we het label én het woord in de naam, omdat het label alleen niet betrouwbaar
+# genoeg bleek (zie _als_bio_agf_actie). Ekoplaza staat er alvast in voor als
+# die keten wordt toegevoegd; nu doet deze set niets.
+VOLLEDIG_BIO_WINKELS = {"ekoplaza"}
+
 PRIJSPROFEET_PRODUCTS_URL = "https://www.prijsprofeet.nl/api/v1/products"
 PRIJSPROFEET_PAGE_SIZE = 100  # harde grens van de API; 200 en 500 geven 0 resultaten
 PRIJSPROFEET_MAX_PAGES = 60  # veiligheidsgrens; AH is de grootste met ~24 pagina's
@@ -257,9 +265,14 @@ def _als_bio_agf_actie(item):
     1. AGF-trefwoord in de naam (AGF_PATTERN);
     2. categorie niet in EXCLUDED_CATEGORIES — weert koffie, wijn, vlees en
        babyvoeding die toevallig een AGF-woord in de naam hebben;
-    3. bio volgens het dietary_tags-label, óf anders volgens de naam. Het label
-       is betrouwbaarder, maar niet elk bio-product blijkt getagd, dus de naam
-       blijft een terugvaloptie;
+    3. bio volgens het dietary_tags-label ÉN volgens de naam. Eerder volstond
+       één van de twee, met als redenering dat het label betrouwbaarder is dan
+       de naam. Dat bleek fout: PrijsProfeet tagt een reeks Jumbo-huismerk-
+       producten als "bio" die dat niet zijn, waaronder "Jumbo's Pastasaus
+       Tomaat Spekjes". Veertien niet-biologische pasta's en pastasauzen stonden
+       daardoor live op een site over biologische groente en fruit. Beide eisen
+       haalt precies die veertien eruit en laat alle echte bio-producten staan
+       (gemeten tegen de volledige catalogus van alle zes winkels);
     4. promotion_status niet 'upcoming' of 'historical' — de API levert ook
        nog-niet-geldige en verlopen acties (Aldi's bio-items stonden bij het
        testen allebei op 'upcoming'). Ontbreekt het veld helemaal, dan laten we
@@ -271,7 +284,13 @@ def _als_bio_agf_actie(item):
     if item.get("unified_category") in EXCLUDED_CATEGORIES:
         return None
     tags = item.get("dietary_tags") or []
-    if "bio" not in tags and not BIO_PATTERN.search(naam):
+    label_zegt_bio = "bio" in tags
+    naam_zegt_bio = bool(BIO_PATTERN.search(naam))
+    if (item.get("retailer") or "") in VOLLEDIG_BIO_WINKELS:
+        # Daar is het label genoeg; zie de toelichting bij die set.
+        if not label_zegt_bio:
+            return None
+    elif not (label_zegt_bio and naam_zegt_bio):
         return None
     status = item.get("promotion_status")
     if status is not None and status != "active":
