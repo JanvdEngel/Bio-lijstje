@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-08-28T18:59:52.586382",
+  "laatst_bijgewerkt": "2026-08-29T06:05:07.708936",
   "aanbiedingen": {
     "AH": [
       {
@@ -226,14 +226,6 @@
     ],
     "Plus": [
       {
-        "naam": "Heinz Tomatenblokjes bio",
-        "actieprijs": 1.0,
-        "normale_prijs": 2.29,
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 9
-      },
-      {
         "naam": "Biologisch PLUS Tortelloni ricotta spinazie biologisch",
         "actieprijs": 1.75,
         "normale_prijs": 2.99,
@@ -250,14 +242,6 @@
         "eerder_gezien": 1
       },
       {
-        "naam": "Biologisch PLUS Biologische aardappelen",
-        "actieprijs": 1.0,
-        "normale_prijs": 2.19,
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-26",
-        "eerder_gezien": 1
-      },
-      {
         "naam": "Biologisch PLUS Vastkokende aardappelen biologisch",
         "actieprijs": 1.0,
         "normale_prijs": 2.19,
@@ -266,36 +250,12 @@
         "eerder_gezien": 1
       },
       {
-        "naam": "Heinz Tomaten gepeld biologisch",
+        "naam": "Biologisch PLUS Biologische aardappelen",
         "actieprijs": 1.0,
-        "normale_prijs": 1.59,
+        "normale_prijs": 2.19,
         "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 8
-      },
-      {
-        "naam": "BIO+ Mais zoet",
-        "actieprijs": 1.0,
-        "normale_prijs": 1.59,
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 8
-      },
-      {
-        "naam": "BIO+ Zwarte bonen",
-        "actieprijs": 1.0,
-        "normale_prijs": 1.29,
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 9
-      },
-      {
-        "naam": "BIO+ Gemengde bonen",
-        "actieprijs": 1.0,
-        "normale_prijs": 1.19,
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 9
+        "laagste_ooit_datum": "2026-08-26",
+        "eerder_gezien": 1
       }
     ]
   }
