@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b1a15">
 <title>Biologische aanbiedingen — alle supermarkten, dagelijks bijgewerkt</title>
-<meta name="description" content="Dagelijks de lopende biologische groente- en fruitaanbiedingen bij Albert Heijn, Jumbo, Lidl, Aldi, Dirk en Plus. Eén overzicht, met waarschuwing bij stapelkortingen en bij prijzen die eerder lager waren.">
+<meta name="description" content="Dagelijks de lopende biologische groente- en fruitaanbiedingen bij Albert Heijn, Jumbo, Lidl, Aldi, Dirk, Plus en Ekoplaza. Eén overzicht, met waarschuwing bij stapelkortingen en bij prijzen die eerder lager waren.">
 <link rel="canonical" href="https://hetbiolijstje.nl/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://hetbiolijstje.nl/">
 <meta property="og:title" content="Het Bio Lijstje — biologische aanbiedingen, dagelijks">
-<meta property="og:description" content="Alle biologische groente- en fruitaanbiedingen van zes supermarkten op één pagina. Geen advertenties, geen doorklikken.">
+<meta property="og:description" content="Alle biologische groente- en fruitaanbiedingen van zeven supermarkten op één pagina. Geen advertenties, geen doorklikken.">
 <meta property="og:image" content="https://hetbiolijstje.nl/icon.png">
 <meta property="og:locale" content="nl_NL">
 <meta name="twitter:card" content="summary">
@@ -22,6 +22,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
+  /* Donker is de basis: dat was de site altijd, en het blijft wat je krijgt als
+     er niets bekend is (ook zonder JavaScript). Licht komt uit één klasse op
+     <html>, die een klein scriptje in de <head> zet — dat leest eerst de
+     opgeslagen keuze en valt anders terug op de systeeminstelling.
+     Bewust één klasse en géén tweede palet in een @media-regel: dan staat elke
+     kleur op precies één plek, en kan de knop de systeeminstelling in beide
+     richtingen overrulen zonder een stapel :not()-guards. */
   :root{
     --bg: #1b1a15;
     --bg-raised: #232019;
@@ -31,12 +38,53 @@
     --warn: #d95b4a;
     --leaf: #8caa5c;
     --line: #35322a;
+    /* Losgetrokken uit de opmaak zodat licht ze kan omzetten: deze stonden
+       eerder als kale rgba() in de regels zelf. */
+    --speck: #ffffff;      /* stipjes van de textuur */
+    --speck-op: 0.05;
+    --shadow: rgba(0,0,0,0.25);
+    --badge-ring: rgba(236,231,219,0.35);
+    --code-bg: rgba(0,0,0,0.25);
+    --dim: var(--line);    /* uitgezette winkel: net leesbaar, niet weg */
     --ah: #5b8fd6;
     --jumbo: #e0b23c;
     --lidl: #4fb0a6;
     --aldi: #7a6fd0;
     --dirk: #d43a3a;
     --plus: #4a8f5c;
+    /* Ekoplaza's eigen merkgroen (#67bc46), iets opgetild voor leesbaarheid op
+       donker. Ligt dichter bij Plus dan ideaal, maar beide ketens zíjn groen;
+       de tinten schelen genoeg om ze naast elkaar te onderscheiden. */
+    --ekoplaza: #7cc457;
+  }
+
+  /* De winkelkleuren zijn niet zomaar te hergebruiken op wit: de badges zetten
+     de achtergrondkleur als tekstkleur (color: var(--bg)), dus in licht moet
+     elke winkelkleur donker genoeg zijn voor bijna-witte letters. Jumbo-geel
+     was daar het duidelijkste geval — #e0b23c op wit is vrijwel onleesbaar,
+     dus dat wordt een donkere oker. Alle zeven zitten boven 4,5:1. */
+  :root.licht{
+    --bg: #faf8f2;
+    --bg-raised: #ffffff;
+    --text: #1f1d17;
+    --muted: #6b6455;
+    --harvest: #a8551f;
+    --warn: #b0342a;
+    --leaf: #3f6e34;
+    --line: #e2ddd0;
+    --speck: #1f1d17;
+    --speck-op: 0.035;
+    --shadow: rgba(31,29,23,0.14);
+    --badge-ring: rgba(31,29,23,0.12);
+    --code-bg: rgba(31,29,23,0.07);
+    --dim: #b8b1a0;
+    --ah: #1f5fa8;
+    --jumbo: #8a6410;
+    --lidl: #0f6f68;
+    --aldi: #4a3fa0;
+    --dirk: #b02525;
+    --plus: #2e6b3e;
+    --ekoplaza: #4a7412;   /* olijfgroener dan Plus, anders lijken de twee te veel op elkaar */
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -49,9 +97,9 @@
     padding-bottom: 3rem;
   }
   .chalk-texture{
-    position: fixed; inset: 0; pointer-events: none; opacity: 0.05; mix-blend-mode: overlay;
-    background-image: radial-gradient(circle at 20% 30%, #fff 0.5px, transparent 0.5px),
-                       radial-gradient(circle at 70% 60%, #fff 0.5px, transparent 0.5px);
+    position: fixed; inset: 0; pointer-events: none; opacity: var(--speck-op); mix-blend-mode: overlay;
+    background-image: radial-gradient(circle at 20% 30%, var(--speck) 0.5px, transparent 0.5px),
+                       radial-gradient(circle at 70% 60%, var(--speck) 0.5px, transparent 0.5px);
     background-size: 4px 4px, 5px 5px;
   }
   header{
@@ -75,6 +123,37 @@
     transition:border-color .2s;
   }
   .sibling-link:hover{ border-color:var(--harvest); }
+
+  /* Twee pillen naast elkaar boven de titel. Dezelfde vorm als de
+     Seizoenswijzer-link, zodat het één rijtje is en niet twee losse dingen. */
+  .header-tools{
+    display:flex; justify-content:center; align-items:center;
+    gap:0.5rem; flex-wrap:wrap; margin-bottom:0.9rem;
+  }
+  .header-tools .sibling-link{ margin-bottom:0; }
+  .thema-knop{
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--muted);
+    background:none;
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:5px 12px;
+    cursor:pointer;
+    white-space:nowrap;
+    display:inline-flex; align-items:center; gap:0.35rem;
+    -webkit-appearance:none; appearance:none;
+    -webkit-tap-highlight-color:transparent;
+    transition:border-color .2s, color .2s;
+  }
+  .thema-knop .glyph{ font-size:12px; line-height:1; }
+  @media (hover: hover){
+    .thema-knop:hover{ border-color:var(--harvest); color:var(--harvest); }
+  }
+  /* Zonder JavaScript kan de knop niets doen, dus dan staat hij er ook niet. */
+  html:not(.js) .thema-knop{ display:none; }
   .eyebrow{
     font-size: 0.72rem;
     letter-spacing: 0.18em;
@@ -142,11 +221,16 @@
     border-color: var(--line);
     color: var(--muted);
   }
+  /* Uit = hol bolletje in plaats van een gevuld bolletje. Een gevulde grijze
+     cirkel met grijze letter erin werkte in donker net, maar op wit werd het
+     lichtgrijs-op-lichtgrijs. Hol is in beide paletten leesbaar én leest
+     duidelijker als "uit". */
   .store-toggle.off .store-toggle-badge{
-    background: var(--line);
-    color: var(--muted);
+    background: transparent;
+    box-shadow: inset 0 0 0 1px var(--dim);
+    color: var(--dim);
   }
-  .store-toggle.off .store-toggle-count{ color: var(--line); }
+  .store-toggle.off .store-toggle-count{ color: var(--dim); }
 
   /* Alleen op apparaten die echt hoveren. Zonder deze guard blijft de
      hover-stijl op een touchscreen "hangen" na een tik, en dan lijkt een
@@ -176,8 +260,8 @@
     display: flex; align-items: center; justify-content: center;
     font-family: 'Space Mono', monospace; font-weight: 700; font-size: 1.1rem;
     color: var(--bg);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
-    border: 2px solid rgba(236,231,219,0.35);
+    box-shadow: 0 3px 8px var(--shadow);
+    border: 2px solid var(--badge-ring);
   }
   .store-header h2{
     font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.55rem;
@@ -300,18 +384,36 @@
   }
   .empty-state .big{ font-family:'Fraunces', serif; font-weight:600; font-size:1.5rem; color: var(--text); display:block; margin-bottom:0.3rem;}
   code{
-    background: rgba(0,0,0,0.25); padding:0.1rem 0.4rem; border-radius:5px; font-size:0.85em;
+    background: var(--code-bg); padding:0.1rem 0.4rem; border-radius:5px; font-size:0.85em;
   }
   footer{
     text-align:center; font-size:0.72rem; color: var(--muted); opacity:0.8; margin-top:2rem;
   }
 </style>
+<!-- Moet in de <head> staan en niet onderaan: anders wordt de donkere versie
+     eerst getekend en zie je een flits voordat licht aanslaat. -->
+<script>
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  var keuze = null;
+  try { keuze = localStorage.getItem('bioBordThema'); } catch (e) {}
+  var licht = keuze ? keuze === 'licht'
+    : !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
+  if (licht) d.classList.add('licht');
+})();
+</script>
 </head>
 <body>
 <div class="chalk-texture"></div>
 
 <header>
-  <a class="sibling-link" href="https://JanvdEngel.github.io/Seizoenswijzer/">← Seizoenswijzer</a>
+  <div class="header-tools">
+    <a class="sibling-link" href="/seizoen/">← Seizoenswijzer</a>
+    <button class="thema-knop" type="button" id="themaKnop">
+      <span class="glyph" aria-hidden="true"></span><span class="woord"></span>
+    </button>
+  </div>
   <h1>Het Bio Lijstje</h1>
   <p class="eyebrow">Deze week</p>
 </header>
@@ -340,8 +442,8 @@
 </footer>
 
 <script>
-const STORE_COLORS = { AH: 'var(--ah)', Jumbo: 'var(--jumbo)', Lidl: 'var(--lidl)', Aldi: 'var(--aldi)', Dirk: 'var(--dirk)', Plus: 'var(--plus)' };
-const STORE_BADGES = { AH: 'ah', Jumbo: 'J', Lidl: 'L', Aldi: 'A', Dirk: 'D', Plus: 'P' };
+const STORE_COLORS = { AH: 'var(--ah)', Jumbo: 'var(--jumbo)', Lidl: 'var(--lidl)', Aldi: 'var(--aldi)', Dirk: 'var(--dirk)', Plus: 'var(--plus)', Ekoplaza: 'var(--ekoplaza)' };
+const STORE_BADGES = { AH: 'ah', Jumbo: 'J', Lidl: 'L', Aldi: 'A', Dirk: 'D', Plus: 'P', Ekoplaza: 'E' };
 let data = null;
 
 const HIDDEN_STORES_KEY = 'bioBordHiddenStores';
@@ -494,6 +596,50 @@ document.addEventListener('click', (e) => {
     if (section) section.style.display = nowOff ? 'none' : '';
   }
 });
+
+/* ---- Licht/donker ----------------------------------------------------------
+   Het scriptje in de <head> heeft de klasse al gezet; hier komt alleen de knop
+   erbij. De knop laat zien waar je naartoe gaat, niet waar je nu bent — anders
+   moet je erover nadenken wat een indruk op de knop doet.
+   Zolang er niets is opgeslagen volgt de site de systeeminstelling live mee;
+   na één druk op de knop staat de keuze vast, ook na herladen. */
+const THEMA_KEY = 'bioBordThema';
+const themaKnop = document.getElementById('themaKnop');
+
+function themaIsLicht() { return document.documentElement.classList.contains('licht'); }
+
+function themaToon() {
+  if (!themaKnop) return;
+  const naarLicht = !themaIsLicht();
+  themaKnop.querySelector('.glyph').textContent = naarLicht ? '☀' : '☽';
+  themaKnop.querySelector('.woord').textContent = naarLicht ? 'licht' : 'donker';
+  themaKnop.setAttribute('aria-label', naarLicht ? 'Naar het lichte thema' : 'Naar het donkere thema');
+  // De browserbalk op mobiel kleurt mee; zonder dit blijft die donker op wit.
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', themaIsLicht() ? '#faf8f2' : '#1b1a15');
+}
+
+function themaZet(licht, onthouden) {
+  document.documentElement.classList.toggle('licht', licht);
+  if (onthouden) { try { localStorage.setItem(THEMA_KEY, licht ? 'licht' : 'donker'); } catch (e) {} }
+  themaToon();
+}
+
+if (themaKnop) {
+  themaKnop.addEventListener('click', () => themaZet(!themaIsLicht(), true));
+  themaToon();
+}
+
+if (window.matchMedia) {
+  const mq = window.matchMedia('(prefers-color-scheme: light)');
+  const volgSysteem = (e) => {
+    let keuze = null;
+    try { keuze = localStorage.getItem(THEMA_KEY); } catch (err) {}
+    if (!keuze) themaZet(e.matches, false);
+  };
+  if (mq.addEventListener) mq.addEventListener('change', volgSysteem);
+  else if (mq.addListener) mq.addListener(volgSysteem);  // Safari < 14
+}
 
 fetch('data/bio_prices.json', { cache: 'no-store' })
   .then(r => { if (!r.ok) throw new Error('geen data'); return r.json(); })

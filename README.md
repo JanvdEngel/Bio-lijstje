@@ -1,11 +1,13 @@
-# Het Bio Lijstje — bio-aanbiedingen bij AH / Jumbo / Lidl / Aldi / Dirk / Plus
+# Het Bio Lijstje — bio-aanbiedingen bij AH / Jumbo / Lidl / Aldi / Dirk / Plus / Ekoplaza
 
 ![Preview](bio_bord_preview.png)
 
 Toont dagelijks de lopende bio groente/fruit-aanbiedingen bij AH, Jumbo,
-Lidl, Aldi, Dirk en Plus, per winkel naast elkaar in één overzicht
+Lidl, Aldi, Dirk, Plus en Ekoplaza, per winkel naast elkaar in één overzicht
 (geen tabs, geen klikken). Live te bekijken op
-[janvdengel.github.io/Bio-lijstje](https://janvdengel.github.io/Bio-lijstje/).
+[hetbiolijstje.nl](https://hetbiolijstje.nl/); de seizoenskalender staat op
+[hetbiolijstje.nl/seizoen](https://hetbiolijstje.nl/seizoen/) (`seizoen/index.html`
+in deze repo).
 
 Dit is de broncode, bedoeld om **zelf te draaien** — geen account, geen
 centrale server, geen winstoogmerk. Iedereen host zijn eigen exemplaar op
@@ -205,9 +207,18 @@ waar een AGF-trefwoord vrijwel altijd een valse treffer is: *Lavazza Bio
 **Bonen*** is koffie, babyvoeding staat onder Drogisterij, en wijn heet vaak
 naar fruit.
 
-**Aldi, Dirk en Plus** draaien alleen via PrijsProfeet (geen Folderz-scraping
-nodig). **Ekoplaza is verwijderd**: hun items bleken geen echte aanbiedingen —
-actieprijs gelijk aan de normale prijs, met een `valid_from` uit 2024.
+**Aldi, Dirk, Plus en Ekoplaza** draaien alleen via PrijsProfeet (geen
+Folderz-scraping nodig).
+
+**Ekoplaza** stond eerder uit omdat hun items geen echte aanbiedingen waren —
+actieprijs gelijk aan de normale prijs, met een `valid_from` uit 2024. Die oude
+records staan er nog, maar er staan nu lopende acties naast. De keten doet weer
+mee, met twee filters die daarvoor nodig bleken: een reeks naampatronen
+(quiche, chips, kefir, olijven, kaas — Ekoplaza zet die zélf onder
+`groente-fruit`) en de eis dat de actieprijs onder de normale prijs ligt.
+Gemeten: zonder die twee leverde Ekoplaza 23 items op waarvan 21 geen groente
+of fruit; mét die twee blijven er 2 over, en de zes andere winkels verliezen
+niets.
 
 ## Prijsgeschiedenis — "was ik genaaid?"
 

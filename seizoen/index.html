@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1b1a15">
+<title>Seizoensgroente en -fruit per maand — Seizoenswijzer</title>
+<meta name="description" content="Welke groente en welk fruit deze maand in Nederland van het seizoen zijn: vers, ruim verkrijgbaar en het goedkoopst. Met bewaartip, richtprijs en een markering bij soorten waar meer bestrijdingsmiddelen op worden aangetroffen.">
+<link rel="canonical" href="https://hetbiolijstje.nl/seizoen/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hetbiolijstje.nl/seizoen/">
+<meta property="og:title" content="Seizoenswijzer — welke groente en fruit zijn nu van het seizoen">
+<meta property="og:description" content="Per maand: wat er nu vers en ruim verkrijgbaar is, met bewaartip en richtprijs.">
+<meta property="og:image" content="https://hetbiolijstje.nl/icon.png">
+<meta property="og:locale" content="nl_NL">
+<meta name="twitter:card" content="summary">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* Zelfde opzet als op de voorpagina: donker is de basis, licht komt uit één
+     klasse die het scriptje hieronder zet. Zie de toelichting daar. */
+  :root{
+    --bg: #1b1a15;
+    --bg-raised: #232019;
+    --leaf: #8caa5c;
+    --harvest: #c97d3f;
+    --text: #ece7db;
+    --muted: #928c7c;
+    --line: #35322a;
+    --leaf-ring: rgba(140,170,92,0.5);
+  }
+  :root.licht{
+    --bg: #faf8f2;
+    --bg-raised: #ffffff;
+    --leaf: #3f6e34;
+    --harvest: #a8551f;
+    --text: #1f1d17;
+    --muted: #6b6455;
+    --line: #e2ddd0;
+    --leaf-ring: rgba(63,110,52,0.45);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    max-width:720px;
+    margin:0 auto;
+    padding:32px 20px 60px;
+  }
+
+  /* Top: brand + month dots */
+  .brand{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:28px;
+  }
+  .brand h1{
+    font-family:'Space Mono', monospace;
+    font-size:15px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--leaf);
+    margin:0;
+  }
+  .sibling-link{
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--harvest);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:5px 12px;
+    text-decoration:none;
+    white-space:nowrap;
+    transition:border-color .2s;
+  }
+  .sibling-link:hover{ border-color:var(--harvest); }
+
+  .brand-tools{ display:flex; align-items:center; gap:8px; }
+  .thema-knop{
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--muted);
+    background:none;
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:5px 12px;
+    cursor:pointer;
+    white-space:nowrap;
+    display:inline-flex; align-items:center; gap:0.35rem;
+    -webkit-appearance:none; appearance:none;
+    -webkit-tap-highlight-color:transparent;
+    transition:border-color .2s, color .2s;
+  }
+  .thema-knop .glyph{ font-size:12px; line-height:1; }
+  @media (hover: hover){
+    .thema-knop:hover{ border-color:var(--harvest); color:var(--harvest); }
+  }
+  html:not(.js) .thema-knop{ display:none; }
+
+  .dots{
+    display:flex;
+    gap:6px;
+    justify-content:center;
+    margin-bottom:8px;
+  }
+  .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--line);
+    border:none;
+    cursor:pointer;
+    padding:0;
+    transition:background .2s, transform .2s;
+  }
+  .dot.active{ background:var(--harvest); transform:scale(1.3); }
+  .dot.today{ box-shadow:0 0 0 2px var(--leaf-ring); }
+
+  /* Hero month label */
+  .hero{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    margin:18px 0 6px;
+  }
+  .nav-btn{
+    background:none;
+    border:1px solid var(--line);
+    color:var(--text);
+    width:38px;height:38px;
+    border-radius:50%;
+    font-size:18px;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:border-color .2s, background .2s;
+  }
+  .nav-btn:hover{ border-color:var(--leaf); background:var(--bg-raised); }
+  .nav-btn:focus-visible{ outline:2px solid var(--leaf); outline-offset:2px; }
+
+  .month-stamp{
+    text-align:center;
+    min-width:220px;
+  }
+  .month-stamp .name{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:44px;
+    line-height:1;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .month-stamp .tag{
+    display:inline-block;
+    margin-top:6px;
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--bg);
+    background:var(--leaf);
+    padding:3px 10px;
+    border-radius:20px;
+  }
+  .month-stamp .tag.future,
+  .month-stamp .tag.past{
+    background:transparent;
+    color:var(--muted);
+    border:1px solid var(--line);
+  }
+
+  .sub{
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    margin:14px 0 34px;
+  }
+  .sub button{
+    background:none;border:none;color:var(--leaf);
+    font-size:13px; text-decoration:underline; cursor:pointer; padding:0;
+  }
+
+  /* Filter */
+  .filters{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+    margin-bottom:28px;
+  }
+  .filter-btn{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    background:none;
+    border:1px solid var(--line);
+    color:var(--muted);
+    padding:6px 14px;
+    border-radius:20px;
+    cursor:pointer;
+    transition:all .15s;
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  .filter-btn.active{
+    color:var(--bg);
+    background:var(--text);
+    border-color:var(--text);
+  }
+
+  /* Sections */
+  section.group{ margin-bottom:30px; }
+  .group-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+  }
+  .group-title h2{
+    font-family:'Fraunces', serif;
+    font-size:19px;
+    font-weight:600;
+    margin:0;
+  }
+  .group-title .count{
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    color:var(--muted);
+  }
+  .group-title::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:10px;
+  }
+  .card{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 14px;
+    transition:border-color .2s, transform .2s;
+    opacity:0;
+    animation:rise .4s ease forwards;
+    min-width:0;
+  }
+  .card:hover{ border-color:var(--leaf); }
+  .filter-divider{
+    width:1px;
+    background:var(--line);
+    margin:0 2px;
+  }
+  .item-price{
+    transition:opacity .15s;
+  }
+  body.hide-prices .item-price{
+    display:none;
+  }
+  #priceToggle.active{
+    color:var(--bg);
+    background:var(--harvest);
+    border-color:var(--harvest);
+  }
+  .bio-flag{
+    font-size:13px;
+    padding:8px;
+    margin:-8px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    line-height:1;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+  }
+  .bio-note{
+    font-size:11.5px;
+    color:var(--harvest);
+    line-height:1.4;
+    margin:6px 0 0;
+    padding-top:6px;
+    border-top:1px dashed var(--line);
+    display:none;
+  }
+  .card.bio-open .bio-note{ display:block; }
+  .card .item-name{
+    font-weight:600;
+    font-size:15px;
+    margin:0 0 2px;
+    line-height:1.25;
+  }
+  .name-text{
+    word-break:break-word;
+  }
+  .card .item-price{
+    display:block;
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    color:var(--harvest);
+    margin:0 0 6px;
+  }
+  .card .item-tip{
+    font-size:12.5px;
+    color:var(--muted);
+    line-height:1.4;
+    margin:0;
+  }
+
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(6px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:11.5px;
+    margin-top:36px;
+    line-height:1.6;
+  }
+
+  @media (max-width:480px){
+    .grid{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:8px; }
+    .month-stamp .name{ font-size:36px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .card{ animation:none; opacity:1; }
+    *{ transition:none !important; }
+  }
+</style>
+<!-- In de <head>, niet onderaan: anders flitst donker voordat licht aanslaat.
+     Dezelfde sleutel als op de voorpagina, zodat de keuze over beide pagina's
+     geldt — het is één site. -->
+<script>
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  var keuze = null;
+  try { keuze = localStorage.getItem('bioBordThema'); } catch (e) {}
+  var licht = keuze ? keuze === 'licht'
+    : !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
+  if (licht) d.classList.add('licht');
+})();
+</script>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand">
+    <h1>Seizoenswijzer</h1>
+    <div class="brand-tools">
+      <a class="sibling-link" href="/">Bio-lijstje →</a>
+      <button class="thema-knop" type="button" id="themaKnop">
+        <span class="glyph" aria-hidden="true"></span><span class="woord"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="dots" id="dots"></div>
+
+  <div class="hero">
+    <button class="nav-btn" id="prevBtn" aria-label="Vorige maand">&#8592;</button>
+    <div class="month-stamp">
+      <p class="name" id="monthName">Augustus</p>
+      <span class="tag" id="monthTag">Nu in het schap</span>
+    </div>
+    <button class="nav-btn" id="nextBtn" aria-label="Volgende maand">&#8594;</button>
+  </div>
+
+  <p class="sub" id="subLine"></p>
+
+  <div class="filters">
+    <button class="filter-btn active" data-filter="alle">Alles</button>
+    <button class="filter-btn" data-filter="groente">Groente</button>
+    <button class="filter-btn" data-filter="fruit">Fruit</button>
+    <span class="filter-divider"></span>
+    <button class="filter-btn" id="priceToggle">Toon prijzen</button>
+  </div>
+
+  <section class="group" id="groenteSection">
+    <div class="group-title"><h2>Groente</h2><span class="count" id="groenteCount"></span></div>
+    <div class="grid" id="groenteGrid"></div>
+  </section>
+
+  <section class="group" id="fruitSection">
+    <div class="group-title"><h2>Fruit</h2><span class="count" id="fruitCount"></span></div>
+    <div class="grid" id="fruitGrid"></div>
+  </section>
+
+  <footer>
+    Seizoensdata samengesteld op basis van de klassieke NL-seizoenslogica (volle grond / plastic tunnel / onverwarmde kas), zoals gehanteerd door Milieu Centraal en het Voedingscentrum — geen live databron.<br>
+    Richtprijzen zijn een eigen inschatting op basis van gangbare supermarktprijzen, niet gescraped of live.<br>
+    🧴 = gemiddeld meer bestrijdingsmiddelen aangetroffen, op basis van de PesticidenEetwijzer van PAN-NL (NVWA-data 2022–2024).
+  </footer>
+
+</div>
+
+<script>
+// Op basis van PAN-NL PesticidenEetwijzer (NVWA-data 2022-2024): deze soorten
+// hebben gemiddeld duidelijk meer verschillende bestrijdingsmiddelen dan de rest.
+const bioAdvies = new Set(["Appel", "Aardbei", "Kropsla", "Paprika", "Druif", "Kersen", "Peer"]);
+
+const maanden = [
+  "Januari","Februari","Maart","April","Mei","Juni",
+  "Juli","Augustus","September","Oktober","November","December"
+];
+
+const data = [
+/* 0 Jan */ { groente:[["Winterpostelein","Mild van smaak, goed door salades of kort gestoofd.","€2,00 / zak"],["Koolraap","Stevig, goed voor stamppot of oven.","€1,50 / kg"],["Pastinaak","Zoetig, lekker geroosterd.","€2,50 / kg"],["Rode kool","Klassieker, houdt weken in de koelkast.","€1,20 / kg"],["Savooiekool","Goed voor roerbak of stoof.","€1,50 / stuk"],["Spruitjes","Kort blancheren voorkomt bittere smaak.","€2,50 / kg"],["Witlof","Rauw in salade of gegratineerd.","€2,00 / kg"],["Winterwortel","Basis voor bijna elke stoof.","€1,00 / kg"],["Prei","Fijn in soep of quiche.","€2,00 / kg"],["Ui","Basis groente, lang houdbaar.","€1,20 / kg"]], fruit:[["Appel","Koel en donker bewaren, dan weken goed.","€2,20 / kg"],["Peer","Laat narijpen op kamertemperatuur.","€2,50 / kg"]] },
+/* 1 Feb */ { groente:[["Raapstelen","Kort door de pan, mild bitter.","€2,50 / bosje"],["Winterpostelein","Goed in wintersalades.","€2,00 / zak"],["Koolraap","Zoet na de vorst.","€1,50 / kg"],["Pastinaak","Puree of ovenschotel.","€2,50 / kg"],["Rode kool","Combineert goed met appel.","€1,20 / kg"],["Witlof","Ook lekker gegrild.","€2,00 / kg"],["Winterwortel","Rauw of gestoofd.","€1,00 / kg"],["Prei","Romig in soep.","€2,00 / kg"]], fruit:[["Appel","Uit de koelcel, nog steeds vers.","€2,20 / kg"],["Peer","Ideaal voor op de haverbrij.","€2,50 / kg"]] },
+/* 2 Mar */ { groente:[["Spinazie","Kort stoven, slinkt sterk.","€2,50 / zak"],["Radijs","Knapperig, ook de blaadjes zijn eetbaar.","€1,00 / bosje"],["Veldsla","Mild, goed in combinatiesalade.","€2,50 / zak"],["Witlof","Laatste ronde van het seizoen.","€2,20 / kg"],["Prei","Nog volop verkrijgbaar.","€2,00 / kg"]], fruit:[["Appel","Laatste bewaarappels van het seizoen.","€2,00 / kg"]] },
+/* 3 Apr */ { groente:[["Asperges","Schil dun, kook 8-10 min.","€7,50 / kg"],["Radijs","Eet vers, snel verwelkt.","€1,00 / bosje"],["Spinazie","Jonge blaadjes zijn het zachtst.","€2,50 / zak"],["Rabarber","Alleen de stelen eten, blad is giftig.","€2,50 / kg"],["Lente-ui","Mild, ook rauw goed.","€1,00 / bosje"]], fruit:[["Rabarber","Telt vaak als 'fruit' in de keuken.","€2,50 / kg"]] },
+/* 4 May */ { groente:[["Asperges","Piekseizoen, ook groene variant.","€6,50 / kg"],["Doperwten","Vers uit de dop is het lekkerst.","€4,00 / kg"],["Radijs","Volop en goedkoop.","€0,90 / bosje"],["Rabarber","Combineert goed met aardbei.","€2,20 / kg"],["Spitskool","Mild en zacht, kort garen.","€1,50 / stuk"],["Tuinbonen","Dop ze net voor gebruik.","€3,50 / kg"],["Kropsla","Volle krop, lang houdbaar in folie.","€1,00 / stuk"]], fruit:[["Rabarber","Laatste ronde, zoeter in mei.","€2,00 / kg"]] },
+/* 5 Jun */ { groente:[["Bloemkool","Ook de blaadjes zijn te eten.","€1,80 / stuk"],["Sperzieboon","Kort blancheren, blijft knapperig.","€4,00 / kg"],["Courgette","Niet schillen, snel gaar.","€1,50 / kg"],["Komkommer","Koel bewaren, niet naast tomaat.","€0,90 / stuk"],["Kropsla","Piekseizoen, volop en goedkoop.","€0,90 / stuk"],["Nieuwe aardappelen","Dunne schil, niet schillen nodig.","€1,80 / kg"],["Doperwten","Laatste ronde van het seizoen.","€4,00 / kg"],["Tuinbonen","Nog volop verkrijgbaar.","€3,50 / kg"]], fruit:[["Aardbei","Niet wassen voor bewaren, wel vlak voor eten.","€2,50 / doosje"],["Kersen","Koel bewaren, snel eten.","€8,00 / kg"]] },
+/* 6 Jul */ { groente:[["Bloemkool","Volop en voordelig.","€1,50 / stuk"],["Courgette","Ideaal om te grillen.","€1,20 / kg"],["Komkommer","Piekseizoen, erg voordelig.","€0,70 / stuk"],["Kropsla","Volop verkrijgbaar.","€0,80 / stuk"],["Sperzieboon","Ook goed om in te vriezen.","€3,50 / kg"],["Snijboon","Iets stevigere structuur dan sperzieboon.","€3,50 / kg"],["Venkel","Rauw in salade of geroosterd.","€2,00 / stuk"]], fruit:[["Aardbei","Piekseizoen, vaak scherp geprijsd.","€2,50 / doosje"],["Braam","Kwetsbaar, snel verwerken.","€2,50 / doosje"],["Framboos","Niet wassen, wel goed bekijken.","€2,50 / doosje"],["Nectarine","NL/Spaanse teelt, laat narijpen.","€2,50 / kg"],["Perzik","Zacht bij lichte druk = rijp.","€2,50 / kg"],["Pruim","Goed voor compote of taart.","€2,50 / kg"],["Peer","Vroege rassen starten.","€2,50 / kg"]] },
+/* 7 Aug */ { groente:[["Andijvie","Iets bitter, goed gestoofd met spek.","€1,20 / stuk"],["Bleekselderij","Knapperig, goed voor bouillon.","€1,50 / stuk"],["Broccoli","Kort stomen behoudt kleur.","€1,80 / stuk"],["Sperzieboon","Nog steeds volop en goedkoop.","€3,50 / kg"],["Venkel","Ook het groen is te gebruiken.","€2,00 / stuk"],["Bloemkool","Piekseizoen loopt door.","€1,50 / stuk"],["Courgette","Overvloed dit seizoen, vries eventueel in.","€1,20 / kg"],["Kropsla","Volop verkrijgbaar.","€0,80 / stuk"],["Snijboon","Iets bitterder, past bij stevige gerechten.","€3,50 / kg"],["Bosui","Mild, goed rauw door salade.","€0,90 / bosje"],["Komkommer","Nog steeds erg voordelig.","€0,70 / stuk"],["Prei","Vroege oogst start.","€2,20 / kg"],["Tomaat","Volle grond NL, veel smaak.","€2,50 / kg"],["Paprika","NL-teelt op zijn best.","€3,50 / kg"]], fruit:[["Braam","Piekseizoen, ook lekker diepvries.","€2,50 / doosje"],["Framboos","Zeer kwetsbaar, koel bewaren.","€2,50 / doosje"],["Peer","Volop, laat narijpen buiten de koelkast.","€2,20 / kg"],["Aardbei","Laatste late rassen.","€2,50 / doosje"],["Nectarine","Import Spanje, goed betaalbaar.","€2,50 / kg"],["Perzik","Import Spanje, zacht bij aanraking = rijp.","€2,50 / kg"],["Pruim","Piekseizoen, ook goed voor jam.","€2,50 / kg"]] },
+/* 8 Sep */ { groente:[["Pompoen","Lang houdbaar, koel en droog bewaren.","€1,50 / kg"],["Boerenkool","Krijgt meer smaak na eerste nachtvorst.","€1,80 / zak"],["Prei","Volop en van goede kwaliteit.","€2,20 / kg"],["Rode kool","Start van het seizoen.","€1,20 / kg"],["Witte kool","Lang houdbaar, goed voor zuurkool.","€1,00 / kg"],["Winterwortel","Zoeter na de zomer.","€1,00 / kg"],["Pastinaak","Eerste oogst.","€2,50 / kg"]], fruit:[["Appel","Nieuwe oogst, volop keuze in rassen.","€2,00 / kg"],["Peer","Piekseizoen.","€2,20 / kg"],["Druif","NL-kastteelt op zijn best.","€4,00 / kg"],["Pruim","Laatste ronde van het seizoen.","€2,50 / kg"]] },
+/* 9 Oct */ { groente:[["Pompoen","Grote keuze in soorten, ideaal voor soep.","€1,50 / kg"],["Koolrabi","Rauw geraspt of gestoofd.","€1,80 / kg"],["Boerenkool","Piekseizoen.","€1,80 / zak"],["Spruitjes","Eerste oogst, mild van smaak.","€2,50 / kg"],["Rode biet","Goed voorgekookt te koop, ook zelf te garen.","€2,00 / kg"],["Knolselderij","Stevige puree of soep.","€1,80 / kg"],["Pastinaak","Zoeter door lagere temperaturen.","€2,50 / kg"],["Witlof","Start van het nieuwe seizoen.","€2,20 / kg"]], fruit:[["Appel","Volop, ook goed voor appelmoes.","€2,00 / kg"],["Peer","Nog steeds volop.","€2,20 / kg"],["Druif","Laatste ronde NL-teelt.","€4,00 / kg"],["Walnoot","Vers geplukt, snel drogen voor bewaring.","€6,00 / kg"]] },
+/* 10 Nov */ { groente:[["Witlof","Piekseizoen, licht bitter.","€2,20 / kg"],["Koolraap","Stevig en vullend.","€1,50 / kg"],["Pastinaak","Ideaal voor ovenschotels.","€2,50 / kg"],["Rode kool","Volop en goedkoop.","€1,20 / kg"],["Spruitjes","Piekseizoen.","€2,50 / kg"],["Winterwortel","Basis voor stamppot.","€1,00 / kg"],["Knolselderij","Combineert goed met aardappel.","€1,80 / kg"],["Pompoen","Laatste ronde van het seizoen.","€1,50 / kg"]], fruit:[["Appel","Uit de koelcel, blijft vers.","€2,00 / kg"],["Peer","Laatste verse oogst.","€2,20 / kg"]] },
+/* 11 Dec */ { groente:[["Witlof","Klassiek bij de feestdagen.","€2,20 / kg"],["Rode kool","Traditioneel bij het kerstdiner.","€1,20 / kg"],["Spruitjes","Piekseizoen, mild na lichte vorst.","€2,80 / kg"],["Koolraap","Stevig winters gerecht.","€1,50 / kg"],["Pastinaak","Goed te roosteren met honing.","€2,50 / kg"],["Winterwortel","Lang houdbaar in de koelkast.","€1,00 / kg"],["Winterpostelein","Start van het seizoen.","€2,00 / zak"]], fruit:[["Appel","Bewaarrassen, koel en donker.","€2,20 / kg"],["Peer","Bewaarrassen, laat narijpen.","€2,50 / kg"],["Walnoot","Ideaal bij de feestdagen.","€6,50 / kg"]] },
+];
+
+const today = new Date();
+const currentIndex = today.getMonth();
+let viewIndex = currentIndex;
+let activeFilter = "alle";
+
+const monthName = document.getElementById('monthName');
+const monthTag = document.getElementById('monthTag');
+const subLine = document.getElementById('subLine');
+const dotsEl = document.getElementById('dots');
+const groenteGrid = document.getElementById('groenteGrid');
+const fruitGrid = document.getElementById('fruitGrid');
+const groenteSection = document.getElementById('groenteSection');
+const fruitSection = document.getElementById('fruitSection');
+const groenteCount = document.getElementById('groenteCount');
+const fruitCount = document.getElementById('fruitCount');
+
+function buildDots(){
+  dotsEl.innerHTML = '';
+  maanden.forEach((m, i) => {
+    const b = document.createElement('button');
+    b.className = 'dot' + (i === viewIndex ? ' active' : '') + (i === currentIndex ? ' today' : '');
+    b.setAttribute('aria-label', m);
+    b.addEventListener('click', () => { viewIndex = i; render(); });
+    dotsEl.appendChild(b);
+  });
+}
+
+function buildCards(list, grid){
+  grid.innerHTML = '';
+  list.forEach(([name, tip, price], i) => {
+    const c = document.createElement('div');
+    c.className = 'card';
+    c.style.animationDelay = (i * 0.03) + 's';
+    const bioIcon = bioAdvies.has(name)
+      ? `<button class="bio-flag" type="button" aria-label="Waarom dit icoon?">🧴</button>`
+      : '';
+    c.innerHTML = `
+      <p class="item-name"><span class="name-text">${name}</span>${bioIcon}</p>
+      <span class="item-price">${price}</span>
+      <p class="item-tip">${tip}</p>
+      <p class="bio-note">Gemiddeld meer bestrijdingsmiddelen aangetroffen (PAN-NL) — bio is hier het overwegen waard.</p>`;
+    grid.appendChild(c);
+  });
+}
+
+function render(){
+  const monthData = data[viewIndex];
+  monthName.textContent = maanden[viewIndex];
+
+  if (viewIndex === currentIndex){
+    monthTag.textContent = 'Nu in het schap';
+    monthTag.className = 'tag';
+    subLine.textContent = 'Dit is de huidige maand — deze producten zijn nu vers, ruim verkrijgbaar en meestal het goedkoopst.';
+  } else if (viewIndex > currentIndex || (currentIndex === 11 && viewIndex < currentIndex)) {
+    monthTag.textContent = 'Vooruitblik';
+    monthTag.className = 'tag future';
+    subLine.innerHTML = `Blik vooruit naar ${maanden[viewIndex]}. <button onclick="viewIndex=${currentIndex};render();">Terug naar nu</button>`;
+  } else {
+    monthTag.textContent = 'Terugblik';
+    monthTag.className = 'tag past';
+    subLine.innerHTML = `Terugblik op ${maanden[viewIndex]}. <button onclick="viewIndex=${currentIndex};render();">Terug naar nu</button>`;
+  }
+
+  buildCards(monthData.groente, groenteGrid);
+  buildCards(monthData.fruit, fruitGrid);
+  groenteCount.textContent = monthData.groente.length + ' soorten';
+  fruitCount.textContent = monthData.fruit.length + ' soorten';
+
+  groenteSection.style.display = (activeFilter === 'alle' || activeFilter === 'groente') ? '' : 'none';
+  fruitSection.style.display = (activeFilter === 'alle' || activeFilter === 'fruit') ? '' : 'none';
+
+  buildDots();
+}
+
+document.getElementById('prevBtn').addEventListener('click', () => {
+  viewIndex = (viewIndex + 11) % 12;
+  render();
+});
+document.getElementById('nextBtn').addEventListener('click', () => {
+  viewIndex = (viewIndex + 1) % 12;
+  render();
+});
+
+document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    render();
+  });
+});
+
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.bio-flag');
+  if (btn){
+    btn.closest('.card').classList.toggle('bio-open');
+  }
+});
+
+document.getElementById('priceToggle').addEventListener('click', (e) => {
+  document.body.classList.toggle('hide-prices');
+  e.target.classList.toggle('active');
+  e.target.textContent = document.body.classList.contains('hide-prices') ? 'Toon prijzen' : 'Verberg prijzen';
+});
+document.body.classList.add('hide-prices');
+
+render();
+
+/* ---- Licht/donker: zie de toelichting bij het palet ---------------------- */
+const THEMA_KEY = 'bioBordThema';
+const themaKnop = document.getElementById('themaKnop');
+
+function themaIsLicht() { return document.documentElement.classList.contains('licht'); }
+
+function themaToon() {
+  if (!themaKnop) return;
+  const naarLicht = !themaIsLicht();
+  themaKnop.querySelector('.glyph').textContent = naarLicht ? '\u2600' : '\u263D';
+  themaKnop.querySelector('.woord').textContent = naarLicht ? 'licht' : 'donker';
+  themaKnop.setAttribute('aria-label', naarLicht ? 'Naar het lichte thema' : 'Naar het donkere thema');
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', themaIsLicht() ? '#faf8f2' : '#1b1a15');
+}
+
+function themaZet(licht, onthouden) {
+  document.documentElement.classList.toggle('licht', licht);
+  if (onthouden) { try { localStorage.setItem(THEMA_KEY, licht ? 'licht' : 'donker'); } catch (e) {} }
+  themaToon();
+}
+
+if (themaKnop) {
+  themaKnop.addEventListener('click', () => themaZet(!themaIsLicht(), true));
+  themaToon();
+}
+
+if (window.matchMedia) {
+  const mq = window.matchMedia('(prefers-color-scheme: light)');
+  const volgSysteem = (e) => {
+    let keuze = null;
+    try { keuze = localStorage.getItem(THEMA_KEY); } catch (err) {}
+    if (!keuze) themaZet(e.matches, false);
+  };
+  if (mq.addEventListener) mq.addEventListener('change', volgSysteem);
+  else if (mq.addListener) mq.addListener(volgSysteem);
+}
+
+/* Eén service worker voor de hele site, die van de root. Deze pagina heeft er
+   geen eigen meer: twee workers op één origin zouden elkaar in de weg zitten. */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(() => {});
+}
+</script>
+<!-- GoatCounter: zelfde teller als de voorpagina, zodat /seizoen apart
+     zichtbaar wordt in de statistiek. -->
+<script data-goatcounter="https://hetbiolijstje.goatcounter.com/count"
+        async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>

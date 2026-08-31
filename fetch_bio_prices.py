@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Bio Groente & Fruit — AH / Jumbo / Lidl / Aldi / Dirk / Plus
-===========================================================
+Bio Groente & Fruit — AH / Jumbo / Lidl / Aldi / Dirk / Plus / Ekoplaza
+=====================================================================
 Standalone script (GEEN Home Assistant nodig). Draait via cron, 1x per week,
 en schrijft een JSON-bestand dat de telefoon-app (www/index.html) uitleest.
 
@@ -89,6 +89,15 @@ EXCLUDED_CATEGORIES = {
     # gembershot. Blikken tomaten en Hak-bieten zitten in
     # soepen-conserven-sauzen en blijven dus staan.
     "pasta-rijst-wereldkeuken",
+    # Toegevoegd bij het opnemen van Ekoplaza (augustus 2026). Zelfde redenering
+    # als vlees/vis/kaas hierboven: een bereiding met groente erin is geen
+    # groente. Brood-bakkerij gaf "Bruschetta tomaat", zuivel-eieren gaf de
+    # roomkefirs, vega gaf "Hummus zongedroogde tomaat". Gemeten over alle zeven
+    # ketens: samen 53 treffers weg, geen enkele bij de zes winkels die er al
+    # stonden.
+    "brood-bakkerij",
+    "zuivel-eieren",
+    "vega",
 }
 
 # Nederlandse samenstellingen plakken vast (bv. "tomatenpulp", "appelmoes"), dus de
@@ -130,6 +139,21 @@ _NIET_AGF_PATRONEN = (
     # Achtervoegsel, niet los woord: in "gembershot" staat geen woordgrens vóór
     # "shot". Zelfde valkuil als bij "sap" in "appelsap".
     re.compile(r"shot\b", re.IGNORECASE),         # "Bio gembershot" — een drankje
+    # Onderstaande kwamen bij Ekoplaza binnen, waar de categorie niet redt:
+    # die keten zet quiche, chips en kaasbolletjes zélf onder "groente-fruit".
+    # Elk patroon hieronder is gemeten en verwijdert daadwerkelijk iets; wat
+    # niets deed ("salade", "taart", "wafel", "burger") staat er bewust niet in.
+    # "salade" is er ook uit gelaten omdat een zak slamix wél verse groente is.
+    re.compile(r"quiche", re.IGNORECASE),
+    re.compile(r"chips\b", re.IGNORECASE),        # "Aardappelchips truffel"
+    re.compile(r"dip\b", re.IGNORECASE),          # "Tomaten- basilicumdip"
+    re.compile(r"hummus", re.IGNORECASE),
+    re.compile(r"kefir", re.IGNORECASE),
+    re.compile(r"yog(?:h)?urt", re.IGNORECASE),
+    re.compile(r"olij(?:f|ven)", re.IGNORECASE),  # olijven staan al niet in de lijst
+    re.compile(r"biscuit", re.IGNORECASE),
+    re.compile(r"bruschetta", re.IGNORECASE),
+    re.compile(r"kaas", re.IGNORECASE),           # "Goudse kaasbolletjes ui"
 )
 
 _agf_prefix = [k for k in AGF_KEYWORDS if k not in _AGF_WHOLE_WORD_ONLY]
@@ -152,8 +176,15 @@ AGF_PATTERN = re.compile(
 # pagina komt uit Folderz.
 #
 # PrijsProfeet ontsluit 10 ketens; nog niet in gebruik: DekaMarkt, Hoogvliet,
-# Vomar. Ekoplaza is eruit gehaald omdat hun items geen echte acties bleken
-# (actieprijs gelijk aan de normale prijs, met een valid_from uit 2024).
+# Vomar.
+#
+# Ekoplaza stond eerder uit omdat hun items geen echte acties waren (actieprijs
+# gelijk aan de normale prijs, valid_from uit 2024). Hertest augustus 2026: die
+# oude records staan er nog steeds, maar er staan nu wél lopende acties naast
+# met een valid_from van deze week. Daarom weer aan, met twee nieuwe filters die
+# hiervoor nodig waren — zie de naampatronen en de kortingscheck. Zonder die
+# twee leverde Ekoplaza 23 items op waarvan 21 quiche, chips, kefir en olijven;
+# mét die twee blijven de 2 over die er horen.
 AANBIEDINGEN_STORES = {
     "AH": ("albert_heijn", None),
     "Jumbo": ("jumbo", None),
@@ -161,14 +192,16 @@ AANBIEDINGEN_STORES = {
     "Aldi": ("aldi", None),
     "Dirk": ("dirk", None),
     "Plus": ("plus", None),
+    "Ekoplaza": ("ekoplaza", None),
 }
 
 # Winkels waar het hele assortiment biologisch is. Daar volstaat het
 # dietary_tags-label, want hun productnamen zeggen vaak niet "bio" — bij een
 # 100%-bio winkel is dat immers geen onderscheid. Bij alle andere winkels eisen
 # we het label én het woord in de naam, omdat het label alleen niet betrouwbaar
-# genoeg bleek (zie _als_bio_agf_actie). Ekoplaza staat er alvast in voor als
-# die keten wordt toegevoegd; nu doet deze set niets.
+# genoeg bleek (zie _als_bio_agf_actie). Sinds Ekoplaza meedoet is dit geen
+# lege voorbereiding meer: van hun 23 bio-AGF-treffers had er nul "bio" in de
+# naam staan. Zonder deze uitzondering zou de keten dus niets opleveren.
 VOLLEDIG_BIO_WINKELS = {"ekoplaza"}
 
 PRIJSPROFEET_PRODUCTS_URL = "https://www.prijsprofeet.nl/api/v1/products"
@@ -342,7 +375,7 @@ def _vanaf_aantal(voorwaarde):
 
 def _als_bio_agf_actie(item):
     """Beoordeelt één PrijsProfeet-record en geeft het terug in ons eigen
-    formaat, of None als het niet door de filters komt. Vier checks:
+    formaat, of None als het niet door de filters komt. Vijf checks:
 
     1. AGF-trefwoord in de naam (AGF_PATTERN);
     2. categorie niet in EXCLUDED_CATEGORIES — weert koffie, wijn, vlees en
@@ -354,12 +387,16 @@ def _als_bio_agf_actie(item):
        Tomaat Spekjes". Veertien niet-biologische pasta's en pastasauzen stonden
        daardoor live op een site over biologische groente en fruit. Beide eisen
        haalt precies die veertien eruit en laat alle echte bio-producten staan
-       (gemeten tegen de volledige catalogus van alle zes winkels);
+       (gemeten tegen de volledige catalogus van alle zes winkels). Bij winkels
+       in VOLLEDIG_BIO_WINKELS volstaat het label, want daar zegt geen enkele
+       productnaam "bio";
     4. promotion_status niet 'upcoming' of 'historical' — de API levert ook
        nog-niet-geldige en verlopen acties (Aldi's bio-items stonden bij het
        testen allebei op 'upcoming'). Ontbreekt het veld helemaal, dan laten we
        het item door: liever dat dan een lege pagina als de API van vorm
-       verandert."""
+       verandert;
+    5. de actieprijs moet lager zijn dan de normale prijs, als die bekend is.
+       Anders staat er een gewone schapprijs tussen de aanbiedingen."""
     naam = item.get("name") or ""
     if not naam or not _is_agf(naam):
         return None
@@ -380,10 +417,17 @@ def _als_bio_agf_actie(item):
     actieprijs = item.get("price")
     if not isinstance(actieprijs, (int, float)):
         return None
+    # Geen korting is geen aanbieding. De API levert ook gewone schapprijzen
+    # met promotion_status "active"; bij Ekoplaza stond zo "Gemengde sla" op
+    # €2,59 van €2,59. Alleen vergelijken als de normale prijs bekend is —
+    # Folderz levert die nooit, en daar is dit dus geen test.
+    normale_prijs = item.get("original_price")
+    if isinstance(normale_prijs, (int, float)) and actieprijs >= normale_prijs:
+        return None
     actie = {
         "naam": naam,
         "actieprijs": float(actieprijs),
-        "normale_prijs": item.get("original_price"),
+        "normale_prijs": normale_prijs,
         "soort": _soort(naam, item.get("unified_category")),
     }
     voorwaarde = _actievoorwaarde(item)

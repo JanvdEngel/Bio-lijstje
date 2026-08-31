@@ -1,7 +1,7 @@
 {
   "name": "Het Bio Lijstje",
   "short_name": "Bio Lijstje",
-  "description": "Wekelijkse bio groente & fruit aanbiedingen: AH, Jumbo, Lidl",
+  "description": "Dagelijks de biologische groente- en fruitaanbiedingen van AH, Jumbo, Lidl, Aldi, Dirk, Plus en Ekoplaza.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#1b1a15",
