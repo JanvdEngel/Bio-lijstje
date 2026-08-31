@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-08-31T21:42:00.469954",
+  "laatst_bijgewerkt": "2026-08-31T22:11:52.427328",
   "aanbiedingen": {
     "AH": [
       {
@@ -109,13 +109,19 @@
         "naam": "Oesterzwammen",
         "actieprijs": 2.59,
         "normale_prijs": 3.29,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.59,
+        "laagste_ooit_datum": "2026-08-31",
+        "eerder_gezien": 1
       },
       {
         "naam": "Radijs zonder loof",
         "actieprijs": 1.69,
         "normale_prijs": 1.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.69,
+        "laagste_ooit_datum": "2026-08-31",
+        "eerder_gezien": 1
       }
     ]
   }
