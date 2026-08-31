@@ -328,7 +328,7 @@ def _actievoorwaarde(item):
     aantal = item.get("multi_buy_quantity")
     prijs = item.get("multi_buy_price")
     if isinstance(aantal, int) and aantal > 1 and isinstance(prijs, (int, float)):
-        return f"{aantal} voor €{prijs:.2f}"
+        return f"{aantal} voor {_euro(prijs)}"
 
     for label in item.get("promotional_keywords") or []:
         if not isinstance(label, str):
@@ -389,6 +389,15 @@ def _vanaf_aantal(voorwaarde):
         return None
     aantal = int(match.group(1))
     return aantal if 2 <= aantal <= 12 else None
+
+
+def _euro(bedrag, entity=False):
+    """Nederlandse notatie: 1,75 en niet 1.75. Python's opmaak geeft altijd een
+    punt, ongeacht de locale-instelling van de machine, dus dat moet hier.
+    De template doet hetzelfde in JavaScript; deze twee horen gelijk te blijven,
+    anders leest een bezoeker met JavaScript iets anders dan een crawler."""
+    tekst = f"{bedrag:.2f}".replace(".", ",")
+    return f"&euro;{tekst}" if entity else f"€{tekst}"
 
 
 def _als_bio_agf_actie(item):
@@ -682,9 +691,9 @@ def schrijf_index_html(aanbiedingen, bijgewerkt):
         else:
             regels.append("        <ul>")
             for item in items:
-                prijs = f"&euro;{item['actieprijs']:.2f}"
+                prijs = _euro(item['actieprijs'], entity=True)
                 was = item.get("normale_prijs")
-                was_txt = f" (was &euro;{was:.2f})" if isinstance(was, (int, float)) else ""
+                was_txt = f" (was {_euro(was, entity=True)})" if isinstance(was, (int, float)) else ""
                 soort = " &middot; voorraad" if item.get("soort") == "voorraad" else ""
                 vw = item.get("voorwaarde")
                 vw_txt = f" &middot; alleen bij: {_html_escape(vw.lower())}" if vw else ""
@@ -865,13 +874,13 @@ def _toon_droogdraai(aanbiedingen):
             for item in groep:
                 totaal += 1
                 normaal = item.get("normale_prijs")
-                van = f" (van {normaal:.2f})".replace(".", ",") if normaal else ""
+                van = f" (van {_euro(normaal)})" if normaal else ""
                 korting = ""
                 if normaal:
                     korting = f"  -{round((1 - item['actieprijs'] / normaal) * 100)}%"
                 mits = f"  vanaf {item['vanaf']} stuks" if item.get("vanaf") else ""
-                prijs = f"{item['actieprijs']:.2f}".replace(".", ",")
-                print(f"  EUR {prijs:>6}{van}{korting}{mits}  {item['naam']}")
+                prijs = _euro(item['actieprijs'])
+                print(f"  {prijs:>8}{van}{korting}{mits}  {item['naam']}")
     print(f"\nTotaal: {totaal} acties over {len(aanbiedingen)} winkels.")
     print("=" * 72)
 
