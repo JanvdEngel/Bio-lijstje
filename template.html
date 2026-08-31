@@ -22,13 +22,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  /* Donker is de basis: dat was de site altijd, en het blijft wat je krijgt als
-     er niets bekend is (ook zonder JavaScript). Licht komt uit één klasse op
-     <html>, die een klein scriptje in de <head> zet — dat leest eerst de
-     opgeslagen keuze en valt anders terug op de systeeminstelling.
+  /* Donker is de standaard, en dat blijft het ook als je systeem op licht
+     staat: dit is hoe de site hoort te zijn. Licht is een optie die je zelf
+     aanzet, geen automatisme. Het komt uit één klasse op <html>, gezet door
+     een klein scriptje in de <head>, en die keuze wordt onthouden.
      Bewust één klasse en géén tweede palet in een @media-regel: dan staat elke
-     kleur op precies één plek, en kan de knop de systeeminstelling in beide
-     richtingen overrulen zonder een stapel :not()-guards. */
+     kleur op precies één plek. */
   :root{
     --bg: #1b1a15;
     --bg-raised: #232019;
@@ -107,31 +106,17 @@
     text-align: center;
     position: relative;
   }
-  .sibling-link{
-    font-family:'Space Mono', monospace;
-    font-size:11px;
-    letter-spacing:0.04em;
-    text-transform:uppercase;
-    color:var(--harvest);
-    border:1px solid var(--line);
-    border-radius:20px;
-    padding:5px 12px;
-    text-decoration:none;
-    white-space:nowrap;
-    display:inline-block;
-    margin-bottom:0.9rem;
-    transition:border-color .2s;
-  }
-  .sibling-link:hover{ border-color:var(--harvest); }
-
-  /* Twee pillen naast elkaar boven de titel. Dezelfde vorm als de
-     Seizoenswijzer-link, zodat het één rijtje is en niet twee losse dingen. */
-  .header-tools{
+  /* ---- Gedeelde kop -------------------------------------------------------
+     Deze kop staat identiek op de voorpagina en op /seizoen. Dat is het punt:
+     eerder had elke pagina een eigen merknaam en een eigen indeling, en dan
+     lijken het twee sites die toevallig dezelfde kleuren hebben. Nu zie je
+     bovenaan altijd hetzelfde, en zegt alleen de regel onder de titel waar je
+     bent. Wijzig je hier iets, doe het dan in beide bestanden. */
+  .secties{
     display:flex; justify-content:center; align-items:center;
-    gap:0.5rem; flex-wrap:wrap; margin-bottom:0.9rem;
+    gap:0.4rem; flex-wrap:wrap; margin-bottom:1.1rem;
   }
-  .header-tools .sibling-link{ margin-bottom:0; }
-  .thema-knop{
+  .secties a{
     font-family:'Space Mono', monospace;
     font-size:11px;
     letter-spacing:0.04em;
@@ -141,33 +126,52 @@
     border:1px solid var(--line);
     border-radius:20px;
     padding:5px 12px;
-    cursor:pointer;
+    text-decoration:none;
     white-space:nowrap;
-    display:inline-flex; align-items:center; gap:0.35rem;
+    display:inline-flex; align-items:center;
+    transition:border-color .2s, color .2s, background-color .2s;
+  }
+  /* De pagina waar je nu bent is gevuld, niet alleen anders van kleur — op een
+     telefoon in de zon is een randverschil te weinig. */
+  .secties a.huidig{
+    background:var(--harvest); border-color:var(--harvest); color:var(--bg);
+  }
+
+  /* De themaknop hoort bewust níét in de sectierij. Daar stond hij eerst, in
+     dezelfde pilvorm, en dan zien twee dingen die volstrekt verschillend werken
+     er hetzelfde uit: het ene brengt je ergens, het andere verandert een
+     instelling. Nu een los icoontje rechtsboven, 40px groot zodat het op een
+     telefoon te raken is. */
+  .thema-knop{
+    position:absolute; top:0.7rem; right:0.7rem;
+    width:40px; height:40px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px; line-height:1;
+    color:var(--muted);
+    background:none; border:0; border-radius:50%;
+    cursor:pointer;
     -webkit-appearance:none; appearance:none;
     -webkit-tap-highlight-color:transparent;
-    transition:border-color .2s, color .2s;
+    transition:color .2s, background-color .2s;
   }
-  .thema-knop .glyph{ font-size:12px; line-height:1; }
   @media (hover: hover){
-    .thema-knop:hover{ border-color:var(--harvest); color:var(--harvest); }
+    .secties a:not(.huidig):hover{ border-color:var(--harvest); color:var(--harvest); }
+    .thema-knop:hover{ color:var(--harvest); background:var(--bg-raised); }
   }
   /* Zonder JavaScript kan de knop niets doen, dus dan staat hij er ook niet. */
   html:not(.js) .thema-knop{ display:none; }
+  .wordmark{
+    font-family:'Fraunces', serif; font-weight:700;
+    font-size:3rem; line-height:0.95; margin:0;
+    color:var(--text); text-decoration:none; display:block;
+  }
+  a.wordmark:hover{ color:var(--harvest); }
   .eyebrow{
     font-size: 0.72rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--leaf);
     margin: 0.6rem 0 0;
-  }
-  h1{
-    font-family: 'Fraunces', serif;
-    font-weight: 700;
-    font-size: 3rem;
-    line-height: 0.95;
-    margin: 0;
-    color: var(--text);
   }
   .updated{
     font-size: 0.78rem;
@@ -398,9 +402,9 @@
   d.classList.add('js');
   var keuze = null;
   try { keuze = localStorage.getItem('bioBordThema'); } catch (e) {}
-  var licht = keuze ? keuze === 'licht'
-    : !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
-  if (licht) d.classList.add('licht');
+  // Alleen licht als je er zelf voor gekozen hebt. Geen terugval op de
+  // systeeminstelling: donker is hoe de site bedoeld is.
+  if (keuze === 'licht') d.classList.add('licht');
 })();
 </script>
 </head>
@@ -408,14 +412,13 @@
 <div class="chalk-texture"></div>
 
 <header>
-  <div class="header-tools">
-    <a class="sibling-link" href="/seizoen/">← Seizoenswijzer</a>
-    <button class="thema-knop" type="button" id="themaKnop">
-      <span class="glyph" aria-hidden="true"></span><span class="woord"></span>
-    </button>
-  </div>
-  <h1>Het Bio Lijstje</h1>
-  <p class="eyebrow">Deze week</p>
+  <button class="thema-knop" type="button" id="themaKnop"></button>
+  <nav class="secties" aria-label="Secties">
+    <a href="/" class="huidig" aria-current="page">Aanbiedingen</a>
+    <a href="/seizoen/">Seizoen</a>
+  </nav>
+  <h1 class="wordmark">Het Bio Lijstje</h1>
+  <p class="eyebrow">Vandaag geldig</p>
 </header>
 
 <main>
@@ -469,6 +472,12 @@ function fmtShortDate(iso) {
   return d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' });
 }
 
+/* Nederlandse notatie: €1,75 en niet €1.75. toFixed geeft altijd een punt,
+   ongeacht de taal van de browser, dus dat moet hier gebeuren. */
+function prijs(bedrag) {
+  return '€' + bedrag.toFixed(2).replace('.', ',');
+}
+
 function renderHistoryNote(item) {
   if (item.laagste_ooit_prijs === undefined || item.laagste_ooit_prijs === null) return '';
   if (item.actieprijs <= item.laagste_ooit_prijs) {
@@ -478,8 +487,8 @@ function renderHistoryNote(item) {
     if (!item.eerder_gezien || item.eerder_gezien < 2) return '';
     return `<div class="history-note history-good">&#127942; Laagste van ${item.eerder_gezien} prijzen die ik zag</div>`;
   }
-  const verschil = (item.actieprijs - item.laagste_ooit_prijs).toFixed(2);
-  return `<div class="history-note history-warn">&#9888;&#65039; Eerder goedkoper: &euro;${item.laagste_ooit_prijs.toFixed(2)} op ${fmtShortDate(item.laagste_ooit_datum)} (nu &euro;${verschil} duurder)</div>`;
+  const verschil = item.actieprijs - item.laagste_ooit_prijs;
+  return `<div class="history-note history-warn">&#9888;&#65039; Eerder goedkoper: ${prijs(item.laagste_ooit_prijs)} op ${fmtShortDate(item.laagste_ooit_datum)} (nu ${prijs(verschil)} duurder)</div>`;
 }
 
 const STORE_VISIBLE_CAP = 4;
@@ -492,9 +501,9 @@ function renderAanbiedingCard(item, storeColor, isExtra) {
     <div class="card${isExtra ? ' card-extra' : ''}" style="--card-accent:${storeColor}">
       <div class="name">${item.naam.toLowerCase()}</div>
       <div class="price-row">
-        <span class="price-now">&euro;${item.actieprijs.toFixed(2)}</span>
+        <span class="price-now">${prijs(item.actieprijs)}</span>
         ${item.vanaf ? `<span class="prijs-mits">vanaf ${item.vanaf} stuks</span>` : ''}
-        ${item.normale_prijs ? `<span class="price-was">&euro;${item.normale_prijs.toFixed(2)}</span>` : ''}
+        ${item.normale_prijs ? `<span class="price-was">${prijs(item.normale_prijs)}</span>` : ''}
       </div>
       ${savingsPct && savingsPct > 0 ? `<div class="savings">${savingsPct}% korting</div>` : ''}
       ${renderHistoryNote(item)}
@@ -508,7 +517,7 @@ function render() {
       <div class="empty-state">
         <span class="big">Nog geen data</span>
         Draai eerst <code>fetch_bio_prices.py</code> op je Pi, dan verschijnt hier
-        de bio-update van deze week.
+        de bio-update van vandaag.
       </div>`;
     return;
   }
@@ -522,10 +531,11 @@ function render() {
   if (totaal === 0) {
     content.innerHTML = `
       <div class="empty-state">
-        <span class="big">Geen bio-acties deze week</span>
-        Bij AH, Jumbo en Lidl loopt op dit moment geen bio groente/fruit-actie.
-        Dat gebeurt vaker dan je zou denken &mdash; acties zijn schaars, kom
-        volgende week terug.
+        <span class="big">Vandaag geen bio-acties</span>
+        Bij geen van de zeven winkels loopt op dit moment een bio groente- of
+        fruitactie. Dat gebeurt vaker dan je zou denken &mdash; acties zijn
+        schaars. De lijst wordt elke ochtend opnieuw opgehaald, dus kom morgen
+        terug.
       </div>`;
     return;
   }
@@ -558,7 +568,7 @@ function render() {
       ? (vers.length ? groep(vers) : '') +
         (voorraad.length ? `<p class="soort-kop${vers.length ? '' : ' eerste'}">Voorraad<span class="soort-uitleg">blik, pot, zak of vriezer</span></p>` + groep(voorraad) : '') +
         (extraCount > 0 ? `<button class="toggle-more" type="button" data-more="+${extraCount} meer tonen" data-less="Toon minder">+${extraCount} meer tonen</button>` : '')
-      : `<p class="empty-note">Geen bio-acties bij ${s} deze week.</p>`;
+      : `<p class="empty-note">Vandaag geen bio-acties bij ${s}.</p>`;
     return `
       <div class="store-section" data-store="${s}"${hiddenStores.has(s) ? ' style="display:none"' : ''}>
         <div class="store-header">
@@ -611,9 +621,12 @@ function themaIsLicht() { return document.documentElement.classList.contains('li
 function themaToon() {
   if (!themaKnop) return;
   const naarLicht = !themaIsLicht();
-  themaKnop.querySelector('.glyph').textContent = naarLicht ? '☀' : '☽';
-  themaKnop.querySelector('.woord').textContent = naarLicht ? 'licht' : 'donker';
-  themaKnop.setAttribute('aria-label', naarLicht ? 'Naar het lichte thema' : 'Naar het donkere thema');
+  // Het icoon toont waar je heen gaat, niet waar je nu bent. Alleen een glyph,
+  // dus de bedoeling moet volledig uit het label komen — vandaar ook title.
+  themaKnop.textContent = naarLicht ? '☀' : '☽';
+  const label = naarLicht ? 'Naar het lichte thema' : 'Naar het donkere thema';
+  themaKnop.setAttribute('aria-label', label);
+  themaKnop.setAttribute('title', label);
   // De browserbalk op mobiel kleurt mee; zonder dit blijft die donker op wit.
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute('content', themaIsLicht() ? '#faf8f2' : '#1b1a15');
@@ -628,17 +641,6 @@ function themaZet(licht, onthouden) {
 if (themaKnop) {
   themaKnop.addEventListener('click', () => themaZet(!themaIsLicht(), true));
   themaToon();
-}
-
-if (window.matchMedia) {
-  const mq = window.matchMedia('(prefers-color-scheme: light)');
-  const volgSysteem = (e) => {
-    let keuze = null;
-    try { keuze = localStorage.getItem(THEMA_KEY); } catch (err) {}
-    if (!keuze) themaZet(e.matches, false);
-  };
-  if (mq.addEventListener) mq.addEventListener('change', volgSysteem);
-  else if (mq.addListener) mq.addListener(volgSysteem);  // Safari < 14
 }
 
 fetch('data/bio_prices.json', { cache: 'no-store' })

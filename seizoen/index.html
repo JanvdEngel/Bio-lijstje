@@ -59,40 +59,31 @@
     padding:32px 20px 60px;
   }
 
-  /* Top: brand + month dots */
-  .brand{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-bottom:28px;
+  /* Top: gedeelde kop + month dots */
+  header{
+    padding: 0.6rem 0 1.6rem;
+    text-align: center;
+    position: relative;
   }
-  .brand h1{
-    font-family:'Space Mono', monospace;
-    font-size:15px;
-    letter-spacing:0.12em;
-    text-transform:uppercase;
-    color:var(--leaf);
-    margin:0;
+  /* Op een subpagina is de merknaam een link terug en hoeft hij niet zo groot
+     als op de voorpagina: daar is hij de titel, hier staat de maand eronder. */
+  .wordmark{ font-size:2.2rem; }
+  .eyebrow{
+    font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--leaf); margin:0.6rem 0 0;
   }
-  .sibling-link{
-    font-family:'Space Mono', monospace;
-    font-size:11px;
-    letter-spacing:0.04em;
-    text-transform:uppercase;
-    color:var(--harvest);
-    border:1px solid var(--line);
-    border-radius:20px;
-    padding:5px 12px;
-    text-decoration:none;
-    white-space:nowrap;
-    transition:border-color .2s;
-  }
-  .sibling-link:hover{ border-color:var(--harvest); }
 
-  .brand-tools{ display:flex; align-items:center; gap:8px; }
-  .thema-knop{
+  /* ---- Gedeelde kop -------------------------------------------------------
+     Deze kop staat identiek op de voorpagina en op /seizoen. Dat is het punt:
+     eerder had elke pagina een eigen merknaam en een eigen indeling, en dan
+     lijken het twee sites die toevallig dezelfde kleuren hebben. Nu zie je
+     bovenaan altijd hetzelfde, en zegt alleen de regel onder de titel waar je
+     bent. Wijzig je hier iets, doe het dan in beide bestanden. */
+  .secties{
+    display:flex; justify-content:center; align-items:center;
+    gap:0.4rem; flex-wrap:wrap; margin-bottom:1.1rem;
+  }
+  .secties a{
     font-family:'Space Mono', monospace;
     font-size:11px;
     letter-spacing:0.04em;
@@ -102,18 +93,46 @@
     border:1px solid var(--line);
     border-radius:20px;
     padding:5px 12px;
-    cursor:pointer;
+    text-decoration:none;
     white-space:nowrap;
-    display:inline-flex; align-items:center; gap:0.35rem;
+    display:inline-flex; align-items:center;
+    transition:border-color .2s, color .2s, background-color .2s;
+  }
+  /* De pagina waar je nu bent is gevuld, niet alleen anders van kleur — op een
+     telefoon in de zon is een randverschil te weinig. */
+  .secties a.huidig{
+    background:var(--harvest); border-color:var(--harvest); color:var(--bg);
+  }
+
+  /* De themaknop hoort bewust níét in de sectierij. Daar stond hij eerst, in
+     dezelfde pilvorm, en dan zien twee dingen die volstrekt verschillend werken
+     er hetzelfde uit: het ene brengt je ergens, het andere verandert een
+     instelling. Nu een los icoontje rechtsboven, 40px groot zodat het op een
+     telefoon te raken is. */
+  .thema-knop{
+    position:absolute; top:0.7rem; right:0.7rem;
+    width:40px; height:40px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px; line-height:1;
+    color:var(--muted);
+    background:none; border:0; border-radius:50%;
+    cursor:pointer;
     -webkit-appearance:none; appearance:none;
     -webkit-tap-highlight-color:transparent;
-    transition:border-color .2s, color .2s;
+    transition:color .2s, background-color .2s;
   }
-  .thema-knop .glyph{ font-size:12px; line-height:1; }
   @media (hover: hover){
-    .thema-knop:hover{ border-color:var(--harvest); color:var(--harvest); }
+    .secties a:not(.huidig):hover{ border-color:var(--harvest); color:var(--harvest); }
+    .thema-knop:hover{ color:var(--harvest); background:var(--bg-raised); }
   }
+  /* Zonder JavaScript kan de knop niets doen, dus dan staat hij er ook niet. */
   html:not(.js) .thema-knop{ display:none; }
+  .wordmark{
+    font-family:'Fraunces', serif; font-weight:700;
+    font-size:3rem; line-height:0.95; margin:0;
+    color:var(--text); text-decoration:none; display:block;
+  }
+  a.wordmark:hover{ color:var(--harvest); }
 
   .dots{
     display:flex;
@@ -361,24 +380,24 @@
   d.classList.add('js');
   var keuze = null;
   try { keuze = localStorage.getItem('bioBordThema'); } catch (e) {}
-  var licht = keuze ? keuze === 'licht'
-    : !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
-  if (licht) d.classList.add('licht');
+  // Alleen licht als je er zelf voor gekozen hebt. Geen terugval op de
+  // systeeminstelling: donker is hoe de site bedoeld is.
+  if (keuze === 'licht') d.classList.add('licht');
 })();
 </script>
 </head>
 <body>
 <div class="wrap">
 
-  <div class="brand">
-    <h1>Seizoenswijzer</h1>
-    <div class="brand-tools">
-      <a class="sibling-link" href="/">Bio-lijstje →</a>
-      <button class="thema-knop" type="button" id="themaKnop">
-        <span class="glyph" aria-hidden="true"></span><span class="woord"></span>
-      </button>
-    </div>
-  </div>
+  <header>
+    <button class="thema-knop" type="button" id="themaKnop"></button>
+    <nav class="secties" aria-label="Secties">
+      <a href="/">Aanbiedingen</a>
+      <a href="/seizoen/" class="huidig" aria-current="page">Seizoen</a>
+    </nav>
+    <a class="wordmark" href="/">Het Bio Lijstje</a>
+    <h1 class="eyebrow">Seizoenswijzer</h1>
+  </header>
 
   <div class="dots" id="dots"></div>
 
@@ -561,9 +580,10 @@ function themaIsLicht() { return document.documentElement.classList.contains('li
 function themaToon() {
   if (!themaKnop) return;
   const naarLicht = !themaIsLicht();
-  themaKnop.querySelector('.glyph').textContent = naarLicht ? '\u2600' : '\u263D';
-  themaKnop.querySelector('.woord').textContent = naarLicht ? 'licht' : 'donker';
-  themaKnop.setAttribute('aria-label', naarLicht ? 'Naar het lichte thema' : 'Naar het donkere thema');
+  themaKnop.textContent = naarLicht ? '☀' : '☽';
+  const label = naarLicht ? 'Naar het lichte thema' : 'Naar het donkere thema';
+  themaKnop.setAttribute('aria-label', label);
+  themaKnop.setAttribute('title', label);
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute('content', themaIsLicht() ? '#faf8f2' : '#1b1a15');
 }
@@ -577,17 +597,6 @@ function themaZet(licht, onthouden) {
 if (themaKnop) {
   themaKnop.addEventListener('click', () => themaZet(!themaIsLicht(), true));
   themaToon();
-}
-
-if (window.matchMedia) {
-  const mq = window.matchMedia('(prefers-color-scheme: light)');
-  const volgSysteem = (e) => {
-    let keuze = null;
-    try { keuze = localStorage.getItem(THEMA_KEY); } catch (err) {}
-    if (!keuze) themaZet(e.matches, false);
-  };
-  if (mq.addEventListener) mq.addEventListener('change', volgSysteem);
-  else if (mq.addListener) mq.addListener(volgSysteem);
 }
 
 /* Eén service worker voor de hele site, die van de root. Deze pagina heeft er

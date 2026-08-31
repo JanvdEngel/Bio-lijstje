@@ -204,6 +204,24 @@ AANBIEDINGEN_STORES = {
 # naam staan. Zonder deze uitzondering zou de keten dus niets opleveren.
 VOLLEDIG_BIO_WINKELS = {"ekoplaza"}
 
+# Ketens die PrijsProfeet wél ontsluit maar die hier niet meedoen, omdat ze
+# geen biologische producten in hun data hebben. Gemeten op 31 augustus 2026:
+#
+#   Hoogvliet   473 producten, 40 met een dieet-label (allemaal "vegetarisch"),
+#               nul met een bio-label en nul met "bio" in de naam.
+#   DekaMarkt  1118 producten, 2 met een bio-label, geen daarvan groente/fruit.
+#   Vomar       167 producten, geen enkel dieet-label.
+#
+# Bij Hoogvliet is dat dus geen toevallig magere week: de labels wórden gezet,
+# alleen nooit "bio". Maar dat kan veranderen zonder dat iemand het meldt, en
+# elk kwartaal handmatig opnieuw uitzoeken is zonde. Daarom controleert
+# controleer_kandidaten() ze elke ronde en zegt het als er iets verschijnt.
+KANDIDAAT_WINKELS = {
+    "Hoogvliet": "hoogvliet",
+    "DekaMarkt": "dekamarkt",
+    "Vomar": "vomar",
+}
+
 PRIJSPROFEET_PRODUCTS_URL = "https://www.prijsprofeet.nl/api/v1/products"
 PRIJSPROFEET_PAGE_SIZE = 100  # harde grens van de API; 200 en 500 geven 0 resultaten
 PRIJSPROFEET_MAX_PAGES = 60  # veiligheidsgrens; AH is de grootste met ~24 pagina's
@@ -767,16 +785,123 @@ def _is_agf(title):
 # Main
 # ---------------------------------------------------------------------------
 
+def controleer_kandidaten():
+    """Kijkt of een van de ketens uit KANDIDAAT_WINKELS inmiddels biologische
+    groente of fruit heeft. Verandert niets aan de site; het enige doel is dat
+    zo'n verandering vanzelf opvalt in plaats van dat iemand er over een half
+    jaar nog eens handmatig achteraan moet.
+
+    Faalt bewust stil: dit is een terzijde, geen reden om de ronde te laten
+    klappen."""
+    for store_label, retailer_slug in KANDIDAAT_WINKELS.items():
+        try:
+            treffers = fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug)
+        except Exception as e:
+            log.info(f"Kandidaat {store_label}: niet te controleren ({e})")
+            continue
+        if treffers:
+            log.warning(
+                f"Kandidaat {store_label} heeft nu {len(treffers)} bio AGF-actie(s) — "
+                f"overweeg de keten toe te voegen aan AANBIEDINGEN_STORES: "
+                + ", ".join(t["naam"] for t in treffers[:5])
+            )
+        else:
+            log.info(f"Kandidaat {store_label}: nog steeds geen bio AGF")
+
+
+def _lees_argumenten():
+    """--dry-run bestaat omdat dit script lange tijd nergens te draaien was
+    behalve op de Pi zelf: er stond geen Python op de laptop, en dus kwam een
+    verkeerde aanname over de JSON-envelope van de API pas aan het licht toen de
+    site al bijna leeg live stond. Droogdraaien schrijft niets en publiceert
+    niets — het haalt op, filtert, en laat zien wat er op de pagina zou komen."""
+    import argparse
+
+    p = argparse.ArgumentParser(
+        description="Haalt biologische groente- en fruitaanbiedingen op en schrijft ze weg.",
+    )
+    p.add_argument(
+        "--dry-run", action="store_true",
+        help="Niets wegschrijven, niets publiceren. Toont per winkel wat er op de site zou komen.",
+    )
+    p.add_argument(
+        "--winkel", action="append", metavar="NAAM",
+        help=("Alleen deze winkel ophalen; meerdere keren te gebruiken. Handig omdat "
+              "een volledige ronde ruim drie minuten duurt. Keuze: "
+              + ", ".join(AANBIEDINGEN_STORES)),
+    )
+    args = p.parse_args()
+    if args.winkel:
+        onbekend = [w for w in args.winkel if w not in AANBIEDINGEN_STORES]
+        if onbekend:
+            p.error(f"onbekende winkel(s): {', '.join(onbekend)}")
+        # Zonder deze grens zou een echte ronde met --winkel de andere winkels
+        # uit bio_prices.json gooien: het bestand wordt volledig overschreven.
+        if not args.dry_run:
+            p.error("--winkel kan alleen samen met --dry-run; anders wist de "
+                    "gedeeltelijke ronde de andere winkels uit bio_prices.json")
+    return args
+
+
+def _toon_droogdraai(aanbiedingen):
+    """Zelfde volgorde en indeling als de pagina, zodat je in de terminal ziet
+    wat de bezoeker zou zien."""
+    print()
+    print("=" * 72)
+    print("DROOGDRAAI — er is niets weggeschreven en niets gepubliceerd")
+    print("=" * 72)
+    totaal = 0
+    for store_label, items in aanbiedingen.items():
+        print(f"\n{store_label} — {len(items)} {'actie' if len(items) == 1 else 'acties'}")
+        if not items:
+            continue
+        # Vers eerst, dan voorraad: dezelfde indeling als op de pagina.
+        for soort in ("vers", "voorraad"):
+            groep = [i for i in items if i.get("soort", "vers") == soort]
+            if not groep:
+                continue
+            if soort == "voorraad":
+                print("  -- voorraad (blik, pot, zak of vriezer) --")
+            for item in groep:
+                totaal += 1
+                normaal = item.get("normale_prijs")
+                van = f" (van {normaal:.2f})".replace(".", ",") if normaal else ""
+                korting = ""
+                if normaal:
+                    korting = f"  -{round((1 - item['actieprijs'] / normaal) * 100)}%"
+                mits = f"  vanaf {item['vanaf']} stuks" if item.get("vanaf") else ""
+                prijs = f"{item['actieprijs']:.2f}".replace(".", ",")
+                print(f"  EUR {prijs:>6}{van}{korting}{mits}  {item['naam']}")
+    print(f"\nTotaal: {totaal} acties over {len(aanbiedingen)} winkels.")
+    print("=" * 72)
+
+
 def main():
-    log.info("Start bio-update...")
+    args = _lees_argumenten()
+    if args.dry_run:
+        log.info("Start bio-update (droogdraai: er wordt niets weggeschreven)...")
+    else:
+        log.info("Start bio-update...")
 
     vandaag = datetime.now().date().isoformat()
     history = load_history()
 
+    winkels = {k: v for k, v in AANBIEDINGEN_STORES.items()
+               if not args.winkel or k in args.winkel}
+
     aanbiedingen = {}
-    for store_label, (retailer_slug, folderz_slug) in AANBIEDINGEN_STORES.items():
+    for store_label, (retailer_slug, folderz_slug) in winkels.items():
         items = fetch_aanbiedingen(store_label, retailer_slug, folderz_slug)
         aanbiedingen[store_label] = enrich_and_record_history(store_label, items, history, vandaag)
+
+    if args.dry_run:
+        # enrich_and_record_history heeft history in het geheugen bijgewerkt;
+        # door hem niet op te slaan blijft de echte geschiedenis onaangeroerd.
+        _toon_droogdraai(aanbiedingen)
+        return
+
+    # Na de echte winkels, want dit mag de lijst niet vertragen als het misgaat.
+    controleer_kandidaten()
 
     save_history(history)
 
