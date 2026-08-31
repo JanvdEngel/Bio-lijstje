@@ -1,42 +1,20 @@
 {
-  "laatst_bijgewerkt": "2026-08-30T06:05:45.338704",
+  "laatst_bijgewerkt": "2026-08-31T06:04:40.582535",
   "aanbiedingen": {
     "AH": [
       {
-        "naam": "AH Biologisch Rozijn, ananas, mango, amandel mix",
-        "actieprijs": 2.58,
-        "normale_prijs": 3.69,
-        "laagste_ooit_prijs": 2.58,
-        "laagste_ooit_datum": "2026-08-24",
-        "eerder_gezien": 2
+        "naam": "Unox Biologische pompoen soep",
+        "actieprijs": 2.49,
+        "normale_prijs": 5.19
       },
       {
-        "naam": "AH Biologisch Mango gedroogd & ongezoet",
-        "actieprijs": 2.44,
+        "naam": "AH Biologisch Witte druiven pitloos",
+        "actieprijs": 1.75,
         "normale_prijs": 3.49,
-        "laagste_ooit_prijs": 2.44,
-        "laagste_ooit_datum": "2026-08-24",
-        "eerder_gezien": 2
-      },
-      {
-        "naam": "AH Biologisch Rode bieten gekookt",
-        "actieprijs": 1.09,
-        "normale_prijs": 1.49,
-        "voorwaarde": "2 VOOR 2.19",
-        "laagste_ooit_prijs": 1.09,
-        "laagste_ooit_datum": "2026-08-24",
-        "eerder_gezien": 2
+        "voorwaarde": "2 STAPELEN TOT 50%"
       }
     ],
     "Jumbo": [
-      {
-        "naam": "Jumbo Biologisch Aardappelen Vastkokend 2,5KG",
-        "actieprijs": 2.49,
-        "normale_prijs": 4.55,
-        "laagste_ooit_prijs": 2.49,
-        "laagste_ooit_datum": "2026-08-27",
-        "eerder_gezien": 2
-      },
       {
         "naam": "Jumbo Biologisch Aardappelen Kruimig 2,5 kg",
         "actieprijs": 2.49,
@@ -44,24 +22,21 @@
         "laagste_ooit_prijs": 2.49,
         "laagste_ooit_datum": "2026-08-27",
         "eerder_gezien": 1
+      },
+      {
+        "naam": "Jumbo Biologisch Aardappelen Vastkokend 2,5KG",
+        "actieprijs": 2.49,
+        "normale_prijs": 4.55,
+        "laagste_ooit_prijs": 2.49,
+        "laagste_ooit_datum": "2026-08-27",
+        "eerder_gezien": 2
       }
     ],
     "Lidl": [
       {
-        "naam": "Bio gesneden bieten",
+        "naam": "Bio kastanjechampignons",
         "actieprijs": 1.49,
-        "normale_prijs": 2.29,
-        "laagste_ooit_prijs": 1.49,
-        "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 10
-      },
-      {
-        "naam": "Bio gesneden rode bieten",
-        "actieprijs": 1.49,
-        "normale_prijs": 2.29,
-        "laagste_ooit_prijs": 1.49,
-        "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 10
+        "normale_prijs": 1.99
       },
       {
         "naam": "Bio kastanje-champignons",
@@ -70,14 +45,6 @@
         "laagste_ooit_prijs": 1.49,
         "laagste_ooit_datum": "2026-08-28",
         "eerder_gezien": 1
-      },
-      {
-        "naam": "Bio courgette",
-        "actieprijs": 0.79,
-        "normale_prijs": 0.99,
-        "laagste_ooit_prijs": 0.79,
-        "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 10
       },
       {
         "naam": "Accentino Bio appelciderazijn",
