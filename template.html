@@ -221,10 +221,9 @@
      prijs als losse stuksprijs — en dat was precies de terechte klacht over de
      witte druiven: €1,75 gold vanaf 2 dozen, één doos had een andere korting. */
   .prijs-mits{
-    font-family:'Space Mono', monospace; font-size:0.66rem;
-    letter-spacing:0.02em; color:var(--bg);
-    background:var(--harvest); border-radius:3px;
-    padding:1px 5px; white-space:nowrap;
+    font-family:'Space Mono', monospace; font-size:0.68rem;
+    letter-spacing:0.02em; color:var(--muted);
+    white-space:nowrap;
   }
 
   /* Actieprijs geldt pas bij meerdere stuks — hoort pal bij de prijs, anders
@@ -371,7 +370,11 @@ function fmtShortDate(iso) {
 function renderHistoryNote(item) {
   if (item.laagste_ooit_prijs === undefined || item.laagste_ooit_prijs === null) return '';
   if (item.actieprijs <= item.laagste_ooit_prijs) {
-    return `<div class="history-note history-good">&#127942; Laagste prijs die ik zag (${item.eerder_gezien} eerdere ${item.eerder_gezien === 1 ? 'prijs' : 'prijzen'} gezien)</div>`;
+    // Met één eerdere meting zegt "laagste prijs die ik zag" niets — dan is er
+    // precies één ding om mee te vergelijken. Vanaf twee metingen wel, en dan
+    // staat het aantal erbij zodat de lezer weet hoe hard de claim is.
+    if (!item.eerder_gezien || item.eerder_gezien < 2) return '';
+    return `<div class="history-note history-good">&#127942; Laagste van ${item.eerder_gezien} prijzen die ik zag</div>`;
   }
   const verschil = (item.actieprijs - item.laagste_ooit_prijs).toFixed(2);
   return `<div class="history-note history-warn">&#9888;&#65039; Eerder goedkoper: &euro;${item.laagste_ooit_prijs.toFixed(2)} op ${fmtShortDate(item.laagste_ooit_datum)} (nu &euro;${verschil} duurder)</div>`;
@@ -391,8 +394,7 @@ function renderAanbiedingCard(item, storeColor, isExtra) {
         ${item.vanaf ? `<span class="prijs-mits">vanaf ${item.vanaf} stuks</span>` : ''}
         ${item.normale_prijs ? `<span class="price-was">&euro;${item.normale_prijs.toFixed(2)}</span>` : ''}
       </div>
-      ${savingsPct && savingsPct > 0 ? `<div class="savings">${savingsPct}% korting${item.voorwaarde ? ' bij dat aantal' : ''}</div>` : ''}
-      ${item.voorwaarde ? `<div class="voorwaarde">&#9888;&#65039; ${item.voorwaarde.toLowerCase()}&nbsp;&middot; bij 1 stuk lagere korting, bedrag onbekend</div>` : ''}
+      ${savingsPct && savingsPct > 0 ? `<div class="savings">${savingsPct}% korting</div>` : ''}
       ${renderHistoryNote(item)}
     </div>`;
 }
