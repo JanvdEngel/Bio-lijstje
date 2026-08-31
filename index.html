@@ -217,6 +217,16 @@
   .savings{
     margin-top:0.3rem; font-size:0.74rem; color: var(--leaf);
   }
+  /* Het aantal hoort ín de prijsregel. Stond het er alleen onder, dan las de
+     prijs als losse stuksprijs — en dat was precies de terechte klacht over de
+     witte druiven: €1,75 gold vanaf 2 dozen, één doos had een andere korting. */
+  .prijs-mits{
+    font-family:'Space Mono', monospace; font-size:0.66rem;
+    letter-spacing:0.02em; color:var(--bg);
+    background:var(--harvest); border-radius:3px;
+    padding:1px 5px; white-space:nowrap;
+  }
+
   /* Actieprijs geldt pas bij meerdere stuks — hoort pal bij de prijs, anders
      lijkt het een gewone stuksprijs. */
   .voorwaarde{
@@ -378,10 +388,11 @@ function renderAanbiedingCard(item, storeColor, isExtra) {
       <div class="name">${item.naam.toLowerCase()}</div>
       <div class="price-row">
         <span class="price-now">&euro;${item.actieprijs.toFixed(2)}</span>
+        ${item.vanaf ? `<span class="prijs-mits">vanaf ${item.vanaf} stuks</span>` : ''}
         ${item.normale_prijs ? `<span class="price-was">&euro;${item.normale_prijs.toFixed(2)}</span>` : ''}
       </div>
-      ${savingsPct && savingsPct > 0 ? `<div class="savings">${savingsPct}% korting</div>` : ''}
-      ${item.voorwaarde ? `<div class="voorwaarde">&#9888;&#65039; alleen bij: ${item.voorwaarde.toLowerCase()}</div>` : ''}
+      ${savingsPct && savingsPct > 0 ? `<div class="savings">${savingsPct}% korting${item.voorwaarde ? ' bij dat aantal' : ''}</div>` : ''}
+      ${item.voorwaarde ? `<div class="voorwaarde">&#9888;&#65039; ${item.voorwaarde.toLowerCase()}&nbsp;&middot; bij 1 stuk lagere korting, bedrag onbekend</div>` : ''}
       ${renderHistoryNote(item)}
     </div>`;
 }

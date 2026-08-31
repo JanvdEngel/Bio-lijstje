@@ -321,6 +321,25 @@ def _soort(naam, categorie=None):
     return "vers"
 
 
+def _vanaf_aantal(voorwaarde):
+    """Haalt het minimum-aantal uit een voorwaarde-label, of None.
+
+    Nodig omdat de API per product maar één prijs levert: de beste. Bij "AH
+    Biologisch Witte druiven pitloos" is dat €1,75 van €3,49, met als label
+    "2 STAPELEN TOT 50%" — terwijl één doos in de winkel al 25% korting had. Die
+    tussentrap zit niet in de data (multi_buy_quantity en promotion zijn leeg),
+    dus we kunnen hem niet tonen. Wat we wél kunnen: het aantal naast de prijs
+    zetten, zodat die prijs niet als losse stuksprijs gelezen wordt.
+
+    Het eerste getal in het label is dat aantal: "2 STAPELEN", "5 + 1 GRATIS",
+    "2 VOOR 2.99", "2e halve prijs"."""
+    match = re.search(r"\b(\d+)", voorwaarde)
+    if not match:
+        return None
+    aantal = int(match.group(1))
+    return aantal if 2 <= aantal <= 12 else None
+
+
 def _als_bio_agf_actie(item):
     """Beoordeelt één PrijsProfeet-record en geeft het terug in ons eigen
     formaat, of None als het niet door de filters komt. Vier checks:
@@ -370,6 +389,9 @@ def _als_bio_agf_actie(item):
     voorwaarde = _actievoorwaarde(item)
     if voorwaarde:
         actie["voorwaarde"] = voorwaarde
+        vanaf = _vanaf_aantal(voorwaarde)
+        if vanaf:
+            actie["vanaf"] = vanaf
     return actie
 
 
