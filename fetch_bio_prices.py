@@ -83,6 +83,12 @@ EXCLUDED_CATEGORIES = {
     # "mais" wél een voorvoegsel mag blijven, anders dan "sla": "Maïskolven"
     # heeft die voorvoegselregel nodig, en de wafels vangen we hier op.
     "snoep-koek-chips",
+    # Pasta en wereldkeuken: hier zaten gevulde pasta's die via een
+    # ingrediëntwoord binnenkwamen ("Tortelloni ricotta spinazie"). Gemeten wat
+    # dit kost: de enige andere bio-treffer in deze categorie was een
+    # gembershot. Blikken tomaten en Hak-bieten zitten in
+    # soepen-conserven-sauzen en blijven dus staan.
+    "pasta-rijst-wereldkeuken",
 }
 
 # Nederlandse samenstellingen plakken vast (bv. "tomatenpulp", "appelmoes"), dus de
@@ -111,6 +117,19 @@ _AGF_WHOLE_WORD_ONLY = {"ui", "uien", "kool", "sla"}
 _NIET_AGF_PATRONEN = (
     re.compile(r"sap\b", re.IGNORECASE),          # "appelsap", "vers geperst sap"
     re.compile(r"\bthee|thee\b", re.IGNORECASE),  # "groene thee", "kruidenthee"
+    # Samengestelde gerechten waar een groente in zit, in plaats van de groente
+    # zelf. Deze staan in categorie soepen-conserven-sauzen, en die kan niet
+    # uitgesloten worden: daar zitten Hak rode bieten, Bonduelle maïs en Heinz
+    # tomatenblokjes ook in, en dat zijn wél gewoon groenten uit blik.
+    re.compile(r"soep\b", re.IGNORECASE),         # "Unox Biologische pompoensoep"
+    re.compile(r"saus\b|\bsauzen\b", re.IGNORECASE),  # "pastasaus", "tomatensaus"
+    re.compile(r"ketchup", re.IGNORECASE),
+    re.compile(r"\bpesto\b", re.IGNORECASE),
+    re.compile(r"azijn\b", re.IGNORECASE),        # "appelciderazijn"
+    re.compile(r"tapenade|dressing|\bfrito\b", re.IGNORECASE),
+    # Achtervoegsel, niet los woord: in "gembershot" staat geen woordgrens vóór
+    # "shot". Zelfde valkuil als bij "sap" in "appelsap".
+    re.compile(r"shot\b", re.IGNORECASE),         # "Bio gembershot" — een drankje
 )
 
 _agf_prefix = [k for k in AGF_KEYWORDS if k not in _AGF_WHOLE_WORD_ONLY]
@@ -177,7 +196,17 @@ WWW_DIR = Path(__file__).parent / "www"
 # lokale pagina (http://<pi-ip>:8099) zien, kopieer ze dan alsnog naar
 # /addons/bio_bord/www/ en draai een rebuild — maar vergeten kan de publieke
 # site niet meer stukmaken.
-GITHUB_PUBLISH_FILES = ["data/bio_prices.json"]
+GITHUB_PUBLISH_FILES = ["index.html", "data/bio_prices.json"]
+
+# index.html wordt gegenereerd uit template.html, en template.html wordt door dit
+# script nooit aangeraakt. Die scheiding is er met een reden: eerder was
+# index.html tegelijk handwerk én machinewerk, en toen overschreef de Pi drie
+# keer een ontwerpwijziging die alleen naar GitHub was gepusht. Nu is er per
+# bestand precies één eigenaar.
+TEMPLATE_PATH = Path(__file__).parent / "www" / "template.html"
+HTML_OUTPUT_PATH = Path(__file__).parent / "www" / "index.html"
+PRODUCTEN_START = "<!--PRODUCTEN-->"
+PRODUCTEN_EINDE = "<!--/PRODUCTEN-->"
 
 
 # ---------------------------------------------------------------------------
@@ -258,6 +287,40 @@ def _actievoorwaarde(item):
     return None
 
 
+# Signalen dat een product niet vers is maar uit blik, pot, zak of vriezer komt.
+# "Voorraad" dekt die vier bewust samen: zo koopt iemand het ook — vers voor deze
+# week, voorraad als het goedkoop is.
+_VOORRAAD_PATRONEN = (
+    re.compile(r"gedroogd|\bgedr\.", re.IGNORECASE),
+    re.compile(r"\bblik\b|\bpot\b|\bglas\b", re.IGNORECASE),
+    re.compile(r"diepvries|ingevroren|\bbevroren\b", re.IGNORECASE),
+    re.compile(r"zoetzuur|\bconserven\b", re.IGNORECASE),
+    re.compile(r"gekookt|voorgekookt", re.IGNORECASE),
+)
+# Categorieën van PrijsProfeet die de indeling kunnen bepalen als de naam niets
+# verraadt. Folderz levert geen categorie, dus daar blijft het bij de naam.
+_VOORRAAD_CATEGORIEEN = {"soepen-conserven-sauzen", "diepvries"}
+_VERS_CATEGORIEEN = {"groente-fruit"}
+
+
+def _soort(naam, categorie=None):
+    """Bepaalt of een product bij "Vers" of bij "Voorraad" hoort.
+
+    De naam gaat voor op de categorie: "AH Biologisch Rode bieten gekookt" staat
+    bij de bron in groente-fruit, maar is voorgekookt en dus voorraad. Zegt de
+    naam niets en is er geen categorie (alle Folderz-items), dan wordt het vers —
+    dat is daar vrijwel altijd juist, want de verse Lidl-producten komen uit die
+    bron."""
+    for patroon in _VOORRAAD_PATRONEN:
+        if patroon.search(naam):
+            return "voorraad"
+    if categorie in _VOORRAAD_CATEGORIEEN:
+        return "voorraad"
+    if categorie in _VERS_CATEGORIEEN:
+        return "vers"
+    return "vers"
+
+
 def _als_bio_agf_actie(item):
     """Beoordeelt één PrijsProfeet-record en geeft het terug in ons eigen
     formaat, of None als het niet door de filters komt. Vier checks:
@@ -302,6 +365,7 @@ def _als_bio_agf_actie(item):
         "naam": naam,
         "actieprijs": float(actieprijs),
         "normale_prijs": item.get("original_price"),
+        "soort": _soort(naam, item.get("unified_category")),
     }
     voorwaarde = _actievoorwaarde(item)
     if voorwaarde:
@@ -414,6 +478,8 @@ def fetch_aanbiedingen_folderz(store_label, folderz_slug):
                     "naam": title,
                     "actieprijs": actieprijs,
                     "normale_prijs": normale_prijs,
+                    # Geen categorie beschikbaar bij Folderz; alleen de naam.
+                    "soort": _soort(title),
                 })
             page += 1
             time.sleep(1)  # niet te hard achter elkaar op andermans site
@@ -492,6 +558,77 @@ def enrich_and_record_history(store, items, history, vandaag):
 # ---------------------------------------------------------------------------
 # Optioneel: publiceren naar GitHub Pages
 # ---------------------------------------------------------------------------
+
+def _html_escape(tekst):
+    return (
+        str(tekst)
+        .replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
+
+
+def schrijf_index_html(aanbiedingen, bijgewerkt):
+    """Zet de producten als platte HTML in index.html, gegenereerd uit
+    template.html.
+
+    Waarom dit nodig is: de pagina haalde de producten uitsluitend met
+    JavaScript op, en een crawler zonder JavaScript zag daardoor letterlijk
+    "Nog niets geladen" — nul productnamen in de broncode. Deze lijst is
+    bewust simpel (geen kaarten, geen knoppen): de JavaScript vervangt het blok
+    binnen een oogwenk door de interactieve versie. Het doel is alleen dat de
+    inhoud in de HTML staat.
+
+    Faalt dit, dan is dat niet fataal: we loggen het en laten de vorige
+    index.html staan."""
+    try:
+        template = TEMPLATE_PATH.read_text(encoding="utf-8")
+    except OSError as e:
+        log.warning(f"template.html niet leesbaar ({e}); index.html ongewijzigd gelaten")
+        return
+
+    if PRODUCTEN_START not in template or PRODUCTEN_EINDE not in template:
+        log.warning("Merktekens ontbreken in template.html; index.html ongewijzigd gelaten")
+        return
+
+    regels = []
+    for winkel, items in aanbiedingen.items():
+        regels.append(f"      <section><h2>{_html_escape(winkel)}</h2>")
+        if not items:
+            regels.append(f"        <p>Geen bio-acties bij {_html_escape(winkel)} deze week.</p>")
+        else:
+            regels.append("        <ul>")
+            for item in items:
+                prijs = f"&euro;{item['actieprijs']:.2f}"
+                was = item.get("normale_prijs")
+                was_txt = f" (was &euro;{was:.2f})" if isinstance(was, (int, float)) else ""
+                soort = " &middot; voorraad" if item.get("soort") == "voorraad" else ""
+                vw = item.get("voorwaarde")
+                vw_txt = f" &middot; alleen bij: {_html_escape(vw.lower())}" if vw else ""
+                regels.append(
+                    f"          <li>{_html_escape(item['naam'])} — {prijs}{was_txt}{soort}{vw_txt}</li>"
+                )
+            regels.append("        </ul>")
+        regels.append("      </section>")
+
+    blok = (
+        f"{PRODUCTEN_START}\n"
+        f"    <!-- Automatisch gegenereerd; bewerk template.html, niet dit bestand. -->\n"
+        f"    <div class=\"statische-lijst\">\n"
+        f"      <p>Biologische groente- en fruitaanbiedingen, bijgewerkt op {_html_escape(bijgewerkt)}.</p>\n"
+        + "\n".join(regels)
+        + f"\n    </div>\n    {PRODUCTEN_EINDE}"
+    )
+
+    voor = template.index(PRODUCTEN_START)
+    na = template.index(PRODUCTEN_EINDE) + len(PRODUCTEN_EINDE)
+    nieuw = template[:voor] + blok + template[na:]
+
+    try:
+        HTML_OUTPUT_PATH.write_text(nieuw, encoding="utf-8", newline="\n")
+        log.info(f"index.html gegenereerd uit template.html ({len(regels)} regels productdata)")
+    except OSError as e:
+        log.warning(f"index.html schrijven mislukt ({e})")
+
 
 def publish_to_github():
     """Pusht www/ naar een GitHub-repo via de Contents API, zodat de pagina
@@ -589,6 +726,13 @@ def main():
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(json.dumps(resultaat, indent=2, ensure_ascii=False))
     log.info(f"Klaar. Geschreven naar {OUTPUT_PATH}")
+
+    # Losstaand afgeschermd: de HTML is een extraatje bovenop de data, dus een
+    # fout hierin mag het publiceren van bio_prices.json niet tegenhouden.
+    try:
+        schrijf_index_html(aanbiedingen, resultaat["laatst_bijgewerkt"])
+    except Exception as e:
+        log.warning(f"index.html genereren mislukt ({e}); vorige versie blijft staan")
 
     publish_to_github()
 
