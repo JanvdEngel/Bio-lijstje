@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-08-31T21:06:50.802580",
+  "laatst_bijgewerkt": "2026-08-31T21:42:00.469954",
   "aanbiedingen": {
     "AH": [
       {
@@ -102,6 +102,20 @@
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-26",
         "eerder_gezien": 1
+      }
+    ],
+    "Ekoplaza": [
+      {
+        "naam": "Oesterzwammen",
+        "actieprijs": 2.59,
+        "normale_prijs": 3.29,
+        "soort": "vers"
+      },
+      {
+        "naam": "Radijs zonder loof",
+        "actieprijs": 1.69,
+        "normale_prijs": 1.99,
+        "soort": "vers"
       }
     ]
   }
