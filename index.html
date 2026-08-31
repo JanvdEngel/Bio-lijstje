@@ -4,7 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b1a15">
-<title>Het Bio Lijstje</title>
+<title>Biologische aanbiedingen — alle supermarkten, dagelijks bijgewerkt</title>
+<meta name="description" content="Dagelijks de lopende biologische groente- en fruitaanbiedingen bij Albert Heijn, Jumbo, Lidl, Aldi, Dirk en Plus. Eén overzicht, met waarschuwing bij stapelkortingen en bij prijzen die eerder lager waren.">
+<link rel="canonical" href="https://hetbiolijstje.nl/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hetbiolijstje.nl/">
+<meta property="og:title" content="Het Bio Lijstje — biologische aanbiedingen, dagelijks">
+<meta property="og:description" content="Alle biologische groente- en fruitaanbiedingen van zes supermarkten op één pagina. Geen advertenties, geen doorklikken.">
+<meta property="og:image" content="https://hetbiolijstje.nl/icon.png">
+<meta property="og:locale" content="nl_NL">
+<meta name="twitter:card" content="summary">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -208,6 +217,16 @@
   .savings{
     margin-top:0.3rem; font-size:0.74rem; color: var(--leaf);
   }
+  /* Het aantal hoort ín de prijsregel. Stond het er alleen onder, dan las de
+     prijs als losse stuksprijs — en dat was precies de terechte klacht over de
+     witte druiven: €1,75 gold vanaf 2 dozen, één doos had een andere korting. */
+  .prijs-mits{
+    font-family:'Space Mono', monospace; font-size:0.66rem;
+    letter-spacing:0.02em; color:var(--bg);
+    background:var(--harvest); border-radius:3px;
+    padding:1px 5px; white-space:nowrap;
+  }
+
   /* Actieprijs geldt pas bij meerdere stuks — hoort pal bij de prijs, anders
      lijkt het een gewone stuksprijs. */
   .voorwaarde{
@@ -220,6 +239,34 @@
   }
   .history-good{ color: var(--leaf); }
   .history-warn{ color: var(--warn); }
+
+  /* Scheiding tussen vers en voorraad binnen één winkel. Bewust een kopje en
+     geen tweede kolom: met een handvol producten per winkel zou splitsen in
+     kolommen alleen maar lege ruimte opleveren. */
+  .soort-kop{
+    display:flex; align-items:baseline; gap:0.5rem; flex-wrap:wrap;
+    font-family:'Space Mono', monospace; font-size:0.7rem;
+    letter-spacing:0.08em; text-transform:uppercase; color:var(--muted);
+    margin:0.9rem 0 0.5rem; padding-top:0.7rem;
+    border-top:1px dashed var(--line);
+  }
+  .soort-kop.eerste{ margin-top:0; padding-top:0; border-top:none; }
+  .soort-uitleg{
+    font-size:0.68rem; letter-spacing:0.01em; text-transform:none;
+    color:var(--muted); opacity:0.8;
+    font-family:'IBM Plex Sans', sans-serif;
+  }
+
+  /* De statische lijst die het script in de HTML zet. Zichtbaar tot de
+     JavaScript hem vervangt, en dat is prima: dan zie je meteen inhoud in
+     plaats van "Nog niets geladen". */
+  .statische-lijst{ color:var(--muted); font-size:0.9rem; }
+  .statische-lijst h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.1rem;
+    color:var(--text); margin:1.2rem 0 0.3rem;
+  }
+  .statische-lijst ul{ margin:0; padding-left:1.1rem; }
+  .statische-lijst li{ margin-bottom:0.15rem; }
 
   .card-extra{ display:none; }
   .store-section.expanded .card-extra{ display:block; }
@@ -271,11 +318,51 @@
 </header>
 
 <main>
+  <!-- De inhoud tussen deze twee merktekens wordt door fetch_bio_prices.py
+       vervangen door een statische lijst, zodat de producten in de HTML staan
+       en niet alleen door JavaScript worden opgehaald. Zoekmachines zagen
+       anders letterlijk "Nog niets geladen". De JavaScript hieronder vervangt
+       dit blok daarna alsnog door de interactieve versie. -->
   <div id="content">
-    <div class="empty-state">
-      <span class="big">Nog niets geladen</span>
-      Even geduld...
+    <!--PRODUCTEN-->
+    <!-- Automatisch gegenereerd; bewerk template.html, niet dit bestand. -->
+    <div class="statische-lijst">
+      <p>Biologische groente- en fruitaanbiedingen, bijgewerkt op 2026-08-31T20:47:14.622152.</p>
+      <section><h2>AH</h2>
+        <ul>
+          <li>AH Biologisch Witte druiven pitloos — &euro;1.75 (was &euro;3.49) &middot; alleen bij: 2 stapelen tot 50%</li>
+        </ul>
+      </section>
+      <section><h2>Jumbo</h2>
+        <ul>
+          <li>Jumbo Biologisch Aardappelen Kruimig 2,5 kg — &euro;2.49 (was &euro;4.55)</li>
+          <li>Jumbo Biologisch Aardappelen Vastkokend 2,5KG — &euro;2.49 (was &euro;4.55)</li>
+        </ul>
+      </section>
+      <section><h2>Lidl</h2>
+        <ul>
+          <li>Bio kastanjechampignons — &euro;1.49 (was &euro;1.99)</li>
+          <li>Bio kastanje-champignons — &euro;1.49 (was &euro;1.99)</li>
+          <li>Alesto Bio Mango — &euro;3.49</li>
+        </ul>
+      </section>
+      <section><h2>Aldi</h2>
+        <p>Geen bio-acties bij Aldi deze week.</p>
+      </section>
+      <section><h2>Dirk</h2>
+        <ul>
+          <li>Bio+ Portobello per bak — &euro;1.49 (was &euro;1.69)</li>
+        </ul>
+      </section>
+      <section><h2>Plus</h2>
+        <ul>
+          <li>Bonduelle Crispy maïs biologisch — &euro;1.00 (was &euro;2.19) &middot; voorraad</li>
+          <li>Biologisch PLUS Biologische aardappelen — &euro;1.00 (was &euro;2.19)</li>
+          <li>Biologisch PLUS Vastkokende aardappelen biologisch — &euro;1.00 (was &euro;2.19)</li>
+        </ul>
+      </section>
     </div>
+    <!--/PRODUCTEN-->
   </div>
 </main>
 
@@ -334,10 +421,11 @@ function renderAanbiedingCard(item, storeColor, isExtra) {
       <div class="name">${item.naam.toLowerCase()}</div>
       <div class="price-row">
         <span class="price-now">&euro;${item.actieprijs.toFixed(2)}</span>
+        ${item.vanaf ? `<span class="prijs-mits">vanaf ${item.vanaf} stuks</span>` : ''}
         ${item.normale_prijs ? `<span class="price-was">&euro;${item.normale_prijs.toFixed(2)}</span>` : ''}
       </div>
-      ${savingsPct && savingsPct > 0 ? `<div class="savings">${savingsPct}% korting</div>` : ''}
-      ${item.voorwaarde ? `<div class="voorwaarde">&#9888;&#65039; alleen bij: ${item.voorwaarde.toLowerCase()}</div>` : ''}
+      ${savingsPct && savingsPct > 0 ? `<div class="savings">${savingsPct}% korting${item.voorwaarde ? ' bij dat aantal' : ''}</div>` : ''}
+      ${item.voorwaarde ? `<div class="voorwaarde">&#9888;&#65039; ${item.voorwaarde.toLowerCase()}&nbsp;&middot; bij 1 stuk lagere korting, bedrag onbekend</div>` : ''}
       ${renderHistoryNote(item)}
     </div>`;
 }
@@ -387,9 +475,17 @@ function render() {
   const sectionsHtml = stores.map(s => {
     const items = aanbiedingen[s] || [];
     const color = STORE_COLORS[s] || 'var(--leaf)';
+    // Vers eerst, voorraad eronder achter een kopje. De cap voor "meer tonen"
+    // telt over het geheel, zodat een winkel met veel voorraad de pagina niet
+    // alsnog overneemt.
+    const vers = items.filter(i => (i.soort || 'vers') === 'vers');
+    const voorraad = items.filter(i => (i.soort || 'vers') === 'voorraad');
     const extraCount = Math.max(0, items.length - STORE_VISIBLE_CAP);
+    let n = 0;
+    const groep = (lijst) => `<div class="grid">${lijst.map(i => renderAanbiedingCard(i, color, n++ >= STORE_VISIBLE_CAP)).join('')}</div>`;
     const body = items.length
-      ? `<div class="grid">${items.map((i, idx) => renderAanbiedingCard(i, color, idx >= STORE_VISIBLE_CAP)).join('')}</div>` +
+      ? (vers.length ? groep(vers) : '') +
+        (voorraad.length ? `<p class="soort-kop${vers.length ? '' : ' eerste'}">Voorraad<span class="soort-uitleg">blik, pot, zak of vriezer</span></p>` + groep(voorraad) : '') +
         (extraCount > 0 ? `<button class="toggle-more" type="button" data-more="+${extraCount} meer tonen" data-less="Toon minder">+${extraCount} meer tonen</button>` : '')
       : `<p class="empty-note">Geen bio-acties bij ${s} deze week.</p>`;
     return `
