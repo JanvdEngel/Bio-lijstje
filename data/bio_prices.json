@@ -1,17 +1,17 @@
 {
-  "laatst_bijgewerkt": "2026-08-31T06:04:40.582535",
+  "laatst_bijgewerkt": "2026-08-31T20:47:14.622152",
   "aanbiedingen": {
     "AH": [
-      {
-        "naam": "Unox Biologische pompoen soep",
-        "actieprijs": 2.49,
-        "normale_prijs": 5.19
-      },
       {
         "naam": "AH Biologisch Witte druiven pitloos",
         "actieprijs": 1.75,
         "normale_prijs": 3.49,
-        "voorwaarde": "2 STAPELEN TOT 50%"
+        "soort": "vers",
+        "voorwaarde": "2 STAPELEN TOT 50%",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 1.75,
+        "laagste_ooit_datum": "2026-08-31",
+        "eerder_gezien": 1
       }
     ],
     "Jumbo": [
@@ -19,6 +19,7 @@
         "naam": "Jumbo Biologisch Aardappelen Kruimig 2,5 kg",
         "actieprijs": 2.49,
         "normale_prijs": 4.55,
+        "soort": "vers",
         "laagste_ooit_prijs": 2.49,
         "laagste_ooit_datum": "2026-08-27",
         "eerder_gezien": 1
@@ -27,6 +28,7 @@
         "naam": "Jumbo Biologisch Aardappelen Vastkokend 2,5KG",
         "actieprijs": 2.49,
         "normale_prijs": 4.55,
+        "soort": "vers",
         "laagste_ooit_prijs": 2.49,
         "laagste_ooit_datum": "2026-08-27",
         "eerder_gezien": 2
@@ -36,21 +38,18 @@
       {
         "naam": "Bio kastanjechampignons",
         "actieprijs": 1.49,
-        "normale_prijs": 1.99
+        "normale_prijs": 1.99,
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.49,
+        "laagste_ooit_datum": "2026-08-31",
+        "eerder_gezien": 1
       },
       {
         "naam": "Bio kastanje-champignons",
         "actieprijs": 1.49,
         "normale_prijs": 1.99,
+        "soort": "vers",
         "laagste_ooit_prijs": 1.49,
-        "laagste_ooit_datum": "2026-08-28",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Accentino Bio appelciderazijn",
-        "actieprijs": 1.99,
-        "normale_prijs": null,
-        "laagste_ooit_prijs": 1.99,
         "laagste_ooit_datum": "2026-08-28",
         "eerder_gezien": 1
       },
@@ -58,6 +57,7 @@
         "naam": "Alesto Bio Mango",
         "actieprijs": 3.49,
         "normale_prijs": null,
+        "soort": "vers",
         "laagste_ooit_prijs": 3.49,
         "laagste_ooit_datum": "2026-08-28",
         "eerder_gezien": 1
@@ -69,6 +69,7 @@
         "naam": "Bio+ Portobello per bak",
         "actieprijs": 1.49,
         "normale_prijs": 1.69,
+        "soort": "vers",
         "laagste_ooit_prijs": 1.49,
         "laagste_ooit_datum": "2026-08-26",
         "eerder_gezien": 1
@@ -76,17 +77,10 @@
     ],
     "Plus": [
       {
-        "naam": "Biologisch PLUS Tortelloni ricotta spinazie biologisch",
-        "actieprijs": 1.75,
-        "normale_prijs": 2.99,
-        "laagste_ooit_prijs": 1.75,
-        "laagste_ooit_datum": "2026-08-26",
-        "eerder_gezien": 1
-      },
-      {
         "naam": "Bonduelle Crispy maïs biologisch",
         "actieprijs": 1.0,
         "normale_prijs": 2.19,
+        "soort": "voorraad",
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-26",
         "eerder_gezien": 1
@@ -95,6 +89,7 @@
         "naam": "Biologisch PLUS Biologische aardappelen",
         "actieprijs": 1.0,
         "normale_prijs": 2.19,
+        "soort": "vers",
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-26",
         "eerder_gezien": 1
@@ -103,6 +98,7 @@
         "naam": "Biologisch PLUS Vastkokende aardappelen biologisch",
         "actieprijs": 1.0,
         "normale_prijs": 2.19,
+        "soort": "vers",
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-26",
         "eerder_gezien": 1
