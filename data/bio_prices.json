@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-01T19:44:36.063277",
+  "laatst_bijgewerkt": "2026-09-01T20:25:08.355502",
   "aanbiedingen": {
     "AH": [
       {
@@ -37,15 +37,6 @@
     "Lidl": [
       {
         "naam": "Bio kastanjechampignons",
-        "actieprijs": 1.49,
-        "normale_prijs": 1.99,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.49,
-        "laagste_ooit_datum": "2026-08-31",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Bio kastanje-champignons",
         "actieprijs": 1.49,
         "normale_prijs": 1.99,
         "soort": "vers",
