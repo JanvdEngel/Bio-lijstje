@@ -42,14 +42,39 @@ def esc(tekst):
     return html.escape(str(tekst), quote=True)
 
 
-def residutabel():
-    """Zet de handmatige koppeltabel om in wat de kaarten nodig hebben:
-    per seizoensproduct het gemeten cijfer, het gemiddelde van zijn categorie
-    ter vergelijking, en of het bij de vijf hoogste van die categorie hoort.
+# Grens waarboven en waaronder een product afwijkt van het gemiddelde van zijn
+# categorie. Een kwart eronder of erboven, want kleinere verschillen zeggen bij
+# gemiddelden over ~74 monsters per soort weinig.
+AFWIJKING = 0.25
 
-    De top vijf is bewust per categorie en niet over alles heen: groente scoort
-    structureel lager dan fruit (gemiddeld 1,3 tegen 2,6), dus een gezamenlijke
-    ranglijst zou alleen fruit markeren."""
+OORDEEL = {
+    "meer": "meer bestrijdingsmiddelen dan gemiddeld",
+    "rond": "gemiddeld aantal bestrijdingsmiddelen",
+    "minder": "minder bestrijdingsmiddelen dan gemiddeld",
+}
+
+
+def oordeel(residuen, gemiddelde):
+    if residuen > gemiddelde * (1 + AFWIJKING):
+        return "meer"
+    if residuen < gemiddelde * (1 - AFWIJKING):
+        return "minder"
+    return "rond"
+
+
+def residutabel():
+    """Zet de handmatige koppeltabel om in wat de kaarten nodig hebben.
+
+    Op de kaart staat geen kaal getal meer. "gem. 3,8 bestrijdingsmiddelen"
+    klinkt precies maar zegt niets: de lezer weet niet of dat veel is, en de
+    vraag die hij heeft is of hij hier beter biologisch kan kopen. Daarom een
+    vergelijking met het gemiddelde van de eigen categorie — de enige maatstaf
+    die in dezelfde bron staat. Het exacte cijfer blijft in het uitklapje.
+
+    Vergelijken binnen de categorie en niet over alles heen: groente scoort
+    structureel lager dan fruit (gemiddeld 1,3 tegen 2,6), dus tegen één
+    gezamenlijk gemiddelde zou vrijwel alle groente er gunstig uitkomen en
+    vrijwel al het fruit ongunstig."""
     eet = json.loads((HIER / "eetwijzer-2026.json").read_text(encoding="utf-8"))
     kop = json.loads((HIER / "koppeling_eetwijzer.json").read_text(encoding="utf-8"))
 
@@ -58,21 +83,21 @@ def residutabel():
         ("fruit", "fruit", eet["gemiddelde_fruit"]),
         ("groente", "groente", eet["gemiddelde_groente"]),
     ):
-        gesorteerd = sorted(eet[sleutel], key=lambda p: -p["residuen"])
-        top5 = {p["naam"] for p in gesorteerd[:5]}
         for p in eet[sleutel]:
             bron[p["naam"]] = {
                 "residuen": p["residuen"],
                 "gemiddelde": gemiddelde,
                 "soort": categorie,
-                "top5": p["naam"] in top5,
+                "oordeel": oordeel(p["residuen"], gemiddelde),
             }
+    # Aardappel hoort bij geen van beide lijsten maar wordt met groente
+    # vergeleken; het is de enige in die categorie.
     for p in eet["overig"]:
         bron[p["naam"]] = {
             "residuen": p["residuen"],
             "gemiddelde": eet["gemiddelde_groente"],
             "soort": "groente",
-            "top5": False,
+            "oordeel": oordeel(p["residuen"], eet["gemiddelde_groente"]),
         }
 
     tabel = {}
@@ -87,26 +112,27 @@ def kaart(product, residu):
     """Eén product. Het uitklapje zit in de HTML en niet in JavaScript, zodat een
     crawler en een bezoeker zonder JavaScript het ook zien.
 
-    Het 🧴 staat alleen bij de vijf hoogst scorende soorten per categorie. Bij de
-    rest staat het cijfer zonder waarschuwing: een markering bij ruim de helft
-    van de lijst zegt niets meer, en het getal is informatiever dan een
-    pictogram. Producten die de NVWA niet apart meet krijgen geen van beide —
-    geen cijfer is beter dan het cijfer van een ander gewas."""
+    Op de kaart staat een vergelijking, geen kaal getal — zie residutabel().
+    Het 🧴 hoort bij dezelfde regel: het staat bij wat boven het gemiddelde
+    uitkomt, zodat de markering en de tekst hetzelfde zeggen. Producten die de
+    NVWA niet apart meet krijgen niets: geen oordeel is beter dan het oordeel
+    van een ander gewas."""
     r = residu.get(product["naam"])
     vlag = regel = uitleg = ""
     if r:
         getal = f'{r["residuen"]:.1f}'.replace(".", ",")
         vergelijk = f'{r["gemiddelde"]:.1f}'.replace(".", ",")
-        if r["top5"]:
+        hoog = r["oordeel"] == "meer"
+        if hoog:
             vlag = ('<button class="bio-flag" type="button" '
-                    'aria-label="Waarom dit icoon?">\U0001F9F4</button>')
-        regel = (f'\n        <p class="residu{" hoog" if r["top5"] else ""}">'
-                 f'gem. {getal} bestrijdingsmiddelen</p>')
+                    'aria-label="Wat betekent dit?">\U0001F9F4</button>')
+        regel = (f'\n        <p class="residu {r["oordeel"]}">'
+                 f'{OORDEEL[r["oordeel"]]}</p>')
         uitleg = (
             f'\n        <p class="bio-note">In monsters van '
             f'{esc(r["eetwijzer_naam"].lower())} vond de NVWA gemiddeld {getal} '
-            f'verschillende bestrijdingsmiddelen; het gemiddelde voor {r["soort"]} '
-            f'is {vergelijk}. Bron: PesticidenEetwijzer van PAN-NL, '
+            f'verschillende bestrijdingsmiddelen. Voor {r["soort"]} als geheel is '
+            f'dat {vergelijk}. Bron: PesticidenEetwijzer van PAN-NL, '
             f'NVWA-data 2023–2025.</p>'
         )
     return (
@@ -161,9 +187,8 @@ def maandpagina(data, index, residu):
 
   <div class="hero">
     <a class="nav-btn" href="/seizoen/{vorige['maand']}/" aria-label="{esc(vorige['maand'].capitalize())}">&#8592;</a>
-    <div class="month-stamp">
+    <div class="month-stamp" data-maand="{m['nummer']}">
       <h1 class="name">{esc(naam)}</h1>
-      <span class="tag" data-maand="{m['nummer']}">Nu in het schap</span>
     </div>
     <a class="nav-btn" href="/seizoen/{volgende['maand']}/" aria-label="{esc(volgende['maand'].capitalize())}">&#8594;</a>
   </div>
@@ -187,6 +212,9 @@ def maandpagina(data, index, residu):
             f"van het seizoen zijn, met bewaartip per product. {m['intro'][:110].rsplit(' ', 1)[0]}…"
         ),
         "canonical": f"{BASIS_URL}/{m['maand']}/",
+        # Op een maandpagina is de maand de kop en zegt "Seizoenswijzer" alleen
+        # in welk deel van de site je bent.
+        "eyebrow": '<p class="eyebrow">Seizoenswijzer</p>',
         "inhoud": inhoud,
     }
 
@@ -204,12 +232,10 @@ def overzichtspagina(data):
             f'        <span class="count">{totaal} soorten</span>\n'
             f'      </a>'
         )
+    # Geen hero met "Seizoenswijzer" erin: dat woord staat al als bovenschrift
+    # in de kop, en twee keer dezelfde naam onder elkaar leest als een fout.
+    # Het bovenschrift is hier dus de h1.
     inhoud = (
-        '  <div class="hero">\n'
-        '    <div class="month-stamp">\n'
-        '      <h1 class="name">Seizoenswijzer</h1>\n'
-        '    </div>\n'
-        '  </div>\n\n'
         '  <p class="intro">Welke groente en welk fruit in Nederland van het seizoen zijn, '
         'maand voor maand. Kies een maand voor de volledige lijst met bewaartips.</p>\n\n'
         '  <section class="group">\n'
@@ -225,6 +251,7 @@ def overzichtspagina(data):
             "vers geoogst of uit de bewaring van een Nederlandse oogst, met bewaartip per product."
         ),
         "canonical": f"{BASIS_URL}/",
+        "eyebrow": '<h1 class="eyebrow">Seizoenswijzer</h1>',
         "inhoud": inhoud,
     }
 
@@ -237,6 +264,7 @@ def schrijf(pagina, sjabloon, seizoensregel):
         ("{{BESCHRIJVING}}", esc(pagina["beschrijving"])),
         ("{{CANONICAL}}", pagina["canonical"]),
         ("{{SEIZOENSREGEL}}", esc(seizoensregel)),
+        ("{{EYEBROW}}", pagina["eyebrow"]),
         ("{{INHOUD}}", pagina["inhoud"]),
     ):
         tekst = tekst.replace(sleutel, waarde)

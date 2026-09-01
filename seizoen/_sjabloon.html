@@ -191,21 +191,18 @@
     clip:rect(0 0 0 0); white-space:nowrap;
   }
 
-  /* "Nu in het schap" staat in de HTML van elke maand maar hoort er maar bij
-     één te staan. Welke dat is kan een statische pagina niet weten, dus het
-     scriptje onderaan zet .is-nu op de maand van vandaag. */
-  .month-stamp .tag{ display:none; }
-  .month-stamp .tag.is-nu{ display:inline-block; }
 
-  /* Het gemeten cijfer staat bij elk gekoppeld product; alleen de vijf hoogste
-     per categorie krijgen daarbij het 🧴. Een markering bij ruim de helft van de
-     lijst zegt niets meer. */
+  /* Op de kaart staat een vergelijking en geen kaal getal: 'gem. 3,8' klinkt
+     precies maar zegt de lezer niets. Het exacte cijfer staat in het uitklapje.
+     Het 🧴 hoort bij dezelfde regel als de oranje tekst, zodat pictogram en
+     woorden hetzelfde zeggen. */
   .residu{
     font-family:'Space Mono', monospace; font-size:10.5px;
     letter-spacing:0.02em; color:var(--muted);
     margin:6px 0 0;
   }
-  .residu.hoog{ color:var(--harvest); }
+  .residu.meer{ color:var(--harvest); }
+  .residu.minder{ color:var(--leaf); }
 
   .intro{
     max-width:60ch; margin:0 auto 26px;
@@ -452,7 +449,7 @@
       <a href="/seizoen/" class="huidig" aria-current="page">Seizoen</a>
     </nav>
     <a class="wordmark" href="/">Het Bio Lijstje</a>
-    <p class="eyebrow">Seizoenswijzer</p>
+    {{EYEBROW}}
 </header>
 
 <div class="wrap leeskolom">
@@ -475,9 +472,22 @@ document.addEventListener('click', (e) => {
   if (btn) btn.closest('.card').classList.toggle('bio-open');
 });
 
+const dezeMaand = new Date().getMonth() + 1;
 document.querySelectorAll('[data-maand]').forEach((el) => {
-  if (Number(el.dataset.maand) === new Date().getMonth() + 1) el.classList.add('is-nu');
+  if (Number(el.dataset.maand) === dezeMaand) el.classList.add('is-nu');
 });
+
+/* "Nu in het schap" wordt hier toegevoegd en staat niet in de HTML. Anders
+   stond die zin in de broncode van alle twaalf de maandpagina's, ook al liet
+   de CSS hem maar op één zien: twaalf pagina's die tegen een crawler zeggen
+   dat ze actueel zijn, en zonder JavaScript zag je hem nergens. */
+const stempel = document.querySelector('.month-stamp[data-maand]');
+if (stempel && Number(stempel.dataset.maand) === dezeMaand) {
+  const tag = document.createElement('span');
+  tag.className = 'tag';
+  tag.textContent = 'Nu in het schap';
+  stempel.appendChild(tag);
+}
 
 /* ---- Licht/donker: zie de toelichting bij het palet ---------------------- */
 const THEMA_KEY = 'bioBordThema';

@@ -191,21 +191,18 @@
     clip:rect(0 0 0 0); white-space:nowrap;
   }
 
-  /* "Nu in het schap" staat in de HTML van elke maand maar hoort er maar bij
-     één te staan. Welke dat is kan een statische pagina niet weten, dus het
-     scriptje onderaan zet .is-nu op de maand van vandaag. */
-  .month-stamp .tag{ display:none; }
-  .month-stamp .tag.is-nu{ display:inline-block; }
 
-  /* Het gemeten cijfer staat bij elk gekoppeld product; alleen de vijf hoogste
-     per categorie krijgen daarbij het 🧴. Een markering bij ruim de helft van de
-     lijst zegt niets meer. */
+  /* Op de kaart staat een vergelijking en geen kaal getal: 'gem. 3,8' klinkt
+     precies maar zegt de lezer niets. Het exacte cijfer staat in het uitklapje.
+     Het 🧴 hoort bij dezelfde regel als de oranje tekst, zodat pictogram en
+     woorden hetzelfde zeggen. */
   .residu{
     font-family:'Space Mono', monospace; font-size:10.5px;
     letter-spacing:0.02em; color:var(--muted);
     margin:6px 0 0;
   }
-  .residu.hoog{ color:var(--harvest); }
+  .residu.meer{ color:var(--harvest); }
+  .residu.minder{ color:var(--leaf); }
 
   .intro{
     max-width:60ch; margin:0 auto 26px;
@@ -473,9 +470,8 @@
 
   <div class="hero">
     <a class="nav-btn" href="/seizoen/augustus/" aria-label="Augustus">&#8592;</a>
-    <div class="month-stamp">
+    <div class="month-stamp" data-maand="9">
       <h1 class="name">September</h1>
-      <span class="tag" data-maand="9">Nu in het schap</span>
     </div>
     <a class="nav-btn" href="/seizoen/oktober/" aria-label="Oktober">&#8594;</a>
   </div>
@@ -488,8 +484,8 @@
       <div class="card">
         <p class="item-name"><span class="name-text">Pompoen</span></p>
         <p class="item-tip">Lang houdbaar, koel en droog bewaren.</p>
-        <p class="residu">gem. 0,2 bestrijdingsmiddelen</p>
-        <p class="bio-note">In monsters van pompoenen vond de NVWA gemiddeld 0,2 verschillende bestrijdingsmiddelen; het gemiddelde voor groente is 1,3. Bron: PesticidenEetwijzer van PAN-NL, NVWA-data 2023–2025.</p>
+        <p class="residu minder">minder bestrijdingsmiddelen dan gemiddeld</p>
+        <p class="bio-note">In monsters van pompoenen vond de NVWA gemiddeld 0,2 verschillende bestrijdingsmiddelen. Voor groente als geheel is dat 1,3. Bron: PesticidenEetwijzer van PAN-NL, NVWA-data 2023–2025.</p>
       </div>
       <div class="card">
         <p class="item-name"><span class="name-text">Boerenkool</span></p>
@@ -498,14 +494,14 @@
       <div class="card">
         <p class="item-name"><span class="name-text">Prei</span></p>
         <p class="item-tip">Volop en van goede kwaliteit.</p>
-        <p class="residu">gem. 1,3 bestrijdingsmiddelen</p>
-        <p class="bio-note">In monsters van preien vond de NVWA gemiddeld 1,3 verschillende bestrijdingsmiddelen; het gemiddelde voor groente is 1,3. Bron: PesticidenEetwijzer van PAN-NL, NVWA-data 2023–2025.</p>
+        <p class="residu rond">gemiddeld aantal bestrijdingsmiddelen</p>
+        <p class="bio-note">In monsters van preien vond de NVWA gemiddeld 1,3 verschillende bestrijdingsmiddelen. Voor groente als geheel is dat 1,3. Bron: PesticidenEetwijzer van PAN-NL, NVWA-data 2023–2025.</p>
       </div>
       <div class="card">
         <p class="item-name"><span class="name-text">Rode kool</span></p>
         <p class="item-tip">Start van het seizoen.</p>
-        <p class="residu">gem. 0,7 bestrijdingsmiddelen</p>
-        <p class="bio-note">In monsters van rode kool vond de NVWA gemiddeld 0,7 verschillende bestrijdingsmiddelen; het gemiddelde voor groente is 1,3. Bron: PesticidenEetwijzer van PAN-NL, NVWA-data 2023–2025.</p>
+        <p class="residu minder">minder bestrijdingsmiddelen dan gemiddeld</p>
+        <p class="bio-note">In monsters van rode kool vond de NVWA gemiddeld 0,7 verschillende bestrijdingsmiddelen. Voor groente als geheel is dat 1,3. Bron: PesticidenEetwijzer van PAN-NL, NVWA-data 2023–2025.</p>
       </div>
       <div class="card">
         <p class="item-name"><span class="name-text">Witte kool</span></p>
@@ -514,8 +510,8 @@
       <div class="card">
         <p class="item-name"><span class="name-text">Winterwortel</span></p>
         <p class="item-tip">Zoeter na de zomer.</p>
-        <p class="residu">gem. 1,0 bestrijdingsmiddelen</p>
-        <p class="bio-note">In monsters van wortels vond de NVWA gemiddeld 1,0 verschillende bestrijdingsmiddelen; het gemiddelde voor groente is 1,3. Bron: PesticidenEetwijzer van PAN-NL, NVWA-data 2023–2025.</p>
+        <p class="residu rond">gemiddeld aantal bestrijdingsmiddelen</p>
+        <p class="bio-note">In monsters van wortels vond de NVWA gemiddeld 1,0 verschillende bestrijdingsmiddelen. Voor groente als geheel is dat 1,3. Bron: PesticidenEetwijzer van PAN-NL, NVWA-data 2023–2025.</p>
       </div>
       <div class="card">
         <p class="item-name"><span class="name-text">Pastinaak</span></p>
@@ -530,26 +526,26 @@
       <div class="card">
         <p class="item-name"><span class="name-text">Appel</span></p>
         <p class="item-tip">Nieuwe oogst, volop keuze in rassen.</p>
-        <p class="residu">gem. 3,1 bestrijdingsmiddelen</p>
-        <p class="bio-note">In monsters van appelen vond de NVWA gemiddeld 3,1 verschillende bestrijdingsmiddelen; het gemiddelde voor fruit is 2,6. Bron: PesticidenEetwijzer van PAN-NL, NVWA-data 2023–2025.</p>
+        <p class="residu rond">gemiddeld aantal bestrijdingsmiddelen</p>
+        <p class="bio-note">In monsters van appelen vond de NVWA gemiddeld 3,1 verschillende bestrijdingsmiddelen. Voor fruit als geheel is dat 2,6. Bron: PesticidenEetwijzer van PAN-NL, NVWA-data 2023–2025.</p>
       </div>
       <div class="card">
-        <p class="item-name"><span class="name-text">Peer</span><button class="bio-flag" type="button" aria-label="Waarom dit icoon?">🧴</button></p>
+        <p class="item-name"><span class="name-text">Peer</span><button class="bio-flag" type="button" aria-label="Wat betekent dit?">🧴</button></p>
         <p class="item-tip">Piekseizoen.</p>
-        <p class="residu hoog">gem. 3,8 bestrijdingsmiddelen</p>
-        <p class="bio-note">In monsters van peren vond de NVWA gemiddeld 3,8 verschillende bestrijdingsmiddelen; het gemiddelde voor fruit is 2,6. Bron: PesticidenEetwijzer van PAN-NL, NVWA-data 2023–2025.</p>
+        <p class="residu meer">meer bestrijdingsmiddelen dan gemiddeld</p>
+        <p class="bio-note">In monsters van peren vond de NVWA gemiddeld 3,8 verschillende bestrijdingsmiddelen. Voor fruit als geheel is dat 2,6. Bron: PesticidenEetwijzer van PAN-NL, NVWA-data 2023–2025.</p>
       </div>
       <div class="card">
-        <p class="item-name"><span class="name-text">Druif</span><button class="bio-flag" type="button" aria-label="Waarom dit icoon?">🧴</button></p>
+        <p class="item-name"><span class="name-text">Druif</span><button class="bio-flag" type="button" aria-label="Wat betekent dit?">🧴</button></p>
         <p class="item-tip">NL-kastteelt op zijn best.</p>
-        <p class="residu hoog">gem. 3,8 bestrijdingsmiddelen</p>
-        <p class="bio-note">In monsters van druiven vond de NVWA gemiddeld 3,8 verschillende bestrijdingsmiddelen; het gemiddelde voor fruit is 2,6. Bron: PesticidenEetwijzer van PAN-NL, NVWA-data 2023–2025.</p>
+        <p class="residu meer">meer bestrijdingsmiddelen dan gemiddeld</p>
+        <p class="bio-note">In monsters van druiven vond de NVWA gemiddeld 3,8 verschillende bestrijdingsmiddelen. Voor fruit als geheel is dat 2,6. Bron: PesticidenEetwijzer van PAN-NL, NVWA-data 2023–2025.</p>
       </div>
       <div class="card">
         <p class="item-name"><span class="name-text">Pruim</span></p>
         <p class="item-tip">Laatste ronde van het seizoen.</p>
-        <p class="residu">gem. 1,6 bestrijdingsmiddelen</p>
-        <p class="bio-note">In monsters van pruimen vond de NVWA gemiddeld 1,6 verschillende bestrijdingsmiddelen; het gemiddelde voor fruit is 2,6. Bron: PesticidenEetwijzer van PAN-NL, NVWA-data 2023–2025.</p>
+        <p class="residu minder">minder bestrijdingsmiddelen dan gemiddeld</p>
+        <p class="bio-note">In monsters van pruimen vond de NVWA gemiddeld 1,6 verschillende bestrijdingsmiddelen. Voor fruit als geheel is dat 2,6. Bron: PesticidenEetwijzer van PAN-NL, NVWA-data 2023–2025.</p>
       </div>
     </div>
   </section>
@@ -578,9 +574,22 @@ document.addEventListener('click', (e) => {
   if (btn) btn.closest('.card').classList.toggle('bio-open');
 });
 
+const dezeMaand = new Date().getMonth() + 1;
 document.querySelectorAll('[data-maand]').forEach((el) => {
-  if (Number(el.dataset.maand) === new Date().getMonth() + 1) el.classList.add('is-nu');
+  if (Number(el.dataset.maand) === dezeMaand) el.classList.add('is-nu');
 });
+
+/* "Nu in het schap" wordt hier toegevoegd en staat niet in de HTML. Anders
+   stond die zin in de broncode van alle twaalf de maandpagina's, ook al liet
+   de CSS hem maar op één zien: twaalf pagina's die tegen een crawler zeggen
+   dat ze actueel zijn, en zonder JavaScript zag je hem nergens. */
+const stempel = document.querySelector('.month-stamp[data-maand]');
+if (stempel && Number(stempel.dataset.maand) === dezeMaand) {
+  const tag = document.createElement('span');
+  tag.className = 'tag';
+  tag.textContent = 'Nu in het schap';
+  stempel.appendChild(tag);
+}
 
 /* ---- Licht/donker: zie de toelichting bij het palet ---------------------- */
 const THEMA_KEY = 'bioBordThema';
