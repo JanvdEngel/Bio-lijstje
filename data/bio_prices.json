@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-08-31T22:21:45.136045",
+  "laatst_bijgewerkt": "2026-09-01T06:05:20.782640",
   "aanbiedingen": {
     "AH": [
       {
@@ -16,15 +16,6 @@
     ],
     "Jumbo": [
       {
-        "naam": "Jumbo Biologisch Aardappelen Kruimig 2,5 kg",
-        "actieprijs": 2.49,
-        "normale_prijs": 4.55,
-        "soort": "vers",
-        "laagste_ooit_prijs": 2.49,
-        "laagste_ooit_datum": "2026-08-27",
-        "eerder_gezien": 1
-      },
-      {
         "naam": "Jumbo Biologisch Aardappelen Vastkokend 2,5KG",
         "actieprijs": 2.49,
         "normale_prijs": 4.55,
@@ -32,6 +23,15 @@
         "laagste_ooit_prijs": 2.49,
         "laagste_ooit_datum": "2026-08-27",
         "eerder_gezien": 2
+      },
+      {
+        "naam": "Jumbo Biologisch Aardappelen Kruimig 2,5 kg",
+        "actieprijs": 2.49,
+        "normale_prijs": 4.55,
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.49,
+        "laagste_ooit_datum": "2026-08-27",
+        "eerder_gezien": 1
       }
     ],
     "Lidl": [
@@ -105,6 +105,12 @@
       }
     ],
     "Ekoplaza": [
+      {
+        "naam": "Siroop aardbei",
+        "actieprijs": 14.35,
+        "normale_prijs": 16.89,
+        "soort": "vers"
+      },
       {
         "naam": "Oesterzwammen",
         "actieprijs": 2.59,
