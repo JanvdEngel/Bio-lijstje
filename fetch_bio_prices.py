@@ -255,6 +255,22 @@ HISTORY_PATH = Path(__file__).parent / "www" / "data" / "geschiedenis.json"
 # 30 prijs*wijzigingen* per product, niet 30 fetches — zie
 # enrich_and_record_history(). Bij een actie die per week wisselt is dat jaren.
 HISTORY_MAX_PER_PRODUCT = 30
+
+# De prijsgeschiedenis is het enige in dit project dat niet opnieuw op te halen
+# is. De code staat in git, de aanbiedingen komen van de API, maar deze reeks
+# bestaat maar één keer — hij groeit elke dag met wat we die dag zagen.
+#
+# Hij leeft in /share (blijft staan, ook als de add-on verwijderd wordt), maar
+# /share zit níét in de nachtelijke Home Assistant-back-up: daar staat bij
+# folders alleen "ssl". De eigen /data van de add-on zit er wél in, als
+# local_bio_bord.tar.gz. Daarom na elke geslaagde ronde een kopie daarheen, plus
+# een handvol gedateerde kopieën — die vangen het geval waarin het bestand
+# vandaag stuk is geschreven en dat pas over een week opvalt.
+#
+# Let op wat dit NIET oplost: alles staat nog op dezelfde SD-kaart. Tegen een
+# stukke kaart helpt alleen een kopie buiten de Pi.
+ADDON_DATA_DIR = Path("/data")
+HISTORY_BACKUPS = 7
 WWW_DIR = Path(__file__).parent / "www"
 # Alleen de data pushen, niet de website-bestanden. Die stonden hier eerst ook
 # in (index.html, manifest.json, icon.png, sw.js), en dat heeft in augustus 2026
@@ -725,7 +741,40 @@ def load_history():
 
 def save_history(history):
     HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
-    HISTORY_PATH.write_text(json.dumps(history, indent=2, ensure_ascii=False))
+    tekst = json.dumps(history, indent=2, ensure_ascii=False)
+    HISTORY_PATH.write_text(tekst)
+    _backup_history(tekst)
+
+
+def _backup_history(tekst):
+    """Legt een kopie van de geschiedenis in de eigen /data van de add-on, zodat
+    hij meegaat in de nachtelijke Home Assistant-back-up. Zie de toelichting bij
+    ADDON_DATA_DIR waarom dat nodig is en wat het niet oplost.
+
+    Faalt bewust stil: dit is een vangnet, en een vangnet dat de ronde kan laten
+    klappen is erger dan geen vangnet. Buiten de add-on (bij een lokale
+    --dry-run) bestaat /data niet en gebeurt er niets.
+
+    Een gedateerde kopie per dag, de laatste zeven bewaard. Bij 32 kB per stuk
+    is dat een kwart megabyte, en het geeft een week om te merken dat er iets
+    misging voordat de goede versie uit beeld is."""
+    if not ADDON_DATA_DIR.is_dir():
+        return
+    try:
+        map_ = ADDON_DATA_DIR / "geschiedenis-backup"
+        map_.mkdir(exist_ok=True)
+        (map_ / "geschiedenis.json").write_text(tekst, encoding="utf-8")
+        vandaag = datetime.now().date().isoformat()
+        (map_ / f"geschiedenis-{vandaag}.json").write_text(tekst, encoding="utf-8")
+        oud = sorted(map_.glob("geschiedenis-2*.json"))[:-HISTORY_BACKUPS]
+        for pad in oud:
+            pad.unlink()
+        log.info(
+            f"Geschiedenis geback-upt naar {map_} "
+            f"({len(sorted(map_.glob('geschiedenis-2*.json')))} gedateerde kopieën)"
+        )
+    except Exception as e:
+        log.warning(f"Back-up van de geschiedenis mislukt ({e}); de ronde gaat gewoon door")
 
 
 def enrich_and_record_history(store, items, history, vandaag):
