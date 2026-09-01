@@ -1,7 +1,7 @@
 name: "Het Bio Lijstje"
-version: "1.4.0"
+version: "1.5.0"
 slug: "bio_bord"
-description: "Dagelijkse bio groente/fruit aanbiedingen (AH/Jumbo/Lidl/Aldi/Dirk/Plus), losstaande webpagina op het lokale netwerk + optioneel publiek via GitHub Pages"
+description: "Dagelijkse bio groente/fruit aanbiedingen (AH/Jumbo/Lidl/Aldi/Dirk/Plus/Ekoplaza), losstaande webpagina op het lokale netwerk + optioneel publiek via GitHub Pages"
 arch:
   - aarch64
 startup: application
@@ -16,6 +16,8 @@ ports_description:
 options:
   github_token: ""
   github_repo: ""
+  prijsprofeet_key: ""
 schema:
   github_token: password
   github_repo: str
+  prijsprofeet_key: password?

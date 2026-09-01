@@ -1,0 +1,754 @@
+{
+  "bron": "Handmatig samengesteld op basis van de klassieke NL-seizoenslogica (volle grond, plastic tunnel, onverwarmde kas), zoals gehanteerd door Milieu Centraal en het Voedingscentrum. Geen live databron.",
+  "let_op_prijzen": "De richtprijzen zijn een eigen inschatting, geen meting: 17 unieke bedragen over 130 vermeldingen, allemaal afgerond. Ze staan hier bewaard maar worden niet meer op de site getoond. Zie het werkplan: echte prijzen komen via de koppeltabel met PrijsProfeet.",
+  "maanden": [
+    {
+      "maand": "januari",
+      "nummer": 1,
+      "groente": [
+        {
+          "naam": "Winterpostelein",
+          "tip": "Mild van smaak, goed door salades of kort gestoofd.",
+          "richtprijs": "€2,00 / zak"
+        },
+        {
+          "naam": "Koolraap",
+          "tip": "Stevig, goed voor stamppot of oven.",
+          "richtprijs": "€1,50 / kg"
+        },
+        {
+          "naam": "Pastinaak",
+          "tip": "Zoetig, lekker geroosterd.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Rode kool",
+          "tip": "Klassieker, houdt weken in de koelkast.",
+          "richtprijs": "€1,20 / kg"
+        },
+        {
+          "naam": "Savooiekool",
+          "tip": "Goed voor roerbak of stoof.",
+          "richtprijs": "€1,50 / stuk"
+        },
+        {
+          "naam": "Spruitjes",
+          "tip": "Kort blancheren voorkomt bittere smaak.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Witlof",
+          "tip": "Rauw in salade of gegratineerd.",
+          "richtprijs": "€2,00 / kg"
+        },
+        {
+          "naam": "Winterwortel",
+          "tip": "Basis voor bijna elke stoof.",
+          "richtprijs": "€1,00 / kg"
+        },
+        {
+          "naam": "Prei",
+          "tip": "Fijn in soep of quiche.",
+          "richtprijs": "€2,00 / kg"
+        },
+        {
+          "naam": "Ui",
+          "tip": "Basis groente, lang houdbaar.",
+          "richtprijs": "€1,20 / kg"
+        }
+      ],
+      "fruit": [
+        {
+          "naam": "Appel",
+          "tip": "Koel en donker bewaren, dan weken goed.",
+          "richtprijs": "€2,20 / kg"
+        },
+        {
+          "naam": "Peer",
+          "tip": "Laat narijpen op kamertemperatuur.",
+          "richtprijs": "€2,50 / kg"
+        }
+      ],
+      "intro": "Januari leeft van de bewaring en van wat de vorst verdraagt. De kolen, wortels en pastinaken liggen sinds het najaar in de opslag; spruitjes en prei staan nog op het land en worden door de kou juist zoeter, omdat zetmeel dan in suiker omslaat. Vers geoogst blad is er nauwelijks."
+    },
+    {
+      "maand": "februari",
+      "nummer": 2,
+      "groente": [
+        {
+          "naam": "Raapstelen",
+          "tip": "Kort door de pan, mild bitter.",
+          "richtprijs": "€2,50 / bosje"
+        },
+        {
+          "naam": "Winterpostelein",
+          "tip": "Goed in wintersalades.",
+          "richtprijs": "€2,00 / zak"
+        },
+        {
+          "naam": "Koolraap",
+          "tip": "Zoet na de vorst.",
+          "richtprijs": "€1,50 / kg"
+        },
+        {
+          "naam": "Pastinaak",
+          "tip": "Puree of ovenschotel.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Rode kool",
+          "tip": "Combineert goed met appel.",
+          "richtprijs": "€1,20 / kg"
+        },
+        {
+          "naam": "Witlof",
+          "tip": "Ook lekker gegrild.",
+          "richtprijs": "€2,00 / kg"
+        },
+        {
+          "naam": "Winterwortel",
+          "tip": "Rauw of gestoofd.",
+          "richtprijs": "€1,00 / kg"
+        },
+        {
+          "naam": "Prei",
+          "tip": "Romig in soep.",
+          "richtprijs": "€2,00 / kg"
+        }
+      ],
+      "fruit": [
+        {
+          "naam": "Appel",
+          "tip": "Uit de koelcel, nog steeds vers.",
+          "richtprijs": "€2,20 / kg"
+        },
+        {
+          "naam": "Peer",
+          "tip": "Ideaal voor op de haverbrij.",
+          "richtprijs": "€2,50 / kg"
+        }
+      ],
+      "intro": "De magerste weken van het jaar dienen zich aan. Wat er ligt komt vrijwel allemaal uit de bewaring, en de kwaliteit daarvan loopt terug: de bewaarperen en de laatste koolrapen zijn deze maand op hun eind. Raapstelen zijn het eerste teken dat er weer iets groeit."
+    },
+    {
+      "maand": "maart",
+      "nummer": 3,
+      "groente": [
+        {
+          "naam": "Spinazie",
+          "tip": "Kort stoven, slinkt sterk.",
+          "richtprijs": "€2,50 / zak"
+        },
+        {
+          "naam": "Radijs",
+          "tip": "Knapperig, ook de blaadjes zijn eetbaar.",
+          "richtprijs": "€1,00 / bosje"
+        },
+        {
+          "naam": "Veldsla",
+          "tip": "Mild, goed in combinatiesalade.",
+          "richtprijs": "€2,50 / zak"
+        },
+        {
+          "naam": "Witlof",
+          "tip": "Laatste ronde van het seizoen.",
+          "richtprijs": "€2,20 / kg"
+        },
+        {
+          "naam": "Prei",
+          "tip": "Nog volop verkrijgbaar.",
+          "richtprijs": "€2,00 / kg"
+        }
+      ],
+      "fruit": [
+        {
+          "naam": "Appel",
+          "tip": "Laatste bewaarappels van het seizoen.",
+          "richtprijs": "€2,00 / kg"
+        }
+      ],
+      "intro": "De omslag, en nog niet in ons voordeel. De bewaarappels zijn deze maand op — daarna staat er tot juni geen Nederlands fruit meer op de lijst. Aan de groentekant begint het juist: spinazie, radijs en veldsla komen als eerste uit de tunnel, terwijl witlof en prei hun laatste weken hebben."
+    },
+    {
+      "maand": "april",
+      "nummer": 4,
+      "groente": [
+        {
+          "naam": "Asperges",
+          "tip": "Schil dun, kook 8-10 min.",
+          "richtprijs": "€7,50 / kg"
+        },
+        {
+          "naam": "Radijs",
+          "tip": "Eet vers, snel verwelkt.",
+          "richtprijs": "€1,00 / bosje"
+        },
+        {
+          "naam": "Spinazie",
+          "tip": "Jonge blaadjes zijn het zachtst.",
+          "richtprijs": "€2,50 / zak"
+        },
+        {
+          "naam": "Rabarber",
+          "tip": "Alleen de stelen eten, blad is giftig.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Lente-ui",
+          "tip": "Mild, ook rauw goed.",
+          "richtprijs": "€1,00 / bosje"
+        }
+      ],
+      "fruit": [],
+      "intro": "De schraalste maand van het jaar: vijf soorten, en geen enkele daarvan fruit. De bewaarappels zijn op en de aardbeien beginnen pas in juni. Rabarber wordt vaak als vervanger gebruikt en loopt nu uit, maar het is een groente en staat hier dus ook onder groente. Verder is dit de maand waarin asperges op gang komen."
+    },
+    {
+      "maand": "mei",
+      "nummer": 5,
+      "groente": [
+        {
+          "naam": "Asperges",
+          "tip": "Piekseizoen, ook groene variant.",
+          "richtprijs": "€6,50 / kg"
+        },
+        {
+          "naam": "Doperwten",
+          "tip": "Vers uit de dop is het lekkerst.",
+          "richtprijs": "€4,00 / kg"
+        },
+        {
+          "naam": "Radijs",
+          "tip": "Volop en goedkoop.",
+          "richtprijs": "€0,90 / bosje"
+        },
+        {
+          "naam": "Rabarber",
+          "tip": "Combineert goed met aardbei.",
+          "richtprijs": "€2,20 / kg"
+        },
+        {
+          "naam": "Spitskool",
+          "tip": "Mild en zacht, kort garen.",
+          "richtprijs": "€1,50 / stuk"
+        },
+        {
+          "naam": "Tuinbonen",
+          "tip": "Dop ze net voor gebruik.",
+          "richtprijs": "€3,50 / kg"
+        },
+        {
+          "naam": "Kropsla",
+          "tip": "Volle krop, lang houdbaar in folie.",
+          "richtprijs": "€1,00 / stuk"
+        }
+      ],
+      "fruit": [],
+      "intro": "Aspergemaand. De oogst stopt traditioneel op 24 juni, Sint-Jan, zodat het gewas zich kan herstellen. Daarnaast beginnen de peulvruchten — doperwten en tuinbonen — die je het beste vlak voor gebruik dopt, en komt de eerste kropsla van de volle grond. Nederlands fruit is er ook deze maand nog niet."
+    },
+    {
+      "maand": "juni",
+      "nummer": 6,
+      "groente": [
+        {
+          "naam": "Bloemkool",
+          "tip": "Ook de blaadjes zijn te eten.",
+          "richtprijs": "€1,80 / stuk"
+        },
+        {
+          "naam": "Sperzieboon",
+          "tip": "Kort blancheren, blijft knapperig.",
+          "richtprijs": "€4,00 / kg"
+        },
+        {
+          "naam": "Courgette",
+          "tip": "Niet schillen, snel gaar.",
+          "richtprijs": "€1,50 / kg"
+        },
+        {
+          "naam": "Komkommer",
+          "tip": "Koel bewaren, niet naast tomaat.",
+          "richtprijs": "€0,90 / stuk"
+        },
+        {
+          "naam": "Kropsla",
+          "tip": "Piekseizoen, volop en goedkoop.",
+          "richtprijs": "€0,90 / stuk"
+        },
+        {
+          "naam": "Nieuwe aardappelen",
+          "tip": "Dunne schil, niet schillen nodig.",
+          "richtprijs": "€1,80 / kg"
+        },
+        {
+          "naam": "Doperwten",
+          "tip": "Laatste ronde van het seizoen.",
+          "richtprijs": "€4,00 / kg"
+        },
+        {
+          "naam": "Tuinbonen",
+          "tip": "Nog volop verkrijgbaar.",
+          "richtprijs": "€3,50 / kg"
+        }
+      ],
+      "fruit": [
+        {
+          "naam": "Aardbei",
+          "tip": "Niet wassen voor bewaren, wel vlak voor eten.",
+          "richtprijs": "€2,50 / doosje"
+        },
+        {
+          "naam": "Kersen",
+          "tip": "Koel bewaren, snel eten.",
+          "richtprijs": "€8,00 / kg"
+        }
+      ],
+      "intro": "De maand waarin het zomerseizoen echt begint: aardbeien, kersen en de eerste nieuwe aardappelen liggen er tegelijk. Tegelijk sluit de aspergeoogst op 24 juni af, en zijn dit de laatste weken voor doperwten en tuinbonen."
+    },
+    {
+      "maand": "juli",
+      "nummer": 7,
+      "groente": [
+        {
+          "naam": "Bloemkool",
+          "tip": "Volop en voordelig.",
+          "richtprijs": "€1,50 / stuk"
+        },
+        {
+          "naam": "Courgette",
+          "tip": "Ideaal om te grillen.",
+          "richtprijs": "€1,20 / kg"
+        },
+        {
+          "naam": "Komkommer",
+          "tip": "Piekseizoen, erg voordelig.",
+          "richtprijs": "€0,70 / stuk"
+        },
+        {
+          "naam": "Kropsla",
+          "tip": "Volop verkrijgbaar.",
+          "richtprijs": "€0,80 / stuk"
+        },
+        {
+          "naam": "Sperzieboon",
+          "tip": "Ook goed om in te vriezen.",
+          "richtprijs": "€3,50 / kg"
+        },
+        {
+          "naam": "Snijboon",
+          "tip": "Iets stevigere structuur dan sperzieboon.",
+          "richtprijs": "€3,50 / kg"
+        },
+        {
+          "naam": "Venkel",
+          "tip": "Rauw in salade of geroosterd.",
+          "richtprijs": "€2,00 / stuk"
+        }
+      ],
+      "fruit": [
+        {
+          "naam": "Aardbei",
+          "tip": "Piekseizoen, vaak scherp geprijsd.",
+          "richtprijs": "€2,50 / doosje"
+        },
+        {
+          "naam": "Braam",
+          "tip": "Kwetsbaar, snel verwerken.",
+          "richtprijs": "€2,50 / doosje"
+        },
+        {
+          "naam": "Framboos",
+          "tip": "Niet wassen, wel goed bekijken.",
+          "richtprijs": "€2,50 / doosje"
+        },
+        {
+          "naam": "Nectarine",
+          "tip": "NL/Spaanse teelt, laat narijpen.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Perzik",
+          "tip": "Zacht bij lichte druk = rijp.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Pruim",
+          "tip": "Goed voor compote of taart.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Peer",
+          "tip": "Vroege rassen starten.",
+          "richtprijs": "€2,50 / kg"
+        }
+      ],
+      "intro": "Zacht fruit neemt het over. Bramen, frambozen, nectarines, perziken en pruimen komen deze maand allemaal binnen, en de eerste peren volgen. Aan de groentekant verandert er weinig — juli is de enige maand waarin niets van de lijst verdwijnt."
+    },
+    {
+      "maand": "augustus",
+      "nummer": 8,
+      "groente": [
+        {
+          "naam": "Andijvie",
+          "tip": "Iets bitter, goed gestoofd met spek.",
+          "richtprijs": "€1,20 / stuk"
+        },
+        {
+          "naam": "Bleekselderij",
+          "tip": "Knapperig, goed voor bouillon.",
+          "richtprijs": "€1,50 / stuk"
+        },
+        {
+          "naam": "Broccoli",
+          "tip": "Kort stomen behoudt kleur.",
+          "richtprijs": "€1,80 / stuk"
+        },
+        {
+          "naam": "Sperzieboon",
+          "tip": "Nog steeds volop en goedkoop.",
+          "richtprijs": "€3,50 / kg"
+        },
+        {
+          "naam": "Venkel",
+          "tip": "Ook het groen is te gebruiken.",
+          "richtprijs": "€2,00 / stuk"
+        },
+        {
+          "naam": "Bloemkool",
+          "tip": "Piekseizoen loopt door.",
+          "richtprijs": "€1,50 / stuk"
+        },
+        {
+          "naam": "Courgette",
+          "tip": "Overvloed dit seizoen, vries eventueel in.",
+          "richtprijs": "€1,20 / kg"
+        },
+        {
+          "naam": "Kropsla",
+          "tip": "Volop verkrijgbaar.",
+          "richtprijs": "€0,80 / stuk"
+        },
+        {
+          "naam": "Snijboon",
+          "tip": "Iets bitterder, past bij stevige gerechten.",
+          "richtprijs": "€3,50 / kg"
+        },
+        {
+          "naam": "Bosui",
+          "tip": "Mild, goed rauw door salade.",
+          "richtprijs": "€0,90 / bosje"
+        },
+        {
+          "naam": "Komkommer",
+          "tip": "Nog steeds erg voordelig.",
+          "richtprijs": "€0,70 / stuk"
+        },
+        {
+          "naam": "Prei",
+          "tip": "Vroege oogst start.",
+          "richtprijs": "€2,20 / kg"
+        },
+        {
+          "naam": "Tomaat",
+          "tip": "Volle grond NL, veel smaak.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Paprika",
+          "tip": "NL-teelt op zijn best.",
+          "richtprijs": "€3,50 / kg"
+        }
+      ],
+      "fruit": [
+        {
+          "naam": "Braam",
+          "tip": "Piekseizoen, ook lekker diepvries.",
+          "richtprijs": "€2,50 / doosje"
+        },
+        {
+          "naam": "Framboos",
+          "tip": "Zeer kwetsbaar, koel bewaren.",
+          "richtprijs": "€2,50 / doosje"
+        },
+        {
+          "naam": "Peer",
+          "tip": "Volop, laat narijpen buiten de koelkast.",
+          "richtprijs": "€2,20 / kg"
+        },
+        {
+          "naam": "Aardbei",
+          "tip": "Laatste late rassen.",
+          "richtprijs": "€2,50 / doosje"
+        },
+        {
+          "naam": "Nectarine",
+          "tip": "Import Spanje, goed betaalbaar.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Perzik",
+          "tip": "Import Spanje, zacht bij aanraking = rijp.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Pruim",
+          "tip": "Piekseizoen, ook goed voor jam.",
+          "richtprijs": "€2,50 / kg"
+        }
+      ],
+      "intro": "Het hoogtepunt: eenentwintig soorten, bijna twee keer het jaargemiddelde. Tomaat en paprika van de volle grond hebben nu hun meeste smaak, en de overlap tussen zomer- en najaarsgewassen is op zijn grootst. Geniet ervan, want in september valt het merendeel hiervan weg."
+    },
+    {
+      "maand": "september",
+      "nummer": 9,
+      "groente": [
+        {
+          "naam": "Pompoen",
+          "tip": "Lang houdbaar, koel en droog bewaren.",
+          "richtprijs": "€1,50 / kg"
+        },
+        {
+          "naam": "Boerenkool",
+          "tip": "Krijgt meer smaak na eerste nachtvorst.",
+          "richtprijs": "€1,80 / zak"
+        },
+        {
+          "naam": "Prei",
+          "tip": "Volop en van goede kwaliteit.",
+          "richtprijs": "€2,20 / kg"
+        },
+        {
+          "naam": "Rode kool",
+          "tip": "Start van het seizoen.",
+          "richtprijs": "€1,20 / kg"
+        },
+        {
+          "naam": "Witte kool",
+          "tip": "Lang houdbaar, goed voor zuurkool.",
+          "richtprijs": "€1,00 / kg"
+        },
+        {
+          "naam": "Winterwortel",
+          "tip": "Zoeter na de zomer.",
+          "richtprijs": "€1,00 / kg"
+        },
+        {
+          "naam": "Pastinaak",
+          "tip": "Eerste oogst.",
+          "richtprijs": "€2,50 / kg"
+        }
+      ],
+      "fruit": [
+        {
+          "naam": "Appel",
+          "tip": "Nieuwe oogst, volop keuze in rassen.",
+          "richtprijs": "€2,00 / kg"
+        },
+        {
+          "naam": "Peer",
+          "tip": "Piekseizoen.",
+          "richtprijs": "€2,20 / kg"
+        },
+        {
+          "naam": "Druif",
+          "tip": "NL-kastteelt op zijn best.",
+          "richtprijs": "€4,00 / kg"
+        },
+        {
+          "naam": "Pruim",
+          "tip": "Laatste ronde van het seizoen.",
+          "richtprijs": "€2,50 / kg"
+        }
+      ],
+      "intro": "De oogstmaand kantelt naar het najaar. Pompoen, boerenkool en de eerste bewaarkolen komen op, samen met appels en druiven, terwijl vrijwel al het zachte zomerfruit verdwijnt. Wat er nu bij komt is grotendeels wat je de rest van het jaar uit de opslag zult eten."
+    },
+    {
+      "maand": "oktober",
+      "nummer": 10,
+      "groente": [
+        {
+          "naam": "Pompoen",
+          "tip": "Grote keuze in soorten, ideaal voor soep.",
+          "richtprijs": "€1,50 / kg"
+        },
+        {
+          "naam": "Koolrabi",
+          "tip": "Rauw geraspt of gestoofd.",
+          "richtprijs": "€1,80 / kg"
+        },
+        {
+          "naam": "Boerenkool",
+          "tip": "Piekseizoen.",
+          "richtprijs": "€1,80 / zak"
+        },
+        {
+          "naam": "Spruitjes",
+          "tip": "Eerste oogst, mild van smaak.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Rode biet",
+          "tip": "Goed voorgekookt te koop, ook zelf te garen.",
+          "richtprijs": "€2,00 / kg"
+        },
+        {
+          "naam": "Knolselderij",
+          "tip": "Stevige puree of soep.",
+          "richtprijs": "€1,80 / kg"
+        },
+        {
+          "naam": "Pastinaak",
+          "tip": "Zoeter door lagere temperaturen.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Witlof",
+          "tip": "Start van het nieuwe seizoen.",
+          "richtprijs": "€2,20 / kg"
+        }
+      ],
+      "fruit": [
+        {
+          "naam": "Appel",
+          "tip": "Volop, ook goed voor appelmoes.",
+          "richtprijs": "€2,00 / kg"
+        },
+        {
+          "naam": "Peer",
+          "tip": "Nog steeds volop.",
+          "richtprijs": "€2,20 / kg"
+        },
+        {
+          "naam": "Druif",
+          "tip": "Laatste ronde NL-teelt.",
+          "richtprijs": "€4,00 / kg"
+        },
+        {
+          "naam": "Walnoot",
+          "tip": "Vers geplukt, snel drogen voor bewaring.",
+          "richtprijs": "€6,00 / kg"
+        }
+      ],
+      "intro": "De maand van de bewaargewassen. Spruitjes, knolselderij, witlof en rode bieten komen binnen, en walnoten vallen. Dit is het laatste moment voor druiven van eigen bodem; daarna is wat er in het schap ligt import."
+    },
+    {
+      "maand": "november",
+      "nummer": 11,
+      "groente": [
+        {
+          "naam": "Witlof",
+          "tip": "Piekseizoen, licht bitter.",
+          "richtprijs": "€2,20 / kg"
+        },
+        {
+          "naam": "Koolraap",
+          "tip": "Stevig en vullend.",
+          "richtprijs": "€1,50 / kg"
+        },
+        {
+          "naam": "Pastinaak",
+          "tip": "Ideaal voor ovenschotels.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Rode kool",
+          "tip": "Volop en goedkoop.",
+          "richtprijs": "€1,20 / kg"
+        },
+        {
+          "naam": "Spruitjes",
+          "tip": "Piekseizoen.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Winterwortel",
+          "tip": "Basis voor stamppot.",
+          "richtprijs": "€1,00 / kg"
+        },
+        {
+          "naam": "Knolselderij",
+          "tip": "Combineert goed met aardappel.",
+          "richtprijs": "€1,80 / kg"
+        },
+        {
+          "naam": "Pompoen",
+          "tip": "Laatste ronde van het seizoen.",
+          "richtprijs": "€1,50 / kg"
+        }
+      ],
+      "fruit": [
+        {
+          "naam": "Appel",
+          "tip": "Uit de koelcel, blijft vers.",
+          "richtprijs": "€2,00 / kg"
+        },
+        {
+          "naam": "Peer",
+          "tip": "Laatste verse oogst.",
+          "richtprijs": "€2,20 / kg"
+        }
+      ],
+      "intro": "Winterkost. Koolraap, rode kool en winterwortel keren terug, en verder teert de maand op wat in oktober is binnengehaald. Het aanbod versmalt zichtbaar en zal dat tot maart blijven doen."
+    },
+    {
+      "maand": "december",
+      "nummer": 12,
+      "groente": [
+        {
+          "naam": "Witlof",
+          "tip": "Klassiek bij de feestdagen.",
+          "richtprijs": "€2,20 / kg"
+        },
+        {
+          "naam": "Rode kool",
+          "tip": "Traditioneel bij het kerstdiner.",
+          "richtprijs": "€1,20 / kg"
+        },
+        {
+          "naam": "Spruitjes",
+          "tip": "Piekseizoen, mild na lichte vorst.",
+          "richtprijs": "€2,80 / kg"
+        },
+        {
+          "naam": "Koolraap",
+          "tip": "Stevig winters gerecht.",
+          "richtprijs": "€1,50 / kg"
+        },
+        {
+          "naam": "Pastinaak",
+          "tip": "Goed te roosteren met honing.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Winterwortel",
+          "tip": "Lang houdbaar in de koelkast.",
+          "richtprijs": "€1,00 / kg"
+        },
+        {
+          "naam": "Winterpostelein",
+          "tip": "Start van het seizoen.",
+          "richtprijs": "€2,00 / zak"
+        }
+      ],
+      "fruit": [
+        {
+          "naam": "Appel",
+          "tip": "Bewaarrassen, koel en donker.",
+          "richtprijs": "€2,20 / kg"
+        },
+        {
+          "naam": "Peer",
+          "tip": "Bewaarrassen, laat narijpen.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Walnoot",
+          "tip": "Ideaal bij de feestdagen.",
+          "richtprijs": "€6,50 / kg"
+        }
+      ],
+      "intro": "De laatste verse oogst van het jaar is winterpostelein, dat de kou goed verdraagt en het hele seizoen door blijft komen. De rest ligt in de bewaring. Walnoten zijn er nog, maar dit is hun laatste maand."
+    }
+  ],
+  "seizoensregel": "Van het seizoen betekent hier: nu in Nederland geoogst, of uit de bewaring van een eerdere Nederlandse oogst. Import telt niet mee.",
+  "residuen": "De markeringen komen niet meer uit een handmatige lijst maar uit koppeling_eetwijzer.json plus eetwijzer-2026.json. De oude lijst van zeven producten was gebaseerd op een verouderde editie en klopte niet meer."
+}
