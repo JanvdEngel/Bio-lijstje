@@ -98,6 +98,11 @@ EXCLUDED_CATEGORIES = {
     "brood-bakkerij",
     "zuivel-eieren",
     "vega",
+    # "Siroop aardbei" van €14,35 stond op 1 september live als vers fruit: het
+    # matchte op "aardbei", Ekoplaza is een volledig-bio winkel dus het label
+    # volstond, en de categorie stond niet in deze lijst. Ontbijtproducten zijn
+    # net als vlees en zuivel per definitie geen groente of fruit.
+    "ontbijt",
 }
 
 # Nederlandse samenstellingen plakken vast (bv. "tomatenpulp", "appelmoes"), dus de
@@ -154,6 +159,13 @@ _NIET_AGF_PATRONEN = (
     re.compile(r"biscuit", re.IGNORECASE),
     re.compile(r"bruschetta", re.IGNORECASE),
     re.compile(r"kaas", re.IGNORECASE),           # "Goudse kaasbolletjes ui"
+    # "Siroop aardbei" van €14,35 stond op 1 september een dag lang als vers
+    # fruit op de site. Eerst geprobeerd met een bredere regel — alles met een
+    # hoeveelheid in milliliters weren — maar gemeten bleek die precies één
+    # product te raken dat we wél willen: "Bio appelmoes" (370 ml). Appelmoes is
+    # één product van appels, net als de Hak-bieten die we bewust houden. Dus op
+    # naam, en dat vangt beide siropen in de catalogi ongeacht hun categorie.
+    re.compile(r"siroop", re.IGNORECASE),
 )
 
 _agf_prefix = [k for k in AGF_KEYWORDS if k not in _AGF_WHOLE_WORD_ONLY]
