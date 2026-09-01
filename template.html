@@ -102,10 +102,35 @@
     background-size: 4px 4px, 5px 5px;
   }
   header{
-    padding: 2.2rem 1.4rem 1rem;
+    padding: 2.2rem 0 1rem;
     text-align: center;
     position: relative;
   }
+  /* ---- Eén kader -----------------------------------------------------------
+     Staat identiek op beide pagina's. Dat is nodig omdat de themaknop aan dit
+     kader hangt: stond de kop op de voorpagina over de volle breedte en op
+     /seizoen in een kolom van 720px, dan sprong dat icoontje op een breed
+     scherm ruim 350 pixels opzij bij het wisselen van tab.
+
+     De inhoud eronder mag wél verschillen. Zeven winkelkolommen naast elkaar
+     hebben ruimte nodig (minimaal 230px per kolom), een leeskolom met twee
+     kaarten juist niet — die wordt daarbinnen op .leeskolom gehouden. Alles
+     staat gecentreerd op dezelfde as, dus het oogt als één opmaak. */
+  .kader{
+    max-width: 1180px;
+    margin: 0 auto;
+    padding-left: clamp(1rem, 4vw, 2rem);
+    padding-right: clamp(1rem, 4vw, 2rem);
+  }
+  /* Dezelfde zijmarges als het kader, anders raakt de inhoud op een telefoon
+     de schermrand — die marge zat eerst in .wrap en verhuisde met de kop mee. */
+  .leeskolom{
+    max-width: 720px;
+    margin: 0 auto;
+    padding-left: clamp(1rem, 4vw, 2rem);
+    padding-right: clamp(1rem, 4vw, 2rem);
+  }
+
   /* ---- Gedeelde kop -------------------------------------------------------
      Deze kop staat identiek op de voorpagina en op /seizoen. Dat is het punt:
      eerder had elke pagina een eigen merknaam en een eigen indeling, en dan
@@ -179,10 +204,7 @@
     margin: 0 0 0.8rem;
   }
 
-  main{ max-width: 620px; margin: 0 auto; padding: 0 1rem; }
-  @media (min-width: 760px){
-    main{ max-width: 1180px; }
-  }
+
 
   .summary-bar{
     display: flex; justify-content: center; gap: 1.4rem;
@@ -411,7 +433,7 @@
 <body>
 <div class="chalk-texture"></div>
 
-<header>
+<header class="kader">
   <button class="thema-knop" type="button" id="themaKnop"></button>
   <nav class="secties" aria-label="Secties">
     <a href="/" class="huidig" aria-current="page">Aanbiedingen</a>
@@ -421,7 +443,7 @@
   <p class="eyebrow">Vandaag geldig</p>
 </header>
 
-<main>
+<main class="kader">
   <!-- De inhoud tussen deze twee merktekens wordt door fetch_bio_prices.py
        vervangen door een statische lijst, zodat de producten in de HTML staan
        en niet alleen door JavaScript worden opgehaald. Zoekmachines zagen

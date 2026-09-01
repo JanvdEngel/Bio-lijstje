@@ -53,15 +53,40 @@
     overflow-x:hidden;
     -webkit-font-smoothing:antialiased;
   }
-  .wrap{
-    max-width:720px;
-    margin:0 auto;
-    padding:32px 20px 60px;
+  .wrap{ padding-bottom:60px; }
+
+  /* ---- Eén kader -----------------------------------------------------------
+     Staat identiek op beide pagina's. Dat is nodig omdat de themaknop aan dit
+     kader hangt: stond de kop op de voorpagina over de volle breedte en op
+     /seizoen in een kolom van 720px, dan sprong dat icoontje op een breed
+     scherm ruim 350 pixels opzij bij het wisselen van tab.
+
+     De inhoud eronder mag wél verschillen. Zeven winkelkolommen naast elkaar
+     hebben ruimte nodig (minimaal 230px per kolom), een leeskolom met twee
+     kaarten juist niet — die wordt daarbinnen op .leeskolom gehouden. Alles
+     staat gecentreerd op dezelfde as, dus het oogt als één opmaak. */
+  .kader{
+    max-width: 1180px;
+    margin: 0 auto;
+    padding-left: clamp(1rem, 4vw, 2rem);
+    padding-right: clamp(1rem, 4vw, 2rem);
+  }
+  /* Dezelfde zijmarges als het kader, anders raakt de inhoud op een telefoon
+     de schermrand — die marge zat eerst in .wrap en verhuisde met de kop mee. */
+  .leeskolom{
+    max-width: 720px;
+    margin: 0 auto;
+    padding-left: clamp(1rem, 4vw, 2rem);
+    padding-right: clamp(1rem, 4vw, 2rem);
   }
 
   /* Top: gedeelde kop + month dots */
+  /* Exact dezelfde regel als op de voorpagina. De themaknop hangt hieraan met
+     position:absolute, dus als deze twee uiteenlopen springt het icoontje bij
+     het wisselen van tab — dat gebeurde: 32px opzij en 32px omlaag, omdat de
+     kop hier eerst binnen het kader stond in plaats van zelf het kader te zijn. */
   header{
-    padding: 0.6rem 0 1.6rem;
+    padding: 2.2rem 0 1rem;
     text-align: center;
     position: relative;
   }
@@ -387,18 +412,18 @@
 </script>
 </head>
 <body>
-<div class="wrap">
+<header class="kader">
 
-  <header>
-    <button class="thema-knop" type="button" id="themaKnop"></button>
+  <button class="thema-knop" type="button" id="themaKnop"></button>
     <nav class="secties" aria-label="Secties">
       <a href="/">Aanbiedingen</a>
       <a href="/seizoen/" class="huidig" aria-current="page">Seizoen</a>
     </nav>
     <a class="wordmark" href="/">Het Bio Lijstje</a>
     <h1 class="eyebrow">Seizoenswijzer</h1>
-  </header>
+</header>
 
+<div class="wrap leeskolom">
   <div class="dots" id="dots"></div>
 
   <div class="hero">
@@ -435,7 +460,6 @@
     Richtprijzen zijn een eigen inschatting op basis van gangbare supermarktprijzen, niet gescraped of live.<br>
     🧴 = gemiddeld meer bestrijdingsmiddelen aangetroffen, op basis van de <a href="https://www.pan-netherlands.org/eetwijzer/" rel="noopener">PesticidenEetwijzer</a> van PAN-NL (NVWA-data 2023–2025). De selectie hieronder is nog van een oudere editie en wordt herzien.
   </footer>
-
 </div>
 
 <script>
