@@ -42,31 +42,90 @@ def esc(tekst):
     return html.escape(str(tekst), quote=True)
 
 
-def kaart(product, meer_residuen):
-    """Eén product. Het 🧴-uitklapje zit in de HTML en niet in JavaScript, zodat
-    een crawler en een bezoeker zonder JavaScript het ook zien."""
-    vlag = ""
-    if product["naam"] in meer_residuen:
-        vlag = ('<button class="bio-flag" type="button" '
-                'aria-label="Waarom dit icoon?">\U0001F9F4</button>')
+def residutabel():
+    """Zet de handmatige koppeltabel om in wat de kaarten nodig hebben:
+    per seizoensproduct het gemeten cijfer, het gemiddelde van zijn categorie
+    ter vergelijking, en of het bij de vijf hoogste van die categorie hoort.
+
+    De top vijf is bewust per categorie en niet over alles heen: groente scoort
+    structureel lager dan fruit (gemiddeld 1,3 tegen 2,6), dus een gezamenlijke
+    ranglijst zou alleen fruit markeren."""
+    eet = json.loads((HIER / "eetwijzer-2026.json").read_text(encoding="utf-8"))
+    kop = json.loads((HIER / "koppeling_eetwijzer.json").read_text(encoding="utf-8"))
+
+    bron = {}
+    for categorie, sleutel, gemiddelde in (
+        ("fruit", "fruit", eet["gemiddelde_fruit"]),
+        ("groente", "groente", eet["gemiddelde_groente"]),
+    ):
+        gesorteerd = sorted(eet[sleutel], key=lambda p: -p["residuen"])
+        top5 = {p["naam"] for p in gesorteerd[:5]}
+        for p in eet[sleutel]:
+            bron[p["naam"]] = {
+                "residuen": p["residuen"],
+                "gemiddelde": gemiddelde,
+                "soort": categorie,
+                "top5": p["naam"] in top5,
+            }
+    for p in eet["overig"]:
+        bron[p["naam"]] = {
+            "residuen": p["residuen"],
+            "gemiddelde": eet["gemiddelde_groente"],
+            "soort": "groente",
+            "top5": False,
+        }
+
+    tabel = {}
+    for seizoensnaam, eetnaam in kop["gekoppeld"].items():
+        if eetnaam not in bron:
+            sys.exit(f"koppeling wijst naar een naam die niet in de Eetwijzer staat: {eetnaam}")
+        tabel[seizoensnaam] = {**bron[eetnaam], "eetwijzer_naam": eetnaam}
+    return tabel
+
+
+def kaart(product, residu):
+    """Eén product. Het uitklapje zit in de HTML en niet in JavaScript, zodat een
+    crawler en een bezoeker zonder JavaScript het ook zien.
+
+    Het 🧴 staat alleen bij de vijf hoogst scorende soorten per categorie. Bij de
+    rest staat het cijfer zonder waarschuwing: een markering bij ruim de helft
+    van de lijst zegt niets meer, en het getal is informatiever dan een
+    pictogram. Producten die de NVWA niet apart meet krijgen geen van beide —
+    geen cijfer is beter dan het cijfer van een ander gewas."""
+    r = residu.get(product["naam"])
+    vlag = regel = uitleg = ""
+    if r:
+        getal = f'{r["residuen"]:.1f}'.replace(".", ",")
+        vergelijk = f'{r["gemiddelde"]:.1f}'.replace(".", ",")
+        if r["top5"]:
+            vlag = ('<button class="bio-flag" type="button" '
+                    'aria-label="Waarom dit icoon?">\U0001F9F4</button>')
+        regel = (f'\n        <p class="residu{" hoog" if r["top5"] else ""}">'
+                 f'gem. {getal} bestrijdingsmiddelen</p>')
+        uitleg = (
+            f'\n        <p class="bio-note">In monsters van '
+            f'{esc(r["eetwijzer_naam"].lower())} vond de NVWA gemiddeld {getal} '
+            f'verschillende bestrijdingsmiddelen; het gemiddelde voor {r["soort"]} '
+            f'is {vergelijk}. Bron: PesticidenEetwijzer van PAN-NL, '
+            f'NVWA-data 2023–2025.</p>'
+        )
     return (
         '      <div class="card">\n'
         f'        <p class="item-name"><span class="name-text">{esc(product["naam"])}</span>{vlag}</p>\n'
-        f'        <p class="item-tip">{esc(product["tip"])}</p>\n'
-        '        <p class="bio-note">Gemiddeld meer bestrijdingsmiddelen aangetroffen '
-        '(PAN-NL) — bio is hier het overwegen waard.</p>\n'
+        f'        <p class="item-tip">{esc(product["tip"])}</p>'
+        f'{regel}{uitleg}\n'
         '      </div>'
     )
 
 
-def groep(titel, producten, meer_residuen):
+def groep(titel, producten, residu):
     """Een lege groep wordt weggelaten in plaats van als leeg kopje getoond:
     april en mei hebben geen Nederlands fruit, en 'Fruit — 0 soorten' leest als
     een storing in plaats van als een feit."""
     if not producten:
         return ""
     woord = "soort" if len(producten) == 1 else "soorten"
-    kaarten = "\n".join(kaart(p, meer_residuen) for p in producten)
+    kaarten = "\n".join(kaart(p, residu) for p in producten)
     return (
         f'  <section class="group">\n'
         f'    <div class="group-title"><h2>{titel}</h2>'
@@ -90,7 +149,7 @@ def stippen(maanden, huidige_index):
     return "\n".join(uit)
 
 
-def maandpagina(data, index):
+def maandpagina(data, index, residu):
     m = data["maanden"][index]
     maanden = data["maanden"]
     vorige = maanden[(index - 1) % 12]
@@ -111,8 +170,8 @@ def maandpagina(data, index):
 
   <p class="intro">{esc(m['intro'])}</p>
 
-{groep("Groente", m["groente"], data["meer_residuen"])}
-{groep("Fruit", m["fruit"], data["meer_residuen"])}
+{groep("Groente", m["groente"], residu)}
+{groep("Fruit", m["fruit"], residu)}
   <p class="verder">
     Vorige maand: <a href="/seizoen/{vorige['maand']}/">{esc(vorige['maand'])}</a> &middot;
     Volgende maand: <a href="/seizoen/{volgende['maand']}/">{esc(volgende['maand'])}</a> &middot;
@@ -192,10 +251,11 @@ def schrijf(pagina, sjabloon, seizoensregel):
 def main():
     data = json.loads(DATA.read_text(encoding="utf-8"))
     sjabloon = SJABLOON.read_text(encoding="utf-8")
+    residu = residutabel()
     regel = data["seizoensregel"]
 
     paginas = [overzichtspagina(data)]
-    paginas += [maandpagina(data, i) for i in range(12)]
+    paginas += [maandpagina(data, i, residu) for i in range(12)]
 
     for p in paginas:
         n = schrijf(p, sjabloon, regel)

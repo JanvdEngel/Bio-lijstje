@@ -197,6 +197,16 @@
   .month-stamp .tag{ display:none; }
   .month-stamp .tag.is-nu{ display:inline-block; }
 
+  /* Het gemeten cijfer staat bij elk gekoppeld product; alleen de vijf hoogste
+     per categorie krijgen daarbij het 🧴. Een markering bij ruim de helft van de
+     lijst zegt niets meer. */
+  .residu{
+    font-family:'Space Mono', monospace; font-size:10.5px;
+    letter-spacing:0.02em; color:var(--muted);
+    margin:6px 0 0;
+  }
+  .residu.hoog{ color:var(--harvest); }
+
   .intro{
     max-width:60ch; margin:0 auto 26px;
     text-align:center; color:var(--muted); line-height:1.65;
@@ -451,7 +461,7 @@
   <footer>
     {{SEIZOENSREGEL}}<br>
     Seizoensdata samengesteld op basis van de klassieke NL-seizoenslogica (volle grond / plastic tunnel / onverwarmde kas), zoals gehanteerd door Milieu Centraal en het Voedingscentrum — geen live databron.<br>
-    🧴 = gemiddeld meer bestrijdingsmiddelen aangetroffen, op basis van de <a href="https://www.pan-netherlands.org/eetwijzer/" rel="noopener">PesticidenEetwijzer</a> van PAN-NL (NVWA-data 2023–2025). De selectie hieronder is nog van een oudere editie en wordt herzien.
+    Het gemiddeld aantal aangetroffen bestrijdingsmiddelen komt uit de <a href="https://www.pan-netherlands.org/eetwijzer/" rel="noopener">PesticidenEetwijzer</a> van PAN-NL, op NVWA-data 2023–2025. 🧴 staat bij de vijf hoogst scorende soorten per categorie. Bij producten die de NVWA niet apart meet staat geen cijfer.
   </footer>
 </div>
 
