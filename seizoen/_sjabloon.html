@@ -10,13 +10,13 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<title>Seizoenswijzer — welke groente en fruit zijn nu van het seizoen?</title>
-<meta name="description" content="Per maand welke groente en welk fruit in Nederland van het seizoen zijn: vers geoogst of uit de bewaring van een Nederlandse oogst, met bewaartip per product.">
-<link rel="canonical" href="https://hetbiolijstje.nl/seizoen/">
+<title>{{TITEL}}</title>
+<meta name="description" content="{{BESCHRIJVING}}">
+<link rel="canonical" href="{{CANONICAL}}">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://hetbiolijstje.nl/seizoen/">
-<meta property="og:title" content="Seizoenswijzer — per maand wat er van het seizoen is">
-<meta property="og:description" content="Per maand welke groente en welk fruit in Nederland van het seizoen zijn: vers geoogst of uit de bewaring van een Nederlandse oogst, met bewaartip per product.">
+<meta property="og:url" content="{{CANONICAL}}">
+<meta property="og:title" content="{{OG_TITEL}}">
+<meta property="og:description" content="{{BESCHRIJVING}}">
 <meta property="og:image" content="https://hetbiolijstje.nl/icon.png">
 <meta property="og:locale" content="nl_NL">
 <meta name="twitter:card" content="summary">
@@ -446,82 +446,10 @@
 </header>
 
 <div class="wrap leeskolom">
-  <div class="hero">
-    <div class="month-stamp">
-      <h1 class="name">Seizoenswijzer</h1>
-    </div>
-  </div>
-
-  <p class="intro">Welke groente en welk fruit in Nederland van het seizoen zijn, maand voor maand. Kies een maand voor de volledige lijst met bewaartips.</p>
-
-  <section class="group">
-    <div class="grid grid-maanden">
-      <a class="card maandkaart" href="/seizoen/januari/" data-maand="1">
-        <p class="item-name"><span class="name-text">Januari</span></p>
-        <p class="item-tip">Winterpostelein, Koolraap, Pastinaak en meer</p>
-        <span class="count">12 soorten</span>
-      </a>
-      <a class="card maandkaart" href="/seizoen/februari/" data-maand="2">
-        <p class="item-name"><span class="name-text">Februari</span></p>
-        <p class="item-tip">Raapstelen, Winterpostelein, Koolraap en meer</p>
-        <span class="count">10 soorten</span>
-      </a>
-      <a class="card maandkaart" href="/seizoen/maart/" data-maand="3">
-        <p class="item-name"><span class="name-text">Maart</span></p>
-        <p class="item-tip">Spinazie, Radijs, Veldsla en meer</p>
-        <span class="count">6 soorten</span>
-      </a>
-      <a class="card maandkaart" href="/seizoen/april/" data-maand="4">
-        <p class="item-name"><span class="name-text">April</span></p>
-        <p class="item-tip">Asperges, Radijs, Spinazie en meer</p>
-        <span class="count">5 soorten</span>
-      </a>
-      <a class="card maandkaart" href="/seizoen/mei/" data-maand="5">
-        <p class="item-name"><span class="name-text">Mei</span></p>
-        <p class="item-tip">Asperges, Doperwten, Radijs en meer</p>
-        <span class="count">7 soorten</span>
-      </a>
-      <a class="card maandkaart" href="/seizoen/juni/" data-maand="6">
-        <p class="item-name"><span class="name-text">Juni</span></p>
-        <p class="item-tip">Bloemkool, Sperzieboon, Courgette en meer</p>
-        <span class="count">10 soorten</span>
-      </a>
-      <a class="card maandkaart" href="/seizoen/juli/" data-maand="7">
-        <p class="item-name"><span class="name-text">Juli</span></p>
-        <p class="item-tip">Bloemkool, Courgette, Komkommer en meer</p>
-        <span class="count">14 soorten</span>
-      </a>
-      <a class="card maandkaart" href="/seizoen/augustus/" data-maand="8">
-        <p class="item-name"><span class="name-text">Augustus</span></p>
-        <p class="item-tip">Andijvie, Bleekselderij, Broccoli en meer</p>
-        <span class="count">21 soorten</span>
-      </a>
-      <a class="card maandkaart" href="/seizoen/september/" data-maand="9">
-        <p class="item-name"><span class="name-text">September</span></p>
-        <p class="item-tip">Pompoen, Boerenkool, Prei en meer</p>
-        <span class="count">11 soorten</span>
-      </a>
-      <a class="card maandkaart" href="/seizoen/oktober/" data-maand="10">
-        <p class="item-name"><span class="name-text">Oktober</span></p>
-        <p class="item-tip">Pompoen, Koolrabi, Boerenkool en meer</p>
-        <span class="count">12 soorten</span>
-      </a>
-      <a class="card maandkaart" href="/seizoen/november/" data-maand="11">
-        <p class="item-name"><span class="name-text">November</span></p>
-        <p class="item-tip">Witlof, Koolraap, Pastinaak en meer</p>
-        <span class="count">10 soorten</span>
-      </a>
-      <a class="card maandkaart" href="/seizoen/december/" data-maand="12">
-        <p class="item-name"><span class="name-text">December</span></p>
-        <p class="item-tip">Witlof, Rode kool, Spruitjes en meer</p>
-        <span class="count">10 soorten</span>
-      </a>
-    </div>
-  </section>
-
+{{INHOUD}}
 
   <footer>
-    Van het seizoen betekent hier: nu in Nederland geoogst, of uit de bewaring van een eerdere Nederlandse oogst. Import telt niet mee.<br>
+    {{SEIZOENSREGEL}}<br>
     Seizoensdata samengesteld op basis van de klassieke NL-seizoenslogica (volle grond / plastic tunnel / onverwarmde kas), zoals gehanteerd door Milieu Centraal en het Voedingscentrum — geen live databron.<br>
     🧴 = gemiddeld meer bestrijdingsmiddelen aangetroffen, op basis van de <a href="https://www.pan-netherlands.org/eetwijzer/" rel="noopener">PesticidenEetwijzer</a> van PAN-NL (NVWA-data 2023–2025). De selectie hieronder is nog van een oudere editie en wordt herzien.
   </footer>
