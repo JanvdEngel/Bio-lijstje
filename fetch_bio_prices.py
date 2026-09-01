@@ -237,9 +237,16 @@ KANDIDAAT_WINKELS = {
 PRIJSPROFEET_PRODUCTS_URL = "https://www.prijsprofeet.nl/api/v1/products"
 PRIJSPROFEET_PAGE_SIZE = 100  # harde grens van de API; 200 en 500 geven 0 resultaten
 PRIJSPROFEET_MAX_PAGES = 60  # veiligheidsgrens; AH is de grootste met ~24 pagina's
-# Zonder API-key geldt 30 requests/min op de bulk-endpoints (per IP). 2,5s pauze
-# houdt ons op ~24/min, dus met marge. De hele ronde is ~71 pagina's ≈ 3 minuten.
+# Zonder API-key geldt 30 requests/min op de bulk-endpoints, en dan per IP. 2,5s
+# pauze houdt ons op ~24/min, dus met marge — maar niet genoeg marge: over één
+# week kregen 18 van 175 verzoeken alsnog een 429, allemaal op het doorpagineren.
+#
+# Met een gratis key telt de limiet op de key in plaats van het IP en gaat hij
+# naar 150/min. 0,5s pauze is dan ~120/min, weer met marge, en de hele ronde gaat
+# van ruim vijf minuten naar ongeveer één. De key komt uit de add-on-opties; is
+# hij er niet, dan valt alles terug op het trage tempo en werkt het gewoon.
 PRIJSPROFEET_PAGE_PAUZE = 2.5
+PRIJSPROFEET_PAGE_PAUZE_KEY = 0.5
 FOLDERZ_MAX_PAGES = 120  # veiligheidsgrens; Lidl had er ~34-36 tijdens het bouwen
 MAX_ITEMS_PER_STORE = 15  # cap na dedup, grootste korting eerst — houdt winkels in verhouding
 
@@ -293,7 +300,7 @@ def fetch_aanbiedingen(store_label, retailer_slug, folderz_slug):
     gezien = set()
     gededupliceerd = []
     for item in resultaten:
-        sleutel = re.sub(r"\s+", " ", item["naam"].strip().lower())
+        sleutel = _naamsleutel(item["naam"])
         if sleutel in gezien:
             continue
         gezien.add(sleutel)
@@ -495,7 +502,8 @@ def fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug):
     voor producten die deze week niet in de actie staan (zie README)."""
     import requests
 
-    headers = {"User-Agent": "BioBordPi/1.0 (Home Assistant add-on, persoonlijk gebruik)"}
+    headers = dict(_prijsprofeet_headers())
+    pauze = PRIJSPROFEET_PAGE_PAUZE_KEY if _prijsprofeet_key() else PRIJSPROFEET_PAGE_PAUZE
     resultaten = []
     pagina = 1
     try:
@@ -510,6 +518,18 @@ def fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug):
                     "page_size": PRIJSPROFEET_PAGE_SIZE,
                 },
             )
+            # Een 429 is geen storing maar een snelheidsgrens, en die verdient
+            # een adempauze in plaats van het opgeven van de hele winkel. Dat
+            # deed dit blok eerder wél: raise_for_status() sprong naar de except
+            # eronder, en dan stopte de paginering. Bij AH betekende dat pagina
+            # 12 tot en met 28 stilzwijgend weg, met een logregel die er normaal
+            # uitzag. PrijsProfeet mailde ons dat 18 van 175 verzoeken in een
+            # week een 429 kregen, allemaal op deze paginering.
+            if resp.status_code == 429:
+                wacht = _retry_after(resp, standaard=pauze * 4)
+                log.info(f"{store_label}: snelheidsgrens op pagina {pagina}, {wacht:.0f}s wachten")
+                time.sleep(wacht)
+                continue
             resp.raise_for_status()
             # /products zet de lijst onder "products", /search onder "results".
             # Beide accepteren, zodat een verkeerde aanname hier niet stil tot
@@ -523,9 +543,11 @@ def fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug):
                 if actie:
                     resultaten.append(actie)
             pagina += 1
-            time.sleep(PRIJSPROFEET_PAGE_PAUZE)  # onder de 30 requests/min blijven
+            time.sleep(pauze)
     except Exception as e:
         # Wat we tot hier hadden houden we: een halve winkel is beter dan geen.
+        # Wel als waarschuwing loggen, want een afgebroken winkel is aan het
+        # aantal pagina's alleen te zien als je weet hoeveel het er horen te zijn.
         log.warning(f"Aanbiedingen ophalen mislukt voor {store_label} (PrijsProfeet, pagina {pagina}): {e}")
     log.info(f"{store_label} aanbiedingen: {len(resultaten)} bio AGF-acties (PrijsProfeet, {pagina - 1} pagina's)")
     return resultaten
@@ -603,15 +625,99 @@ def _parse_price_string(text):
 # Prijsgeschiedenis: "was ik genaaid?" — was deze aanbieding al eens goedkoper?
 # ---------------------------------------------------------------------------
 
+def _prijsprofeet_key():
+    """De gratis API-key, uit de add-on-opties. Staat bewust niet in deze
+    broncode: de repo is publiek. Zonder key werkt alles gewoon, alleen met een
+    lagere snelheidsgrens."""
+    return (os.environ.get("PRIJSPROFEET_KEY") or "").strip()
+
+
+def _prijsprofeet_headers():
+    """User-Agent volgens hun eigen conventie: naam, versie en een adres waarop
+    ze ons kunnen bereiken als er iets aan de data verandert. Zonder key krijgt
+    een User-Agent met 'bot', 'crawler', 'spider' of 'slurp' erin een 403 — die
+    woorden staan hier dus niet in."""
+    headers = {"User-Agent": "BioBordPi/1.0 (+https://hetbiolijstje.nl)"}
+    key = _prijsprofeet_key()
+    if key:
+        headers["X-API-Key"] = key
+    return headers
+
+
+def _retry_after(resp, standaard):
+    """Leest de Retry-After-header als die er is. Ontbreekt hij of staat er iets
+    onverwachts in, dan de meegegeven standaard. Bovengrens van een minuut,
+    zodat een rare waarde de ronde niet laat hangen."""
+    waarde = resp.headers.get("Retry-After")
+    try:
+        return min(float(waarde), 60.0)
+    except (TypeError, ValueError):
+        return standaard
+
+
+def _naamsleutel(naam):
+    """Brengt een productnaam terug tot iets waarop je twee bronnen kunt
+    vergelijken. Wordt op twee plekken gebruikt en moet daar hetzelfde zijn:
+    bij het dedupliceren binnen een winkel, en als sleutel in de
+    prijsgeschiedenis. Liepen die uiteen, dan zou hetzelfde product twee
+    geschiedenissen krijgen.
+
+    Streepjes gaan eruit en worden niet vervangen door een spatie: PrijsProfeet
+    en Folderz schreven hetzelfde Lidl-product als "Bio kastanjechampignons" en
+    "Bio kastanje-champignons", en die stonden allebei op de pagina, met dezelfde
+    prijs. Weglaten maakt ze gelijk; een spatie zou dat juist niet doen."""
+    kern = naam.strip().lower()
+    kern = re.sub(r"[-‐-―]", "", kern)   # koppelteken en de streepjesfamilie
+    return re.sub(r"\s+", " ", kern).strip()
+
+
 def _history_key(store, naam):
-    kern = re.sub(r"\s+", " ", naam.strip().lower())
-    return f"{store}:{kern}"
+    return f"{store}:{_naamsleutel(naam)}"
+
+
+def _hersleutel(history):
+    """Brengt bestaande geschiedenis onder de huidige sleutelvorm.
+
+    Toen streepjes uit _naamsleutel gingen, veranderde de sleutel van elk
+    product met een streepje in de naam. Zonder deze stap zouden die reeksen
+    wees worden en zou de teller opnieuw bij nul beginnen — precies de data die
+    dit bestand moet bewaren. Vallen twee oude sleutels op dezelfde nieuwe
+    (bijvoorbeeld dezelfde champignons uit twee bronnen), dan worden de reeksen
+    samengevoegd op datum.
+
+    Draait elke keer mee en is daarna een no-op: nieuwe sleutels zijn al goed.
+    """
+    nieuw = {}
+    verplaatst = 0
+    for sleutel, records in history.items():
+        store, _, naam = sleutel.partition(":")
+        doel = f"{store}:{_naamsleutel(naam)}"
+        if doel != sleutel:
+            verplaatst += 1
+        if doel in nieuw:
+            samen = nieuw[doel] + records
+            samen.sort(key=lambda r: r.get("datum") or "")
+            # Opeenvolgende dubbele prijzen weer platslaan, zoals bij het
+            # wegschrijven: de reeks bewaart prijswijzigingen, geen metingen.
+            ontdubbeld = []
+            for r in samen:
+                vorige = ontdubbeld[-1] if ontdubbeld else None
+                if (vorige and vorige.get("actieprijs") == r.get("actieprijs")
+                        and vorige.get("normale_prijs") == r.get("normale_prijs")):
+                    continue
+                ontdubbeld.append(r)
+            nieuw[doel] = ontdubbeld[-HISTORY_MAX_PER_PRODUCT:]
+        else:
+            nieuw[doel] = records
+    if verplaatst:
+        log.info(f"Geschiedenis: {verplaatst} sleutel(s) genormaliseerd naar de huidige vorm")
+    return nieuw
 
 
 def load_history():
     if HISTORY_PATH.exists():
         try:
-            return json.loads(HISTORY_PATH.read_text())
+            return _hersleutel(json.loads(HISTORY_PATH.read_text()))
         except (json.JSONDecodeError, OSError) as e:
             log.warning(f"Geschiedenis-bestand onleesbaar ({e}), begin opnieuw")
     return {}

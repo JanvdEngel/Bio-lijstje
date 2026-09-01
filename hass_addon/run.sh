@@ -16,6 +16,7 @@ except FileNotFoundError:
 with open('/etc/bio_bord_env.sh', 'w') as out:
     out.write('export GITHUB_TOKEN=' + shlex.quote(opts.get('github_token') or '') + '\n')
     out.write('export GITHUB_REPO=' + shlex.quote(opts.get('github_repo') or '') + '\n')
+    out.write('export PRIJSPROFEET_KEY=' + shlex.quote(opts.get('prijsprofeet_key') or '') + '\n')
 "
 . /etc/bio_bord_env.sh
 
