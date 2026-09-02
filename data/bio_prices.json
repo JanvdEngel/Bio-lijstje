@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-02T20:40:23.996215",
+  "laatst_bijgewerkt": "2026-09-02T21:23:56.888065",
   "aanbiedingen": {
     "AH": [
       {
@@ -179,44 +179,6 @@
         "normale_prijs": 1.65,
         "soort": "vers",
         "laagste_ooit_prijs": 1.19,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
-      }
-    ],
-    "Ekoplaza": [
-      {
-        "naam": "Wortelen",
-        "actieprijs": 1.59,
-        "normale_prijs": 2.59,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.59,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Courgette",
-        "actieprijs": 1.29,
-        "normale_prijs": 2.0,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.29,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Zwarte bonen",
-        "actieprijs": 2.79,
-        "normale_prijs": 3.29,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 2.79,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Kastanjechampignons",
-        "actieprijs": 2.29,
-        "normale_prijs": 2.59,
-        "soort": "vers",
-        "laagste_ooit_prijs": 2.29,
         "laagste_ooit_datum": "2026-09-02",
         "eerder_gezien": 1
       }
