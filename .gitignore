@@ -12,3 +12,6 @@ www/
 geschiedenis.json
 *.beschadigd
 *.json.nieuw
+
+# Conceptmail, geen onderdeel van de site
+mail-prijsprofeet.md
