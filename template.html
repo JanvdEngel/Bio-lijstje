@@ -34,7 +34,7 @@
     --text: #ece7db;
     --muted: #928c7c;
     --harvest: #c97d3f;
-    --warn: #d95b4a;
+    --warn: #db6454;      /* was #d95b4a: 4,29:1 op een kaart, net onder de eis */
     --leaf: #8caa5c;
     --line: #35322a;
     /* Losgetrokken uit de opmaak zodat licht ze kan omzetten: deze stonden
@@ -48,9 +48,9 @@
     --ah: #5b8fd6;
     --jumbo: #e0b23c;
     --lidl: #4fb0a6;
-    --aldi: #7a6fd0;
-    --dirk: #d43a3a;
-    --plus: #4a8f5c;
+    --aldi: #8278d3;      /* was #7a6fd0: 4,16:1 */
+    --dirk: #db5959;      /* was #d43a3a: 3,71:1 met de donkere badgeletter erop */
+    --plus: #4f9260;      /* was #4a8f5c: 4,46:1 */
     /* Ekoplaza's eigen merkgroen (#67bc46), iets opgetild voor leesbaarheid op
        donker. Ligt dichter bij Plus dan ideaal, maar beide ketens zíjn groen;
        de tinten schelen genoeg om ze naast elkaar te onderscheiden. */
@@ -589,7 +589,7 @@ function render() {
     const body = items.length
       ? (vers.length ? groep(vers) : '') +
         (voorraad.length ? `<p class="soort-kop${vers.length ? '' : ' eerste'}">Voorraad<span class="soort-uitleg">blik, pot, zak of vriezer</span></p>` + groep(voorraad) : '') +
-        (extraCount > 0 ? `<button class="toggle-more" type="button" data-more="+${extraCount} meer tonen" data-less="Toon minder">+${extraCount} meer tonen</button>` : '')
+        (extraCount > 0 ? `<button class="toggle-more" type="button" aria-expanded="false" data-more="+${extraCount} meer tonen" data-less="Toon minder">+${extraCount} meer tonen</button>` : '')
       : `<p class="empty-note">Vandaag geen bio-acties bij ${s}.</p>`;
     return `
       <div class="store-section" data-store="${s}"${hiddenStores.has(s) ? ' style="display:none"' : ''}>
@@ -614,6 +614,9 @@ document.addEventListener('click', (e) => {
     const section = moreBtn.closest('.store-section');
     const expanded = section.classList.toggle('expanded');
     moreBtn.textContent = expanded ? moreBtn.dataset.less : moreBtn.dataset.more;
+    // Zonder dit hoort een schermlezer alleen dat de knoptekst verandert, niet
+    // dat er negen kaarten bij zijn gekomen.
+    moreBtn.setAttribute('aria-expanded', String(expanded));
     return;
   }
 
