@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-01T20:59:37.391622",
+  "laatst_bijgewerkt": "2026-09-02T06:01:47.362664",
   "aanbiedingen": {
     "AH": [
       {
@@ -16,22 +16,73 @@
     ],
     "Jumbo": [
       {
-        "naam": "Jumbo Biologisch Aardappelen Vastkokend 2,5KG",
-        "actieprijs": 2.49,
-        "normale_prijs": 4.55,
-        "soort": "vers",
-        "laagste_ooit_prijs": 2.49,
-        "laagste_ooit_datum": "2026-08-27",
-        "eerder_gezien": 2
+        "naam": "Hak Spinazie met Room Bio 345 g",
+        "actieprijs": 1.5,
+        "normale_prijs": 2.99,
+        "soort": "voorraad",
+        "voorwaarde": "1+1 gratis",
+        "laagste_ooit_prijs": 1.0,
+        "laagste_ooit_datum": "2026-08-20",
+        "eerder_gezien": 10
       },
       {
-        "naam": "Jumbo Biologisch Aardappelen Kruimig 2,5 kg",
-        "actieprijs": 2.49,
-        "normale_prijs": 4.55,
+        "naam": "Hak Rode Bieten Bio 705 g",
+        "actieprijs": 1.5,
+        "normale_prijs": 2.99,
+        "soort": "voorraad",
+        "voorwaarde": "1+1 gratis"
+      },
+      {
+        "naam": "Hak Gesneden Bonen Bio 670 g",
+        "actieprijs": 1.5,
+        "normale_prijs": 2.99,
+        "soort": "voorraad",
+        "voorwaarde": "1+1 gratis"
+      },
+      {
+        "naam": "Hak Rode Bieten Sticks Bio 355 g",
+        "actieprijs": 1.29,
+        "normale_prijs": 2.59,
+        "soort": "voorraad",
+        "voorwaarde": "1+1 gratis",
+        "laagste_ooit_prijs": 1.0,
+        "laagste_ooit_datum": "2026-08-20",
+        "eerder_gezien": 10
+      },
+      {
+        "naam": "Hak Gesneden Bonen Bio 340 g",
+        "actieprijs": 1.2,
+        "normale_prijs": 2.39,
+        "soort": "voorraad",
+        "voorwaarde": "1+1 gratis",
+        "laagste_ooit_prijs": 1.0,
+        "laagste_ooit_datum": "2026-08-20",
+        "eerder_gezien": 10
+      },
+      {
+        "naam": "Hak Rode Bieten Schijven Bio 355 g",
+        "actieprijs": 1.09,
+        "normale_prijs": 2.19,
+        "soort": "voorraad",
+        "voorwaarde": "1+1 gratis",
+        "laagste_ooit_prijs": 1.0,
+        "laagste_ooit_datum": "2026-08-20",
+        "eerder_gezien": 10
+      },
+      {
+        "naam": "Hak Rode Bieten Schijven Bio 180 g",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.99,
+        "soort": "voorraad",
+        "voorwaarde": "1+1 gratis"
+      },
+      {
+        "naam": "Jumbo Biologisch Rucola 40 g",
+        "actieprijs": 1.0,
+        "normale_prijs": 1.39,
         "soort": "vers",
-        "laagste_ooit_prijs": 2.49,
-        "laagste_ooit_datum": "2026-08-27",
-        "eerder_gezien": 1
+        "voorwaarde": "2 voor 2,00",
+        "vanaf": 2
       }
     ],
     "Lidl": [
@@ -43,6 +94,12 @@
         "laagste_ooit_prijs": 1.49,
         "laagste_ooit_datum": "2026-08-28",
         "eerder_gezien": 1
+      },
+      {
+        "naam": "Bio appelmoes",
+        "actieprijs": 0.79,
+        "normale_prijs": null,
+        "soort": "vers"
       },
       {
         "naam": "Alesto Bio Mango",
@@ -57,13 +114,10 @@
     "Aldi": [],
     "Dirk": [
       {
-        "naam": "Bio+ Portobello per bak",
-        "actieprijs": 1.49,
-        "normale_prijs": 1.69,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.49,
-        "laagste_ooit_datum": "2026-08-26",
-        "eerder_gezien": 1
+        "naam": "Bio+ Biologische courgette",
+        "actieprijs": 0.79,
+        "normale_prijs": 0.99,
+        "soort": "vers"
       }
     ],
     "Plus": [
@@ -93,26 +147,68 @@
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-26",
         "eerder_gezien": 1
+      },
+      {
+        "naam": "Biologisch PLUS Rode bieten biologisch",
+        "actieprijs": 1.19,
+        "normale_prijs": 1.65,
+        "soort": "vers"
       }
     ],
     "Ekoplaza": [
       {
-        "naam": "Oesterzwammen",
-        "actieprijs": 2.59,
-        "normale_prijs": 3.29,
-        "soort": "vers",
-        "laagste_ooit_prijs": 2.59,
-        "laagste_ooit_datum": "2026-08-31",
-        "eerder_gezien": 1
+        "naam": "Spaanse sinaasappelhoning",
+        "actieprijs": 7.67,
+        "normale_prijs": 9.59,
+        "soort": "vers"
       },
       {
-        "naam": "Radijs zonder loof",
-        "actieprijs": 1.69,
-        "normale_prijs": 1.99,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.69,
-        "laagste_ooit_datum": "2026-08-31",
-        "eerder_gezien": 1
+        "naam": "Wortelen",
+        "actieprijs": 1.59,
+        "normale_prijs": 2.59,
+        "soort": "vers"
+      },
+      {
+        "naam": "Knekkebrød banaan rogge",
+        "actieprijs": 3.67,
+        "normale_prijs": 4.59,
+        "soort": "vers"
+      },
+      {
+        "naam": "Groentecracker rode biet",
+        "actieprijs": 3.67,
+        "normale_prijs": 4.59,
+        "soort": "vers"
+      },
+      {
+        "naam": "Groentecracker wortel maïs",
+        "actieprijs": 3.67,
+        "normale_prijs": 4.59,
+        "soort": "vers"
+      },
+      {
+        "naam": "Groentecracker spinazie prei",
+        "actieprijs": 3.67,
+        "normale_prijs": 4.59,
+        "soort": "vers"
+      },
+      {
+        "naam": "Courgette",
+        "actieprijs": 1.29,
+        "normale_prijs": 2.0,
+        "soort": "vers"
+      },
+      {
+        "naam": "Zwarte bonen",
+        "actieprijs": 2.79,
+        "normale_prijs": 3.29,
+        "soort": "voorraad"
+      },
+      {
+        "naam": "Kastanjechampignons",
+        "actieprijs": 2.29,
+        "normale_prijs": 2.59,
+        "soort": "vers"
       }
     ]
   }
