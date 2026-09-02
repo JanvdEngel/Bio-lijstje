@@ -2,3 +2,13 @@
 __pycache__/
 *.pyc
 .DS_Store
+
+# De prijsgeschiedenis mag niet in deze publieke repo. PrijsProfeet staat toe dat
+# we eigen waarnemingen bewaren en tonen, maar niet dat we de reeks zelf
+# doorleveren — en een publieke repo is doorleveren. Op de Pi staat het bestand
+# in /share, buiten de repo; maar een volle lokale run schrijft het in www/data/
+# en dan zou een `git add -A` het alsnog meenemen.
+www/
+geschiedenis.json
+*.beschadigd
+*.json.nieuw
