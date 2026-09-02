@@ -420,12 +420,24 @@ def _vanaf_aantal(voorwaarde):
     dus we kunnen hem niet tonen. Wat we wél kunnen: het aantal naast de prijs
     zetten, zodat die prijs niet als losse stuksprijs gelezen wordt.
 
-    Het eerste getal in het label is dat aantal: "2 STAPELEN", "5 + 1 GRATIS",
-    "2 VOOR 2.99", "2e halve prijs"."""
-    match = re.search(r"\b(\d+)", voorwaarde)
-    if not match:
-        return None
-    aantal = int(match.group(1))
+    Meestal is het eerste getal in het label dat aantal: "2 STAPELEN",
+    "2 VOOR 2.99", "2e halve prijs".
+
+    Behalve bij "X+Y gratis". Daar is het benodigde aantal de SOM, niet het
+    eerste getal: bij "1+1 gratis" neem je twee mee en betaal je er één. Dat
+    ging fout — het eerste getal was 1, dat viel onder de ondergrens van 2, en
+    dus kwam er geen aantal uit. Gevolg: zeven Hak-producten stonden op de site
+    met een prijs die pas bij twee stuks geldt en niets erbij. Precies de klacht
+    over de witte druiven, in een andere vorm. Gemeten in de live data: €1,50
+    tegen een normale prijs van €2,99, dus de bron rekent inderdaad met twee."""
+    plus = re.search(r"\b(\d+)\s*\+\s*(\d+)\b", voorwaarde)
+    if plus:
+        aantal = int(plus.group(1)) + int(plus.group(2))
+    else:
+        match = re.search(r"\b(\d+)", voorwaarde)
+        if not match:
+            return None
+        aantal = int(match.group(1))
     return aantal if 2 <= aantal <= 12 else None
 
 

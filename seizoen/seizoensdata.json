@@ -749,6 +749,6 @@
       "intro": "De laatste verse oogst van het jaar is winterpostelein, dat de kou goed verdraagt en het hele seizoen door blijft komen. De rest ligt in de bewaring. Walnoten zijn er nog, maar dit is hun laatste maand."
     }
   ],
-  "seizoensregel": "Van het seizoen betekent hier: nu in Nederland geoogst, of uit de bewaring van een eerdere Nederlandse oogst. Import telt niet mee.",
+  "seizoensregel": "Van het seizoen betekent hier: nu in Nederland geoogst, of uit de bewaring van een eerdere Nederlandse oogst. Een enkele soort komt in de piekmaanden uit Zuid-Europa; dat staat dan in de tip bij het product.",
   "residuen": "De markeringen komen niet meer uit een handmatige lijst maar uit koppeling_eetwijzer.json plus eetwijzer-2026.json. De oude lijst van zeven producten was gebaseerd op een verouderde editie en klopte niet meer."
 }

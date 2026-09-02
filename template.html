@@ -402,6 +402,15 @@
     padding: 0.6rem 0;
   }
 
+  /* Geen alarm: de lijst eronder is nog steeds bruikbaar, alleen misschien
+     niet van vandaag. */
+  .fetch-mislukt{
+    font-size:0.8rem; color:var(--muted);
+    border:1px solid var(--line); border-radius:8px;
+    padding:0.6rem 0.9rem; margin:0 0 1.2rem;
+    text-align:center;
+  }
+
   .empty-state{
     text-align:center; padding: 2rem 1.5rem; color: var(--muted);
     background: var(--bg-raised);
@@ -535,12 +544,16 @@ function renderAanbiedingCard(item, storeColor, isExtra) {
 function render() {
   const content = document.getElementById('content');
   if (!data) {
-    content.innerHTML = `
-      <div class="empty-state">
-        <span class="big">Nog geen data</span>
-        Draai eerst <code>fetch_bio_prices.py</code> op je Pi, dan verschijnt hier
-        de bio-update van vandaag.
-      </div>`;
+    // Hier stond een instructie om fetch_bio_prices.py op de Pi te draaien.
+    // Die werd aan bezoekers getoond, en hij overschreef de productlijst die de
+    // Pi al in de HTML had gezet — dus wie hier kwam bij een haperende fetch
+    // zag geen aanbiedingen meer terwijl ze wel op de pagina stonden. Nu blijft
+    // die lijst staan en komt er alleen een regel bij dat verversen niet lukte.
+    const melding = document.createElement('p');
+    melding.className = 'fetch-mislukt';
+    melding.setAttribute('role', 'status');
+    melding.textContent = 'De lijst kon nu niet worden ververst; je ziet de laatst opgehaalde versie.';
+    content.insertAdjacentElement('afterbegin', melding);
     return;
   }
 
