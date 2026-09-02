@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-02T20:28:50.817649",
+  "laatst_bijgewerkt": "2026-09-02T20:33:48.277127",
   "aanbiedingen": {
     "AH": [
       {
@@ -21,6 +21,7 @@
         "normale_prijs": 2.99,
         "soort": "voorraad",
         "voorwaarde": "1+1 gratis",
+        "vanaf": 2,
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-20",
         "eerder_gezien": 11
@@ -31,6 +32,7 @@
         "normale_prijs": 2.99,
         "soort": "voorraad",
         "voorwaarde": "1+1 gratis",
+        "vanaf": 2,
         "laagste_ooit_prijs": 1.5,
         "laagste_ooit_datum": "2026-09-02",
         "eerder_gezien": 1
@@ -41,6 +43,7 @@
         "normale_prijs": 2.99,
         "soort": "voorraad",
         "voorwaarde": "1+1 gratis",
+        "vanaf": 2,
         "laagste_ooit_prijs": 1.5,
         "laagste_ooit_datum": "2026-09-02",
         "eerder_gezien": 1
@@ -51,6 +54,7 @@
         "normale_prijs": 2.59,
         "soort": "voorraad",
         "voorwaarde": "1+1 gratis",
+        "vanaf": 2,
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-20",
         "eerder_gezien": 11
@@ -61,6 +65,7 @@
         "normale_prijs": 2.39,
         "soort": "voorraad",
         "voorwaarde": "1+1 gratis",
+        "vanaf": 2,
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-20",
         "eerder_gezien": 11
@@ -71,6 +76,7 @@
         "normale_prijs": 2.19,
         "soort": "voorraad",
         "voorwaarde": "1+1 gratis",
+        "vanaf": 2,
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-20",
         "eerder_gezien": 11
@@ -81,6 +87,7 @@
         "normale_prijs": 1.99,
         "soort": "voorraad",
         "voorwaarde": "1+1 gratis",
+        "vanaf": 2,
         "laagste_ooit_prijs": 0.99,
         "laagste_ooit_datum": "2026-09-02",
         "eerder_gezien": 1
