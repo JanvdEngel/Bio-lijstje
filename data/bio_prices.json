@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-02T20:33:48.277127",
+  "laatst_bijgewerkt": "2026-09-02T20:40:23.996215",
   "aanbiedingen": {
     "AH": [
       {
@@ -185,56 +185,11 @@
     ],
     "Ekoplaza": [
       {
-        "naam": "Spaanse sinaasappelhoning",
-        "actieprijs": 7.67,
-        "normale_prijs": 9.59,
-        "soort": "vers",
-        "laagste_ooit_prijs": 7.67,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
-      },
-      {
         "naam": "Wortelen",
         "actieprijs": 1.59,
         "normale_prijs": 2.59,
         "soort": "vers",
         "laagste_ooit_prijs": 1.59,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Knekkebrød banaan rogge",
-        "actieprijs": 3.67,
-        "normale_prijs": 4.59,
-        "soort": "vers",
-        "laagste_ooit_prijs": 3.67,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Groentecracker rode biet",
-        "actieprijs": 3.67,
-        "normale_prijs": 4.59,
-        "soort": "vers",
-        "laagste_ooit_prijs": 3.67,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Groentecracker wortel maïs",
-        "actieprijs": 3.67,
-        "normale_prijs": 4.59,
-        "soort": "vers",
-        "laagste_ooit_prijs": 3.67,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Groentecracker spinazie prei",
-        "actieprijs": 3.67,
-        "normale_prijs": 4.59,
-        "soort": "vers",
-        "laagste_ooit_prijs": 3.67,
         "laagste_ooit_datum": "2026-09-02",
         "eerder_gezien": 1
       },
