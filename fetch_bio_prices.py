@@ -45,15 +45,26 @@ log = logging.getLogger("bio_prices")
 # ---------------------------------------------------------------------------
 
 AGF_KEYWORDS = [
-    "appel", "banaan", "tomaat", "tomaten", "komkommer", "paprika", "ui", "uien",
-    "aardappel", "wortel", "sla", "spinazie", "avocado", "citroen", "courgette",
-    "champignon", "oesterzwam", "shiitake", "portobello", "kastanjechampignon",
-    "druif", "druiven", "sinaasappel", "peer", "peren", "broccoli",
-    "bloemkool", "prei", "aardbei", "framboos", "blauwe bes", "bosbes", "kiwi",
-    "mandarijn", "radijs", "witlof", "boon", "bonen", "knoflook", "venkel",
-    "asperge", "mango", "meloen", "sperzieboon", "rucola", "andijvie",
-    "koolraap", "pompoen", "biet", "selderij", "gember", "limoen", "kool",
-    "mais", "maïs",  # ontbraken; kwamen live langs als "BIO+ Mais zoet" en "Maïskolven"
+    "appel", "banaan", "bananen", "tomaat", "tomaten", "komkommer", "paprika",
+    "ui", "uien", "bosui", "aardappel", "wortel", "peen", "sla", "spinazie",
+    "avocado", "citroen", "courgette", "champignon", "oesterzwam", "shiitake",
+    "portobello", "kastanjechampignon", "druif", "druiven", "sinaasappel",
+    "peer", "peren", "broccoli", "bloemkool", "prei", "aardbei", "framboos",
+    "frambozen", "blauwe bes", "bosbes", "bessen", "kruisbes", "braam",
+    "bramen", "kiwi", "mandarijn", "radijs", "witlof", "boon", "bonen",
+    "snijboon", "knoflook", "venkel", "asperge", "mango", "meloen",
+    "sperzieboon", "rucola", "andijvie", "koolraap", "pompoen", "biet",
+    "selderij", "gember", "limoen", "kool", "mais", "maïs",
+    # Onze eigen seizoenskalender noemt 51 producten; 24 daarvan herkende dit
+    # filter niet. Als /seizoen/ zegt dat rabarber nu van het seizoen is, moet
+    # "Bio rabarber" in een aanbieding hier ook binnenkomen.
+    "pruim", "pruimen", "nectarine", "perzik", "kersen", "rabarber",
+    "doperwt", "spruit", "pastinaak", "koolrabi", "postelein", "raapstelen",
+    "walnoot", "knolselderij",
+    # Gemeten tegen de catalogus: kwamen langs als echte AGF-aanbiedingen maar
+    # stonden in geen enkel trefwoord.
+    "ananas", "vijg", "dadel", "kaki", "grapefruit", "bimi", "romaine",
+    "paksoi", "tauge", "granaatappel", "sugar snap",
 ]
 
 # Matcht "bio", maar ook "biologisch"/"biologische" — AH, Jumbo en Plus noemen
@@ -69,6 +80,11 @@ BIO_PATTERN = re.compile(r"\bbio(?:logisch\w*)?\b", re.IGNORECASE)
 # vaak naar fruit. Uitbreidbaar — "frisdrank" (vruchtensap) en "huishouden"
 # (diervoer met groente erin) zijn logische volgende kandidaten.
 EXCLUDED_CATEGORIES = {
+    # Toegevoegd toen het filter samenstellingen ging herkennen: "ananas" haalt
+    # dan ook "DubbelDrank Ananas & guave" binnen en "granaatappel" de kombucha.
+    # Het commentaar hieronder noemde beide al als logische kandidaat.
+    "frisdrank",
+    "huishouden",
     "koffie-thee",
     "drogisterij",
     "bier-wijn-sterke-drank",
@@ -115,7 +131,32 @@ EXCLUDED_CATEGORIES = {
 # "Slavinken" en "Slagershamburgers" — allebei vlees. En het kostte niets, want
 # de echte samenstellingen ("kropsla", "veldsla") eindigen op "sla" en werden
 # door een voorvoegselregel toch al niet gevonden.
-_AGF_WHOLE_WORD_ONLY = {"ui", "uien", "kool", "sla"}
+# Drie klassen, want Nederlands plakt zelfstandige naamwoorden aan elkaar en
+# verkort daarbij de klinker. "banaan" zit niet in "bananen" (aa -> a), en
+# "sla" staat niet los in "veldsla". Tot nu toe matchte elk trefwoord alleen
+# aan het begin van een woord, waardoor "Bio Fairtrade bananen" (€1,49, was
+# €2,19), "Jumbo Biologisch Snoeptomaten" en "Jumbo Biologisch Veldsla" niet op
+# de site kwamen terwijl ze wél in de API stonden.
+#
+# Welk trefwoord in welke klasse hoort is gemeten tegen de hele catalogus van
+# 9.165 producten, niet beredeneerd:
+#
+# - SUBSTRING: lang genoeg om overal in een woord te mogen staan. "tomaten"
+#   pakt zo "Snoeptomaten" én "tomatenpulp"; nul valse treffers gemeten.
+# - TAIL: mag een woord vóór zich hebben maar moet op een woordgrens eindigen.
+#   Een kale substring-match op "sla" vindt "Vakslager" en "hagelslag" (62
+#   valse treffers), met de woordgrens erachter nul.
+# - WHOLE: alleen als los woord. "ui" als substring vindt "kruidnoten",
+#   "quinoa" en "Grapefruits" — 615 valse treffers, nul echte winst.
+_AGF_WHOLE_WORD_ONLY = {"ui", "uien"}
+# "wortel" en "postelein" horen in SUBSTRING en niet hier: de staart-klasse
+# eist een woordgrens ná het trefwoord, en daardoor viel "Wortelen" eraf.
+_AGF_TAIL = {"sla", "kool", "peen", "bonen", "boon", "bes", "bessen"}
+_AGF_SUBSTRING = {
+    "tomaat", "tomaten", "komkommer", "paprika", "spinazie", "sinaasappel",
+    "peren", "meloen", "selderij", "wortel", "bananen", "granaatappel",
+    "postelein",
+}
 
 # Producten die een AGF-trefwoord in de naam hebben maar toch geen groente of
 # fruit zijn. Nodig omdat de categorie van PrijsProfeet hier niet helpt: AH zet
@@ -166,6 +207,21 @@ _NIET_AGF_PATRONEN = (
     # één product van appels, net als de Hak-bieten die we bewust houden. Dus op
     # naam, en dat vangt beide siropen in de catalogi ongeacht hun categorie.
     re.compile(r"siroop", re.IGNORECASE),
+    # "stroop" naast "siroop": dadelstroop en appelstroop kwamen binnen via de
+    # trefwoorden "dadel" en "appel".
+    re.compile(r"stroop", re.IGNORECASE),
+    # Bonen die geen boon zijn. Nodig sinds "bonen" ook aan het eind van een
+    # samenstelling mag matchen: dat haalt "sperziebonen" binnen, maar ook
+    # "cacaobonen" en "koffiebonen". Kidney-, zwarte en sojabonen blijven er
+    # bewust wél in: dat zijn bonen, en ze horen onder Voorraad net als de Hak
+    # bio bieten die al op de site staan. Sojamelk is weer geen boon.
+    # Bij Ekoplaza is de naam de enige verdediging, want daar volstaat het
+    # bio-label; en Folderz levert helemaal geen categorie.
+    re.compile(r"cacaobo|koffiebo|sojabo\w*\s*(?:melk|drink)", re.IGNORECASE),
+    # Kool die geen kool is. "kool" mag nu ook een samenstelling afsluiten, dus
+    # houtskool matcht. Zuurkool blijft er bewust wél in: dat is bewaarde
+    # groente, net als de Hak bio bieten die al op de site staan.
+    re.compile(r"houtskool", re.IGNORECASE),
     # Derde ronde Ekoplaza-lekken (2 september). Die keten zet honing, crackers
     # en knäckebröd onder "groente-fruit", en kombucha onder "frisdrank" — de
     # categorie zegt daar dus vrijwel niets, en dat is de reden dat deze lijst
@@ -184,11 +240,40 @@ _NIET_AGF_PATRONEN = (
     re.compile(r"\w+sticks\b", re.IGNORECASE),
 )
 
-_agf_prefix = [k for k in AGF_KEYWORDS if k not in _AGF_WHOLE_WORD_ONLY]
-_agf_whole = [k for k in AGF_KEYWORDS if k in _AGF_WHOLE_WORD_ONLY]
+def _agf_klasse(k):
+    if k in _AGF_WHOLE_WORD_ONLY:
+        return "whole"
+    if k in _AGF_TAIL:
+        return "tail"
+    if k in _AGF_SUBSTRING:
+        return "substring"
+    return "prefix"
+
+
+_agf_groepen = {"whole": [], "tail": [], "substring": [], "prefix": []}
+for _k in AGF_KEYWORDS:
+    _agf_groepen[_agf_klasse(_k)].append(_k)
+
+
+def _agf_deel(sleutels, voor, na):
+    if not sleutels:
+        return None
+    return voor + r"(?:" + "|".join(re.escape(k) for k in sleutels) + r")" + na
+
+
 AGF_PATTERN = re.compile(
-    r"\b(" + "|".join(re.escape(k) for k in _agf_prefix) + r")"
-    r"|\b(" + "|".join(re.escape(k) for k in _agf_whole) + r")\b",
+    "|".join(
+        deel for deel in (
+            # los woord: \bui\b
+            _agf_deel(_agf_groepen["whole"], r"\b", r"\b"),
+            # eind van een samenstelling: veldsla, spitskool, sperziebonen
+            _agf_deel(_agf_groepen["tail"], r"(?:\b|\w)", r"\b"),
+            # overal in het woord: Snoeptomaten, tomatenpulp
+            _agf_deel(_agf_groepen["substring"], r"", r""),
+            # begin van een woord: appel -> appels, appelmoes
+            _agf_deel(_agf_groepen["prefix"], r"\b", r""),
+        ) if deel
+    ),
     re.IGNORECASE,
 )
 
@@ -199,9 +284,19 @@ AGF_PATTERN = re.compile(
 # paginering vrijwel nooit iets op dat PrijsProfeet niet al had — puur tijd
 # kosten zonder toegevoegde waarde. Hertest augustus 2026 bevestigt dat: 2040
 # AH-producten over 60 pagina's gaven 7 bio-treffers, allemaal wijn, thee en
-# crackers. Bij Lidl vult Folderz wél een structurele blinde vlek — daar heeft
-# PrijsProfeet maar ~180 producten, en vrijwel al het verse groente/fruit op de
-# pagina komt uit Folderz.
+# crackers.
+#
+# Bij Lidl was de redenering dat Folderz een structurele blinde vlek vult: daar
+# heeft PrijsProfeet maar ~200 producten en zou vrijwel al het verse
+# groente/fruit uit Folderz komen. Nagemeten op 2 september 2026 klopt dat niet
+# meer. PrijsProfeet leest dezelfde Lidl-folders (folder_id "lidl_2026-09-02",
+# vier folders naast elkaar) en had er 3 van de 4, waaronder de bananen die
+# Folderz óók had. Folderz droeg er precies één bij die PrijsProfeet niet had:
+# "Alesto Bio Mango", gedroogd fruit uit hun snacklijn. Andersom had
+# PrijsProfeet "Bio appelmoes" die Folderz niet had.
+#
+# Kosten van die ene: 35 pagina's per dag op andermans site, zonder gevraagde
+# toestemming. Zie het werkplan — dit staat open als beslissing.
 #
 # PrijsProfeet ontsluit 10 ketens; nog niet in gebruik: DekaMarkt, Hoogvliet,
 # Vomar.
