@@ -640,8 +640,15 @@ def fetch_aanbiedingen_folderz(store_label, folderz_slug):
     import requests
     from bs4 import BeautifulSoup
 
+    # Hier stond een nagemaakte Mac-browser. Dat is precies hoe je een blokkade
+    # op User-Agent omzeilt, en niets aan wat we doen rechtvaardigt dat: we
+    # halen één pad op, één keer per etmaal, met een seconde ertussen. Hun
+    # robots.txt staat dat pad expliciet toe ("Allow: /winkels/*?page=*"), dus
+    # er is niets te verbergen. Dezelfde identiteit als bij PrijsProfeet, zodat
+    # Folderz ons kan herkennen, kan vinden wie we zijn, en ons kan blokkeren
+    # als ze dat willen.
     headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+        "User-Agent": "BioBordPi/1.0 (+https://hetbiolijstje.nl)",
         "Accept-Language": "nl-NL,nl;q=0.9",
     }
     url = f"https://www.folderz.nl/winkels/{folderz_slug}/aanbiedingen"
