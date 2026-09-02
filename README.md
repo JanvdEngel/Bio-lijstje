@@ -1,7 +1,7 @@
 # Het Bio Lijstje
 
 Elke ochtend de lopende biologische groente- en fruitaanbiedingen van AH,
-Jumbo, Lidl, Aldi, Dirk, Plus en Ekoplaza, naast elkaar op één pagina. Geen
+Jumbo, Lidl, Aldi, Dirk en Plus, naast elkaar op één pagina. Geen
 tabs, geen doorklikken, geen advertenties.
 
 **Live: [hetbiolijstje.nl](https://hetbiolijstje.nl/)** — en de seizoenskalender
@@ -35,13 +35,14 @@ lastigste beslissingen, met de reden erbij, staan als commentaar in
   reeks Jumbo-huismerkproducten als bio die dat niet zijn, waaronder
   "Pastasaus Tomaat Spekjes". Vijftien niet-biologische producten stonden
   daardoor live. Nu moeten het label én de productnaam allebei "bio" zeggen.
-  Uitzondering: bij een volledig biologische keten als Ekoplaza zegt geen
-  enkele productnaam "bio", dus daar volstaat het label.
+  Uitzondering: bij een volledig biologische keten zegt geen enkele
+  productnaam "bio", dus daar zou het label volstaan (`VOLLEDIG_BIO_WINKELS`).
 - **Een gerecht met groente erin is geen groente.** Soep, saus, pesto, quiche,
   hummus, chips — allemaal geweerd op naam, want de categorie van de bron redt
-  het niet: Ekoplaza zet aardappelchips zelf onder "groente-fruit".
+  het niet: één keten zette aardappelchips, honing en knäckebröd zelf onder
+  "groente-fruit". Die staat er daarom niet meer in — zie hieronder.
 - **Elk trefwoord en elk filter is eerst gemeten** tegen de volledige catalogus
-  van alle zeven ketens, vóór het in de code kwam. Wat niets opleverde, is er
+  van alle ketens, vóór het in de code kwam. Wat niets opleverde, is er
   niet in gegaan. Dat is niet perfectionisme: "sla" als voorvoegsel matchte
   vrolijk Slavinken, en "appel" haalde appelsap binnen.
 - **Verse producten en voorraadproducten staan apart**, want een blik tomaten
@@ -119,9 +120,23 @@ De knoppen die je waarschijnlijk zoekt, staan bovenin `fetch_bio_prices.py`:
 telt), `EXCLUDED_CATEGORIES` en `_NIET_AGF_PATRONEN` (wat er juist uit moet). Het
 uiterlijk zit in `template.html`.
 
-Voeg je een winkel of een trefwoord toe? Meet eerst wat het doet tegen de hele
-catalogus. Bij Ekoplaza scheelde dat 23 treffers waarvan er 21 quiche en chips
-bleken te zijn.
+De seizoenskalender en `/over/` zijn geen losse bestanden maar generaties: pas
+`seizoen/seizoensdata.json` aan, draai `python seizoen/bouw_paginas.py`, en
+controleer met `python seizoen/controleer_seizoen.py` en
+`python seizoen/sitemap_regels.py`. Die controle bestaat omdat de generator
+zonder fout kan draaien en toch onzin kan opleveren — een plaatshouder die
+blijft staan, of een canonical die naar de verkeerde maand wijst.
+
+Voeg je een winkel of een trefwoord toe? **Meet eerst wat het doet tegen de hele
+catalogus, niet tegen de lijst van vandaag.** Twee keer ging dat mis:
+
+- Ekoplaza leverde 23 treffers waarvan 21 quiche en chips. Na twee rondes extra
+  filters kwamen er alsnog honing, crackers, knäckebröd en kombucha door. Hun
+  `unified_category` zegt niets, dus dat bleef terugkomen; de keten staat nu in
+  `KANDIDAAT_WINKELS` in plaats van in de lijst.
+- Een regel die alles met een hoeveelheid in milliliters zou weren, kostte niets
+  tegen de aanbiedingen van dat moment. Tegen de hele catalogus haalde hij één
+  product weg dat er wél hoort: "Bio appelmoes".
 
 ## Bijdragen
 

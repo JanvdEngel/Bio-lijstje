@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Bio Groente & Fruit — AH / Jumbo / Lidl / Aldi / Dirk / Plus / Ekoplaza
+Bio Groente & Fruit — AH / Jumbo / Lidl / Aldi / Dirk / Plus
 =====================================================================
 Standalone script (GEEN Home Assistant nodig). Draait via cron, 1x per week,
 en schrijft een JSON-bestand dat de telefoon-app (www/index.html) uitleest.
@@ -220,7 +220,6 @@ AANBIEDINGEN_STORES = {
     "Aldi": ("aldi", None),
     "Dirk": ("dirk", None),
     "Plus": ("plus", None),
-    "Ekoplaza": ("ekoplaza", None),
 }
 
 # Winkels waar het hele assortiment biologisch is. Daar volstaat het
@@ -245,6 +244,16 @@ VOLLEDIG_BIO_WINKELS = {"ekoplaza"}
 # elk kwartaal handmatig opnieuw uitzoeken is zonde. Daarom controleert
 # controleer_kandidaten() ze elke ronde en zegt het als er iets verschijnt.
 KANDIDAAT_WINKELS = {
+    # Ekoplaza deed van 1 tot 2 september mee en is er weer uit. Niet omdat de
+    # keten niets levert — vier echte producten per dag — maar omdat hun
+    # unified_category niets zegt: honing, crackers, knäckebröd en quiche staan
+    # daar onder "groente-fruit" en kombucha onder "frisdrank". In drie rondes
+    # kwamen er 21 quiche/chips, 1 siroop en 6 snacks door, en elke ronde vroeg
+    # nieuwe naampatronen. Vier producten per dag is dat onderhoud niet waard.
+    # Blijft als kandidaat staan, dus de wachter meldt het als hun data verbetert.
+    # Zie het werkplan: een andere ingang voor Ekoplaza (Folderz of een eigen
+    # bron) staat op de lange baan.
+    "Ekoplaza": "ekoplaza",
     "Hoogvliet": "hoogvliet",
     "DekaMarkt": "dekamarkt",
     "Vomar": "vomar",

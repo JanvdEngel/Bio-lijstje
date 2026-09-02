@@ -35,8 +35,15 @@ for m in data["maanden"]:
         "    <priority>0.6</priority>",
         "  </url>",
     ]
+regels += [
+    "  <url>",
+    "    <loc>https://hetbiolijstje.nl/over/</loc>",
+    "    <changefreq>yearly</changefreq>",
+    "    <priority>0.4</priority>",
+    "  </url>",
+]
 regels.append("</urlset>")
 
 pad = WORTEL / "sitemap.xml"
 pad.write_text("\n".join(regels) + "\n", encoding="utf-8", newline="\n")
-print(f"sitemap.xml geschreven: {len(data['maanden']) + 2} URL's")
+print(f"sitemap.xml geschreven: {len(data['maanden']) + 3} URL's")

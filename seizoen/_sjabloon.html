@@ -204,6 +204,22 @@
   .residu.meer{ color:var(--harvest); }
   .residu.minder{ color:var(--leaf); }
 
+  /* Over-pagina: doorlopende tekst in plaats van kaarten. */
+  .prose{ max-width:62ch; margin:0 auto; }
+  .prose p{ margin:0 0 14px; line-height:1.7; }
+  .prose p:last-child{ margin-bottom:0; }
+  .prose strong{ font-weight:600; color:var(--text); }
+  .prose a{ color:var(--harvest); }
+  /* De nuance die het makkelijkst wordt overgeslagen, dus met een rand ernaast. */
+  .let-op{
+    border-left:3px solid var(--harvest);
+    padding:2px 0 2px 14px; margin-top:18px;
+  }
+  .contact{
+    font-family:'Space Mono', monospace; font-size:15px;
+    margin-top:18px;
+  }
+
   .intro{
     max-width:60ch; margin:0 auto 26px;
     text-align:center; color:var(--muted); line-height:1.65;
@@ -417,6 +433,12 @@
     margin-top:36px;
     line-height:1.6;
   }
+  /* Zonder eigen kleur pakt een footer-link het browserblauw: 1,85:1 op de
+     donkere achtergrond. Erven van de footer geeft 5,2:1. */
+  footer a{
+    color:inherit;
+    text-underline-offset:2px;
+  }
 
   @media (max-width:480px){
     .grid{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:8px; }
@@ -444,10 +466,7 @@
 <header class="kader">
 
   <button class="thema-knop" type="button" id="themaKnop"></button>
-    <nav class="secties" aria-label="Secties">
-      <a href="/">Aanbiedingen</a>
-      <a href="/seizoen/" class="huidig" aria-current="page">Seizoen</a>
-    </nav>
+{{NAV}}
     <a class="wordmark" href="/">Het Bio Lijstje</a>
     {{EYEBROW}}
 </header>
@@ -456,9 +475,7 @@
 {{INHOUD}}
 
   <footer>
-    {{SEIZOENSREGEL}}<br>
-    Seizoensdata samengesteld op basis van de klassieke NL-seizoenslogica (volle grond / plastic tunnel / onverwarmde kas), zoals gehanteerd door Milieu Centraal en het Voedingscentrum — geen live databron.<br>
-    Het gemiddeld aantal aangetroffen bestrijdingsmiddelen komt uit de <a href="https://www.pan-netherlands.org/eetwijzer/" rel="noopener">PesticidenEetwijzer</a> van PAN-NL, op NVWA-data 2023–2025. 🧴 staat bij de soorten die ruim boven het gemiddelde van hun categorie uitkomen. Bij producten die de NVWA niet apart meet staat geen cijfer.
+    {{VOETNOOT}}
   </footer>
 </div>
 

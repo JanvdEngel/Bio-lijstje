@@ -3,7 +3,7 @@
 
     python seizoen/controleer_seizoen.py
 
-Draai dit na bouw_seizoen.py. De generator kan zonder fout draaien en toch
+Draai dit na bouw_paginas.py. De generator kan zonder fout draaien en toch
 onzin opleveren — een plaatshouder die blijft staan, een canonical die naar de
 verkeerde maand wijst, een product dat uit de lijst valt. Dat is precies het
 soort fout dat pas opvalt als iemand de pagina bezoekt.
@@ -61,6 +61,28 @@ for i, m in enumerate(data["maanden"]):
         ("seizoensregel", data["seizoensregel"][:40] in t),
     ])
 
+over = HIER.parent / "over" / "index.html"
+if not over.exists():
+    fouten += 1
+    print("  FOUT  over: pagina ontbreekt")
+else:
+    t = over.read_text(encoding="utf-8")
+    keur("over", [
+        ("canonical", 'href="https://hetbiolijstje.nl/over/"' in t),
+        ("een titel", t.count("<title>") == 1),
+        ("een canonical", t.count('rel="canonical"') == 1),
+        ("h1", '<h1 class="eyebrow">Over deze site</h1>' in t),
+        ("geen plaatshouders", "{{" not in t),
+        ("contactadres", "mailto:jan@styrinth.nl" in t),
+        ("prijzen indicatief", "indicatief" in t),
+        ("bron PrijsProfeet", "prijsprofeet.nl" in t),
+        ("bron PAN-NL", "pan-netherlands.org" in t),
+        ("privacy: teller genoemd", "GoatCounter" in t),
+        # De nuance waar de hele pagina om begon: het residucijfer gaat over
+        # het hele handelskanaal, niet over de biologische variant.
+        ("residu niet bio-specifiek", "niet specifiek over biologisch" in t),
+    ])
+
 overzicht = HIER / "index.html"
 t = overzicht.read_text(encoding="utf-8")
 keur("overzicht", [
@@ -76,4 +98,4 @@ keur("overzicht", [
 print()
 if fouten:
     sys.exit(f"{fouten} pagina('s) niet in orde")
-print("alle dertien pagina's in orde")
+print("alle veertien pagina's in orde")
