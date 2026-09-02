@@ -16,9 +16,7 @@ Een Python-script draait één keer per dag op een Raspberry Pi met Home
 Assistant OS. Het haalt per winkel de volledige actiecatalogus op bij de
 [PrijsProfeet-API](https://www.prijsprofeet.nl/), filtert daar de biologische
 groente en het fruit uit, en schrijft het resultaat naar `bio_prices.json`.
-Voor Lidl komt er nog een scrape van Folderz.nl bij, want PrijsProfeet heeft
-daar maar ~180 producten. Daarna pusht de Pi het resultaat naar deze repo, en
-GitHub Pages serveert het.
+Daarna pusht de Pi het resultaat naar deze repo, en GitHub Pages serveert het.
 
 Twee bestanden, elk met één eigenaar: **jij** bewerkt `template.html`, de **Pi**
 genereert daar `index.html` uit. Dat klinkt omslachtig maar is er met reden —

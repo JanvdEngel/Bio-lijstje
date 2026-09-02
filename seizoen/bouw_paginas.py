@@ -321,9 +321,8 @@ def overpagina(data):
       <p><strong>De aanbiedingen</strong> komen van de
       <a href="https://www.prijsprofeet.nl/" rel="noopener">PrijsProfeet-API</a>,
       die de actiecatalogus van tien Nederlandse ketens ontsluit. Daar filter ik
-      zelf de biologische groente en het fruit uit. Voor Lidl komt er een
-      aanvulling bij van <a href="https://www.folderz.nl/" rel="noopener">Folderz.nl</a>,
-      omdat PrijsProfeet voor die keten weinig producten heeft.</p>
+      zelf de biologische groente en het fruit uit. Dat is de enige bron voor de
+      prijzen; er wordt geen enkele winkelsite door mij uitgelezen.</p>
 
       <p><strong>De seizoenskalender</strong> is met de hand samengesteld op
       basis van de klassieke Nederlandse seizoenslogica — volle grond, plastic
