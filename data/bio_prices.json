@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-02T21:47:23.984716",
+  "laatst_bijgewerkt": "2026-09-02T22:15:49.483294",
   "aanbiedingen": {
     "AH": [
       {
@@ -49,6 +49,14 @@
         "eerder_gezien": 1
       },
       {
+        "naam": "Hak Sperziebonen Bio 675 g",
+        "actieprijs": 1.4,
+        "normale_prijs": 2.79,
+        "soort": "voorraad",
+        "voorwaarde": "1+1 gratis",
+        "vanaf": 2
+      },
+      {
         "naam": "Hak Rode Bieten Sticks Bio 355 g",
         "actieprijs": 1.29,
         "normale_prijs": 2.59,
@@ -93,6 +101,38 @@
         "eerder_gezien": 1
       },
       {
+        "naam": "Hak Wijnzuurkool Bio 340 g",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.99,
+        "soort": "voorraad",
+        "voorwaarde": "1+1 gratis",
+        "vanaf": 2
+      },
+      {
+        "naam": "Hak Gebroken Sperziebonen Bio 340 g",
+        "actieprijs": 0.97,
+        "normale_prijs": 1.95,
+        "soort": "voorraad",
+        "voorwaarde": "1+1 gratis",
+        "vanaf": 2
+      },
+      {
+        "naam": "Hak Sperziebonen Bio 185 g",
+        "actieprijs": 0.82,
+        "normale_prijs": 1.65,
+        "soort": "voorraad",
+        "voorwaarde": "1+1 gratis",
+        "vanaf": 2
+      },
+      {
+        "naam": "Jumbo Biologisch Veldsla 40 g",
+        "actieprijs": 1.0,
+        "normale_prijs": 1.55,
+        "soort": "vers",
+        "voorwaarde": "2 voor 2,00",
+        "vanaf": 2
+      },
+      {
         "naam": "Jumbo Biologisch Rucola 40 g",
         "actieprijs": 1.0,
         "normale_prijs": 1.39,
@@ -102,9 +142,21 @@
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-09-02",
         "eerder_gezien": 1
+      },
+      {
+        "naam": "Jumbo Biologisch Snoeptomaten 400 g",
+        "actieprijs": 3.49,
+        "normale_prijs": null,
+        "soort": "vers"
       }
     ],
     "Lidl": [
+      {
+        "naam": "Bio Fairtrade bananen",
+        "actieprijs": 1.49,
+        "normale_prijs": 2.19,
+        "soort": "vers"
+      },
       {
         "naam": "Bio kastanjechampignons",
         "actieprijs": 1.49,
