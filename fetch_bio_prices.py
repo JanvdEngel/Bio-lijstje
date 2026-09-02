@@ -311,7 +311,13 @@ AGF_PATTERN = re.compile(
 AANBIEDINGEN_STORES = {
     "AH": ("albert_heijn", None),
     "Jumbo": ("jumbo", None),
-    "Lidl": ("lidl", "lidl"),
+    # Folderz staat uit sinds 2 september 2026. Zie de toelichting hieronder:
+    # PrijsProfeet leest dezelfde Lidl-folders en had er 3 van de 4, waaronder
+    # de bananen die de reden waren om Folderz erbij te houden. Folderz droeg
+    # er één bij: gedroogd fruit uit Lidl's snacklijn. Dat is geen 35 pagina's
+    # per dag op andermans site waard. De code blijft staan: één slug terug op
+    # "lidl" en het werkt weer.
+    "Lidl": ("lidl", None),
     "Aldi": ("aldi", None),
     "Dirk": ("dirk", None),
     "Plus": ("plus", None),
