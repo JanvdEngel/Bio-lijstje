@@ -166,6 +166,22 @@ _NIET_AGF_PATRONEN = (
     # één product van appels, net als de Hak-bieten die we bewust houden. Dus op
     # naam, en dat vangt beide siropen in de catalogi ongeacht hun categorie.
     re.compile(r"siroop", re.IGNORECASE),
+    # Derde ronde Ekoplaza-lekken (2 september). Die keten zet honing, crackers
+    # en knäckebröd onder "groente-fruit", en kombucha onder "frisdrank" — de
+    # categorie zegt daar dus vrijwel niets, en dat is de reden dat deze lijst
+    # blijft groeien. Gemeten over alle zeven verse catalogi: samen halen deze
+    # zeven regels 11 van de 32 doorgekomen producten weg, en de 21 die
+    # overblijven zijn allemaal echt groente of fruit, vers of uit blik.
+    re.compile(r"honing", re.IGNORECASE),         # "Spaanse sinaasappelhoning"
+    re.compile(r"cracker", re.IGNORECASE),        # "Groentecracker rode biet"
+    re.compile(r"kn[aä]ckebr|knekkebr", re.IGNORECASE),
+    re.compile(r"kombucha", re.IGNORECASE),
+    re.compile(r"\breep\b", re.IGNORECASE),       # "Zonnatura Reep noten appel"
+    re.compile(r"pittenpasta|notenpasta", re.IGNORECASE),
+    # Let op de \w+ ervoor. Vastgeplakt is het een snack ("Bonensticks"), los is
+    # het een vorm van de groente zelf ("Hak Rode Bieten Sticks"). Een kaal
+    # \bsticks\b zou dat tweede product ten onrechte weggooien.
+    re.compile(r"\w+sticks\b", re.IGNORECASE),
 )
 
 _agf_prefix = [k for k in AGF_KEYWORDS if k not in _AGF_WHOLE_WORD_ONLY]
