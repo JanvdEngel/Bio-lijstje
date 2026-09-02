@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-02T22:15:49.483294",
+  "laatst_bijgewerkt": "2026-09-02T22:19:46.210817",
   "aanbiedingen": {
     "AH": [
       {
@@ -54,7 +54,10 @@
         "normale_prijs": 2.79,
         "soort": "voorraad",
         "voorwaarde": "1+1 gratis",
-        "vanaf": 2
+        "vanaf": 2,
+        "laagste_ooit_prijs": 1.4,
+        "laagste_ooit_datum": "2026-09-02",
+        "eerder_gezien": 1
       },
       {
         "naam": "Hak Rode Bieten Sticks Bio 355 g",
@@ -106,7 +109,10 @@
         "normale_prijs": 1.99,
         "soort": "voorraad",
         "voorwaarde": "1+1 gratis",
-        "vanaf": 2
+        "vanaf": 2,
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-09-02",
+        "eerder_gezien": 1
       },
       {
         "naam": "Hak Gebroken Sperziebonen Bio 340 g",
@@ -114,7 +120,10 @@
         "normale_prijs": 1.95,
         "soort": "voorraad",
         "voorwaarde": "1+1 gratis",
-        "vanaf": 2
+        "vanaf": 2,
+        "laagste_ooit_prijs": 0.97,
+        "laagste_ooit_datum": "2026-09-02",
+        "eerder_gezien": 1
       },
       {
         "naam": "Hak Sperziebonen Bio 185 g",
@@ -122,7 +131,10 @@
         "normale_prijs": 1.65,
         "soort": "voorraad",
         "voorwaarde": "1+1 gratis",
-        "vanaf": 2
+        "vanaf": 2,
+        "laagste_ooit_prijs": 0.82,
+        "laagste_ooit_datum": "2026-09-02",
+        "eerder_gezien": 1
       },
       {
         "naam": "Jumbo Biologisch Veldsla 40 g",
@@ -130,7 +142,10 @@
         "normale_prijs": 1.55,
         "soort": "vers",
         "voorwaarde": "2 voor 2,00",
-        "vanaf": 2
+        "vanaf": 2,
+        "laagste_ooit_prijs": 1.0,
+        "laagste_ooit_datum": "2026-09-02",
+        "eerder_gezien": 1
       },
       {
         "naam": "Jumbo Biologisch Rucola 40 g",
@@ -147,7 +162,10 @@
         "naam": "Jumbo Biologisch Snoeptomaten 400 g",
         "actieprijs": 3.49,
         "normale_prijs": null,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 3.49,
+        "laagste_ooit_datum": "2026-09-02",
+        "eerder_gezien": 1
       }
     ],
     "Lidl": [
@@ -155,7 +173,10 @@
         "naam": "Bio Fairtrade bananen",
         "actieprijs": 1.49,
         "normale_prijs": 2.19,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.49,
+        "laagste_ooit_datum": "2026-09-02",
+        "eerder_gezien": 1
       },
       {
         "naam": "Bio kastanjechampignons",
@@ -173,15 +194,6 @@
         "soort": "vers",
         "laagste_ooit_prijs": 0.79,
         "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Alesto Bio Mango",
-        "actieprijs": 3.49,
-        "normale_prijs": null,
-        "soort": "vers",
-        "laagste_ooit_prijs": 3.49,
-        "laagste_ooit_datum": "2026-08-28",
         "eerder_gezien": 1
       }
     ],
