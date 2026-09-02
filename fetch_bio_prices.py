@@ -247,6 +247,9 @@ PRIJSPROFEET_MAX_PAGES = 60  # veiligheidsgrens; AH is de grootste met ~24 pagin
 # hij er niet, dan valt alles terug op het trage tempo en werkt het gewoon.
 PRIJSPROFEET_PAGE_PAUZE = 2.5
 PRIJSPROFEET_PAGE_PAUZE_KEY = 0.5
+# Hoe vaak we een snelheidsgrens op dezelfde pagina accepteren voordat we die
+# winkel opgeven. Zonder deze grens kon de lus oneindig doordraaien.
+PRIJSPROFEET_MAX_429 = 3
 FOLDERZ_MAX_PAGES = 120  # veiligheidsgrens; Lidl had er ~34-36 tijdens het bouwen
 MAX_ITEMS_PER_STORE = 15  # cap na dedup, grootste korting eerst — houdt winkels in verhouding
 
@@ -522,6 +525,8 @@ def fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug):
     pauze = PRIJSPROFEET_PAGE_PAUZE_KEY if _prijsprofeet_key() else PRIJSPROFEET_PAGE_PAUZE
     resultaten = []
     pagina = 1
+    pogingen_429 = 0
+    onvolledig = False
     try:
         while pagina <= PRIJSPROFEET_MAX_PAGES:
             resp = requests.get(
@@ -542,10 +547,26 @@ def fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug):
             # uitzag. PrijsProfeet mailde ons dat 18 van 175 verzoeken in een
             # week een 429 kregen, allemaal op deze paginering.
             if resp.status_code == 429:
+                # Zonder bovengrens draaide dit oneindig: `continue` verhoogt de
+                # pagina niet, dus bij een API die blijft weigeren bleef de ronde
+                # eeuwig wachten en hangen. Nu drie pogingen per pagina, daarna
+                # opgeven met wat we hebben — net als bij elke andere fout.
+                pogingen_429 += 1
+                if pogingen_429 > PRIJSPROFEET_MAX_429:
+                    log.warning(
+                        f"{store_label}: {PRIJSPROFEET_MAX_429}x een snelheidsgrens op "
+                        f"pagina {pagina}; deze winkel is niet compleet opgehaald"
+                    )
+                    onvolledig = True
+                    break
                 wacht = _retry_after(resp, standaard=pauze * 4)
-                log.info(f"{store_label}: snelheidsgrens op pagina {pagina}, {wacht:.0f}s wachten")
+                log.info(
+                    f"{store_label}: snelheidsgrens op pagina {pagina} "
+                    f"(poging {pogingen_429}), {wacht:.0f}s wachten"
+                )
                 time.sleep(wacht)
                 continue
+            pogingen_429 = 0
             resp.raise_for_status()
             # /products zet de lijst onder "products", /search onder "results".
             # Beide accepteren, zodat een verkeerde aanname hier niet stil tot
@@ -735,18 +756,68 @@ def load_history():
         try:
             return _hersleutel(json.loads(HISTORY_PATH.read_text()))
         except (json.JSONDecodeError, OSError) as e:
-            log.warning(f"Geschiedenis-bestand onleesbaar ({e}), begin opnieuw")
+            # Hier stond "begin opnieuw", en dat was het stilste soort dataverlies
+            # dat dit project kende: de teller ging naar nul, de site zag er
+            # normaal uit, en pas weken later zou opvallen dat er niets meer werd
+            # vergeleken. Nu eerst de nieuwste back-up proberen.
+            log.error(f"Geschiedenis onleesbaar ({e}) — probeer de back-up")
+            hersteld = _herstel_history()
+            if hersteld is not None:
+                log.warning(
+                    f"Geschiedenis hersteld uit de back-up: {len(hersteld)} producten. "
+                    f"Het beschadigde bestand staat nog als {HISTORY_PATH}.beschadigd"
+                )
+                try:
+                    os.replace(HISTORY_PATH, Path(str(HISTORY_PATH) + ".beschadigd"))
+                except OSError:
+                    pass
+                return _hersleutel(hersteld)
+            log.error("Geen bruikbare back-up gevonden; de geschiedenis begint opnieuw")
     return {}
 
 
+def _herstel_history():
+    """Zoekt de meest recente bruikbare back-up in de add-on-map. Geeft None als
+    er niets te herstellen is."""
+    if not ADDON_DATA_DIR.is_dir():
+        return None
+    map_ = ADDON_DATA_DIR / "geschiedenis-backup"
+    if not map_.is_dir():
+        return None
+    # Nieuwste eerst: de vaste kopie, dan de gedateerde van nieuw naar oud.
+    kandidaten = [map_ / "geschiedenis.json"] + sorted(
+        map_.glob("geschiedenis-2*.json"), reverse=True
+    )
+    for pad in kandidaten:
+        if not pad.exists():
+            continue
+        try:
+            data = json.loads(pad.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            continue
+        if isinstance(data, dict) and data:
+            log.info(f"Back-up gebruikt: {pad.name}")
+            return data
+    return None
+
+
 def save_history(history):
+    """Schrijft de geschiedenis atomair weg: eerst naar een tijdelijk bestand in
+    dezelfde map, dan één os.replace(). Dat was het niet — write_text() kapt het
+    bestand eerst af en schrijft daarna, dus een stroomstoring of een gedode
+    container midden in die schrijfactie liet een half of leeg bestand achter.
+    En dat werd bij de volgende ronde stil vervangen door een lege geschiedenis:
+    de teller begon opnieuw en niemand zag het. Bij 32 kB is dat één blok, dus in
+    de praktijk zeldzaam, maar dit bestand is het enige onvervangbare hier."""
     HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
     tekst = json.dumps(history, indent=2, ensure_ascii=False)
-    HISTORY_PATH.write_text(tekst)
-    _backup_history(tekst)
+    tijdelijk = HISTORY_PATH.with_suffix(".json.nieuw")
+    tijdelijk.write_text(tekst, encoding="utf-8")
+    os.replace(tijdelijk, HISTORY_PATH)
+    _backup_history(tekst, len(history))
 
 
-def _backup_history(tekst):
+def _backup_history(tekst, aantal):
     """Legt een kopie van de geschiedenis in de eigen /data van de add-on, zodat
     hij meegaat in de nachtelijke Home Assistant-back-up. Zie de toelichting bij
     ADDON_DATA_DIR waarom dat nodig is en wat het niet oplost.
@@ -763,7 +834,28 @@ def _backup_history(tekst):
     try:
         map_ = ADDON_DATA_DIR / "geschiedenis-backup"
         map_.mkdir(exist_ok=True)
-        (map_ / "geschiedenis.json").write_text(tekst, encoding="utf-8")
+
+        # De vaste kopie mag nooit krimpen. De geschiedenis groeit alleen —
+        # producten komen erbij, oude sleutels blijven staan — dus minder
+        # producten dan de vorige keer betekent dat er iets stuk is. Zonder deze
+        # grens zou precies de ronde ná een leeggelopen geschiedenis de goede
+        # back-up overschrijven met de lege. De gedateerde kopie gaat wel door,
+        # zodat het spoor van wat er misging bewaard blijft.
+        vast = map_ / "geschiedenis.json"
+        vorig = None
+        if vast.exists():
+            try:
+                vorig = len(json.loads(vast.read_text(encoding="utf-8")))
+            except (json.JSONDecodeError, OSError):
+                vorig = None
+        if vorig is not None and aantal < vorig:
+            log.warning(
+                f"Geschiedenis kromp van {vorig} naar {aantal} producten; de vaste "
+                f"back-up blijft staan. Controleer {vast}"
+            )
+        else:
+            vast.write_text(tekst, encoding="utf-8")
+
         vandaag = datetime.now().date().isoformat()
         (map_ / f"geschiedenis-{vandaag}.json").write_text(tekst, encoding="utf-8")
         oud = sorted(map_.glob("geschiedenis-2*.json"))[:-HISTORY_BACKUPS]
