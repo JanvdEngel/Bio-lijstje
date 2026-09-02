@@ -361,8 +361,10 @@
   }
   .soort-kop.eerste{ margin-top:0; padding-top:0; border-top:none; }
   .soort-uitleg{
+    /* Geen opacity: --muted op 80% geeft 3,6:1 op een kaart, en dit is uitleg
+       die je moet kunnen lezen, geen decoratie. Zonder opacity 4,85:1. */
     font-size:0.68rem; letter-spacing:0.01em; text-transform:none;
-    color:var(--muted); opacity:0.8;
+    color:var(--muted);
     font-family:'IBM Plex Sans', sans-serif;
   }
 
