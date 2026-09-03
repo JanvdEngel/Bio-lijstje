@@ -1,12 +1,16 @@
 name: "Het Bio Lijstje"
-version: "1.5.0"
+version: "1.6.0"
 slug: "bio_bord"
-description: "Dagelijkse bio groente/fruit aanbiedingen (AH/Jumbo/Lidl/Aldi/Dirk/Plus/Ekoplaza), losstaande webpagina op het lokale netwerk + optioneel publiek via GitHub Pages"
+description: "Dagelijkse bio groente/fruit aanbiedingen (AH/Jumbo/Lidl/Aldi/Dirk/Plus), losstaande webpagina op het lokale netwerk + optioneel publiek via GitHub Pages"
 arch:
   - aarch64
 startup: application
 boot: auto
 init: false
+# Nodig om na elke geslaagde ronde sensor.bio_lijstje_bijgewerkt bij te werken.
+# Een automatisering slaat alarm als die sensor 30 uur niet verandert; dat is
+# het enige signaal dat de site stil is gevallen zonder dat iemand kijkt.
+homeassistant_api: true
 map:
   - share:rw
 ports:

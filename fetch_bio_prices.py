@@ -1245,6 +1245,52 @@ def schrijf_index_html(aanbiedingen, bijgewerkt):
         log.warning(f"index.html schrijven mislukt ({e})")
 
 
+def meld_aan_home_assistant(bijgewerkt, winkelstatus, aantal):
+    """Zet de tijd van deze ronde in sensor.bio_lijstje_bijgewerkt.
+
+    Dit is de tegenhanger van de verouderingsbalk op de pagina: die vertelt een
+    bezoeker dat de lijst oud is, deze sensor vertelt het aan Jan. Een
+    automatisering in Home Assistant kijkt of de sensor dertig uur onveranderd
+    blijft — dat betekent dat er geen geslaagde ronde is geweest.
+
+    Werkt alleen binnen de add-on: SUPERVISOR_TOKEN wordt daar meegegeven, en
+    config.yaml moet homeassistant_api aan hebben staan. Buiten de add-on (een
+    droogdraai op de laptop) is het token er niet en doen we niets.
+
+    Mislukt dit, dan is dat een logregel en geen fout: de lijst is klaar en
+    gepubliceerd, en dat is wat telt."""
+    token = (os.environ.get("SUPERVISOR_TOKEN") or "").strip()
+    if not token:
+        return
+    import requests
+
+    kapot = sorted(w for w, s in winkelstatus.items() if s != "ok")
+    try:
+        resp = requests.post(
+            "http://supervisor/core/api/states/sensor.bio_lijstje_bijgewerkt",
+            headers={"Authorization": f"Bearer {token}"},
+            timeout=15,
+            json={
+                # De staat is de tijd zelf: elke geslaagde ronde is dus een
+                # toestandswijziging, en daar kan een automatisering op wachten.
+                "state": bijgewerkt,
+                "attributes": {
+                    "friendly_name": "Bio Lijstje bijgewerkt",
+                    "device_class": "timestamp",
+                    "icon": "mdi:sprout",
+                    "aantal_acties": aantal,
+                    "winkels_niet_ok": kapot,
+                },
+            },
+        )
+        if resp.status_code >= 300:
+            log.warning(f"Sensor bijwerken in Home Assistant mislukt: {resp.status_code}")
+        else:
+            log.info("sensor.bio_lijstje_bijgewerkt bijgewerkt in Home Assistant")
+    except Exception as e:
+        log.warning(f"Sensor bijwerken in Home Assistant mislukt ({e}); de ronde is wel klaar")
+
+
 def publish_to_github():
     """Pusht www/ naar een GitHub-repo via de Contents API, zodat de pagina
     ook publiek bereikbaar is via GitHub Pages (voor delen buiten het
@@ -1473,6 +1519,12 @@ def main():
         log.warning(f"index.html genereren mislukt ({e}); vorige versie blijft staan")
 
     publish_to_github()
+
+    # Als laatste: de ronde is dan echt af, inclusief publiceren.
+    meld_aan_home_assistant(
+        resultaat["laatst_bijgewerkt"], winkelstatus,
+        sum(len(v) for v in aanbiedingen.values()),
+    )
 
 
 if __name__ == "__main__":
