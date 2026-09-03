@@ -664,5 +664,16 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
 </script>
+<!-- GoatCounter: dezelfde teller als op de voorpagina. Deze stond hier niet.
+     Toen de seizoenspagina's gegenereerd gingen worden uit dit sjabloon (commit
+     b5133ee) is het script niet meegekomen, en sindsdien waren veertien
+     pagina's onzichtbaar in de statistiek. "Niemand kijkt naar de
+     seizoenskalender" was dus geen bevinding maar een meetfout.
+
+     Geen eigen filter nodig: count.js weigert zelf al te tellen op localhost,
+     op een privé-IP (192.168.x), vanaf file:, in een iframe, en als
+     localStorage 'skipgc' aan staat. -->
+<script data-goatcounter="https://hetbiolijstje.goatcounter.com/count"
+        async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>

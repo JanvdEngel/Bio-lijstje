@@ -201,6 +201,17 @@ if blok:
 keur("de zichtbare stip blijft 8px", ".dot::before{" in sjab.replace(" ", "")
      or ".dot::before {" in sjab)
 
+# De teller stond alleen op de voorpagina. Toen de seizoenspagina's gegenereerd
+# gingen worden uit _sjabloon.html is het script niet meegekomen, en sindsdien
+# waren veertien pagina's onzichtbaar in de statistiek. Dat is geen bevinding
+# over bezoekers maar een meetfout, en die wil je niet twee keer maken.
+TELLER = "gc.zgo.at/count.js"
+zonder_teller = [p.parent.name for p in paginas
+                 if TELLER not in p.read_text(encoding="utf-8")]
+keur("elke gegenereerde pagina heeft de bezoekersteller",
+     not zonder_teller, ", ".join(zonder_teller))
+keur("de voorpagina heeft hem ook", TELLER in voor)
+
 print()
 if fouten:
     sys.exit(f"{fouten} controle(s) niet in orde")
