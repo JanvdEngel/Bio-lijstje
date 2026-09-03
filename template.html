@@ -202,14 +202,14 @@
      toe: dezelfde tekst kwam op twee pagina's op 400 en op twee andere op 700.
      Vetgedrukte uppercase op 11,5px met deze spatiëring leest als een ander
      lettertype, en dat viel ook precies zo op. */
-  .eyebrow{
-    font-family: 'IBM Plex Sans', system-ui, sans-serif;
-    font-weight: 400;
-    font-size: 0.72rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--leaf);
-    margin: 0.6rem 0 0;
+  .pitch{
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: var(--muted);
+    /* Smal gehouden: één regel van 343px is op een telefoon te lang om
+       comfortabel te lezen, en gecentreerde tekst nog meer. */
+    max-width: 32ch;
+    margin: 0.55rem auto 0;
   }
   .updated{
     font-size: 0.78rem;
@@ -223,6 +223,33 @@
     display: flex; justify-content: center; gap: 1.4rem;
     margin: 0.4rem 0 1.6rem;
     flex-wrap: wrap;
+  }
+
+  /* ---- Minder chrome op een telefoon ---------------------------------------
+     Op 375px stond de eerste aanbieding 347 pixels naar beneden: een kop van
+     167px, daarna een filterbalk die over twee rijen viel met 22px ertussen.
+     Wie de site opende zag dus vooral de site zelf en geen aanbieding.
+
+     De filterbalk wordt hier één rij die zijwaarts schuift. Dat is bewust een
+     afweging: je ziet nu drie van de zes winkels tegelijk in plaats van alle
+     zes. De knoppen blijven 36px hoog, dus aanraakbaar, en de balk is
+     afgesneden te zien — dat is wat vertelt dat er meer staat. */
+  @media (max-width: 559px){
+    header{ padding: 1.4rem 0 0.6rem; }
+    .summary-bar{
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      gap: 0.6rem;
+      margin: 0.2rem 0 0.9rem;
+      overflow-x: auto;
+      /* De balk schuift, de pagina niet. */
+      scroll-snap-type: x proximity;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .summary-bar::-webkit-scrollbar{ display: none; }
+    .store-toggle{ scroll-snap-align: start; flex: 0 0 auto; }
+    .store-columns{ gap: 1.2rem; }
   }
   /* De aan/uit-staat wordt bewust met kleuren aangegeven en niet met opacity.
      Op iPhone/iPad bleef de knop er "aan" uitzien terwijl de sectie wél
@@ -481,7 +508,11 @@
     <a href="/seizoen/">Seizoen</a>
   </nav>
   <h1 class="wordmark">Het Bio Lijstje</h1>
-  <p class="eyebrow">Vandaag geldig</p>
+  <!-- Hier stond "Vandaag geldig". Dat zegt niet wat deze site is, en dat
+       stond nergens anders op de pagina: een bezoeker die hier binnenkwam moest
+       uit de winkellogo's en de prijzen zelf opmaken waar hij was. -->
+  <p class="pitch">Biologische groente en fruit in de aanbieding bij zes
+  supermarkten. Elke ochtend opnieuw opgehaald.</p>
 </header>
 
 <main class="kader">

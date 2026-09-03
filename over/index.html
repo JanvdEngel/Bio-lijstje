@@ -172,26 +172,40 @@
 
   .dots{
     display:flex;
-    gap:6px;
+    /* Geen gap: het raakvlak is 24px en de middelpunten liggen dan precies
+       24px van elkaar, wat WCAG 2.5.8 vraagt. Met een gap erbij worden twaalf
+       stippen breder dan een telefoon van 375px. */
+    gap:0;
     justify-content:center;
     margin-bottom:8px;
   }
+  /* Het raakvlak is 24x24, de zichtbare stip blijft 8x8.
+     Eerder was de link zelf 8x8 met 6px ertussen: de middelpunten lagen dan
+     14px van elkaar, dus de cirkels van 24px overlapten en zelfs de
+     ruimte-uitzondering van WCAG 2.5.8 ging niet op. Op een telefoon was het
+     bovendien gewoon mikken. Het uiterlijk verandert niet. */
   .dot{
-    width:8px;height:8px;border-radius:50%;
-    background:var(--line);
+    width:24px;height:24px;
+    display:flex;align-items:center;justify-content:center;
+    background:none;
     border:none;
     cursor:pointer;
     padding:0;
+    border-radius:50%;
+  }
+  .dot::before{
+    content:'';
+    width:8px;height:8px;border-radius:50%;
+    background:var(--line);
     transition:background .2s, transform .2s;
   }
   /* De stippen waren knoppen die een JavaScript-variabele omzetten; nu zijn het
      links naar de twaalf maandpagina's. Dat is meteen de onderlinge verwijzing
      tussen die pagina's, en het werkt zonder JavaScript. */
-  a.dot{ display:block; }
-  .dot.actief{ background:var(--harvest); transform:scale(1.3); }
-  .dot.is-nu{ box-shadow:0 0 0 2px var(--leaf-ring); }
+  .dot.actief::before{ background:var(--harvest); transform:scale(1.3); }
+  .dot.is-nu::before{ box-shadow:0 0 0 2px var(--leaf-ring); }
   @media (hover: hover){
-    a.dot:hover{ background:var(--leaf); transform:scale(1.3); }
+    a.dot:hover::before{ background:var(--leaf); transform:scale(1.3); }
   }
   a.dot:focus-visible{ outline:2px solid var(--leaf); outline-offset:3px; }
   /* Alleen voor schermlezers: een stip zonder tekst is anders een naamloze link. */

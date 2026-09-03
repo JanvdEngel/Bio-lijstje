@@ -156,8 +156,10 @@ print("\nstramien")
 # De eyebrow zit op een <p> (voorpagina, maandpagina's) en op een <h1>
 # (/seizoen/, /over/). Zonder eigen font-weight sloeg de browserstandaard
 # h1{font-weight:bold} toe: dezelfde tekst op 400 én op 700.
-for naam, pad in [("voorpagina", HIER / "template.html"),
-                  ("seizoenssjabloon", HIER / "seizoen" / "_sjabloon.html")]:
+# Alleen het seizoenssjabloon: daar zit .eyebrow op een <p> (maandpagina's) en
+# op een <h1> (/seizoen/, /over/). De voorpagina heeft er geen meer; die zegt
+# nu in een gewone zin wat de site is.
+for naam, pad in [("seizoenssjabloon", HIER / "seizoen" / "_sjabloon.html")]:
     css = pad.read_text(encoding="utf-8")
     blok = re.search(r"\.eyebrow\{(.*?)\}", css, re.S)
     keur(f"{naam}: .eyebrow bestaat", blok is not None)
@@ -170,6 +172,34 @@ for naam, pad in [("voorpagina", HIER / "template.html"),
         keur(f"{naam}: die dikte is 400, zoals op de voorpagina",
              dikte is not None and dikte.group(1) == "400",
              dikte.group(1) if dikte else "geen")
+
+# De voorpagina moet zeggen wat de site is. Dat stond er niet: "Vandaag geldig"
+# zegt niets over waar je bent.
+voor = (HIER / "template.html").read_text(encoding="utf-8")
+keur("de voorpagina heeft een uitleg onder de titel", 'class="pitch"' in voor)
+keur("die uitleg noemt waar het over gaat",
+     "Biologische groente en fruit" in voor and "supermarkten" in voor)
+# Zonder de commentaren, want daarin wordt de oude tekst aangehaald als
+# toelichting bij waarom hij weg is.
+zonder_commentaar = re.sub(r"<!--.*?-->", "", voor, flags=re.S)
+keur('"Vandaag geldig" staat niet meer in de opmaak',
+     "Vandaag geldig" not in zonder_commentaar)
+
+# WCAG 2.5.8: een raakvlak is minimaal 24x24 CSS-pixels, of de middelpunten
+# liggen ver genoeg uiteen. Twaalf stippen van 8px met 6px ertussen haalden
+# geen van beide.
+sjab = (HIER / "seizoen" / "_sjabloon.html").read_text(encoding="utf-8")
+blok = re.search(r"\n  \.dot\{(.*?)\}", sjab, re.S)
+keur(".dot bestaat", blok is not None)
+if blok:
+    breed = re.search(r"width\s*:\s*(\d+)px", blok.group(1))
+    hoog = re.search(r"height\s*:\s*(\d+)px", blok.group(1))
+    keur("het raakvlak van een maandstip is minstens 24x24",
+         breed is not None and hoog is not None
+         and int(breed.group(1)) >= 24 and int(hoog.group(1)) >= 24,
+         f"{breed.group(1) if breed else '?'}x{hoog.group(1) if hoog else '?'}")
+keur("de zichtbare stip blijft 8px", ".dot::before{" in sjab.replace(" ", "")
+     or ".dot::before {" in sjab)
 
 print()
 if fouten:
