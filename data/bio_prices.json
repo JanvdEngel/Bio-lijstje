@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-03T06:01:12.215354",
+  "laatst_bijgewerkt": "2026-09-03T20:42:11.781414",
   "aanbiedingen": {
     "AH": [
       {
@@ -119,9 +119,9 @@
         "actieprijs": 2.49,
         "normale_prijs": 3.49,
         "soort": "vers",
-        "laagste_ooit_prijs": 3.49,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
+        "laagste_ooit_prijs": 2.49,
+        "laagste_ooit_datum": "2026-09-03",
+        "eerder_gezien": 2
       },
       {
         "naam": "Hak Gebroken Sperziebonen Bio 340 g",
@@ -247,5 +247,13 @@
         "eerder_gezien": 1
       }
     ]
+  },
+  "winkelstatus": {
+    "AH": "ok",
+    "Jumbo": "ok",
+    "Lidl": "ok",
+    "Aldi": "ok",
+    "Dirk": "ok",
+    "Plus": "ok"
   }
 }
