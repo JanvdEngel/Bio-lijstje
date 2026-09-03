@@ -236,6 +236,9 @@
      afgesneden te zien — dat is wat vertelt dat er meer staat. */
   @media (max-width: 559px){
     header{ padding: 1.4rem 0 0.6rem; }
+    /* Op 32ch viel deze zin over drie regels binnen een kolom van 343px, en
+       dat is 29 pixels die je aan een aanbieding kwijt bent. */
+    .pitch{ max-width: none; }
     .summary-bar{
       flex-wrap: nowrap;
       justify-content: flex-start;
@@ -511,8 +514,7 @@
   <!-- Hier stond "Vandaag geldig". Dat zegt niet wat deze site is, en dat
        stond nergens anders op de pagina: een bezoeker die hier binnenkwam moest
        uit de winkellogo's en de prijzen zelf opmaken waar hij was. -->
-  <p class="pitch">Biologische groente en fruit in de aanbieding bij zes
-  supermarkten. Elke ochtend opnieuw opgehaald.</p>
+  <p class="pitch">Biologische groente en fruit in de aanbieding bij zes supermarkten, elke ochtend bijgewerkt.</p>
 </header>
 
 <main class="kader">
