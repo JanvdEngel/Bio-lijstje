@@ -225,35 +225,6 @@
     flex-wrap: wrap;
   }
 
-  /* ---- Minder chrome op een telefoon ---------------------------------------
-     Op 375px stond de eerste aanbieding 347 pixels naar beneden: een kop van
-     167px, daarna een filterbalk die over twee rijen viel met 22px ertussen.
-     Wie de site opende zag dus vooral de site zelf en geen aanbieding.
-
-     De filterbalk wordt hier één rij die zijwaarts schuift. Dat is bewust een
-     afweging: je ziet nu drie van de zes winkels tegelijk in plaats van alle
-     zes. De knoppen blijven 36px hoog, dus aanraakbaar, en de balk is
-     afgesneden te zien — dat is wat vertelt dat er meer staat. */
-  @media (max-width: 559px){
-    header{ padding: 1.4rem 0 0.6rem; }
-    /* Op 32ch viel deze zin over drie regels binnen een kolom van 343px, en
-       dat is 29 pixels die je aan een aanbieding kwijt bent. */
-    .pitch{ max-width: none; }
-    .summary-bar{
-      flex-wrap: nowrap;
-      justify-content: flex-start;
-      gap: 0.6rem;
-      margin: 0.2rem 0 0.9rem;
-      overflow-x: auto;
-      /* De balk schuift, de pagina niet. */
-      scroll-snap-type: x proximity;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-    .summary-bar::-webkit-scrollbar{ display: none; }
-    .store-toggle{ scroll-snap-align: start; flex: 0 0 auto; }
-    .store-columns{ gap: 1.2rem; }
-  }
   /* De aan/uit-staat wordt bewust met kleuren aangegeven en niet met opacity.
      Op iPhone/iPad bleef de knop er "aan" uitzien terwijl de sectie wél
      verdween; kleurwissels zijn overal betrouwbaar, een opacity-dimming
@@ -485,6 +456,49 @@
   }
   footer{
     text-align:center; font-size:0.72rem; color: var(--muted); margin-top:2rem;
+  }
+
+  /* ---- Minder chrome op een telefoon ---------------------------------------
+     Op 375px stond de eerste aanbieding 347 pixels naar beneden: een kop van
+     167px, daarna een filterbalk die over twee rijen viel met 22px ertussen.
+     Wie de site opende zag dus vooral de site zelf en geen aanbieding.
+
+     Dit blok staat onderaan de stylesheet en niet bij .summary-bar hierboven.
+     Dat is geen ordening maar noodzaak: media-regels hebben geen extra
+     specificiteit, dus een basisregel die er later staat wint gewoon. Zo werd
+     .store-columns{gap:1.2rem} hier stil overschreven door de 1.8rem verderop,
+     en .store-toggle{flex:0 0 auto} idem.
+
+     De filterbalk wordt één rij die zijwaarts schuift. Dat is bewust een
+     afweging: je ziet drie van de zes winkels tegelijk in plaats van alle zes.
+     De knoppen blijven 35px hoog, dus aanraakbaar, en de balk is afgesneden te
+     zien — dat is wat vertelt dat er meer staat. */
+  @media (max-width: 559px){
+    header{ padding: 1.4rem 0 0.6rem; }
+    /* Op 32ch viel deze zin over drie regels binnen een kolom van 343px, en
+       dat is 29 pixels die je aan een aanbieding kwijt bent. */
+    .pitch{ max-width: none; }
+    .summary-bar{
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      gap: 0.6rem;
+      /* Onder de balk stond 14px lucht terwijl er tussen twee winkels 54px
+         zat. Daardoor plakte de eerste winkelkop tegen de knoppen aan en oogde
+         het bovenin druk, terwijl de rest juist ruim stond. Nu 32px hier en
+         40px tussen de winkels: hetzelfde ritme, en nog steeds korter dan de
+         347px van eerst. */
+      margin: 0.2rem 0 2rem;
+      overflow-x: auto;
+      /* De balk schuift, de pagina niet. */
+      scroll-snap-type: x proximity;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .summary-bar::-webkit-scrollbar{ display: none; }
+    .store-toggle{ scroll-snap-align: start; flex: 0 0 auto; }
+    /* 22,4 + 17,6 = 40px tussen twee winkels. */
+    .store-columns{ gap: 1.4rem; }
+    .store-section{ margin-bottom: 1.1rem; }
   }
 </style>
 <!-- Moet in de <head> staan en niet onderaan: anders wordt de donkere versie
