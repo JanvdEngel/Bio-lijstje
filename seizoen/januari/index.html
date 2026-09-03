@@ -51,7 +51,7 @@
     margin:0;
     background:var(--bg);
     color:var(--text);
-    font-family:'IBM Plex Sans', sans-serif;
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
     min-height:100vh;
     overflow-x:hidden;
     -webkit-font-smoothing:antialiased;
@@ -96,7 +96,15 @@
   /* Op een subpagina is de merknaam een link terug en hoeft hij niet zo groot
      als op de voorpagina: daar is hij de titel, hier staat de maand eronder. */
   .wordmark{ font-size:2.2rem; }
+  /* Familie en dikte staan hier expliciet, want deze klasse zit op een <p>
+     (voorpagina, maandpagina's) én op een <h1> (/seizoen/, /over/). Er is
+     nergens een h1-regel, dus daar sloeg de browserstandaard font-weight:bold
+     toe: dezelfde tekst kwam op twee pagina's op 400 en op twee andere op 700.
+     Vetgedrukte uppercase op 11,5px met deze spatiëring leest als een ander
+     lettertype, en dat viel ook precies zo op. */
   .eyebrow{
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    font-weight:400;
     font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase;
     color:var(--leaf); margin:0.6rem 0 0;
   }

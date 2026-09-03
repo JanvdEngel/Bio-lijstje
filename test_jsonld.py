@@ -149,6 +149,28 @@ for m in data["maanden"]:
         mis.append(f"{m['maand']}: {lijst.get('numberOfItems')} i.p.v. {verwacht}")
 keur("elke maandpagina somt de producten van die maand op", not mis, "; ".join(mis))
 
+# ---------------------------------------------------------------------------
+# Eén stramien: dezelfde tekststijl op elke pagina
+# ---------------------------------------------------------------------------
+print("\nstramien")
+# De eyebrow zit op een <p> (voorpagina, maandpagina's) en op een <h1>
+# (/seizoen/, /over/). Zonder eigen font-weight sloeg de browserstandaard
+# h1{font-weight:bold} toe: dezelfde tekst op 400 én op 700.
+for naam, pad in [("voorpagina", HIER / "template.html"),
+                  ("seizoenssjabloon", HIER / "seizoen" / "_sjabloon.html")]:
+    css = pad.read_text(encoding="utf-8")
+    blok = re.search(r"\.eyebrow\{(.*?)\}", css, re.S)
+    keur(f"{naam}: .eyebrow bestaat", blok is not None)
+    if blok:
+        keur(f"{naam}: .eyebrow zet zijn eigen lettertype",
+             "font-family" in blok.group(1))
+        keur(f"{naam}: .eyebrow zet zijn eigen dikte",
+             "font-weight" in blok.group(1))
+        dikte = re.search(r"font-weight\s*:\s*(\d+)", blok.group(1))
+        keur(f"{naam}: die dikte is 400, zoals op de voorpagina",
+             dikte is not None and dikte.group(1) == "400",
+             dikte.group(1) if dikte else "geen")
+
 print()
 if fouten:
     sys.exit(f"{fouten} controle(s) niet in orde")
