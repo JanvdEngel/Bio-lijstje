@@ -437,10 +437,19 @@ def fetch_aanbiedingen(store_label, retailer_slug, folderz_slug):
       AANBIEDINGEN_STORES hierboven.
     Resultaten van beide worden samengevoegd en op (genormaliseerde) naam
     gededupliceerd, zodat een product dat in beide bronnen voorkomt maar
-    één keer getoond wordt."""
-    resultaten = fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug)
+    één keer getoond wordt.
+
+    Geeft (items, status) terug. De status is "ok", "onvolledig" of "mislukt"
+    en reist mee tot in de HTML, zodat een storing er op de pagina niet uitziet
+    als een week zonder aanbiedingen."""
+    resultaten, status = fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug)
     if folderz_slug:
-        resultaten += fetch_aanbiedingen_folderz(store_label, folderz_slug)
+        # Folderz is een aanvulling; als die faalt blijft de winkel bruikbaar.
+        # De status wordt er dus niet slechter van dan "onvolledig".
+        aanvulling = fetch_aanbiedingen_folderz(store_label, folderz_slug)
+        resultaten += aanvulling
+        if aanvulling and status == "mislukt":
+            status = "onvolledig"
 
     gezien = set()
     gededupliceerd = []
@@ -462,7 +471,7 @@ def fetch_aanbiedingen(store_label, retailer_slug, folderz_slug):
     gededupliceerd = gededupliceerd[:MAX_ITEMS_PER_STORE]
 
     log.info(f"{store_label} aanbiedingen totaal: {len(gededupliceerd)} bio AGF-acties (na dedupliceren)")
-    return gededupliceerd
+    return gededupliceerd, status
 
 
 # Patronen die verraden dat een actieprijs pas geldt bij méér dan één stuk.
@@ -665,6 +674,7 @@ def fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug):
     pagina = 1
     pogingen_429 = 0
     onvolledig = False
+    stukgelopen = False
     try:
         while pagina <= PRIJSPROFEET_MAX_PAGES:
             resp = requests.get(
@@ -723,9 +733,21 @@ def fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug):
         # Wat we tot hier hadden houden we: een halve winkel is beter dan geen.
         # Wel als waarschuwing loggen, want een afgebroken winkel is aan het
         # aantal pagina's alleen te zien als je weet hoeveel het er horen te zijn.
+        stukgelopen = True
         log.warning(f"Aanbiedingen ophalen mislukt voor {store_label} (PrijsProfeet, pagina {pagina}): {e}")
     log.info(f"{store_label} aanbiedingen: {len(resultaten)} bio AGF-acties (PrijsProfeet, {pagina - 1} pagina's)")
-    return resultaten
+
+    # Het verschil tussen "niets gevonden" en "niets kunnen ophalen" bestond tot
+    # nu toe alleen in het log. Op de pagina zag een bezoeker in beide gevallen
+    # "Vandaag geen bio-acties bij Jumbo", en dat is bij een storing gewoon
+    # onwaar. Vandaar dat de status meereist tot in de HTML.
+    if stukgelopen and pagina == 1:
+        status = "mislukt"      # geen enkele pagina gelukt
+    elif stukgelopen or onvolledig:
+        status = "onvolledig"   # halverwege afgebroken of op de snelheidsgrens
+    else:
+        status = "ok"
+    return resultaten, status
 
 
 def fetch_aanbiedingen_folderz(store_label, folderz_slug):
@@ -1208,7 +1230,7 @@ def controleer_kandidaten():
     klappen."""
     for store_label, retailer_slug in KANDIDAAT_WINKELS.items():
         try:
-            treffers = fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug)
+            treffers, _ = fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug)
         except Exception as e:
             log.info(f"Kandidaat {store_label}: niet te controleren ({e})")
             continue
@@ -1303,9 +1325,21 @@ def main():
                if not args.winkel or k in args.winkel}
 
     aanbiedingen = {}
+    winkelstatus = {}
     for store_label, (retailer_slug, folderz_slug) in winkels.items():
-        items = fetch_aanbiedingen(store_label, retailer_slug, folderz_slug)
+        items, status = fetch_aanbiedingen(store_label, retailer_slug, folderz_slug)
         aanbiedingen[store_label] = enrich_and_record_history(store_label, items, history, vandaag)
+        winkelstatus[store_label] = status
+
+    # Eén regel die zegt of deze ronde compleet was. Tot nu toe stond het
+    # verschil tussen een lege winkel en een onbereikbare winkel verspreid over
+    # losse waarschuwingen halverwege het log.
+    kapot = {w: s for w, s in winkelstatus.items() if s != "ok"}
+    if kapot:
+        log.warning("Ronde niet compleet: "
+                    + ", ".join(f"{w} {s}" for w, s in sorted(kapot.items())))
+    else:
+        log.info(f"Ronde compleet: alle {len(winkelstatus)} winkels opgehaald")
 
     if args.dry_run:
         # enrich_and_record_history heeft history in het geheugen bijgewerkt;
@@ -1325,6 +1359,10 @@ def main():
     resultaat = {
         "laatst_bijgewerkt": datetime.now().isoformat(),
         "aanbiedingen": aanbiedingen,
+        # Per winkel "ok", "onvolledig" of "mislukt". De pagina leest dit om
+        # niet "vandaag geen bio-acties bij Jumbo" te zeggen als Jumbo
+        # onbereikbaar was.
+        "winkelstatus": winkelstatus,
     }
 
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)

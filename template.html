@@ -404,6 +404,23 @@
     padding: 0.6rem 0;
   }
 
+  /* Een winkel die niet opgehaald kon worden is iets anders dan een winkel
+     zonder acties. Dat verschil stond eerder alleen in het log op de Pi. */
+  .uitval{
+    font-size:0.82rem; color:var(--warn);
+    padding:0.6rem 0;
+  }
+  .uitval strong{ font-weight:600; }
+
+  /* Als een ronde is overgeslagen blijft de vorige lijst staan, en die zag er
+     precies zo uit als een verse. Deze balk is het enige verschil. */
+  .verouderd{
+    font-size:0.82rem; color:var(--text);
+    background:var(--bg-raised);
+    border:1px solid var(--warn); border-left-width:3px; border-radius:8px;
+    padding:0.7rem 1rem; margin:0 0 1.2rem;
+  }
+
   /* Geen alarm: de lijst eronder is nog steeds bruikbaar, alleen misschien
      niet van vandaag. */
   .fetch-mislukt{
@@ -527,6 +544,7 @@ function renderHistoryNote(item) {
   return `<div class="history-note history-warn">&#9888;&#65039; Eerder goedkoper: ${prijs(item.laagste_ooit_prijs)} op ${fmtShortDate(item.laagste_ooit_datum)} (nu ${prijs(verschil)} duurder)</div>`;
 }
 
+const VEROUDERD_NA_UREN = 30;
 const STORE_VISIBLE_CAP = 4;
 
 function renderAanbiedingCard(item, storeColor, isExtra) {
@@ -568,12 +586,49 @@ function render() {
   tijd.textContent = fmtDate(data.laatst_bijgewerkt);
   tijd.setAttribute('datetime', data.laatst_bijgewerkt);
 
+  // De fetch draait elke ochtend om 06:00. Boven de 30 uur is er dus minstens
+  // één ronde overgeslagen, en dan staat er een lijst die van gisteren of
+  // eerder is. Zonder deze melding is dat op geen enkele manier te zien.
+  let verouderdHtml = '';
+  const urenOud = (Date.now() - new Date(data.laatst_bijgewerkt).getTime()) / 3.6e6;
+  if (Number.isFinite(urenOud) && urenOud > VEROUDERD_NA_UREN) {
+    const dagen = Math.floor(urenOud / 24);
+    const hoeOud = dagen >= 1
+      ? (dagen === 1 ? 'van gisteren of eerder' : `${dagen} dagen oud`)
+      : `${Math.floor(urenOud)} uur oud`;
+    // Als string, niet als element: hieronder wordt content.innerHTML op drie
+    // plekken overschreven, en een ingevoegd element is dan weer weg. Precies
+    // dat gebeurde in de eerste versie hiervan — de balk verscheen nooit.
+    verouderdHtml = `<p class="verouderd" role="status">Deze lijst is ` +
+      `<strong>${hoeOud}</strong>. De laatste ophaalronde is niet gelukt, dus ` +
+      `er kunnen aanbiedingen zijn afgelopen of bijgekomen.</p>`;
+  }
+
   const aanbiedingen = data.aanbiedingen || {};
+  // Oudere bestanden hebben dit veld niet; die gelden als "ok", anders zou een
+  // bestand van voor deze wijziging elke winkel als storing tonen.
+  const status = data.winkelstatus || {};
   const stores = Object.keys(aanbiedingen);
   const totaal = stores.reduce((sum, s) => sum + (aanbiedingen[s] || []).length, 0);
 
+  const gefaald = stores.filter(s => status[s] === 'mislukt');
+
+  if (totaal === 0 && gefaald.length === stores.length && stores.length) {
+    // Alle winkels onbereikbaar. Dat is geen rustige week, dat is een storing,
+    // en "vandaag geen bio-acties" zou hier de onwaarheid zijn die deze hele
+    // wijziging moest wegnemen.
+    content.innerHTML = verouderdHtml + `
+      <div class="empty-state">
+        <span class="big">De lijst kon niet worden opgehaald</span>
+        Geen van de winkels was te bereiken bij de laatste ronde, dus we weten
+        vandaag niet welke aanbiedingen er lopen. Er staat hier bewust geen
+        oude lijst: dan zou je prijzen zien die misschien niet meer gelden.
+      </div>`;
+    return;
+  }
+
   if (totaal === 0) {
-    content.innerHTML = `
+    content.innerHTML = verouderdHtml + `
       <div class="empty-state">
         <span class="big">Vandaag geen bio-acties</span>
         Bij geen van de zes winkels loopt op dit moment een bio groente- of
@@ -592,7 +647,7 @@ function render() {
         <button class="store-toggle${off ? ' off' : ''}" type="button" data-store="${s}" style="--tc:${STORE_COLORS[s] || 'var(--muted)'}" aria-pressed="${!off}">
           <span class="store-toggle-badge" aria-hidden="true">${STORE_BADGES[s] || s[0]}</span>
           <span class="store-toggle-label">${s}</span>
-          <span class="store-toggle-count">${(aanbiedingen[s] || []).length}</span>
+          <span class="store-toggle-count">${status[s] === 'mislukt' ? '?' : (aanbiedingen[s] || []).length}</span>
         </button>`;
       }).join('')}
     </div>`;
@@ -608,23 +663,34 @@ function render() {
     const extraCount = Math.max(0, items.length - STORE_VISIBLE_CAP);
     let n = 0;
     const groep = (lijst) => `<div class="grid">${lijst.map(i => renderAanbiedingCard(i, color, n++ >= STORE_VISIBLE_CAP)).join('')}</div>`;
-    const body = items.length
+    // Een winkel die halverwege afbrak: wat er staat is echt, maar het is niet
+    // per definitie alles.
+    const deelsOp = status[s] === 'onvolledig'
+      ? `<p class="uitval">Deze winkel is niet volledig opgehaald; er kunnen
+         acties missen.</p>`
+      : '';
+    const body = deelsOp + (items.length
       ? (vers.length ? groep(vers) : '') +
         (voorraad.length ? `<p class="soort-kop${vers.length ? '' : ' eerste'}">Voorraad<span class="soort-uitleg">blik, pot, zak of vriezer</span></p>` + groep(voorraad) : '') +
         (extraCount > 0 ? `<button class="toggle-more" type="button" aria-expanded="false" data-more="+${extraCount} meer tonen" data-less="Toon minder">+${extraCount} meer tonen</button>` : '')
-      : `<p class="empty-note">Vandaag geen bio-acties bij ${s}.</p>`;
+      : status[s] === 'mislukt'
+        ? `<p class="uitval"><strong>Niet opgehaald.</strong> ${s} was bij de
+           laatste ronde niet te bereiken, dus we weten niet of er acties
+           lopen.</p>`
+        : `<p class="empty-note">Vandaag geen bio-acties bij ${s}.</p>`);
     return `
       <div class="store-section" data-store="${s}"${hiddenStores.has(s) ? ' style="display:none"' : ''}>
         <div class="store-header">
           <span class="store-badge" style="background:${color}" aria-hidden="true">${STORE_BADGES[s] || s[0]}</span>
           <h2>${s}</h2>
-          <span class="count">${items.length} ${items.length === 1 ? 'actie' : 'acties'}</span>
+          <span class="count">${status[s] === 'mislukt' ? '?' : items.length + ' ' + (items.length === 1 ? 'actie' : 'acties')}</span>
         </div>
         ${body}
       </div>`;
   }).join('');
 
   content.innerHTML = `
+    ${verouderdHtml}
     ${summaryHtml}
     <div class="store-columns">${sectionsHtml}</div>
   `;
