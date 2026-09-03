@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-02T22:19:46.210817",
+  "laatst_bijgewerkt": "2026-09-03T06:01:12.215354",
   "aanbiedingen": {
     "AH": [
       {
@@ -115,6 +115,15 @@
         "eerder_gezien": 1
       },
       {
+        "naam": "Jumbo Biologisch Snoeptomaten 400 g",
+        "actieprijs": 2.49,
+        "normale_prijs": 3.49,
+        "soort": "vers",
+        "laagste_ooit_prijs": 3.49,
+        "laagste_ooit_datum": "2026-09-02",
+        "eerder_gezien": 1
+      },
+      {
         "naam": "Hak Gebroken Sperziebonen Bio 340 g",
         "actieprijs": 0.97,
         "normale_prijs": 1.95,
@@ -155,15 +164,6 @@
         "voorwaarde": "2 voor 2,00",
         "vanaf": 2,
         "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Jumbo Biologisch Snoeptomaten 400 g",
-        "actieprijs": 3.49,
-        "normale_prijs": null,
-        "soort": "vers",
-        "laagste_ooit_prijs": 3.49,
         "laagste_ooit_datum": "2026-09-02",
         "eerder_gezien": 1
       }
