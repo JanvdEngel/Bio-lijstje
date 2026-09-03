@@ -420,6 +420,10 @@ GITHUB_PUBLISH_FILES = ["index.html", "data/bio_prices.json"]
 # bestand precies één eigenaar.
 TEMPLATE_PATH = Path(__file__).parent / "www" / "template.html"
 HTML_OUTPUT_PATH = Path(__file__).parent / "www" / "index.html"
+JSONLD_START = "<!--JSONLD-->"
+JSONLD_EINDE = "<!--/JSONLD-->"
+DATUM_START = "<!--DATUM-->"
+DATUM_EINDE = "<!--/DATUM-->"
 PRODUCTEN_START = "<!--PRODUCTEN-->"
 PRODUCTEN_EINDE = "<!--/PRODUCTEN-->"
 
@@ -1078,6 +1082,74 @@ def enrich_and_record_history(store, items, history, vandaag):
 # Optioneel: publiceren naar GitHub Pages
 # ---------------------------------------------------------------------------
 
+_MAANDEN_NL = ("januari", "februari", "maart", "april", "mei", "juni", "juli",
+               "augustus", "september", "oktober", "november", "december")
+_DAGEN_NL = ("maandag", "dinsdag", "woensdag", "donderdag", "vrijdag",
+             "zaterdag", "zondag")
+
+
+def _leesbare_datum(iso):
+    """"2026-09-03T20:42:11" wordt "woensdag 3 september 2026 om 20:42".
+
+    In de statische lijst stond de ruwe ISO-tijd, en in de voettekst stond
+    "nog niets geladen" tot de JavaScript klaar was. Een crawler las dus
+    letterlijk dat er niets geladen was op de plek waar de versheid van de
+    lijst hoort te staan. Locale-instellingen zijn hier geen optie: de Pi
+    draait een kale Alpine-container zonder Nederlandse locale."""
+    try:
+        stip = datetime.fromisoformat(iso)
+    except (TypeError, ValueError):
+        return iso
+    return (f"{_DAGEN_NL[stip.weekday()]} {stip.day} {_MAANDEN_NL[stip.month - 1]} "
+            f"{stip.year} om {stip:%H:%M}")
+
+
+def _jsonld(aanbiedingen, bijgewerkt):
+    """De gestructureerde data voor de voorpagina.
+
+    Bewust géén Product/Offer-markup, hoewel dat verleidelijk is: die zegt
+    tegen een zoekmachine dat het product hier te koop is, en dat is het niet.
+    Wij zijn niet de verkoper, er is niets af te rekenen, en Google's
+    richtlijnen voor productdata gaan expliciet over pagina's waar je kunt
+    kopen. Wat deze pagina wél is, is een lijst — CollectionPage met een
+    ItemList — en de datum waarop die lijst is opgehaald. Dat is machineleesbaar
+    en waar."""
+    items = []
+    for winkel, acties in aanbiedingen.items():
+        for actie in acties:
+            regel = f"{actie['naam']} — {_euro(actie['actieprijs'])} bij {winkel}"
+            items.append({
+                "@type": "ListItem",
+                "position": len(items) + 1,
+                "name": regel,
+            })
+    blok = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Het Bio Lijstje",
+        "description": ("De lopende biologische groente- en fruitaanbiedingen van zes "
+                        "Nederlandse supermarkten, elke ochtend opnieuw opgehaald."),
+        "url": "https://hetbiolijstje.nl/",
+        "inLanguage": "nl-NL",
+        "dateModified": bijgewerkt,
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Het Bio Lijstje",
+            "url": "https://hetbiolijstje.nl/",
+        },
+        "mainEntity": {
+            "@type": "ItemList",
+            "name": "Biologische groente- en fruitaanbiedingen",
+            "numberOfItems": len(items),
+            "itemListOrder": "https://schema.org/ItemListUnordered",
+            "itemListElement": items,
+        },
+    }
+    return ('<script type="application/ld+json">'
+            + json.dumps(blok, ensure_ascii=False, separators=(",", ":"))
+            + "</script>")
+
+
 def _html_escape(tekst):
     return (
         str(tekst)
@@ -1109,6 +1181,17 @@ def schrijf_index_html(aanbiedingen, bijgewerkt):
         log.warning("Merktekens ontbreken in template.html; index.html ongewijzigd gelaten")
         return
 
+    def vervang_blok(tekst, start, einde, inhoud, wat):
+        """Vervangt alles tussen twee merktekens, of laat het met een
+        waarschuwing staan als ze ontbreken. Ontbrekende merktekens mogen de
+        productlijst niet tegenhouden — dat is de kern van de pagina."""
+        if start not in tekst or einde not in tekst:
+            log.warning(f"Merktekens voor {wat} ontbreken in template.html; overgeslagen")
+            return tekst
+        voor = tekst.index(start)
+        na = tekst.index(einde) + len(einde)
+        return tekst[:voor] + start + inhoud + einde + tekst[na:]
+
     regels = []
     for winkel, items in aanbiedingen.items():
         regels.append(f"      <section><h2>{_html_escape(winkel)}</h2>")
@@ -1133,7 +1216,8 @@ def schrijf_index_html(aanbiedingen, bijgewerkt):
         f"{PRODUCTEN_START}\n"
         f"    <!-- Automatisch gegenereerd; bewerk template.html, niet dit bestand. -->\n"
         f"    <div class=\"statische-lijst\">\n"
-        f"      <p>Biologische groente- en fruitaanbiedingen, bijgewerkt op {_html_escape(bijgewerkt)}.</p>\n"
+        f"      <p>Biologische groente- en fruitaanbiedingen, bijgewerkt op "
+        f"{_html_escape(_leesbare_datum(bijgewerkt))}.</p>\n"
         + "\n".join(regels)
         + f"\n    </div>\n    {PRODUCTEN_EINDE}"
     )
@@ -1141,6 +1225,18 @@ def schrijf_index_html(aanbiedingen, bijgewerkt):
     voor = template.index(PRODUCTEN_START)
     na = template.index(PRODUCTEN_EINDE) + len(PRODUCTEN_EINDE)
     nieuw = template[:voor] + blok + template[na:]
+
+    # De voettekst zei "nog niets geladen" tot de JavaScript klaar was, en het
+    # datetime-attribuut was leeg. Dat is precies het veld waaraan een crawler
+    # of een AI ziet hoe vers deze lijst is.
+    nieuw = vervang_blok(
+        nieuw, DATUM_START, DATUM_EINDE,
+        f'<time id="updated" datetime="{_html_escape(bijgewerkt)}">'
+        f'{_html_escape(_leesbare_datum(bijgewerkt))}</time>',
+        "de datum")
+
+    nieuw = vervang_blok(nieuw, JSONLD_START, JSONLD_EINDE,
+                         _jsonld(aanbiedingen, bijgewerkt), "de gestructureerde data")
 
     try:
         HTML_OUTPUT_PATH.write_text(nieuw, encoding="utf-8", newline="\n")

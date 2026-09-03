@@ -43,6 +43,35 @@ def esc(tekst):
     return html.escape(str(tekst), quote=True)
 
 
+def jsonld(blok):
+    """Eén JSON-LD-script uit een dict.
+
+    Bewust geen Product- of Offer-markup: die zegt tegen een zoekmachine dat er
+    hier iets te koop is, en dat is nergens op deze site zo. Wat deze pagina's
+    wél zijn: een verzameling (CollectionPage), een lijst producten (ItemList),
+    een verantwoordingspagina (AboutPage), en overal een kruimelpad zodat de
+    plek in de site machineleesbaar is."""
+    return ('<script type="application/ld+json">'
+            + json.dumps(blok, ensure_ascii=False, separators=(",", ":"))
+            + "</script>")
+
+
+def kruimels(*paden):
+    """Kruimelpad van (naam, url)-paren. Zonder dit staat elke maandpagina in de
+    ogen van een crawler los van /seizoen/ en van de voorpagina."""
+    return {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": i + 1, "name": naam, "item": url}
+            for i, (naam, url) in enumerate(paden)
+        ],
+    }
+
+
+HOOFD = ("Aanbiedingen", "https://hetbiolijstje.nl/")
+SEIZOEN = ("Seizoenswijzer", f"{BASIS_URL}/")
+
+
 def nav(actief):
     """De sectierij bovenaan. Alleen de twee inhoudelijke delen staan hier;
     "Over" hoort in de voettekst, want dat is geen inhoud maar verantwoording."""
@@ -257,6 +286,25 @@ def maandpagina(data, index, residu):
         "sectie": "seizoen",
         "voetnoot": voetnoot_seizoen(data["seizoensregel"]),
         "inhoud": inhoud,
+        "jsonld": jsonld({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": f"{naam}: seizoensgroente en -fruit uit Nederland",
+            "url": f"{BASIS_URL}/{m['maand']}/",
+            "inLanguage": "nl-NL",
+            "isPartOf": {"@type": "WebSite", "name": "Het Bio Lijstje",
+                         "url": "https://hetbiolijstje.nl/"},
+            "breadcrumb": kruimels(HOOFD, SEIZOEN, (naam, f"{BASIS_URL}/{m['maand']}/")),
+            "mainEntity": {
+                "@type": "ItemList",
+                "name": f"Van het seizoen in {m['maand']}",
+                "numberOfItems": totaal,
+                "itemListElement": [
+                    {"@type": "ListItem", "position": i + 1, "name": p["naam"]}
+                    for i, p in enumerate(m["groente"] + m["fruit"])
+                ],
+            },
+        }),
     }
 
 
@@ -294,6 +342,27 @@ def overzichtspagina(data):
         "canonical": f"{BASIS_URL}/",
         "eyebrow": '<h1 class="eyebrow">Seizoenswijzer</h1>',
         "sectie": "seizoen",
+        "jsonld": jsonld({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": "Seizoenswijzer",
+            "url": f"{BASIS_URL}/",
+            "inLanguage": "nl-NL",
+            "isPartOf": {"@type": "WebSite", "name": "Het Bio Lijstje",
+                         "url": "https://hetbiolijstje.nl/"},
+            "breadcrumb": kruimels(HOOFD, SEIZOEN),
+            "mainEntity": {
+                "@type": "ItemList",
+                "name": "De twaalf maanden",
+                "numberOfItems": len(maanden),
+                "itemListElement": [
+                    {"@type": "ListItem", "position": i + 1,
+                     "name": m["maand"].capitalize(),
+                     "item": f"{BASIS_URL}/{m['maand']}/"}
+                    for i, m in enumerate(maanden)
+                ],
+            },
+        }),
         "voetnoot": voetnoot_seizoen(data["seizoensregel"]),
         "inhoud": inhoud,
     }
@@ -424,6 +493,22 @@ def overpagina(data):
         "eyebrow": '<h1 class="eyebrow">Over deze site</h1>',
         "sectie": "over",
         "voetnoot": VOETNOOT_OVER,
+        "jsonld": jsonld({
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            "name": "Over Het Bio Lijstje",
+            "url": "https://hetbiolijstje.nl/over/",
+            "inLanguage": "nl-NL",
+            "isPartOf": {"@type": "WebSite", "name": "Het Bio Lijstje",
+                         "url": "https://hetbiolijstje.nl/"},
+            "breadcrumb": kruimels(HOOFD, ("Over deze site",
+                                           "https://hetbiolijstje.nl/over/")),
+            "publisher": {
+                "@type": "Person",
+                "name": "Jan van den Engel",
+                "email": "jan@styrinth.nl",
+            },
+        }),
         "inhoud": inhoud,
     }
 
@@ -439,6 +524,7 @@ def schrijf(pagina, sjabloon):
         ("{{NAV}}", nav(pagina["sectie"])),
         ("{{VOETNOOT}}", pagina["voetnoot"]),
         ("{{INHOUD}}", pagina["inhoud"]),
+        ("{{JSONLD}}", pagina.get("jsonld", "")),
     ):
         tekst = tekst.replace(sleutel, waarde)
     resterend = re.findall(r"\{\{[A-Z_]+\}\}", tekst)
