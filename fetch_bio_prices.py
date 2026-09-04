@@ -362,7 +362,12 @@ KANDIDAAT_WINKELS = {
 
 PRIJSPROFEET_PRODUCTS_URL = "https://www.prijsprofeet.nl/api/v1/products"
 PRIJSPROFEET_PAGE_SIZE = 100  # harde grens van de API; 200 en 500 geven 0 resultaten
-PRIJSPROFEET_MAX_PAGES = 60  # veiligheidsgrens; AH is de grootste met ~24 pagina's
+# Veiligheidsgrens tegen een API die blijft doorpagineren. AH is de grootste:
+# 28 pagina's op 2 september, 51 op 4 september toen de acties van de week erna
+# als "upcoming" verschenen. Raakt een winkel deze grens, dan krijgt hij status
+# "onvolledig" en zegt de pagina dat er acties kunnen missen — zie de else-tak
+# bij de paginering.
+PRIJSPROFEET_MAX_PAGES = 90
 # Zonder API-key geldt 30 requests/min op de bulk-endpoints, en dan per IP. 2,5s
 # pauze houdt ons op ~24/min, dus met marge — maar niet genoeg marge: over één
 # week kregen 18 van 175 verzoeken alsnog een 429, allemaal op het doorpagineren.
@@ -733,6 +738,17 @@ def fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug):
                     resultaten.append(actie)
             pagina += 1
             time.sleep(pauze)
+        else:
+            # De lus liep af zonder break: we hebben de grens geraakt in plaats
+            # van het einde van de catalogus. Dat was tot nu toe stil, precies
+            # zoals de 429 dat vroeger was. AH stond op 4 september op 51
+            # pagina's en groeit met de acties van volgende week mee, dus dit is
+            # geen theoretisch geval.
+            log.warning(
+                f"{store_label}: de paginagrens van {PRIJSPROFEET_MAX_PAGES} is "
+                f"geraakt; deze winkel is niet compleet opgehaald"
+            )
+            onvolledig = True
     except Exception as e:
         # Wat we tot hier hadden houden we: een halve winkel is beter dan geen.
         # Wel als waarschuwing loggen, want een afgebroken winkel is aan het

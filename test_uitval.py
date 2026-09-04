@@ -103,6 +103,26 @@ items, status = draai([NepAntwoord(status_code=429)] * (bio.PRIJSPROFEET_MAX_429
 keur('drie keer een snelheidsgrens geeft status "onvolledig"', status == "onvolledig",
      f'kreeg "{status}"')
 
+# De paginagrens was een stille afkapping: de lus liep af, de winkel gold als
+# compleet, en niemand zag het. AH ging in twee dagen van 28 naar 51 pagina's,
+# dus dit is geen theoretisch geval.
+class VolleAntwoord(NepAntwoord):
+    """Blijft eeuwig volle pagina's geven, zodat de grens wordt geraakt."""
+
+    def json(self):
+        return {"products": [{"name": "Iets", "price": 1.0, "dietary_tags": [],
+                              "unified_category": "overig", "retailer": "test"}] * 100}
+
+
+echte_grens = bio.PRIJSPROFEET_MAX_PAGES
+bio.PRIJSPROFEET_MAX_PAGES = 3
+try:
+    items, status = draai([VolleAntwoord()] * 10)
+finally:
+    bio.PRIJSPROFEET_MAX_PAGES = echte_grens
+keur('de paginagrens raken geeft status "onvolledig"', status == "onvolledig",
+     f'kreeg "{status}"')
+
 # ---------------------------------------------------------------------------
 # De pagina: heeft elke status een eigen tekst?
 # ---------------------------------------------------------------------------
