@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-04T06:01:27.317796",
+  "laatst_bijgewerkt": "2026-09-05T06:01:52.161041",
   "aanbiedingen": {
     "AH": [
       {
@@ -210,33 +210,6 @@
       }
     ],
     "Plus": [
-      {
-        "naam": "Bonduelle Crispy maïs biologisch",
-        "actieprijs": 1.0,
-        "normale_prijs": 2.19,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-26",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Biologisch PLUS Biologische aardappelen",
-        "actieprijs": 1.0,
-        "normale_prijs": 2.19,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-26",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Biologisch PLUS Vastkokende aardappelen biologisch",
-        "actieprijs": 1.0,
-        "normale_prijs": 2.19,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-26",
-        "eerder_gezien": 1
-      },
       {
         "naam": "Biologisch PLUS Rode bieten biologisch",
         "actieprijs": 1.19,
