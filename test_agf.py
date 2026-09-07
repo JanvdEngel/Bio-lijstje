@@ -48,6 +48,15 @@ GEVALLEN = [
     ("Bio winterpostelein", True, "postelein als substring"),
     ("AH Bloedsinaasappelen", True, "sinaasappel als substring"),
 
+    # Door Jan gemeld op 7 september: stond bij Lidl voor EUR 1,69 van EUR 2,49
+    # en kwam nergens door. Hokkaido stond in geen trefwoord, en pompoen mocht
+    # alleen aan het begin van een woord matchen.
+    ("Bio flespompoen of hokkaido", True, "pompoen als staart, plus hokkaido"),
+    ("Bio Hokkaido pompoen", True, "moet blijven werken"),
+    ("Plus Pompoensoep", False, "soep, ook nu pompoen als staart mag matchen"),
+    ("AH Terra Verse soep pompoen", False, "soep"),
+    ("Pompoenpittenpasta zeezout", False, "pittenpasta"),
+
     # Producten die eerst in geen enkel trefwoord stonden
     ("Ananas", True, "stond in geen trefwoord"),
     ("Paksoi", True, "stond in geen trefwoord"),

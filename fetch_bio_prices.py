@@ -65,6 +65,10 @@ AGF_KEYWORDS = [
     # stonden in geen enkel trefwoord.
     "ananas", "vijg", "dadel", "kaki", "grapefruit", "bimi", "romaine",
     "paksoi", "tauge", "granaatappel", "sugar snap",
+    # "Bio flespompoen of hokkaido" bij Lidl kwam nergens door: hokkaido stond
+    # in geen trefwoord, en pompoen mocht alleen aan het begin van een woord
+    # matchen. Gemeld door Jan op 7 september, EUR 1,69 van EUR 2,49.
+    "hokkaido",
 ]
 
 # Matcht "bio", maar ook "biologisch"/"biologische" — AH, Jumbo en Plus noemen
@@ -151,7 +155,8 @@ EXCLUDED_CATEGORIES = {
 _AGF_WHOLE_WORD_ONLY = {"ui", "uien"}
 # "wortel" en "postelein" horen in SUBSTRING en niet hier: de staart-klasse
 # eist een woordgrens ná het trefwoord, en daardoor viel "Wortelen" eraf.
-_AGF_TAIL = {"sla", "kool", "peen", "bonen", "boon", "bes", "bessen"}
+_AGF_TAIL = {"sla", "kool", "peen", "bonen", "boon", "bes", "bessen",
+             "pompoen"}
 _AGF_SUBSTRING = {
     "tomaat", "tomaten", "komkommer", "paprika", "spinazie", "sinaasappel",
     "peren", "meloen", "selderij", "wortel", "bananen", "granaatappel",
