@@ -1,17 +1,71 @@
 {
-  "laatst_bijgewerkt": "2026-09-06T06:02:08.252227",
+  "laatst_bijgewerkt": "2026-09-07T06:01:51.515458",
   "aanbiedingen": {
     "AH": [
       {
-        "naam": "AH Biologisch Witte druiven pitloos",
-        "actieprijs": 1.75,
-        "normale_prijs": 3.49,
-        "soort": "vers",
-        "voorwaarde": "2 STAPELEN TOT 50%",
+        "naam": "Bonduelle Crispy mais bio",
+        "actieprijs": 1.5,
+        "normale_prijs": 2.99,
+        "soort": "voorraad",
+        "voorwaarde": "2 VOOR 2.99",
         "vanaf": 2,
-        "laagste_ooit_prijs": 1.75,
-        "laagste_ooit_datum": "2026-08-31",
-        "eerder_gezien": 1
+        "laagste_ooit_prijs": 1.5,
+        "laagste_ooit_datum": "2026-08-20",
+        "eerder_gezien": 6
+      },
+      {
+        "naam": "Bonduelle Rode kidneybonen bio",
+        "actieprijs": 1.5,
+        "normale_prijs": 2.89,
+        "soort": "voorraad",
+        "voorwaarde": "2 VOOR 2.99",
+        "vanaf": 2
+      },
+      {
+        "naam": "Mutti Passata gezeefde tomaten bio",
+        "actieprijs": 2.33,
+        "normale_prijs": 3.49,
+        "soort": "voorraad",
+        "voorwaarde": "2 + 1 GRATIS",
+        "vanaf": 3
+      },
+      {
+        "naam": "Mutti Gepelde tomaten bio",
+        "actieprijs": 1.66,
+        "normale_prijs": 2.49,
+        "soort": "voorraad",
+        "voorwaarde": "2 + 1 GRATIS",
+        "vanaf": 3
+      },
+      {
+        "naam": "Mutti Tomatenpulp in stukjes bio",
+        "actieprijs": 1.66,
+        "normale_prijs": 2.49,
+        "soort": "voorraad",
+        "voorwaarde": "2 + 1 GRATIS",
+        "vanaf": 3
+      },
+      {
+        "naam": "AH Biologisch Pastinaak",
+        "actieprijs": 1.49,
+        "normale_prijs": 2.19,
+        "soort": "vers"
+      },
+      {
+        "naam": "Rodolfi Polpa tomatenpulp bio",
+        "actieprijs": 1.33,
+        "normale_prijs": 1.99,
+        "soort": "voorraad",
+        "voorwaarde": "2 + 1 GRATIS",
+        "vanaf": 3
+      },
+      {
+        "naam": "AH Biologisch Slamelange rucola veldsla",
+        "actieprijs": 1.49,
+        "normale_prijs": 1.99,
+        "soort": "vers",
+        "voorwaarde": "2E HALVE PRIJS",
+        "vanaf": 2
       }
     ],
     "Jumbo": [
@@ -170,18 +224,21 @@
     ],
     "Lidl": [
       {
-        "naam": "Bio Fairtrade bananen",
-        "actieprijs": 1.49,
-        "normale_prijs": 2.19,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.49,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
+        "naam": "Bio pitloze druiven",
+        "actieprijs": 1.99,
+        "normale_prijs": 2.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Bio Zespri kiwi gold",
+        "actieprijs": 2.49,
+        "normale_prijs": 3.49,
+        "soort": "vers"
       },
       {
         "naam": "Bio kastanjechampignons",
-        "actieprijs": 1.49,
-        "normale_prijs": 1.99,
+        "actieprijs": 1.69,
+        "normale_prijs": 2.29,
         "soort": "vers",
         "laagste_ooit_prijs": 1.49,
         "laagste_ooit_datum": "2026-08-28",
@@ -197,7 +254,14 @@
         "eerder_gezien": 1
       }
     ],
-    "Aldi": [],
+    "Aldi": [
+      {
+        "naam": "Biologische rode bieten",
+        "actieprijs": 1.19,
+        "normale_prijs": 1.49,
+        "soort": "vers"
+      }
+    ],
     "Dirk": [
       {
         "naam": "Bio+ Biologische courgette",
