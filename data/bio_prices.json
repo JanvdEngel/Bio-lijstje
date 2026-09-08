@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-07T21:44:18.279087",
+  "laatst_bijgewerkt": "2026-09-08T06:01:46.504545",
   "aanbiedingen": {
     "AH": [
       {
@@ -266,7 +266,10 @@
         "naam": "Bio flespompoen of hokkaido",
         "actieprijs": 1.69,
         "normale_prijs": 2.49,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.69,
+        "laagste_ooit_datum": "2026-09-07",
+        "eerder_gezien": 1
       },
       {
         "naam": "Bio kastanjechampignons",
