@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-09T06:01:30.796834",
+  "laatst_bijgewerkt": "2026-09-10T06:01:42.525230",
   "aanbiedingen": {
     "AH": [
       {
@@ -117,15 +117,6 @@
         "laagste_ooit_prijs": 1.69,
         "laagste_ooit_datum": "2026-09-07",
         "eerder_gezien": 1
-      },
-      {
-        "naam": "Bio appelmoes",
-        "actieprijs": 0.79,
-        "normale_prijs": null,
-        "soort": "vers",
-        "laagste_ooit_prijs": 0.79,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
       }
     ],
     "Aldi": [
@@ -144,7 +135,10 @@
         "naam": "Bio+ Biologische rode bieten gekookt",
         "actieprijs": 0.99,
         "normale_prijs": 1.25,
-        "soort": "voorraad"
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-09-09",
+        "eerder_gezien": 1
       }
     ],
     "Plus": [
@@ -155,7 +149,7 @@
         "soort": "vers",
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-26",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "Biologisch PLUS Vastkokende aardappelen biologisch",
@@ -164,7 +158,7 @@
         "soort": "vers",
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-26",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "Biologisch PLUS Rode bieten biologisch",
