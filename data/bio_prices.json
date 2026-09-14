@@ -1,135 +1,17 @@
 {
-  "laatst_bijgewerkt": "2026-09-13T06:02:06.589594",
+  "laatst_bijgewerkt": "2026-09-14T06:01:38.487550",
   "aanbiedingen": {
     "AH": [
       {
-        "naam": "Bonduelle Crispy mais bio",
-        "actieprijs": 1.5,
-        "normale_prijs": 2.99,
-        "soort": "voorraad",
-        "voorwaarde": "2 VOOR 2.99",
-        "vanaf": 2,
-        "laagste_ooit_prijs": 1.5,
-        "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 6
-      },
-      {
-        "naam": "Bonduelle Rode kidneybonen bio",
-        "actieprijs": 1.5,
-        "normale_prijs": 2.89,
-        "soort": "voorraad",
-        "voorwaarde": "2 VOOR 2.99",
-        "vanaf": 2,
-        "laagste_ooit_prijs": 1.5,
-        "laagste_ooit_datum": "2026-09-07",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Mutti Passata gezeefde tomaten bio",
-        "actieprijs": 2.33,
-        "normale_prijs": 3.49,
-        "soort": "voorraad",
-        "voorwaarde": "2 + 1 GRATIS",
-        "vanaf": 3,
-        "laagste_ooit_prijs": 2.33,
-        "laagste_ooit_datum": "2026-09-07",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Mutti Gepelde tomaten bio",
-        "actieprijs": 1.66,
-        "normale_prijs": 2.49,
-        "soort": "voorraad",
-        "voorwaarde": "2 + 1 GRATIS",
-        "vanaf": 3,
-        "laagste_ooit_prijs": 1.66,
-        "laagste_ooit_datum": "2026-09-07",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Mutti Tomatenpulp in stukjes bio",
-        "actieprijs": 1.66,
-        "normale_prijs": 2.49,
-        "soort": "voorraad",
-        "voorwaarde": "2 + 1 GRATIS",
-        "vanaf": 3,
-        "laagste_ooit_prijs": 1.66,
-        "laagste_ooit_datum": "2026-09-07",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "AH Biologisch Pastinaak",
-        "actieprijs": 1.49,
-        "normale_prijs": 2.19,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.49,
-        "laagste_ooit_datum": "2026-09-07",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Rodolfi Polpa tomatenpulp bio",
-        "actieprijs": 1.33,
-        "normale_prijs": 1.99,
-        "soort": "voorraad",
-        "voorwaarde": "2 + 1 GRATIS",
-        "vanaf": 3,
-        "laagste_ooit_prijs": 1.33,
-        "laagste_ooit_datum": "2026-09-07",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "AH Biologisch Slamelange rucola veldsla",
+        "naam": "AH Biologisch Rode kool",
         "actieprijs": 1.49,
         "normale_prijs": 1.99,
-        "soort": "vers",
-        "voorwaarde": "2E HALVE PRIJS",
-        "vanaf": 2,
-        "laagste_ooit_prijs": 1.49,
-        "laagste_ooit_datum": "2026-09-07",
-        "eerder_gezien": 1
+        "soort": "vers"
       }
     ],
     "Jumbo": [],
-    "Lidl": [
-      {
-        "naam": "Bio pitloze druiven",
-        "actieprijs": 1.99,
-        "normale_prijs": 2.99,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.99,
-        "laagste_ooit_datum": "2026-09-07",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Bio Zespri kiwi gold",
-        "actieprijs": 2.49,
-        "normale_prijs": 3.49,
-        "soort": "vers",
-        "laagste_ooit_prijs": 2.49,
-        "laagste_ooit_datum": "2026-09-07",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Bio flespompoen of hokkaido",
-        "actieprijs": 1.69,
-        "normale_prijs": 2.49,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.69,
-        "laagste_ooit_datum": "2026-09-07",
-        "eerder_gezien": 1
-      }
-    ],
-    "Aldi": [
-      {
-        "naam": "Biologische rode bieten",
-        "actieprijs": 1.19,
-        "normale_prijs": 1.49,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.19,
-        "laagste_ooit_datum": "2026-09-07",
-        "eerder_gezien": 1
-      }
-    ],
+    "Lidl": [],
+    "Aldi": [],
     "Dirk": [
       {
         "naam": "Bio+ Biologische rode bieten gekookt",
