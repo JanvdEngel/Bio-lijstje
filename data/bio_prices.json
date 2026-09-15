@@ -1,12 +1,15 @@
 {
-  "laatst_bijgewerkt": "2026-09-14T06:01:38.487550",
+  "laatst_bijgewerkt": "2026-09-15T06:01:35.468579",
   "aanbiedingen": {
     "AH": [
       {
         "naam": "AH Biologisch Rode kool",
         "actieprijs": 1.49,
         "normale_prijs": 1.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.49,
+        "laagste_ooit_datum": "2026-09-14",
+        "eerder_gezien": 1
       }
     ],
     "Jumbo": [],
