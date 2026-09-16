@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-15T06:01:35.468579",
+  "laatst_bijgewerkt": "2026-09-16T06:01:24.256659",
   "aanbiedingen": {
     "AH": [
       {
@@ -12,21 +12,70 @@
         "eerder_gezien": 1
       }
     ],
-    "Jumbo": [],
-    "Lidl": [],
-    "Aldi": [],
-    "Dirk": [
+    "Jumbo": [
       {
-        "naam": "Bio+ Biologische rode bieten gekookt",
-        "actieprijs": 0.99,
-        "normale_prijs": 1.25,
+        "naam": "Bonduelle Crispy Maïs Bio 300 g",
+        "actieprijs": 1.5,
+        "normale_prijs": 2.99,
         "soort": "voorraad",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-09-09",
-        "eerder_gezien": 1
+        "voorwaarde": "2 voor 2,99",
+        "vanaf": 2
+      },
+      {
+        "naam": "Bonduelle Rode Kidneybonen Bio 310 g",
+        "actieprijs": 1.5,
+        "normale_prijs": 2.89,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor 2,99",
+        "vanaf": 2
+      },
+      {
+        "naam": "Heinz Tomaten blokjes biologisch",
+        "actieprijs": 0.99,
+        "normale_prijs": 2.29,
+        "soort": "voorraad"
+      },
+      {
+        "naam": "Heinz Tomaten gezeefd biologisch",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.79,
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 1.0,
+        "laagste_ooit_datum": "2026-08-20",
+        "eerder_gezien": 8
+      },
+      {
+        "naam": "Heinz Tomaten gepeld biologisch",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.59,
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 1.0,
+        "laagste_ooit_datum": "2026-08-20",
+        "eerder_gezien": 8
       }
     ],
+    "Lidl": [],
+    "Aldi": [],
+    "Dirk": [],
     "Plus": [
+      {
+        "naam": "BIO+ Frambozen",
+        "actieprijs": 2.62,
+        "normale_prijs": 3.49,
+        "soort": "voorraad"
+      },
+      {
+        "naam": "BIO+ Blauwe bessen (DV)",
+        "actieprijs": 2.47,
+        "normale_prijs": 3.29,
+        "soort": "voorraad"
+      },
+      {
+        "naam": "Biologisch PLUS Pastinaak biologisch",
+        "actieprijs": 1.99,
+        "normale_prijs": 2.75,
+        "soort": "vers"
+      },
       {
         "naam": "Biologisch PLUS Biologische aardappelen",
         "actieprijs": 1.49,
