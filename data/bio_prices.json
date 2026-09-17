@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-16T06:01:24.256659",
+  "laatst_bijgewerkt": "2026-09-17T06:01:31.081231",
   "aanbiedingen": {
     "AH": [
       {
@@ -19,7 +19,10 @@
         "normale_prijs": 2.99,
         "soort": "voorraad",
         "voorwaarde": "2 voor 2,99",
-        "vanaf": 2
+        "vanaf": 2,
+        "laagste_ooit_prijs": 1.5,
+        "laagste_ooit_datum": "2026-09-16",
+        "eerder_gezien": 1
       },
       {
         "naam": "Bonduelle Rode Kidneybonen Bio 310 g",
@@ -27,31 +30,37 @@
         "normale_prijs": 2.89,
         "soort": "voorraad",
         "voorwaarde": "2 voor 2,99",
-        "vanaf": 2
+        "vanaf": 2,
+        "laagste_ooit_prijs": 1.5,
+        "laagste_ooit_datum": "2026-09-16",
+        "eerder_gezien": 1
       },
       {
         "naam": "Heinz Tomaten blokjes biologisch",
         "actieprijs": 0.99,
         "normale_prijs": 2.29,
-        "soort": "voorraad"
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-09-16",
+        "eerder_gezien": 1
       },
       {
         "naam": "Heinz Tomaten gezeefd biologisch",
         "actieprijs": 0.99,
         "normale_prijs": 1.79,
         "soort": "voorraad",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 8
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-09-16",
+        "eerder_gezien": 9
       },
       {
         "naam": "Heinz Tomaten gepeld biologisch",
         "actieprijs": 0.99,
         "normale_prijs": 1.59,
         "soort": "voorraad",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 8
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-09-16",
+        "eerder_gezien": 9
       }
     ],
     "Lidl": [],
@@ -62,19 +71,28 @@
         "naam": "BIO+ Frambozen",
         "actieprijs": 2.62,
         "normale_prijs": 3.49,
-        "soort": "voorraad"
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 2.62,
+        "laagste_ooit_datum": "2026-09-16",
+        "eerder_gezien": 1
       },
       {
         "naam": "BIO+ Blauwe bessen (DV)",
         "actieprijs": 2.47,
         "normale_prijs": 3.29,
-        "soort": "voorraad"
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 2.47,
+        "laagste_ooit_datum": "2026-09-16",
+        "eerder_gezien": 1
       },
       {
         "naam": "Biologisch PLUS Pastinaak biologisch",
         "actieprijs": 1.99,
         "normale_prijs": 2.75,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.99,
+        "laagste_ooit_datum": "2026-09-16",
+        "eerder_gezien": 1
       },
       {
         "naam": "Biologisch PLUS Biologische aardappelen",
