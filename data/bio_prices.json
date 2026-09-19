@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-18T06:01:49.850383",
+  "laatst_bijgewerkt": "2026-09-19T06:01:46.910689",
   "aanbiedingen": {
     "AH": [
       {
@@ -18,7 +18,7 @@
         "actieprijs": 1.5,
         "normale_prijs": 2.99,
         "soort": "voorraad",
-        "voorwaarde": "2 voor 2,99",
+        "voorwaarde": "2 voor €2,99",
         "vanaf": 2,
         "laagste_ooit_prijs": 1.5,
         "laagste_ooit_datum": "2026-09-16",
@@ -29,7 +29,7 @@
         "actieprijs": 1.5,
         "normale_prijs": 2.89,
         "soort": "voorraad",
-        "voorwaarde": "2 voor 2,99",
+        "voorwaarde": "2 voor €2,99",
         "vanaf": 2,
         "laagste_ooit_prijs": 1.5,
         "laagste_ooit_datum": "2026-09-16",
@@ -93,24 +93,6 @@
         "laagste_ooit_prijs": 1.99,
         "laagste_ooit_datum": "2026-09-16",
         "eerder_gezien": 1
-      },
-      {
-        "naam": "Biologisch PLUS Biologische aardappelen",
-        "actieprijs": 1.49,
-        "normale_prijs": 2.19,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-26",
-        "eerder_gezien": 2
-      },
-      {
-        "naam": "Biologisch PLUS Vastkokende aardappelen biologisch",
-        "actieprijs": 1.49,
-        "normale_prijs": 2.19,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-26",
-        "eerder_gezien": 2
       }
     ]
   },
