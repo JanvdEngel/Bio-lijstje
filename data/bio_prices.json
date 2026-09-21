@@ -1,7 +1,19 @@
 {
-  "laatst_bijgewerkt": "2026-09-20T06:02:02.641351",
+  "laatst_bijgewerkt": "2026-09-21T06:01:47.545869",
   "aanbiedingen": {
     "AH": [
+      {
+        "naam": "AH Biologisch Pompoen",
+        "actieprijs": 2.68,
+        "normale_prijs": 3.58,
+        "soort": "vers"
+      },
+      {
+        "naam": "Heinz Tomaten gepeld biologisch",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.59,
+        "soort": "voorraad"
+      },
       {
         "naam": "AH Biologisch Rode kool",
         "actieprijs": 1.49,
@@ -10,6 +22,12 @@
         "laagste_ooit_prijs": 1.49,
         "laagste_ooit_datum": "2026-09-14",
         "eerder_gezien": 1
+      },
+      {
+        "naam": "AH Biologisch Fairtrade bananen",
+        "actieprijs": 1.99,
+        "normale_prijs": 2.39,
+        "soort": "vers"
       }
     ],
     "Jumbo": [
