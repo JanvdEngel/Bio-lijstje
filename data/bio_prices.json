@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-22T06:01:44.438869",
+  "laatst_bijgewerkt": "2026-09-23T06:01:34.540697",
   "aanbiedingen": {
     "AH": [
       {
@@ -41,58 +41,110 @@
     ],
     "Jumbo": [
       {
-        "naam": "Bonduelle Crispy Maïs Bio 300 g",
+        "naam": "Jumbo Biologisch Aardappelen Vastkokend 2,5KG",
+        "actieprijs": 2.33,
+        "normale_prijs": 4.65,
+        "soort": "vers",
+        "voorwaarde": "2 voor €4,65",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 2.49,
+        "laagste_ooit_datum": "2026-08-27",
+        "eerder_gezien": 2
+      },
+      {
+        "naam": "Jumbo Biologisch Aardappelen Kruimig 2,5 kg",
+        "actieprijs": 2.33,
+        "normale_prijs": 4.65,
+        "soort": "vers",
+        "voorwaarde": "2 voor €4,65",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 2.49,
+        "laagste_ooit_datum": "2026-08-27",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "Hak Spinazie met Room Bio 345 g",
         "actieprijs": 1.5,
         "normale_prijs": 2.99,
         "soort": "voorraad",
         "voorwaarde": "2 voor €2,99",
         "vanaf": 2,
-        "laagste_ooit_prijs": 1.5,
-        "laagste_ooit_datum": "2026-09-16",
-        "eerder_gezien": 1
+        "laagste_ooit_prijs": 1.0,
+        "laagste_ooit_datum": "2026-08-20",
+        "eerder_gezien": 11
       },
       {
-        "naam": "Bonduelle Rode Kidneybonen Bio 310 g",
-        "actieprijs": 1.5,
-        "normale_prijs": 2.89,
+        "naam": "Hak Rode Bieten Sticks Bio 355 g",
+        "actieprijs": 1.29,
+        "normale_prijs": 2.59,
         "soort": "voorraad",
-        "voorwaarde": "2 voor €2,99",
+        "voorwaarde": "2 voor €2,59",
         "vanaf": 2,
-        "laagste_ooit_prijs": 1.5,
-        "laagste_ooit_datum": "2026-09-16",
+        "laagste_ooit_prijs": 1.0,
+        "laagste_ooit_datum": "2026-08-20",
+        "eerder_gezien": 11
+      },
+      {
+        "naam": "Hak Gesneden Bonen Bio 340 g",
+        "actieprijs": 1.2,
+        "normale_prijs": 2.39,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €2,39",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 1.0,
+        "laagste_ooit_datum": "2026-08-20",
+        "eerder_gezien": 11
+      },
+      {
+        "naam": "Hak Rode Bieten Schijven Bio 355 g",
+        "actieprijs": 1.09,
+        "normale_prijs": 2.19,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €2,19",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 1.0,
+        "laagste_ooit_datum": "2026-08-20",
+        "eerder_gezien": 11
+      },
+      {
+        "naam": "Hak Wijnzuurkool Bio 340 g",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.99,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €1,99",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-09-02",
         "eerder_gezien": 1
       },
       {
-        "naam": "Heinz Tomaten blokjes biologisch",
-        "actieprijs": 0.99,
-        "normale_prijs": 2.29,
+        "naam": "Hak Gebroken Sperziebonen Bio 340 g",
+        "actieprijs": 0.97,
+        "normale_prijs": 1.95,
         "soort": "voorraad",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-09-16",
+        "voorwaarde": "2 voor €1,95",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 0.97,
+        "laagste_ooit_datum": "2026-09-02",
         "eerder_gezien": 1
       },
       {
-        "naam": "Heinz Tomaten gezeefd biologisch",
-        "actieprijs": 0.99,
-        "normale_prijs": 1.79,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-09-16",
-        "eerder_gezien": 9
-      },
-      {
-        "naam": "Heinz Tomaten gepeld biologisch",
-        "actieprijs": 0.99,
-        "normale_prijs": 1.59,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-09-16",
-        "eerder_gezien": 9
+        "naam": "Jumbo Gekookte Bietjes Biologisch 500 g",
+        "actieprijs": 1.29,
+        "normale_prijs": 1.49,
+        "soort": "voorraad"
       }
     ],
     "Lidl": [],
     "Aldi": [],
-    "Dirk": [],
+    "Dirk": [
+      {
+        "naam": "Bio+ Pastinaak",
+        "actieprijs": 1.19,
+        "normale_prijs": null,
+        "soort": "vers"
+      }
+    ],
     "Plus": [
       {
         "naam": "BIO+ Frambozen",
@@ -113,6 +165,12 @@
         "eerder_gezien": 1
       },
       {
+        "naam": "Biologisch PLUS Rode kool biologisch",
+        "actieprijs": 1.49,
+        "normale_prijs": 2.29,
+        "soort": "vers"
+      },
+      {
         "naam": "Biologisch PLUS Pastinaak biologisch",
         "actieprijs": 1.99,
         "normale_prijs": 2.75,
@@ -120,6 +178,21 @@
         "laagste_ooit_prijs": 1.99,
         "laagste_ooit_datum": "2026-09-16",
         "eerder_gezien": 1
+      },
+      {
+        "naam": "Biologisch PLUS Rode bieten biologisch",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.65,
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.19,
+        "laagste_ooit_datum": "2026-09-02",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "Biologisch PLUS Witte kool biologisch",
+        "actieprijs": 1.49,
+        "normale_prijs": 1.99,
+        "soort": "vers"
       }
     ]
   },
