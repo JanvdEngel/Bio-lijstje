@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-23T06:01:34.540697",
+  "laatst_bijgewerkt": "2026-09-24T06:01:45.771481",
   "aanbiedingen": {
     "AH": [
       {
@@ -47,9 +47,9 @@
         "soort": "vers",
         "voorwaarde": "2 voor €4,65",
         "vanaf": 2,
-        "laagste_ooit_prijs": 2.49,
-        "laagste_ooit_datum": "2026-08-27",
-        "eerder_gezien": 2
+        "laagste_ooit_prijs": 2.33,
+        "laagste_ooit_datum": "2026-09-23",
+        "eerder_gezien": 3
       },
       {
         "naam": "Jumbo Biologisch Aardappelen Kruimig 2,5 kg",
@@ -58,9 +58,9 @@
         "soort": "vers",
         "voorwaarde": "2 voor €4,65",
         "vanaf": 2,
-        "laagste_ooit_prijs": 2.49,
-        "laagste_ooit_datum": "2026-08-27",
-        "eerder_gezien": 1
+        "laagste_ooit_prijs": 2.33,
+        "laagste_ooit_datum": "2026-09-23",
+        "eerder_gezien": 2
       },
       {
         "naam": "Hak Spinazie met Room Bio 345 g",
@@ -132,7 +132,10 @@
         "naam": "Jumbo Gekookte Bietjes Biologisch 500 g",
         "actieprijs": 1.29,
         "normale_prijs": 1.49,
-        "soort": "voorraad"
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 1.29,
+        "laagste_ooit_datum": "2026-09-23",
+        "eerder_gezien": 1
       }
     ],
     "Lidl": [],
@@ -142,7 +145,10 @@
         "naam": "Bio+ Pastinaak",
         "actieprijs": 1.19,
         "normale_prijs": null,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.19,
+        "laagste_ooit_datum": "2026-09-23",
+        "eerder_gezien": 1
       }
     ],
     "Plus": [
@@ -168,7 +174,10 @@
         "naam": "Biologisch PLUS Rode kool biologisch",
         "actieprijs": 1.49,
         "normale_prijs": 2.29,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.49,
+        "laagste_ooit_datum": "2026-09-23",
+        "eerder_gezien": 1
       },
       {
         "naam": "Biologisch PLUS Pastinaak biologisch",
@@ -184,15 +193,18 @@
         "actieprijs": 0.99,
         "normale_prijs": 1.65,
         "soort": "vers",
-        "laagste_ooit_prijs": 1.19,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-09-23",
+        "eerder_gezien": 2
       },
       {
         "naam": "Biologisch PLUS Witte kool biologisch",
         "actieprijs": 1.49,
         "normale_prijs": 1.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.49,
+        "laagste_ooit_datum": "2026-09-23",
+        "eerder_gezien": 1
       }
     ]
   },
