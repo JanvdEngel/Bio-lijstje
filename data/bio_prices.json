@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-09-24T06:01:45.771481",
+  "laatst_bijgewerkt": "2026-09-25T06:02:06.449708",
   "aanbiedingen": {
     "AH": [
       {
@@ -41,17 +41,6 @@
     ],
     "Jumbo": [
       {
-        "naam": "Jumbo Biologisch Aardappelen Vastkokend 2,5KG",
-        "actieprijs": 2.33,
-        "normale_prijs": 4.65,
-        "soort": "vers",
-        "voorwaarde": "2 voor €4,65",
-        "vanaf": 2,
-        "laagste_ooit_prijs": 2.33,
-        "laagste_ooit_datum": "2026-09-23",
-        "eerder_gezien": 3
-      },
-      {
         "naam": "Jumbo Biologisch Aardappelen Kruimig 2,5 kg",
         "actieprijs": 2.33,
         "normale_prijs": 4.65,
@@ -61,6 +50,17 @@
         "laagste_ooit_prijs": 2.33,
         "laagste_ooit_datum": "2026-09-23",
         "eerder_gezien": 2
+      },
+      {
+        "naam": "Jumbo Biologisch Aardappelen Vastkokend 2,5KG",
+        "actieprijs": 2.33,
+        "normale_prijs": 4.65,
+        "soort": "vers",
+        "voorwaarde": "2 voor €4,65",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 2.33,
+        "laagste_ooit_datum": "2026-09-23",
+        "eerder_gezien": 3
       },
       {
         "naam": "Hak Spinazie met Room Bio 345 g",
