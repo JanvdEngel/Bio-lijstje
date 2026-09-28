@@ -1,42 +1,49 @@
 {
-  "laatst_bijgewerkt": "2026-09-27T06:02:17.357111",
+  "laatst_bijgewerkt": "2026-09-28T06:01:56.914488",
   "aanbiedingen": {
     "AH": [
       {
-        "naam": "AH Biologisch Pompoen",
-        "actieprijs": 2.68,
-        "normale_prijs": 3.58,
-        "soort": "vers",
-        "laagste_ooit_prijs": 2.68,
-        "laagste_ooit_datum": "2026-09-21",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Heinz Tomaten gepeld biologisch",
+        "naam": "Olvarit Bio 12+ mnd champignons prei pasta kalf",
         "actieprijs": 0.99,
-        "normale_prijs": 1.59,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-09-21",
-        "eerder_gezien": 1
+        "normale_prijs": 2.99,
+        "soort": "vers"
       },
       {
-        "naam": "AH Biologisch Rode kool",
-        "actieprijs": 1.49,
+        "naam": "Olvarit Bio 12+ mnd doperwtjes venkel quinoa",
+        "actieprijs": 0.99,
+        "normale_prijs": 2.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "AH Biologisch Slamelange rucola veldsla",
+        "actieprijs": 0.99,
         "normale_prijs": 1.99,
         "soort": "vers",
         "laagste_ooit_prijs": 1.49,
-        "laagste_ooit_datum": "2026-09-14",
+        "laagste_ooit_datum": "2026-09-07",
         "eerder_gezien": 1
       },
       {
-        "naam": "AH Biologisch Fairtrade bananen",
-        "actieprijs": 1.99,
-        "normale_prijs": 2.39,
+        "naam": "AH Biologisch Flespompoen",
+        "actieprijs": 2.23,
+        "normale_prijs": 2.98,
+        "soort": "vers"
+      },
+      {
+        "naam": "AH Biologisch Snoepgroente tomaat",
+        "actieprijs": 1.67,
+        "normale_prijs": 2.29,
         "soort": "vers",
-        "laagste_ooit_prijs": 1.99,
-        "laagste_ooit_datum": "2026-09-21",
-        "eerder_gezien": 1
+        "voorwaarde": "3 voor €5,00",
+        "vanaf": 3
+      },
+      {
+        "naam": "AH Biologisch Snoepgroente wortel",
+        "actieprijs": 1.67,
+        "normale_prijs": 1.99,
+        "soort": "vers",
+        "voorwaarde": "3 voor €5,00",
+        "vanaf": 3
       }
     ],
     "Jumbo": [
@@ -138,7 +145,14 @@
         "eerder_gezien": 1
       }
     ],
-    "Lidl": [],
+    "Lidl": [
+      {
+        "naam": "Bio prei",
+        "actieprijs": 0.89,
+        "normale_prijs": null,
+        "soort": "vers"
+      }
+    ],
     "Aldi": [],
     "Dirk": [
       {
