@@ -1,33 +1,42 @@
 {
-  "laatst_bijgewerkt": "2026-09-28T06:01:56.914488",
+  "laatst_bijgewerkt": "2026-09-29T06:01:51.881030",
   "aanbiedingen": {
     "AH": [
-      {
-        "naam": "Olvarit Bio 12+ mnd champignons prei pasta kalf",
-        "actieprijs": 0.99,
-        "normale_prijs": 2.99,
-        "soort": "vers"
-      },
       {
         "naam": "Olvarit Bio 12+ mnd doperwtjes venkel quinoa",
         "actieprijs": 0.99,
         "normale_prijs": 2.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-09-28",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "Olvarit Bio 12+ mnd champignons prei pasta kalf",
+        "actieprijs": 0.99,
+        "normale_prijs": 2.99,
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-09-28",
+        "eerder_gezien": 1
       },
       {
         "naam": "AH Biologisch Slamelange rucola veldsla",
         "actieprijs": 0.99,
         "normale_prijs": 1.99,
         "soort": "vers",
-        "laagste_ooit_prijs": 1.49,
-        "laagste_ooit_datum": "2026-09-07",
-        "eerder_gezien": 1
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-09-28",
+        "eerder_gezien": 2
       },
       {
         "naam": "AH Biologisch Flespompoen",
         "actieprijs": 2.23,
         "normale_prijs": 2.98,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.23,
+        "laagste_ooit_datum": "2026-09-28",
+        "eerder_gezien": 1
       },
       {
         "naam": "AH Biologisch Snoepgroente tomaat",
@@ -35,7 +44,10 @@
         "normale_prijs": 2.29,
         "soort": "vers",
         "voorwaarde": "3 voor €5,00",
-        "vanaf": 3
+        "vanaf": 3,
+        "laagste_ooit_prijs": 1.67,
+        "laagste_ooit_datum": "2026-09-28",
+        "eerder_gezien": 1
       },
       {
         "naam": "AH Biologisch Snoepgroente wortel",
@@ -43,21 +55,13 @@
         "normale_prijs": 1.99,
         "soort": "vers",
         "voorwaarde": "3 voor €5,00",
-        "vanaf": 3
+        "vanaf": 3,
+        "laagste_ooit_prijs": 1.67,
+        "laagste_ooit_datum": "2026-09-28",
+        "eerder_gezien": 1
       }
     ],
     "Jumbo": [
-      {
-        "naam": "Jumbo Biologisch Aardappelen Vastkokend 2,5KG",
-        "actieprijs": 2.33,
-        "normale_prijs": 4.65,
-        "soort": "vers",
-        "voorwaarde": "2 voor €4,65",
-        "vanaf": 2,
-        "laagste_ooit_prijs": 2.33,
-        "laagste_ooit_datum": "2026-09-23",
-        "eerder_gezien": 3
-      },
       {
         "naam": "Jumbo Biologisch Aardappelen Kruimig 2,5 kg",
         "actieprijs": 2.33,
@@ -68,6 +72,17 @@
         "laagste_ooit_prijs": 2.33,
         "laagste_ooit_datum": "2026-09-23",
         "eerder_gezien": 2
+      },
+      {
+        "naam": "Jumbo Biologisch Aardappelen Vastkokend 2,5KG",
+        "actieprijs": 2.33,
+        "normale_prijs": 4.65,
+        "soort": "vers",
+        "voorwaarde": "2 voor €4,65",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 2.33,
+        "laagste_ooit_datum": "2026-09-23",
+        "eerder_gezien": 3
       },
       {
         "naam": "Hak Spinazie met Room Bio 345 g",
@@ -150,7 +165,10 @@
         "naam": "Bio prei",
         "actieprijs": 0.89,
         "normale_prijs": null,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.89,
+        "laagste_ooit_datum": "2026-09-28",
+        "eerder_gezien": 1
       }
     ],
     "Aldi": [],
