@@ -368,6 +368,95 @@ def overzichtspagina(data):
     }
 
 
+def cijferpagina():
+    """De schil van /cijfers/: prose, methode en voorbehoud.
+
+    De getallen staan hier bewust niet in. Die rekent fetch_bio_prices.py elke
+    ronde opnieuw uit de dagtellingen en vult ze tussen de merktekens, net als
+    bij index.html. Een met de hand geschreven getal klopt over een maand niet
+    meer, en dan staat er een verouderde bewering op een pagina waar mensen
+    naartoe verwezen zijn.
+
+    Dit bestand is dus niet de pagina maar het sjabloon ervoor; de Pi schrijft
+    cijfers/index.html."""
+    inhoud = """  <p class="intro">Hoe vaak staat biologische groente of fruit eigenlijk in
+  de aanbieding? Deze site houdt dat sinds augustus 2026 elke dag bij, en dit
+  is wat daaruit komt.</p>
+
+  <section class="group">
+    <div class="group-title"><h2>Wat we zien</h2></div>
+    <div class="prose">
+<!--CIJFERS-->
+      <p>Nog niet berekend.</p>
+<!--/CIJFERS-->
+    </div>
+  </section>
+
+  <section class="group">
+    <div class="group-title"><h2>Wat dit niet zegt</h2></div>
+    <div class="prose">
+      <p class="let-op"><strong>Dit gaat over aanbiedingen, niet over wat er in
+      het schap ligt.</strong> Dat Aldi wekenlang geen biologische aanbieding
+      had, betekent niet dat Aldi geen biologische groente verkoopt. Het
+      betekent alleen dat er niets van in de actie stond. Over het assortiment
+      zegt deze telling niets, want die data heb ik niet.</p>
+
+      <p>Het gaat ook alleen over <strong>groente en fruit</strong>. Biologische
+      zuivel, brood of koffie tellen niet mee, ook niet als die in de aanbieding
+      staan.</p>
+
+      <p>En het zijn er zes: Albert Heijn, Jumbo, Lidl, Aldi, Dirk en Plus. Over
+      andere ketens zegt dit niets.</p>
+    </div>
+  </section>
+
+  <section class="group">
+    <div class="group-title"><h2>Hoe er geteld is</h2></div>
+    <div class="prose">
+      <p>Elke ochtend haalt een Raspberry Pi de lopende acties op bij de
+      <a href="https://www.prijsprofeet.nl/" rel="noopener">PrijsProfeet-API</a>
+      en filtert daar de biologische groente en het fruit uit. Wat overblijft is
+      wat je op de <a href="/">voorpagina</a> ziet. Van elke ronde wordt het
+      aantal per winkel bewaard; die tellingen zijn de basis voor deze pagina.</p>
+
+      <p>Een product telt mee als de bron het als biologisch labelt én het woord
+      in de naam staat, als het groente of fruit is, en als de actieprijs lager
+      is dan de normale prijs. Draait een ronde meerdere keren op een dag, dan
+      telt de laatste. Dagen waarop een winkel niet opgehaald kon worden tellen
+      niet mee: een nul die geen nul is, zou het beeld vertekenen.</p>
+
+      <p>Het filter is mensenwerk en het heeft er eerder naast gezeten — er
+      stond een keer babyvoeding tussen. Zie je iets dat er niet hoort, dan hoor
+      ik het graag via <a href="/over/">de contactgegevens</a>.</p>
+    </div>
+  </section>
+"""
+    return {
+        "pad": HIER.parent / "cijfers-sjabloon.html",
+        "titel": "Hoe vaak is biologische groente en fruit in de aanbieding?",
+        "og_titel": "Cijfers: bio in de aanbieding",
+        "beschrijving": (
+            "Hoe vaak biologische groente en fruit bij zes Nederlandse supermarkten "
+            "in de aanbieding staat, dagelijks geteld sinds augustus 2026."
+        ),
+        "canonical": "https://hetbiolijstje.nl/cijfers/",
+        "eyebrow": '<h1 class="eyebrow">Cijfers</h1>',
+        "sectie": "cijfers",
+        "voetnoot": VOETNOOT_OVER,
+        "inhoud": inhoud,
+        "jsonld": jsonld({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Hoe vaak is biologische groente en fruit in de aanbieding?",
+            "url": "https://hetbiolijstje.nl/cijfers/",
+            "inLanguage": "nl-NL",
+            "isPartOf": {"@type": "WebSite", "name": "Het Bio Lijstje",
+                         "url": "https://hetbiolijstje.nl/"},
+            "breadcrumb": kruimels(HOOFD, ("Cijfers", "https://hetbiolijstje.nl/cijfers/")),
+        }),
+    }
+
+
 def overpagina(data):
     """Over deze site: wat het is, waar de cijfers vandaan komen, wat de site
     níét doet, en hoe je een fout meldt.
@@ -540,7 +629,7 @@ def main():
     sjabloon = SJABLOON.read_text(encoding="utf-8")
     residu = residutabel()
 
-    paginas = [overzichtspagina(data), overpagina(data)]
+    paginas = [overzichtspagina(data), overpagina(data), cijferpagina()]
     paginas += [maandpagina(data, i, residu) for i in range(12)]
 
     for p in paginas:

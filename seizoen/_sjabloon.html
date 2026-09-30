@@ -228,6 +228,33 @@
   .residu.minder{ color:var(--leaf); }
 
   /* Over-pagina: doorlopende tekst in plaats van kaarten. */
+  /* ---- /cijfers/ ----------------------------------------------------- */
+  .kerngetal{
+    font-size:1.05rem; line-height:1.5; margin:0 0 0.6rem;
+  }
+  .kerngetal strong{
+    font-family:'Fraunces', serif; font-size:2rem; font-weight:700;
+    color:var(--harvest); display:block; line-height:1.1;
+  }
+  .cijfertabel{
+    width:100%; border-collapse:collapse; margin:1.1rem 0 0.4rem;
+    font-size:0.9rem;
+  }
+  .cijfertabel th, .cijfertabel td{
+    padding:7px 10px; border-bottom:1px solid var(--line); text-align:left;
+  }
+  .cijfertabel th{
+    font-family:'Space Mono', monospace; font-size:0.7rem; font-weight:400;
+    letter-spacing:0.06em; text-transform:uppercase; color:var(--muted);
+  }
+  .cijfertabel .getal{ text-align:right; font-family:'Space Mono', monospace; }
+  .diagram{ width:100%; height:auto; margin:0.7rem 0 0.2rem; }
+  .diagram .d-naam{ font-size:13px; fill:var(--text); }
+  .diagram .d-getal{ font-size:12px; fill:var(--muted); font-family:'Space Mono', monospace; }
+  .diagram .d-onder{ font-size:11px; fill:var(--muted); }
+  .diagram .d-staaf{ fill:var(--harvest); }
+  .diagram .d-as{ stroke:var(--line); stroke-width:1; }
+
   .prose{ max-width:62ch; margin:0 auto; }
   .prose p{ margin:0 0 14px; line-height:1.7; }
   .prose p:last-child{ margin-bottom:0; }

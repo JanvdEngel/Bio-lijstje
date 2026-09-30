@@ -37,6 +37,11 @@ for m in data["maanden"]:
     ]
 regels += [
     "  <url>",
+    "    <loc>https://hetbiolijstje.nl/cijfers/</loc>",
+    "    <changefreq>daily</changefreq>",
+    "    <priority>0.5</priority>",
+    "  </url>",
+    "  <url>",
     "    <loc>https://hetbiolijstje.nl/over/</loc>",
     "    <changefreq>yearly</changefreq>",
     "    <priority>0.4</priority>",
@@ -46,4 +51,7 @@ regels.append("</urlset>")
 
 pad = WORTEL / "sitemap.xml"
 pad.write_text("\n".join(regels) + "\n", encoding="utf-8", newline="\n")
-print(f"sitemap.xml geschreven: {len(data['maanden']) + 3} URL's")
+# Tellen wat er werkelijk in staat, niet met de hand optellen: dat liep twee
+# keer achter toen er een pagina bij kwam.
+aantal = sum(1 for r in regels if "<loc>" in r)
+print(f"sitemap.xml geschreven: {aantal} URL's")

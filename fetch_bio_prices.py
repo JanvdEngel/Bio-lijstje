@@ -421,6 +421,13 @@ MAX_ITEMS_PER_STORE = 15  # cap na dedup, grootste korting eerst — houdt winke
 
 OUTPUT_PATH = Path(__file__).parent / "www" / "data" / "bio_prices.json"
 HISTORY_PATH = Path(__file__).parent / "www" / "data" / "geschiedenis.json"
+# Hoeveel aanbiedingen elke winkel op een dag had. De prijsreeks bewaart alleen
+# prijswijzigingen, dus daaruit valt dit niet af te leiden. Deze telling is de
+# bron onder /cijfers/. Blijft op de Pi: het zijn aantallen en geen prijzen,
+# maar er is geen reden om ook dit publiek te zetten.
+DAGTELLINGEN_PATH = Path(__file__).parent / "www" / "data" / "dagtellingen.json"
+CIJFERS_SJABLOON = Path(__file__).parent / "www" / "cijfers-sjabloon.html"
+CIJFERS_OUTPUT = Path(__file__).parent / "www" / "cijfers" / "index.html"
 # 30 prijs*wijzigingen* per product, niet 30 fetches — zie
 # enrich_and_record_history(). Bij een actie die per week wisselt is dat jaren.
 HISTORY_MAX_PER_PRODUCT = 30
@@ -451,7 +458,7 @@ WWW_DIR = Path(__file__).parent / "www"
 # lokale pagina (http://<pi-ip>:8099) zien, kopieer ze dan alsnog naar
 # /local_apps/bio_bord/www/ en draai een rebuild — maar vergeten kan de publieke
 # site niet meer stukmaken.
-GITHUB_PUBLISH_FILES = ["index.html", "data/bio_prices.json"]
+GITHUB_PUBLISH_FILES = ["index.html", "data/bio_prices.json", "cijfers/index.html"]
 
 # index.html wordt gegenereerd uit template.html, en template.html wordt door dit
 # script nooit aangeraakt. Die scheiding is er met een reden: eerder was
@@ -460,6 +467,8 @@ GITHUB_PUBLISH_FILES = ["index.html", "data/bio_prices.json"]
 # bestand precies één eigenaar.
 TEMPLATE_PATH = Path(__file__).parent / "www" / "template.html"
 HTML_OUTPUT_PATH = Path(__file__).parent / "www" / "index.html"
+CIJFERS_START = "<!--CIJFERS-->"
+CIJFERS_EINDE = "<!--/CIJFERS-->"
 JSONLD_START = "<!--JSONLD-->"
 JSONLD_EINDE = "<!--/JSONLD-->"
 DATUM_START = "<!--DATUM-->"
@@ -1342,6 +1351,173 @@ def meld_aan_home_assistant(bijgewerkt, winkelstatus, aantal):
         log.warning(f"Sensor bijwerken in Home Assistant mislukt ({e}); de ronde is wel klaar")
 
 
+def werk_dagtellingen_bij(aanbiedingen, vandaag):
+    """Zet de telling van vandaag in dagtellingen.json en geeft alle dagen terug.
+
+    Draait meerdere keren op een dag? Dan wint de laatste ronde, net als bij de
+    gepubliceerde lijst. Faalt dit, dan is dat een logregel en geen fout: de
+    lijst is belangrijker dan de statistiek erover."""
+    dagen = {}
+    try:
+        if DAGTELLINGEN_PATH.exists():
+            dagen = (json.loads(DAGTELLINGEN_PATH.read_text(encoding="utf-8"))
+                     or {}).get("dagen", {})
+    except (json.JSONDecodeError, OSError) as e:
+        log.warning(f"dagtellingen.json onleesbaar ({e}); begint opnieuw")
+        dagen = {}
+
+    dagen[vandaag] = {w: len(v) for w, v in aanbiedingen.items()}
+    dagen = dict(sorted(dagen.items()))
+    try:
+        DAGTELLINGEN_PATH.parent.mkdir(parents=True, exist_ok=True)
+        tijdelijk = DAGTELLINGEN_PATH.with_suffix(".json.nieuw")
+        tijdelijk.write_text(
+            json.dumps({"winkels": list(aanbiedingen), "dagen": dagen},
+                       indent=2, ensure_ascii=False), encoding="utf-8")
+        os.replace(tijdelijk, DAGTELLINGEN_PATH)
+    except OSError as e:
+        log.warning(f"dagtellingen wegschrijven mislukt ({e})")
+    return dagen
+
+
+def cijfers_uit_dagtellingen(dagen):
+    """Rekent uit wat er op /cijfers/ komt te staan.
+
+    Alleen dagen waarop alle winkels zijn opgehaald tellen mee. Een dag waarop
+    een winkel ontbreekt geeft anders een nul die niets over die winkel zegt —
+    dezelfde fout als "geen acties" tegenover "niet opgehaald" op de voorpagina."""
+    if not dagen:
+        return None
+    winkels = sorted({w for d in dagen.values() for w in d})
+    volledig = {d: v for d, v in dagen.items() if all(w in v for w in winkels)}
+    if not volledig:
+        return None
+
+    totalen = {d: sum(v.values()) for d, v in volledig.items()}
+    laagste_dag = min(totalen, key=lambda d: totalen[d])
+    per_winkel = []
+    for w in winkels:
+        nul, langste, lopend = 0, 0, 0
+        for d in sorted(volledig):
+            if volledig[d].get(w, 0) == 0:
+                nul += 1
+                lopend += 1
+                langste = max(langste, lopend)
+            else:
+                lopend = 0
+        per_winkel.append({
+            "winkel": w, "nuldagen": nul, "langste_reeks": langste,
+            "gemiddeld": sum(volledig[d].get(w, 0) for d in volledig) / len(volledig),
+        })
+    per_winkel.sort(key=lambda x: (-x["nuldagen"], x["winkel"]))
+    return {
+        "dagen": len(volledig),
+        "van": min(volledig), "tot": max(volledig),
+        "gemiddeld": sum(totalen.values()) / len(totalen),
+        "laagste": totalen[laagste_dag], "laagste_datum": laagste_dag,
+        "hoogste": max(totalen.values()),
+        "per_winkel": per_winkel,
+    }
+
+
+def _staafdiagram(per_winkel, dagen):
+    """Horizontale staven: dagen zonder enkele bio-aanbieding, per winkel.
+
+    Met de hand getekende SVG en geen bibliotheek, om dezelfde reden als de
+    rest van deze site: het moet werken zonder dat er iets van buiten geladen
+    wordt, en het moet in beide thema's kloppen. Vandaar currentColor en de
+    kleurvariabelen van de pagina."""
+    regel_h, top = 30, 8
+    hoogte = top + len(per_winkel) * regel_h + 22
+    breedte, links, rechts = 480, 78, 42
+    baan = breedte - links - rechts
+    staven = []
+    for i, r in enumerate(per_winkel):
+        y = top + i * regel_h
+        w = 0 if not dagen else baan * r["nuldagen"] / dagen
+        staven.append(
+            f'<text x="{links - 10}" y="{y + 15}" text-anchor="end" class="d-naam">'
+            f'{_html_escape(r["winkel"])}</text>'
+            f'<rect x="{links}" y="{y + 4}" width="{w:.1f}" height="15" rx="3" class="d-staaf"/>'
+            f'<text x="{links + w + 7:.1f}" y="{y + 16}" class="d-getal">{r["nuldagen"]}</text>'
+        )
+    return (
+        f'<svg viewBox="0 0 {breedte} {hoogte}" class="diagram" role="img" '
+        f'aria-label="Dagen zonder biologische aanbieding per supermarkt, '
+        f'van {dagen} gemeten dagen">'
+        + "".join(staven)
+        + f'<line x1="{links}" y1="{top}" x2="{links}" y2="{hoogte - 20}" class="d-as"/>'
+        f'<text x="{links}" y="{hoogte - 5}" class="d-onder">0</text>'
+        f'<text x="{breedte - rechts}" y="{hoogte - 5}" text-anchor="end" class="d-onder">'
+        f'{dagen} dagen</text>'
+        "</svg>"
+    )
+
+
+def cijferblok_html(c):
+    """De inhoud tussen de merktekens op /cijfers/."""
+    if not c:
+        return "<p>Er is nog niet genoeg gemeten om iets te zeggen.</p>"
+    rijen = "".join(
+        f"<tr><td>{_html_escape(r['winkel'])}</td>"
+        f"<td class=\"getal\">{r['nuldagen']}</td>"
+        f"<td class=\"getal\">{r['langste_reeks']}</td>"
+        f"<td class=\"getal\">{_komma(r['gemiddeld'])}</td></tr>"
+        for r in c["per_winkel"]
+    )
+    return (
+        f'<p class="kerngetal"><strong>{_komma(c["gemiddeld"])}</strong> biologische '
+        f'groente- en fruitaanbiedingen per dag, bij zes supermarkten samen.</p>'
+        f'<p>Gemeten van {_leesbare_dag(c["van"])} tot en met {_leesbare_dag(c["tot"])}: '
+        f'{c["dagen"]} dagen. Op de magerste dag stonden er {c["laagste"]}, op de rijkste '
+        f'{c["hoogste"]}.</p>'
+        f'<h3>Dagen zonder ook maar één biologische aanbieding</h3>'
+        + _staafdiagram(c["per_winkel"], c["dagen"]) +
+        f'<table class="cijfertabel"><thead><tr><th>Winkel</th>'
+        f'<th class="getal">Dagen op nul</th><th class="getal">Langste reeks</th>'
+        f'<th class="getal">Gemiddeld per dag</th></tr></thead><tbody>{rijen}</tbody></table>'
+    )
+
+
+def _komma(getal):
+    return f"{getal:.1f}".replace(".", ",")
+
+
+def _leesbare_dag(iso):
+    try:
+        stip = datetime.fromisoformat(iso)
+    except (TypeError, ValueError):
+        return iso
+    return f"{stip.day} {_MAANDEN_NL[stip.month - 1]} {stip.year}"
+
+
+def schrijf_cijfers_html(dagen):
+    """Vult de cijfers in het sjabloon en schrijft /cijfers/index.html.
+
+    De prose, de methode en het voorbehoud staan in cijfers-sjabloon.html, dat
+    door seizoen/bouw_paginas.py uit hetzelfde sjabloon komt als de rest van de
+    site. Hier worden alleen de getallen ingevuld — net als bij index.html."""
+    try:
+        sjabloon = CIJFERS_SJABLOON.read_text(encoding="utf-8")
+    except OSError as e:
+        log.warning(f"cijfers-sjabloon.html niet leesbaar ({e}); /cijfers/ overgeslagen")
+        return
+    if CIJFERS_START not in sjabloon or CIJFERS_EINDE not in sjabloon:
+        log.warning("Merktekens ontbreken in cijfers-sjabloon.html; overgeslagen")
+        return
+    c = cijfers_uit_dagtellingen(dagen)
+    voor = sjabloon.index(CIJFERS_START)
+    na = sjabloon.index(CIJFERS_EINDE) + len(CIJFERS_EINDE)
+    nieuw = (sjabloon[:voor] + CIJFERS_START + cijferblok_html(c)
+             + CIJFERS_EINDE + sjabloon[na:])
+    try:
+        CIJFERS_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+        CIJFERS_OUTPUT.write_text(nieuw, encoding="utf-8", newline="\n")
+        log.info(f"cijfers/index.html gegenereerd ({c['dagen'] if c else 0} dagen)")
+    except OSError as e:
+        log.warning(f"cijfers/index.html schrijven mislukt ({e})")
+
+
 def publish_to_github():
     """Pusht www/ naar een GitHub-repo via de Contents API, zodat de pagina
     ook publiek bereikbaar is via GitHub Pages (voor delen buiten het
@@ -1568,6 +1744,14 @@ def main():
         schrijf_index_html(aanbiedingen, resultaat["laatst_bijgewerkt"])
     except Exception as e:
         log.warning(f"index.html genereren mislukt ({e}); vorige versie blijft staan")
+
+    # Losstaand afgeschermd, net als hierboven: de cijferpagina is een extraatje
+    # bovenop de lijst en mag hem niet tegenhouden.
+    try:
+        dagen = werk_dagtellingen_bij(aanbiedingen, vandaag)
+        schrijf_cijfers_html(dagen)
+    except Exception as e:
+        log.warning(f"/cijfers/ genereren mislukt ({e}); vorige versie blijft staan")
 
     publish_to_github()
 
