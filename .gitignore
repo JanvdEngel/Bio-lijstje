@@ -14,4 +14,4 @@ geschiedenis.json
 *.json.nieuw
 
 # Conceptmail, geen onderdeel van de site
-mail-prijsprofeet.md
+mail-prijsprofeet*.md
