@@ -1,25 +1,7 @@
 {
-  "laatst_bijgewerkt": "2026-09-30T06:01:43.829386",
+  "laatst_bijgewerkt": "2026-09-30T19:31:57.253251",
   "aanbiedingen": {
     "AH": [
-      {
-        "naam": "Olvarit Bio 12+ mnd doperwtjes venkel quinoa",
-        "actieprijs": 0.99,
-        "normale_prijs": 2.99,
-        "soort": "vers",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-09-28",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Olvarit Bio 12+ mnd champignons prei pasta kalf",
-        "actieprijs": 0.99,
-        "normale_prijs": 2.99,
-        "soort": "vers",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-09-28",
-        "eerder_gezien": 1
-      },
       {
         "naam": "AH Biologisch Slamelange rucola veldsla",
         "actieprijs": 0.99,
@@ -59,22 +41,6 @@
         "laagste_ooit_prijs": 1.67,
         "laagste_ooit_datum": "2026-09-28",
         "eerder_gezien": 1
-      },
-      {
-        "naam": "AH Biologisch Knijpfruit peer 6+",
-        "actieprijs": 0.83,
-        "normale_prijs": 0.99,
-        "soort": "vers",
-        "voorwaarde": "6 voor €4,95",
-        "vanaf": 6
-      },
-      {
-        "naam": "AH Biologisch Knijpfruit mango 6+",
-        "actieprijs": 0.83,
-        "normale_prijs": 0.99,
-        "soort": "vers",
-        "voorwaarde": "6 voor €4,95",
-        "vanaf": 6
       }
     ],
     "Jumbo": [
@@ -87,7 +53,7 @@
         "vanaf": 2,
         "laagste_ooit_prijs": 1.5,
         "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "Hak Rode Bieten Bio 705 g",
@@ -98,13 +64,16 @@
         "vanaf": 2,
         "laagste_ooit_prijs": 1.5,
         "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "Pink Lady Biologische Appels 4 Stuks",
         "actieprijs": 2.62,
         "normale_prijs": 3.49,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.62,
+        "laagste_ooit_datum": "2026-09-30",
+        "eerder_gezien": 1
       },
       {
         "naam": "Hak Sperziebonen Bio 675 g",
@@ -115,7 +84,7 @@
         "vanaf": 2,
         "laagste_ooit_prijs": 1.4,
         "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       }
     ],
     "Lidl": [
@@ -147,7 +116,10 @@
         "normale_prijs": 2.99,
         "soort": "voorraad",
         "voorwaarde": "2 voor €4,49",
-        "vanaf": 2
+        "vanaf": 2,
+        "laagste_ooit_prijs": 2.24,
+        "laagste_ooit_datum": "2026-09-30",
+        "eerder_gezien": 1
       },
       {
         "naam": "Biologisch PLUS Rode bieten biologisch",
@@ -171,19 +143,28 @@
         "naam": "Biologisch PLUS Wortelen biologisch",
         "actieprijs": 1.49,
         "normale_prijs": 1.85,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.49,
+        "laagste_ooit_datum": "2026-09-30",
+        "eerder_gezien": 1
       },
       {
         "naam": "Biologisch PLUS rode uien biologisch",
         "actieprijs": 0.89,
         "normale_prijs": 1.09,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.89,
+        "laagste_ooit_datum": "2026-09-30",
+        "eerder_gezien": 1
       },
       {
         "naam": "Biologisch PLUS Uien geel biologisch",
         "actieprijs": 0.89,
         "normale_prijs": 1.09,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.89,
+        "laagste_ooit_datum": "2026-09-30",
+        "eerder_gezien": 1
       }
     ]
   },
