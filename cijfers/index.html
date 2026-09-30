@@ -254,6 +254,7 @@
   .diagram .d-onder{ font-size:11px; fill:var(--muted); }
   .diagram .d-staaf{ fill:var(--harvest); }
   .diagram .d-as{ stroke:var(--line); stroke-width:1; }
+  .bronregel{ font-size:0.82rem; color:var(--muted); margin-top:1.1rem; }
 
   .prose{ max-width:62ch; margin:0 auto; }
   .prose p{ margin:0 0 14px; line-height:1.7; }
@@ -526,52 +527,21 @@
 
 <div class="wrap leeskolom">
   <p class="intro">Hoe vaak staat biologische groente of fruit eigenlijk in
-  de aanbieding? Deze site houdt dat sinds augustus 2026 elke dag bij, en dit
-  is wat daaruit komt.</p>
+  de aanbieding? Deze site telt het sinds augustus 2026 elke dag.</p>
 
   <section class="group">
     <div class="group-title"><h2>Wat we zien</h2></div>
     <div class="prose">
 <!--CIJFERS--><p class="kerngetal"><strong>17,7</strong> biologische groente- en fruitaanbiedingen per dag, bij zes supermarkten samen.</p><p>Gemeten van 20 augustus 2026 tot en met 30 september 2026: 40 dagen. Op de magerste dag stonden er 4, op de rijkste 34.</p><h3>Dagen zonder ook maar één biologische aanbieding</h3><svg viewBox="0 0 480 210" class="diagram" role="img" aria-label="Dagen zonder biologische aanbieding per supermarkt, van 40 gemeten dagen"><text x="68" y="23" text-anchor="end" class="d-naam">Aldi</text><rect x="78" y="12" width="297.0" height="15" rx="3" class="d-staaf"/><text x="382.0" y="24" class="d-getal">33</text><text x="68" y="53" text-anchor="end" class="d-naam">Lidl</text><rect x="78" y="42" width="126.0" height="15" rx="3" class="d-staaf"/><text x="211.0" y="54" class="d-getal">14</text><text x="68" y="83" text-anchor="end" class="d-naam">Dirk</text><rect x="78" y="72" width="108.0" height="15" rx="3" class="d-staaf"/><text x="193.0" y="84" class="d-getal">12</text><text x="68" y="113" text-anchor="end" class="d-naam">Jumbo</text><rect x="78" y="102" width="63.0" height="15" rx="3" class="d-staaf"/><text x="148.0" y="114" class="d-getal">7</text><text x="68" y="143" text-anchor="end" class="d-naam">AH</text><rect x="78" y="132" width="0.0" height="15" rx="3" class="d-staaf"/><text x="85.0" y="144" class="d-getal">0</text><text x="68" y="173" text-anchor="end" class="d-naam">Plus</text><rect x="78" y="162" width="0.0" height="15" rx="3" class="d-staaf"/><text x="85.0" y="174" class="d-getal">0</text><line x1="78" y1="8" x2="78" y2="190" class="d-as"/><text x="78" y="205" class="d-onder">0</text><text x="438" y="205" text-anchor="end" class="d-onder">40 dagen</text></svg><table class="cijfertabel"><thead><tr><th>Winkel</th><th class="getal">Dagen op nul</th><th class="getal">Langste reeks</th><th class="getal">Gemiddeld per dag</th></tr></thead><tbody><tr><td>Aldi</td><td class="getal">33</td><td class="getal">17</td><td class="getal">0,2</td></tr><tr><td>Lidl</td><td class="getal">14</td><td class="getal">14</td><td class="getal">2,3</td></tr><tr><td>Dirk</td><td class="getal">12</td><td class="getal">7</td><td class="getal">0,7</td></tr><tr><td>Jumbo</td><td class="getal">7</td><td class="getal">7</td><td class="getal">7,0</td></tr><tr><td>AH</td><td class="getal">0</td><td class="getal">0</td><td class="getal">3,5</td></tr><tr><td>Plus</td><td class="getal">0</td><td class="getal">0</td><td class="getal">4,0</td></tr></tbody></table><!--/CIJFERS-->
-    </div>
-  </section>
 
-  <section class="group">
-    <div class="group-title"><h2>Wat dit niet zegt</h2></div>
-    <div class="prose">
       <p class="let-op"><strong>Dit gaat over aanbiedingen, niet over wat er in
       het schap ligt.</strong> Dat Aldi wekenlang geen biologische aanbieding
-      had, betekent niet dat Aldi geen biologische groente verkoopt. Het
-      betekent alleen dat er niets van in de actie stond. Over het assortiment
-      zegt deze telling niets, want die data heb ik niet.</p>
+      had, betekent niet dat Aldi geen biologische groente verkoopt.</p>
 
-      <p>Het gaat ook alleen over <strong>groente en fruit</strong>. Biologische
-      zuivel, brood of koffie tellen niet mee, ook niet als die in de aanbieding
-      staan.</p>
-
-      <p>En het zijn er zes: Albert Heijn, Jumbo, Lidl, Aldi, Dirk en Plus. Over
-      andere ketens zegt dit niets.</p>
-    </div>
-  </section>
-
-  <section class="group">
-    <div class="group-title"><h2>Hoe er geteld is</h2></div>
-    <div class="prose">
-      <p>Elke ochtend haalt een Raspberry Pi de lopende acties op bij de
-      <a href="https://www.prijsprofeet.nl/" rel="noopener">PrijsProfeet-API</a>
-      en filtert daar de biologische groente en het fruit uit. Wat overblijft is
-      wat je op de <a href="/">voorpagina</a> ziet. Van elke ronde wordt het
-      aantal per winkel bewaard; die tellingen zijn de basis voor deze pagina.</p>
-
-      <p>Een product telt mee als de bron het als biologisch labelt én het woord
-      in de naam staat, als het groente of fruit is, en als de actieprijs lager
-      is dan de normale prijs. Draait een ronde meerdere keren op een dag, dan
-      telt de laatste. Dagen waarop een winkel niet opgehaald kon worden tellen
-      niet mee: een nul die geen nul is, zou het beeld vertekenen.</p>
-
-      <p>Het filter is mensenwerk en het heeft er eerder naast gezeten — er
-      stond een keer babyvoeding tussen. Zie je iets dat er niet hoort, dan hoor
-      ik het graag via <a href="/over/">de contactgegevens</a>.</p>
+      <p class="bronregel">Geteld uit de dagelijkse acties van de
+      <a href="https://www.prijsprofeet.nl/" rel="noopener">PrijsProfeet-API</a>;
+      dagen waarop een winkel niet opgehaald kon worden tellen niet mee.
+      <a href="/over/">Meer over de bronnen</a>.</p>
     </div>
   </section>
 
