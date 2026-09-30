@@ -84,6 +84,18 @@ BIO_PATTERN = re.compile(r"\bbio(?:logisch\w*)?\b", re.IGNORECASE)
 # vaak naar fruit. Uitbreidbaar — "frisdrank" (vruchtensap) en "huishouden"
 # (diervoer met groente erin) zijn logische volgende kandidaten.
 EXCLUDED_CATEGORIES = {
+    # PrijsProfeet heeft "drogisterij" eind september gesplitst: die telde in
+    # augustus honderden producten en nu nog 146, terwijl er zeven nieuwe
+    # categorieen naast staan. Wij sloten alleen de oude naam uit, dus kwamen
+    # er opeens een douchegel met sinaasappel en een gezichtsolie met
+    # granaatappel op een pagina over groente en fruit.
+    "baby-kind",
+    "huidverzorging",
+    "haarverzorging",
+    "deodorant",
+    "mondverzorging",
+    "gezondheid",
+    "huisdier",
     # Toegevoegd toen het filter samenstellingen ging herkennen: "ananas" haalt
     # dan ook "DubbelDrank Ananas & guave" binnen en "granaatappel" de kombucha.
     # Het commentaar hieronder noemde beide al als logische kandidaat.
@@ -227,6 +239,24 @@ _NIET_AGF_PATRONEN = (
     # houtskool matcht. Zuurkool blijft er bewust wél in: dat is bewaarde
     # groente, net als de Hak bio bieten die al op de site staan.
     re.compile(r"houtskool", re.IGNORECASE),
+    # Babyvoeding. De categorie alleen is niet genoeg: van de vier potjes die
+    # Jan op 30 september op de site zag stonden er twee in "baby-kind", een in
+    # "overig" en een — "Olvarit Bio 12+ mnd champignons prei pasta kalf", met
+    # kalfsvlees erin — gewoon in "groente-fruit".
+    #
+    # De leeftijdsmarkering is het betrouwbaarste signaal: "6m+", "12+ mnd",
+    # "6+" aan het eind. Gemeten tegen 10.099 namen raakt dat uitsluitend
+    # babyvoeding, inclusief "Maispuff sterretjes framboos appel 10+ mnd" die
+    # ook in groente-fruit stond.
+    re.compile(r"\b\d{1,2}\s*m(?:nd)?\s*\+|\b\d{1,2}\s*\+\s*mnd\b|\b\d{1,2}\+\s*$",
+               re.IGNORECASE),
+    re.compile(r"\bolvarit\b|knijpfruit|knijpmix|\bbonbebe\b|\bnutrilon\b|\bhipp\b",
+               re.IGNORECASE),
+    # Snoep dat in "overig" belandde: Kersenlollie en Kersenkabels kwamen door
+    # op "kers". Vastgeplakt, dus een woordgrens ervoor helpt niet.
+    re.compile(r"lolli|kabels\b|veters\b", re.IGNORECASE),
+    # Vleesvervanger, geen groente.
+    re.compile(r"eiwitbrok", re.IGNORECASE),
     # Derde ronde Ekoplaza-lekken (2 september). Die keten zet honing, crackers
     # en knäckebröd onder "groente-fruit", en kombucha onder "frisdrank" — de
     # categorie zegt daar dus vrijwel niets, en dat is de reden dat deze lijst

@@ -57,6 +57,24 @@ GEVALLEN = [
     ("AH Terra Verse soep pompoen", False, "soep"),
     ("Pompoenpittenpasta zeezout", False, "pittenpasta"),
 
+    # Door Jan gemeld op 30 september: vier potjes babyvoeding stonden op de
+    # site, waarvan er twee in "baby-kind" zaten, een in "overig" en een — met
+    # kalfsvlees — gewoon in "groente-fruit". De categorie is hier dus niet te
+    # vertrouwen; de leeftijdsmarkering wel.
+    ("Olvarit Bio 12+ mnd doperwtjes venkel quinoa", False, "babyvoeding"),
+    ("Olvarit Bio 12+ mnd champignons prei pasta kalf", False, "babyvoeding met vlees"),
+    ("AH Biologisch Knijpfruit peer 6+", False, "babyvoeding, 6+ aan het eind"),
+    ("AH Knijpfruit appel banaan 6m+", False, "babyvoeding, 6m+"),
+    ("Maispuff sterretjes framboos appel 10+ mnd", False, "babysnack in groente-fruit"),
+    ("Bio peren 6 stuks", True, "een aantal is geen leeftijd"),
+    ("AH Biologisch Handperen 1 kg", True, "moet blijven werken"),
+
+    # Ekoplaza-snoep dat in groente-fruit stond en op de fruitnaam doorkwam
+    ("Aardbeienlollie", False, "snoep"),
+    ("Frambozenveters", False, "snoep"),
+    ("Kersenkabels", False, "snoep"),
+    ("Eiwitbrokken erwten & favabonen", False, "vleesvervanger, geen groente"),
+
     # Producten die eerst in geen enkel trefwoord stonden
     ("Ananas", True, "stond in geen trefwoord"),
     ("Paksoi", True, "stond in geen trefwoord"),
