@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512"
+     role="img" aria-label="Het Bio Lijstje">
+  <title>Het Bio Lijstje</title>
+  <!-- Zelfde wortel als logo.svg, maar zonder vlak eronder, voor een kaartje
+       dat zijn eigen achtergrond meebrengt.
+
+       Twee kleuren wijken bewust af van het app-icoon. Daar staan de blaadjes
+       in een bleke sage (#9ab5a1) die het doet op de donkergroene achtergrond
+       van dat icoon, maar die op een lichte kaart wegvalt; hier staan ze in
+       #3f6e34, het groen dat de site zelf gebruikt op lichte achtergronden.
+       De ribbels zijn hier lijnen in een donkerder oranje in plaats van
+       uitsparingen, want een uitsparing laat op een donkere kaart de kaart
+       zelf doorschijnen. -->
+
+  <!-- blad -->
+  <g fill="none" stroke-linecap="round" stroke="#3f6e34">
+    <path d="M256 242 C 252 200 236 160 198 126" stroke-width="7"/>
+    <path d="M256 242 C 262 198 286 158 316 128" stroke-width="7"/>
+    <path d="M256 242 C 254 196 258 150 262 112" stroke-width="12" stroke="#4d8340"/>
+  </g>
+
+  <!-- wortel -->
+  <path d="M166 240 H346 L256 480 Z" fill="#e8823c"/>
+
+  <!-- ribbels -->
+  <g fill="#a8551f">
+    <rect x="186" y="268" width="140" height="6"/>
+    <rect x="200" y="313" width="112" height="6"/>
+    <rect x="214" y="358" width="84"  height="6"/>
+    <rect x="228" y="403" width="56"  height="6"/>
+  </g>
+</svg>
