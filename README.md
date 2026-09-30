@@ -65,9 +65,12 @@ Pi OS) en SSH-toegang.
 
 ```bash
 # vanaf je eigen machine, in de repo
-scp fetch_bio_prices.py root@<pi-ip>:/addons/bio_bord/
-scp hass_addon/* root@<pi-ip>:/addons/bio_bord/
-scp template.html manifest.json icon.png sw.js root@<pi-ip>:/addons/bio_bord/www/
+# Let op: Home Assistant heeft add-ons omgedoopt tot Apps en de map
+# meeverhuisd van /addons naar /local_apps. Een scp naar het oude pad
+# mislukt zonder dat er iets kapot is.
+scp fetch_bio_prices.py root@<pi-ip>:/local_apps/bio_bord/
+scp hass_addon/* root@<pi-ip>:/local_apps/bio_bord/
+scp template.html manifest.json icon.png sw.js root@<pi-ip>:/local_apps/bio_bord/www/
 ```
 
 Daarna op de Pi:

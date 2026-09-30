@@ -449,7 +449,7 @@ WWW_DIR = Path(__file__).parent / "www"
 #
 # Gevolg: website-wijzigingen zijn nu puur een git-push. Wil je ze ook op de
 # lokale pagina (http://<pi-ip>:8099) zien, kopieer ze dan alsnog naar
-# /addons/bio_bord/www/ en draai een rebuild — maar vergeten kan de publieke
+# /local_apps/bio_bord/www/ en draai een rebuild — maar vergeten kan de publieke
 # site niet meer stukmaken.
 GITHUB_PUBLISH_FILES = ["index.html", "data/bio_prices.json"]
 
