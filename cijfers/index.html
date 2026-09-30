@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1b1a15">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>Hoe vaak is biologische groente en fruit in de aanbieding?</title>
+<meta name="description" content="Hoe vaak biologische groente en fruit bij zes Nederlandse supermarkten in de aanbieding staat, dagelijks geteld sinds augustus 2026.">
+<link rel="canonical" href="https://hetbiolijstje.nl/cijfers/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Hoe vaak is biologische groente en fruit in de aanbieding?","url":"https://hetbiolijstje.nl/cijfers/","inLanguage":"nl-NL","isPartOf":{"@type":"WebSite","name":"Het Bio Lijstje","url":"https://hetbiolijstje.nl/"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Aanbiedingen","item":"https://hetbiolijstje.nl/"},{"@type":"ListItem","position":2,"name":"Cijfers","item":"https://hetbiolijstje.nl/cijfers/"}]}}</script>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hetbiolijstje.nl/cijfers/">
+<meta property="og:title" content="Cijfers: bio in de aanbieding">
+<meta property="og:description" content="Hoe vaak biologische groente en fruit bij zes Nederlandse supermarkten in de aanbieding staat, dagelijks geteld sinds augustus 2026.">
+<meta property="og:image" content="https://hetbiolijstje.nl/icon.png">
+<meta property="og:locale" content="nl_NL">
+<meta name="twitter:card" content="summary">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon.png">
+<style>
+  /* Zelfde opzet als op de voorpagina: donker is de basis, licht komt uit één
+     klasse die het scriptje hieronder zet. Zie de toelichting daar. */
+  :root{
+    --bg: #1b1a15;
+    --bg-raised: #232019;
+    --leaf: #8caa5c;
+    --harvest: #c97d3f;
+    --text: #ece7db;
+    --muted: #928c7c;
+    --line: #35322a;
+    --leaf-ring: rgba(140,170,92,0.5);
+  }
+  :root.licht{
+    --bg: #faf8f2;
+    --bg-raised: #ffffff;
+    --leaf: #3f6e34;
+    --harvest: #a8551f;
+    --text: #1f1d17;
+    --muted: #6b6455;
+    --line: #e2ddd0;
+    --leaf-ring: rgba(63,110,52,0.45);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{ padding-bottom:60px; }
+
+  /* ---- Eén kader -----------------------------------------------------------
+     Staat identiek op beide pagina's. Dat is nodig omdat de themaknop aan dit
+     kader hangt: stond de kop op de voorpagina over de volle breedte en op
+     /seizoen in een kolom van 720px, dan sprong dat icoontje op een breed
+     scherm ruim 350 pixels opzij bij het wisselen van tab.
+
+     De inhoud eronder mag wél verschillen. Zeven winkelkolommen naast elkaar
+     hebben ruimte nodig (minimaal 230px per kolom), een leeskolom met twee
+     kaarten juist niet — die wordt daarbinnen op .leeskolom gehouden. Alles
+     staat gecentreerd op dezelfde as, dus het oogt als één opmaak. */
+  .kader{
+    max-width: 1180px;
+    margin: 0 auto;
+    padding-left: clamp(1rem, 4vw, 2rem);
+    padding-right: clamp(1rem, 4vw, 2rem);
+  }
+  /* Dezelfde zijmarges als het kader, anders raakt de inhoud op een telefoon
+     de schermrand — die marge zat eerst in .wrap en verhuisde met de kop mee. */
+  .leeskolom{
+    max-width: 720px;
+    margin: 0 auto;
+    padding-left: clamp(1rem, 4vw, 2rem);
+    padding-right: clamp(1rem, 4vw, 2rem);
+  }
+
+  /* Top: gedeelde kop + month dots */
+  /* Exact dezelfde regel als op de voorpagina. De themaknop hangt hieraan met
+     position:absolute, dus als deze twee uiteenlopen springt het icoontje bij
+     het wisselen van tab — dat gebeurde: 32px opzij en 32px omlaag, omdat de
+     kop hier eerst binnen het kader stond in plaats van zelf het kader te zijn. */
+  header{
+    padding: 2.2rem 0 1rem;
+    text-align: center;
+    position: relative;
+  }
+  /* Op een subpagina is de merknaam een link terug en hoeft hij niet zo groot
+     als op de voorpagina: daar is hij de titel, hier staat de maand eronder. */
+  .wordmark{ font-size:2.2rem; }
+  /* Familie en dikte staan hier expliciet, want deze klasse zit op een <p>
+     (voorpagina, maandpagina's) én op een <h1> (/seizoen/, /over/). Er is
+     nergens een h1-regel, dus daar sloeg de browserstandaard font-weight:bold
+     toe: dezelfde tekst kwam op twee pagina's op 400 en op twee andere op 700.
+     Vetgedrukte uppercase op 11,5px met deze spatiëring leest als een ander
+     lettertype, en dat viel ook precies zo op. */
+  .eyebrow{
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    font-weight:400;
+    font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--leaf); margin:0.6rem 0 0;
+  }
+
+  /* ---- Gedeelde kop -------------------------------------------------------
+     Deze kop staat identiek op de voorpagina en op /seizoen. Dat is het punt:
+     eerder had elke pagina een eigen merknaam en een eigen indeling, en dan
+     lijken het twee sites die toevallig dezelfde kleuren hebben. Nu zie je
+     bovenaan altijd hetzelfde, en zegt alleen de regel onder de titel waar je
+     bent. Wijzig je hier iets, doe het dan in beide bestanden. */
+  .secties{
+    display:flex; justify-content:center; align-items:center;
+    gap:0.4rem; flex-wrap:wrap; margin-bottom:1.1rem;
+  }
+  .secties a{
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--muted);
+    background:none;
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:5px 12px;
+    text-decoration:none;
+    white-space:nowrap;
+    display:inline-flex; align-items:center;
+    transition:border-color .2s, color .2s, background-color .2s;
+  }
+  /* De pagina waar je nu bent is gevuld, niet alleen anders van kleur — op een
+     telefoon in de zon is een randverschil te weinig. */
+  .secties a.huidig{
+    background:var(--harvest); border-color:var(--harvest); color:var(--bg);
+  }
+
+  /* De themaknop hoort bewust níét in de sectierij. Daar stond hij eerst, in
+     dezelfde pilvorm, en dan zien twee dingen die volstrekt verschillend werken
+     er hetzelfde uit: het ene brengt je ergens, het andere verandert een
+     instelling. Nu een los icoontje rechtsboven, 40px groot zodat het op een
+     telefoon te raken is. */
+  .thema-knop{
+    position:absolute; top:0.7rem; right:0.7rem;
+    width:40px; height:40px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px; line-height:1;
+    color:var(--muted);
+    background:none; border:0; border-radius:50%;
+    cursor:pointer;
+    -webkit-appearance:none; appearance:none;
+    -webkit-tap-highlight-color:transparent;
+    transition:color .2s, background-color .2s;
+  }
+  @media (hover: hover){
+    .secties a:not(.huidig):hover{ border-color:var(--harvest); color:var(--harvest); }
+    .thema-knop:hover{ color:var(--harvest); background:var(--bg-raised); }
+  }
+  /* Zonder JavaScript kan de knop niets doen, dus dan staat hij er ook niet. */
+  html:not(.js) .thema-knop{ display:none; }
+  .wordmark{
+    font-family:'Fraunces', serif; font-weight:700;
+    font-size:3rem; line-height:0.95; margin:0;
+    color:var(--text); text-decoration:none; display:block;
+  }
+  a.wordmark:hover{ color:var(--harvest); }
+
+  .dots{
+    display:flex;
+    /* Geen gap: het raakvlak is 24px en de middelpunten liggen dan precies
+       24px van elkaar, wat WCAG 2.5.8 vraagt. Met een gap erbij worden twaalf
+       stippen breder dan een telefoon van 375px. */
+    gap:0;
+    justify-content:center;
+    margin-bottom:8px;
+  }
+  /* Het raakvlak is 24x24, de zichtbare stip blijft 8x8.
+     Eerder was de link zelf 8x8 met 6px ertussen: de middelpunten lagen dan
+     14px van elkaar, dus de cirkels van 24px overlapten en zelfs de
+     ruimte-uitzondering van WCAG 2.5.8 ging niet op. Op een telefoon was het
+     bovendien gewoon mikken. Het uiterlijk verandert niet. */
+  .dot{
+    width:24px;height:24px;
+    display:flex;align-items:center;justify-content:center;
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:0;
+    border-radius:50%;
+  }
+  .dot::before{
+    content:'';
+    width:8px;height:8px;border-radius:50%;
+    background:var(--line);
+    transition:background .2s, transform .2s;
+  }
+  /* De stippen waren knoppen die een JavaScript-variabele omzetten; nu zijn het
+     links naar de twaalf maandpagina's. Dat is meteen de onderlinge verwijzing
+     tussen die pagina's, en het werkt zonder JavaScript. */
+  .dot.actief::before{ background:var(--harvest); transform:scale(1.3); }
+  .dot.is-nu::before{ box-shadow:0 0 0 2px var(--leaf-ring); }
+  @media (hover: hover){
+    a.dot:hover::before{ background:var(--leaf); transform:scale(1.3); }
+  }
+  a.dot:focus-visible{ outline:2px solid var(--leaf); outline-offset:3px; }
+  /* Alleen voor schermlezers: een stip zonder tekst is anders een naamloze link. */
+  .sr{
+    position:absolute; width:1px; height:1px; overflow:hidden;
+    clip:rect(0 0 0 0); white-space:nowrap;
+  }
+
+
+  /* Op de kaart staat een vergelijking en geen kaal getal: 'gem. 3,8' klinkt
+     precies maar zegt de lezer niets. Het exacte cijfer staat in het uitklapje.
+     Het 🧴 hoort bij dezelfde regel als de oranje tekst, zodat pictogram en
+     woorden hetzelfde zeggen. */
+  .residu{
+    font-family:'Space Mono', monospace; font-size:10.5px;
+    letter-spacing:0.02em; color:var(--muted);
+    margin:6px 0 0;
+  }
+  .residu.meer{ color:var(--harvest); }
+  .residu.minder{ color:var(--leaf); }
+
+  /* Over-pagina: doorlopende tekst in plaats van kaarten. */
+  /* ---- /cijfers/ ----------------------------------------------------- */
+  .kerngetal{
+    font-size:1.05rem; line-height:1.5; margin:0 0 0.6rem;
+  }
+  .kerngetal strong{
+    font-family:'Fraunces', serif; font-size:2rem; font-weight:700;
+    color:var(--harvest); display:block; line-height:1.1;
+  }
+  .cijfertabel{
+    width:100%; border-collapse:collapse; margin:1.1rem 0 0.4rem;
+    font-size:0.9rem;
+  }
+  .cijfertabel th, .cijfertabel td{
+    padding:7px 10px; border-bottom:1px solid var(--line); text-align:left;
+  }
+  .cijfertabel th{
+    font-family:'Space Mono', monospace; font-size:0.7rem; font-weight:400;
+    letter-spacing:0.06em; text-transform:uppercase; color:var(--muted);
+  }
+  .cijfertabel .getal{ text-align:right; font-family:'Space Mono', monospace; }
+  .diagram{ width:100%; height:auto; margin:0.7rem 0 0.2rem; }
+  .diagram .d-naam{ font-size:13px; fill:var(--text); }
+  .diagram .d-getal{ font-size:12px; fill:var(--muted); font-family:'Space Mono', monospace; }
+  .diagram .d-onder{ font-size:11px; fill:var(--muted); }
+  .diagram .d-staaf{ fill:var(--harvest); }
+  .diagram .d-as{ stroke:var(--line); stroke-width:1; }
+
+  .prose{ max-width:62ch; margin:0 auto; }
+  .prose p{ margin:0 0 14px; line-height:1.7; }
+  .prose p:last-child{ margin-bottom:0; }
+  .prose strong{ font-weight:600; color:var(--text); }
+  .prose a{ color:var(--harvest); }
+  /* De nuance die het makkelijkst wordt overgeslagen, dus met een rand ernaast. */
+  .let-op{
+    border-left:3px solid var(--harvest);
+    padding:2px 0 2px 14px; margin-top:18px;
+  }
+  .contact{
+    font-family:'Space Mono', monospace; font-size:15px;
+    margin-top:18px;
+  }
+
+  .intro{
+    max-width:60ch; margin:0 auto 26px;
+    text-align:center; color:var(--muted); line-height:1.65;
+  }
+  .verder{
+    margin-top:8px; padding-top:18px; border-top:1px solid var(--line);
+    font-family:'Space Mono', monospace; font-size:11px;
+    letter-spacing:0.04em; text-transform:uppercase;
+    text-align:center; color:var(--muted);
+  }
+  .verder a{ color:var(--harvest); text-decoration:none; }
+  .verder a:hover{ text-decoration:underline; }
+
+  /* Overzichtspagina: twaalf maandkaarten in plaats van producten. */
+  .grid-maanden{ grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); }
+  a.maandkaart{ text-decoration:none; color:inherit; display:block; }
+  a.maandkaart .count{ font-family:'Space Mono', monospace; font-size:11px; color:var(--muted); }
+  a.maandkaart.is-nu{ border-color:var(--leaf); }
+  @media (hover: hover){
+    a.maandkaart:hover{ border-color:var(--harvest); }
+  }
+
+  /* Hero month label */
+  .hero{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    margin:18px 0 6px;
+  }
+  .nav-btn{
+    background:none;
+    border:1px solid var(--line);
+    color:var(--text);
+    width:38px;height:38px;
+    border-radius:50%;
+    font-size:18px;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:border-color .2s, background .2s;
+  }
+  .nav-btn:hover{ border-color:var(--leaf); background:var(--bg-raised); }
+  .nav-btn:focus-visible{ outline:2px solid var(--leaf); outline-offset:2px; }
+
+  .month-stamp{
+    text-align:center;
+    min-width:220px;
+  }
+  .month-stamp .name{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:44px;
+    line-height:1;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .month-stamp .tag{
+    display:inline-block;
+    margin-top:6px;
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--bg);
+    background:var(--leaf);
+    padding:3px 10px;
+    border-radius:20px;
+  }
+  .month-stamp .tag.future,
+  .month-stamp .tag.past{
+    background:transparent;
+    color:var(--muted);
+    border:1px solid var(--line);
+  }
+
+  .sub{
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    margin:14px 0 34px;
+  }
+  .sub button{
+    background:none;border:none;color:var(--leaf);
+    font-size:13px; text-decoration:underline; cursor:pointer; padding:0;
+  }
+
+  /* Filter */
+  .filters{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+    margin-bottom:28px;
+  }
+  .filter-btn{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    background:none;
+    border:1px solid var(--line);
+    color:var(--muted);
+    padding:6px 14px;
+    border-radius:20px;
+    cursor:pointer;
+    transition:all .15s;
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  .filter-btn.active{
+    color:var(--bg);
+    background:var(--text);
+    border-color:var(--text);
+  }
+
+  /* Sections */
+  section.group{ margin-bottom:30px; }
+  .group-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+  }
+  .group-title h2{
+    font-family:'Fraunces', serif;
+    font-size:19px;
+    font-weight:600;
+    margin:0;
+  }
+  .group-title .count{
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    color:var(--muted);
+  }
+  .group-title::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:10px;
+  }
+  .card{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 14px;
+    transition:border-color .2s, transform .2s;
+    opacity:0;
+    animation:rise .4s ease forwards;
+    min-width:0;
+  }
+  .card:hover{ border-color:var(--leaf); }
+  .filter-divider{
+    width:1px;
+    background:var(--line);
+    margin:0 2px;
+  }
+  .bio-flag{
+    font-size:13px;
+    padding:8px;
+    margin:-8px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    line-height:1;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+  }
+  .bio-note{
+    font-size:11.5px;
+    color:var(--harvest);
+    line-height:1.4;
+    margin:6px 0 0;
+    padding-top:6px;
+    border-top:1px dashed var(--line);
+    display:none;
+  }
+  .card.bio-open .bio-note{ display:block; }
+  .card .item-name{
+    font-weight:600;
+    font-size:15px;
+    margin:0 0 2px;
+    line-height:1.25;
+  }
+  .name-text{
+    word-break:break-word;
+  }
+  .card .item-tip{
+    font-size:12.5px;
+    color:var(--muted);
+    line-height:1.4;
+    margin:0;
+  }
+
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(6px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:11.5px;
+    margin-top:36px;
+    line-height:1.6;
+  }
+  /* Zonder eigen kleur pakt een footer-link het browserblauw: 1,85:1 op de
+     donkere achtergrond. Erven van de footer geeft 5,2:1. */
+  footer a{
+    color:inherit;
+    text-underline-offset:2px;
+  }
+
+  @media (max-width:480px){
+    .grid{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:8px; }
+    .month-stamp .name{ font-size:36px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .card{ animation:none; opacity:1; }
+    *{ transition:none !important; }
+  }
+</style>
+<script>
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  var keuze = null;
+  try { keuze = localStorage.getItem('bioBordThema'); } catch (e) {}
+  // Alleen licht als je er zelf voor gekozen hebt. Geen terugval op de
+  // systeeminstelling: donker is hoe de site bedoeld is.
+  if (keuze === 'licht') d.classList.add('licht');
+})();
+</script>
+</head>
+<body>
+<header class="kader">
+
+  <button class="thema-knop" type="button" id="themaKnop"></button>
+    <nav class="secties" aria-label="Secties">
+      <a href="/">Aanbiedingen</a>
+      <a href="/seizoen/">Seizoen</a>
+    </nav>
+    <a class="wordmark" href="/">Het Bio Lijstje</a>
+    <h1 class="eyebrow">Cijfers</h1>
+</header>
+
+<div class="wrap leeskolom">
+  <p class="intro">Hoe vaak staat biologische groente of fruit eigenlijk in
+  de aanbieding? Deze site houdt dat sinds augustus 2026 elke dag bij, en dit
+  is wat daaruit komt.</p>
+
+  <section class="group">
+    <div class="group-title"><h2>Wat we zien</h2></div>
+    <div class="prose">
+<!--CIJFERS--><p class="kerngetal"><strong>17,7</strong> biologische groente- en fruitaanbiedingen per dag, bij zes supermarkten samen.</p><p>Gemeten van 20 augustus 2026 tot en met 30 september 2026: 40 dagen. Op de magerste dag stonden er 4, op de rijkste 34.</p><h3>Dagen zonder ook maar één biologische aanbieding</h3><svg viewBox="0 0 480 210" class="diagram" role="img" aria-label="Dagen zonder biologische aanbieding per supermarkt, van 40 gemeten dagen"><text x="68" y="23" text-anchor="end" class="d-naam">Aldi</text><rect x="78" y="12" width="297.0" height="15" rx="3" class="d-staaf"/><text x="382.0" y="24" class="d-getal">33</text><text x="68" y="53" text-anchor="end" class="d-naam">Lidl</text><rect x="78" y="42" width="126.0" height="15" rx="3" class="d-staaf"/><text x="211.0" y="54" class="d-getal">14</text><text x="68" y="83" text-anchor="end" class="d-naam">Dirk</text><rect x="78" y="72" width="108.0" height="15" rx="3" class="d-staaf"/><text x="193.0" y="84" class="d-getal">12</text><text x="68" y="113" text-anchor="end" class="d-naam">Jumbo</text><rect x="78" y="102" width="63.0" height="15" rx="3" class="d-staaf"/><text x="148.0" y="114" class="d-getal">7</text><text x="68" y="143" text-anchor="end" class="d-naam">AH</text><rect x="78" y="132" width="0.0" height="15" rx="3" class="d-staaf"/><text x="85.0" y="144" class="d-getal">0</text><text x="68" y="173" text-anchor="end" class="d-naam">Plus</text><rect x="78" y="162" width="0.0" height="15" rx="3" class="d-staaf"/><text x="85.0" y="174" class="d-getal">0</text><line x1="78" y1="8" x2="78" y2="190" class="d-as"/><text x="78" y="205" class="d-onder">0</text><text x="438" y="205" text-anchor="end" class="d-onder">40 dagen</text></svg><table class="cijfertabel"><thead><tr><th>Winkel</th><th class="getal">Dagen op nul</th><th class="getal">Langste reeks</th><th class="getal">Gemiddeld per dag</th></tr></thead><tbody><tr><td>Aldi</td><td class="getal">33</td><td class="getal">17</td><td class="getal">0,2</td></tr><tr><td>Lidl</td><td class="getal">14</td><td class="getal">14</td><td class="getal">2,3</td></tr><tr><td>Dirk</td><td class="getal">12</td><td class="getal">7</td><td class="getal">0,7</td></tr><tr><td>Jumbo</td><td class="getal">7</td><td class="getal">7</td><td class="getal">7,0</td></tr><tr><td>AH</td><td class="getal">0</td><td class="getal">0</td><td class="getal">3,5</td></tr><tr><td>Plus</td><td class="getal">0</td><td class="getal">0</td><td class="getal">4,0</td></tr></tbody></table><!--/CIJFERS-->
+    </div>
+  </section>
+
+  <section class="group">
+    <div class="group-title"><h2>Wat dit niet zegt</h2></div>
+    <div class="prose">
+      <p class="let-op"><strong>Dit gaat over aanbiedingen, niet over wat er in
+      het schap ligt.</strong> Dat Aldi wekenlang geen biologische aanbieding
+      had, betekent niet dat Aldi geen biologische groente verkoopt. Het
+      betekent alleen dat er niets van in de actie stond. Over het assortiment
+      zegt deze telling niets, want die data heb ik niet.</p>
+
+      <p>Het gaat ook alleen over <strong>groente en fruit</strong>. Biologische
+      zuivel, brood of koffie tellen niet mee, ook niet als die in de aanbieding
+      staan.</p>
+
+      <p>En het zijn er zes: Albert Heijn, Jumbo, Lidl, Aldi, Dirk en Plus. Over
+      andere ketens zegt dit niets.</p>
+    </div>
+  </section>
+
+  <section class="group">
+    <div class="group-title"><h2>Hoe er geteld is</h2></div>
+    <div class="prose">
+      <p>Elke ochtend haalt een Raspberry Pi de lopende acties op bij de
+      <a href="https://www.prijsprofeet.nl/" rel="noopener">PrijsProfeet-API</a>
+      en filtert daar de biologische groente en het fruit uit. Wat overblijft is
+      wat je op de <a href="/">voorpagina</a> ziet. Van elke ronde wordt het
+      aantal per winkel bewaard; die tellingen zijn de basis voor deze pagina.</p>
+
+      <p>Een product telt mee als de bron het als biologisch labelt én het woord
+      in de naam staat, als het groente of fruit is, en als de actieprijs lager
+      is dan de normale prijs. Draait een ronde meerdere keren op een dag, dan
+      telt de laatste. Dagen waarop een winkel niet opgehaald kon worden tellen
+      niet mee: een nul die geen nul is, zou het beeld vertekenen.</p>
+
+      <p>Het filter is mensenwerk en het heeft er eerder naast gezeten — er
+      stond een keer babyvoeding tussen. Zie je iets dat er niet hoort, dan hoor
+      ik het graag via <a href="/over/">de contactgegevens</a>.</p>
+    </div>
+  </section>
+
+
+  <footer>
+    Terug naar <a href="/">de aanbiedingen</a>.
+  </footer>
+</div>
+
+<script>
+/* De maand staat in de HTML, dus hier hoeft niets meer opgebouwd te worden.
+   Wat overblijft: de themaknop, het uitklapje bij het 🧴-icoon, en een
+   markering van de huidige maand — dat laatste kan een statische pagina niet
+   zelf weten. */
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.bio-flag');
+  if (btn) btn.closest('.card').classList.toggle('bio-open');
+});
+
+const dezeMaand = new Date().getMonth() + 1;
+document.querySelectorAll('[data-maand]').forEach((el) => {
+  if (Number(el.dataset.maand) === dezeMaand) el.classList.add('is-nu');
+});
+
+/* "Nu in het schap" wordt hier toegevoegd en staat niet in de HTML. Anders
+   stond die zin in de broncode van alle twaalf de maandpagina's, ook al liet
+   de CSS hem maar op één zien: twaalf pagina's die tegen een crawler zeggen
+   dat ze actueel zijn, en zonder JavaScript zag je hem nergens. */
+const stempel = document.querySelector('.month-stamp[data-maand]');
+if (stempel && Number(stempel.dataset.maand) === dezeMaand) {
+  const tag = document.createElement('span');
+  tag.className = 'tag';
+  tag.textContent = 'Nu in het schap';
+  stempel.appendChild(tag);
+}
+
+/* ---- Licht/donker: zie de toelichting bij het palet ---------------------- */
+const THEMA_KEY = 'bioBordThema';
+const themaKnop = document.getElementById('themaKnop');
+
+function themaIsLicht() { return document.documentElement.classList.contains('licht'); }
+
+function themaToon() {
+  if (!themaKnop) return;
+  const naarLicht = !themaIsLicht();
+  themaKnop.textContent = naarLicht ? '☀' : '☽';
+  const label = naarLicht ? 'Naar het lichte thema' : 'Naar het donkere thema';
+  themaKnop.setAttribute('aria-label', label);
+  themaKnop.setAttribute('title', label);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', themaIsLicht() ? '#faf8f2' : '#1b1a15');
+}
+
+function themaZet(licht, onthouden) {
+  document.documentElement.classList.toggle('licht', licht);
+  if (onthouden) { try { localStorage.setItem(THEMA_KEY, licht ? 'licht' : 'donker'); } catch (e) {} }
+  themaToon();
+}
+
+if (themaKnop) {
+  themaKnop.addEventListener('click', () => themaZet(!themaIsLicht(), true));
+  themaToon();
+}
+
+/* Eén service worker voor de hele site, die van de root. Deze pagina heeft er
+   geen eigen meer: twee workers op één origin zouden elkaar in de weg zitten. */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(() => {});
+}
+</script>
+<!-- GoatCounter: dezelfde teller als op de voorpagina. Deze stond hier niet.
+     Toen de seizoenspagina's gegenereerd gingen worden uit dit sjabloon (commit
+     b5133ee) is het script niet meegekomen, en sindsdien waren veertien
+     pagina's onzichtbaar in de statistiek. "Niemand kijkt naar de
+     seizoenskalender" was dus geen bevinding maar een meetfout.
+
+     Geen eigen filter nodig: count.js weigert zelf al te tellen op localhost,
+     op een privé-IP (192.168.x), vanaf file:, in een iframe, en als
+     localStorage 'skipgc' aan staat. -->
+<script data-goatcounter="https://hetbiolijstje.goatcounter.com/count"
+        async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>
