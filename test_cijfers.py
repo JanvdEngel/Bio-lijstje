@@ -83,9 +83,10 @@ if sjabloon.exists():
          'href="https://hetbiolijstje.nl/cijfers/"' in t)
     keur("het voorbehoud staat erop",
          "niet over wat er in het schap ligt" in plat)
-    keur("zegt dat het alleen groente en fruit is", "groente en fruit" in plat)
-    keur("noemt de zes winkels", "Albert Heijn, Jumbo, Lidl, Aldi, Dirk en Plus" in plat)
-    keur("vermeldt de bron", "prijsprofeet.nl" in t)
+    # De bronvermelding is contractueel verplicht op de gratis sleutel, en deze
+    # pagina heeft een andere voettekst dan de seizoenspagina's: daar staat hij
+    # niet in. Haalt iemand de bronregel weg, dan valt dat hier om.
+    keur("vermeldt de bron (verplicht)", "prijsprofeet.nl" in t)
     keur("heeft de bezoekersteller", "gc.zgo.at/count.js" in t)
 
 print()

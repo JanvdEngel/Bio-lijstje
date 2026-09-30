@@ -254,6 +254,7 @@
   .diagram .d-onder{ font-size:11px; fill:var(--muted); }
   .diagram .d-staaf{ fill:var(--harvest); }
   .diagram .d-as{ stroke:var(--line); stroke-width:1; }
+  .bronregel{ font-size:0.82rem; color:var(--muted); margin-top:1.1rem; }
 
   .prose{ max-width:62ch; margin:0 auto; }
   .prose p{ margin:0 0 14px; line-height:1.7; }
@@ -526,8 +527,7 @@
 
 <div class="wrap leeskolom">
   <p class="intro">Hoe vaak staat biologische groente of fruit eigenlijk in
-  de aanbieding? Deze site houdt dat sinds augustus 2026 elke dag bij, en dit
-  is wat daaruit komt.</p>
+  de aanbieding? Deze site telt het sinds augustus 2026 elke dag.</p>
 
   <section class="group">
     <div class="group-title"><h2>Wat we zien</h2></div>
@@ -535,45 +535,15 @@
 <!--CIJFERS-->
       <p>Nog niet berekend.</p>
 <!--/CIJFERS-->
-    </div>
-  </section>
 
-  <section class="group">
-    <div class="group-title"><h2>Wat dit niet zegt</h2></div>
-    <div class="prose">
       <p class="let-op"><strong>Dit gaat over aanbiedingen, niet over wat er in
       het schap ligt.</strong> Dat Aldi wekenlang geen biologische aanbieding
-      had, betekent niet dat Aldi geen biologische groente verkoopt. Het
-      betekent alleen dat er niets van in de actie stond. Over het assortiment
-      zegt deze telling niets, want die data heb ik niet.</p>
+      had, betekent niet dat Aldi geen biologische groente verkoopt.</p>
 
-      <p>Het gaat ook alleen over <strong>groente en fruit</strong>. Biologische
-      zuivel, brood of koffie tellen niet mee, ook niet als die in de aanbieding
-      staan.</p>
-
-      <p>En het zijn er zes: Albert Heijn, Jumbo, Lidl, Aldi, Dirk en Plus. Over
-      andere ketens zegt dit niets.</p>
-    </div>
-  </section>
-
-  <section class="group">
-    <div class="group-title"><h2>Hoe er geteld is</h2></div>
-    <div class="prose">
-      <p>Elke ochtend haalt een Raspberry Pi de lopende acties op bij de
-      <a href="https://www.prijsprofeet.nl/" rel="noopener">PrijsProfeet-API</a>
-      en filtert daar de biologische groente en het fruit uit. Wat overblijft is
-      wat je op de <a href="/">voorpagina</a> ziet. Van elke ronde wordt het
-      aantal per winkel bewaard; die tellingen zijn de basis voor deze pagina.</p>
-
-      <p>Een product telt mee als de bron het als biologisch labelt én het woord
-      in de naam staat, als het groente of fruit is, en als de actieprijs lager
-      is dan de normale prijs. Draait een ronde meerdere keren op een dag, dan
-      telt de laatste. Dagen waarop een winkel niet opgehaald kon worden tellen
-      niet mee: een nul die geen nul is, zou het beeld vertekenen.</p>
-
-      <p>Het filter is mensenwerk en het heeft er eerder naast gezeten — er
-      stond een keer babyvoeding tussen. Zie je iets dat er niet hoort, dan hoor
-      ik het graag via <a href="/over/">de contactgegevens</a>.</p>
+      <p class="bronregel">Geteld uit de dagelijkse acties van de
+      <a href="https://www.prijsprofeet.nl/" rel="noopener">PrijsProfeet-API</a>;
+      dagen waarop een winkel niet opgehaald kon worden tellen niet mee.
+      <a href="/over/">Meer over de bronnen</a>.</p>
     </div>
   </section>
 
