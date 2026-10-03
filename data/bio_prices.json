@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-10-02T06:01:30.259801",
+  "laatst_bijgewerkt": "2026-10-03T06:01:28.442801",
   "aanbiedingen": {
     "AH": [
       {
@@ -102,15 +102,6 @@
     "Dirk": [],
     "Plus": [
       {
-        "naam": "Biologisch PLUS Rode kool biologisch",
-        "actieprijs": 1.49,
-        "normale_prijs": 2.29,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.49,
-        "laagste_ooit_datum": "2026-09-23",
-        "eerder_gezien": 1
-      },
-      {
         "naam": "Iglo Biologische spinazie a la creme",
         "actieprijs": 2.24,
         "normale_prijs": 2.99,
@@ -119,24 +110,6 @@
         "vanaf": 2,
         "laagste_ooit_prijs": 2.24,
         "laagste_ooit_datum": "2026-09-30",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Biologisch PLUS Rode bieten biologisch",
-        "actieprijs": 0.99,
-        "normale_prijs": 1.65,
-        "soort": "vers",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-09-23",
-        "eerder_gezien": 2
-      },
-      {
-        "naam": "Biologisch PLUS Witte kool biologisch",
-        "actieprijs": 1.49,
-        "normale_prijs": 1.99,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.49,
-        "laagste_ooit_datum": "2026-09-23",
         "eerder_gezien": 1
       },
       {
