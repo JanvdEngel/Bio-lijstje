@@ -1,46 +1,27 @@
 {
-  "laatst_bijgewerkt": "2026-10-04T06:01:38.681333",
+  "laatst_bijgewerkt": "2026-10-05T06:01:18.964742",
   "aanbiedingen": {
     "AH": [
       {
-        "naam": "AH Biologisch Slamelange rucola veldsla",
-        "actieprijs": 0.99,
-        "normale_prijs": 1.99,
+        "naam": "AH Biologisch Pompoen",
+        "actieprijs": 2.68,
+        "normale_prijs": 3.58,
         "soort": "vers",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-09-28",
-        "eerder_gezien": 2
-      },
-      {
-        "naam": "AH Biologisch Flespompoen",
-        "actieprijs": 2.23,
-        "normale_prijs": 2.98,
-        "soort": "vers",
-        "laagste_ooit_prijs": 2.23,
-        "laagste_ooit_datum": "2026-09-28",
+        "laagste_ooit_prijs": 2.68,
+        "laagste_ooit_datum": "2026-09-21",
         "eerder_gezien": 1
       },
       {
-        "naam": "AH Biologisch Snoepgroente tomaat",
-        "actieprijs": 1.67,
-        "normale_prijs": 2.29,
-        "soort": "vers",
-        "voorwaarde": "3 voor €5,00",
-        "vanaf": 3,
-        "laagste_ooit_prijs": 1.67,
-        "laagste_ooit_datum": "2026-09-28",
-        "eerder_gezien": 1
+        "naam": "AH Biologisch Komkommer",
+        "actieprijs": 1.29,
+        "normale_prijs": 1.59,
+        "soort": "vers"
       },
       {
-        "naam": "AH Biologisch Snoepgroente wortel",
-        "actieprijs": 1.67,
-        "normale_prijs": 1.99,
-        "soort": "vers",
-        "voorwaarde": "3 voor €5,00",
-        "vanaf": 3,
-        "laagste_ooit_prijs": 1.67,
-        "laagste_ooit_datum": "2026-09-28",
-        "eerder_gezien": 1
+        "naam": "AH Biologisch Winterpeen",
+        "actieprijs": 1.19,
+        "normale_prijs": 1.39,
+        "soort": "vers"
       }
     ],
     "Jumbo": [
@@ -89,13 +70,10 @@
     ],
     "Lidl": [
       {
-        "naam": "Bio prei",
-        "actieprijs": 0.89,
-        "normale_prijs": null,
-        "soort": "vers",
-        "laagste_ooit_prijs": 0.89,
-        "laagste_ooit_datum": "2026-09-28",
-        "eerder_gezien": 1
+        "naam": "Bio rode bieten",
+        "actieprijs": 0.59,
+        "normale_prijs": 0.79,
+        "soort": "vers"
       }
     ],
     "Aldi": [],
