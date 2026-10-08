@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-10-07T06:01:00.876215",
+  "laatst_bijgewerkt": "2026-10-08T06:01:09.669834",
   "aanbiedingen": {
     "AH": [
       {
@@ -37,7 +37,10 @@
         "normale_prijs": 2.29,
         "soort": "vers",
         "voorwaarde": "2 voor €2,99",
-        "vanaf": 2
+        "vanaf": 2,
+        "laagste_ooit_prijs": 1.5,
+        "laagste_ooit_datum": "2026-10-07",
+        "eerder_gezien": 1
       },
       {
         "naam": "Jumbo Biologisch Gesneden Witte Kool 300 g",
@@ -45,7 +48,10 @@
         "normale_prijs": 1.99,
         "soort": "vers",
         "voorwaarde": "2 voor €2,99",
-        "vanaf": 2
+        "vanaf": 2,
+        "laagste_ooit_prijs": 1.5,
+        "laagste_ooit_datum": "2026-10-07",
+        "eerder_gezien": 1
       }
     ],
     "Lidl": [
@@ -65,19 +71,28 @@
         "naam": "Bio+ Biologische winterpeen",
         "actieprijs": 0.99,
         "normale_prijs": 1.69,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-07",
+        "eerder_gezien": 1
       },
       {
         "naam": "Bio fairtrade bananen",
         "actieprijs": 1.49,
         "normale_prijs": 1.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.49,
+        "laagste_ooit_datum": "2026-10-07",
+        "eerder_gezien": 1
       },
       {
         "naam": "Bio citroenen verpakt",
         "actieprijs": 1.19,
         "normale_prijs": 1.29,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.19,
+        "laagste_ooit_datum": "2026-10-07",
+        "eerder_gezien": 1
       }
     ],
     "Plus": [
@@ -94,17 +109,9 @@
         "naam": "Biologisch PLUS Gember biologisch",
         "actieprijs": 1.19,
         "normale_prijs": 2.19,
-        "soort": "vers"
-      },
-      {
-        "naam": "Iglo Biologische spinazie a la creme",
-        "actieprijs": 2.24,
-        "normale_prijs": 2.99,
-        "soort": "voorraad",
-        "voorwaarde": "2 voor €4,49",
-        "vanaf": 2,
-        "laagste_ooit_prijs": 2.24,
-        "laagste_ooit_datum": "2026-09-30",
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.19,
+        "laagste_ooit_datum": "2026-10-07",
         "eerder_gezien": 1
       },
       {
@@ -123,13 +130,16 @@
         "soort": "voorraad",
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 3
+        "eerder_gezien": 4
       },
       {
         "naam": "Biologisch PLUS Spitskool",
         "actieprijs": 1.49,
         "normale_prijs": 1.89,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.49,
+        "laagste_ooit_datum": "2026-10-07",
+        "eerder_gezien": 1
       },
       {
         "naam": "Biologisch PLUS Wortelen biologisch",
@@ -150,24 +160,6 @@
         "eerder_gezien": 3
       },
       {
-        "naam": "Biologisch PLUS rode uien biologisch",
-        "actieprijs": 0.89,
-        "normale_prijs": 1.09,
-        "soort": "vers",
-        "laagste_ooit_prijs": 0.89,
-        "laagste_ooit_datum": "2026-09-30",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Biologisch PLUS Uien geel biologisch",
-        "actieprijs": 0.89,
-        "normale_prijs": 1.09,
-        "soort": "vers",
-        "laagste_ooit_prijs": 0.89,
-        "laagste_ooit_datum": "2026-09-30",
-        "eerder_gezien": 1
-      },
-      {
         "naam": "BIO+ Gemengde bonen",
         "actieprijs": 1.0,
         "normale_prijs": 1.19,
@@ -180,7 +172,10 @@
         "naam": "BIO+ Rode kidneybonen",
         "actieprijs": 1.0,
         "normale_prijs": 1.1,
-        "soort": "voorraad"
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 1.0,
+        "laagste_ooit_datum": "2026-10-07",
+        "eerder_gezien": 1
       }
     ]
   },
