@@ -1,33 +1,91 @@
 {
-  "laatst_bijgewerkt": "2026-10-11T06:01:39.368871",
+  "laatst_bijgewerkt": "2026-10-12T06:01:21.768972",
   "aanbiedingen": {
     "AH": [
       {
-        "naam": "AH Biologisch Pompoen",
-        "actieprijs": 2.68,
-        "normale_prijs": 3.58,
+        "naam": "Bonduelle Crispy mais bio",
+        "actieprijs": 1.5,
+        "normale_prijs": 2.99,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €2,99",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 1.5,
+        "laagste_ooit_datum": "2026-08-20",
+        "eerder_gezien": 2
+      },
+      {
+        "naam": "Bonduelle Rode kidneybonen bio",
+        "actieprijs": 1.5,
+        "normale_prijs": 2.89,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €2,99",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 1.5,
+        "laagste_ooit_datum": "2026-09-07",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "Mutti Passata gezeefde tomaten bio",
+        "actieprijs": 2.62,
+        "normale_prijs": 3.49,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €5,24",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 2.33,
+        "laagste_ooit_datum": "2026-09-07",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "AH Biologisch Flespompoen",
+        "actieprijs": 2.23,
+        "normale_prijs": 2.98,
         "soort": "vers",
-        "laagste_ooit_prijs": 2.68,
+        "laagste_ooit_prijs": 2.23,
+        "laagste_ooit_datum": "2026-09-28",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "Mutti Gepelde tomaten bio",
+        "actieprijs": 1.87,
+        "normale_prijs": 2.49,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €3,74",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 1.66,
+        "laagste_ooit_datum": "2026-09-07",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "Mutti Tomatenpulp in stukjes bio",
+        "actieprijs": 1.87,
+        "normale_prijs": 2.49,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €3,74",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 1.66,
+        "laagste_ooit_datum": "2026-09-07",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "AH Biologisch Baby romaine",
+        "actieprijs": 1.99,
+        "normale_prijs": 2.59,
+        "soort": "vers"
+      },
+      {
+        "naam": "AH Biologisch Fairtrade bananen",
+        "actieprijs": 1.99,
+        "normale_prijs": 2.39,
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.99,
         "laagste_ooit_datum": "2026-09-21",
         "eerder_gezien": 1
       },
       {
-        "naam": "AH Biologisch Komkommer",
-        "actieprijs": 1.29,
-        "normale_prijs": 1.59,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.29,
-        "laagste_ooit_datum": "2026-10-05",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "AH Biologisch Winterpeen",
-        "actieprijs": 1.19,
-        "normale_prijs": 1.39,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.19,
-        "laagste_ooit_datum": "2026-10-05",
-        "eerder_gezien": 1
+        "naam": "AH Biologisch Zuurkool naturel",
+        "actieprijs": 0.69,
+        "normale_prijs": 1.09,
+        "soort": "vers"
       }
     ],
     "Jumbo": [
@@ -54,18 +112,18 @@
         "eerder_gezien": 1
       }
     ],
-    "Lidl": [
+    "Lidl": [],
+    "Aldi": [
       {
-        "naam": "Bio rode bieten",
-        "actieprijs": 0.59,
-        "normale_prijs": 0.79,
+        "naam": "Biologische rode bieten",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.25,
         "soort": "vers",
-        "laagste_ooit_prijs": 0.59,
-        "laagste_ooit_datum": "2026-10-05",
+        "laagste_ooit_prijs": 1.19,
+        "laagste_ooit_datum": "2026-09-07",
         "eerder_gezien": 1
       }
     ],
-    "Aldi": [],
     "Dirk": [
       {
         "naam": "Bio+ Biologische winterpeen",
