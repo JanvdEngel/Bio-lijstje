@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-10-12T06:01:21.768972",
+  "laatst_bijgewerkt": "2026-10-13T06:01:17.542127",
   "aanbiedingen": {
     "AH": [
       {
@@ -33,7 +33,7 @@
         "vanaf": 2,
         "laagste_ooit_prijs": 2.33,
         "laagste_ooit_datum": "2026-09-07",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "AH Biologisch Flespompoen",
@@ -53,7 +53,7 @@
         "vanaf": 2,
         "laagste_ooit_prijs": 1.66,
         "laagste_ooit_datum": "2026-09-07",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "Mutti Tomatenpulp in stukjes bio",
@@ -64,13 +64,16 @@
         "vanaf": 2,
         "laagste_ooit_prijs": 1.66,
         "laagste_ooit_datum": "2026-09-07",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "AH Biologisch Baby romaine",
         "actieprijs": 1.99,
         "normale_prijs": 2.59,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.99,
+        "laagste_ooit_datum": "2026-10-12",
+        "eerder_gezien": 1
       },
       {
         "naam": "AH Biologisch Fairtrade bananen",
@@ -85,7 +88,10 @@
         "naam": "AH Biologisch Zuurkool naturel",
         "actieprijs": 0.69,
         "normale_prijs": 1.09,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.69,
+        "laagste_ooit_datum": "2026-10-12",
+        "eerder_gezien": 1
       }
     ],
     "Jumbo": [
@@ -119,9 +125,9 @@
         "actieprijs": 0.99,
         "normale_prijs": 1.25,
         "soort": "vers",
-        "laagste_ooit_prijs": 1.19,
-        "laagste_ooit_datum": "2026-09-07",
-        "eerder_gezien": 1
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-12",
+        "eerder_gezien": 2
       }
     ],
     "Dirk": [
