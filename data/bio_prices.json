@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-10-14T06:01:06.862298",
+  "laatst_bijgewerkt": "2026-10-15T06:01:15.534910",
   "aanbiedingen": {
     "AH": [
       {
@@ -100,66 +100,81 @@
         "actieprijs": 0.99,
         "normale_prijs": 2.99,
         "soort": "voorraad",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 5
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 6
       },
       {
         "naam": "Hak Rode Bieten Sticks Bio 355 g",
         "actieprijs": 0.99,
         "normale_prijs": 2.59,
         "soort": "voorraad",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 5
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 6
       },
       {
         "naam": "Jumbo Groene Pompoen Biologisch",
         "actieprijs": 0.99,
         "normale_prijs": 2.49,
-        "soort": "vers"
-      },
-      {
-        "naam": "Jumbo Oranje Pompoen Biologisch",
-        "actieprijs": 0.99,
-        "normale_prijs": 2.49,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "Jumbo Biologische Pompoen",
         "actieprijs": 0.99,
         "normale_prijs": 2.49,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "Jumbo Oranje Pompoen Biologisch",
+        "actieprijs": 0.99,
+        "normale_prijs": 2.49,
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "Spaghetti Pompoen Biologisch",
         "actieprijs": 0.99,
         "normale_prijs": 2.49,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "Jumbo Bio Grijze Pompoen",
         "actieprijs": 0.99,
         "normale_prijs": 2.49,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "Hak Gesneden Bonen Bio 340 g",
         "actieprijs": 0.99,
         "normale_prijs": 2.39,
         "soort": "voorraad",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 5
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 6
       },
       {
         "naam": "Hak Rode Bieten Schijven Bio 355 g",
         "actieprijs": 0.99,
         "normale_prijs": 2.19,
         "soort": "voorraad",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 5
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 6
       },
       {
         "naam": "Hak Wijnzuurkool Bio 340 g",
@@ -177,7 +192,7 @@
         "soort": "voorraad",
         "laagste_ooit_prijs": 0.97,
         "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "Heinz Tomaten blokjes biologisch",
@@ -186,7 +201,7 @@
         "soort": "voorraad",
         "laagste_ooit_prijs": 0.99,
         "laagste_ooit_datum": "2026-09-16",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "Heinz Tomaten gezeefd biologisch",
@@ -195,13 +210,16 @@
         "soort": "voorraad",
         "laagste_ooit_prijs": 0.99,
         "laagste_ooit_datum": "2026-09-16",
-        "eerder_gezien": 4
+        "eerder_gezien": 5
       },
       {
         "naam": "Jumbo Biologische Baby Boo pompoen 1ST",
         "actieprijs": 0.99,
         "normale_prijs": 1.49,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "Heinz Tomaten gepeld biologisch",
@@ -210,7 +228,7 @@
         "soort": "voorraad",
         "laagste_ooit_prijs": 0.99,
         "laagste_ooit_datum": "2026-09-16",
-        "eerder_gezien": 4
+        "eerder_gezien": 5
       }
     ],
     "Lidl": [],
@@ -231,91 +249,130 @@
         "naam": "BioToday Avocado-olie bio",
         "actieprijs": 4.5,
         "normale_prijs": 8.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 4.5,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "Raw Organic Food Gojibessen biologisch",
         "actieprijs": 4.04,
         "normale_prijs": 8.09,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 4.04,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "Smaakt Mangoreepjes Smaakt bio",
         "actieprijs": 4.0,
         "normale_prijs": 7.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 4.0,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "Smaakt Zure kersen bio",
         "actieprijs": 3.4,
         "normale_prijs": 6.79,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 3.4,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "Smaakt Pruimen zonder pit bio",
         "actieprijs": 3.0,
         "normale_prijs": 5.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 3.0,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "BioToday Citroen amandelkoeken biologisch",
         "actieprijs": 2.1,
         "normale_prijs": 4.19,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.1,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "Smaakt Banaan gedroogd 250g bio",
         "actieprijs": 2.0,
         "normale_prijs": 3.99,
-        "soort": "voorraad"
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 2.0,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "BioToday Tomato-Courgette spread bio",
         "actieprijs": 1.84,
         "normale_prijs": 3.69,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.84,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "Smaakt Dadels bio",
         "actieprijs": 1.59,
         "normale_prijs": 3.19,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.59,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "Smaakt Mungbonen biologisch",
         "actieprijs": 1.45,
         "normale_prijs": 2.89,
-        "soort": "voorraad"
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 1.45,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "Smaakt Zuurkool & gember/kurkuma bio",
         "actieprijs": 1.34,
         "normale_prijs": 2.69,
-        "soort": "voorraad"
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 1.34,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "Smaakt Lupinebonen bio",
         "actieprijs": 1.29,
         "normale_prijs": 2.59,
-        "soort": "voorraad"
-      },
-      {
-        "naam": "Heinz Tomatenblokjes bio",
-        "actieprijs": 1.0,
-        "normale_prijs": 2.29,
         "soort": "voorraad",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-08-20",
-        "eerder_gezien": 3
+        "laagste_ooit_prijs": 1.29,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "Smaakt Adukibonen bio",
         "actieprijs": 1.25,
         "normale_prijs": 2.49,
-        "soort": "voorraad"
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 1.25,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
       },
       {
         "naam": "Smaakt Zuurkool & rode biet bio",
+        "actieprijs": 1.25,
+        "normale_prijs": 2.49,
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 1.25,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "Smaakt Zwarte bonen bio",
         "actieprijs": 1.25,
         "normale_prijs": 2.49,
         "soort": "voorraad"
