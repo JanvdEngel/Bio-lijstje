@@ -1533,6 +1533,67 @@ def schrijf_cijfers_html(dagen):
 TOKEN_WAARSCHUWING_DAGEN = 14
 
 
+# Vast nummer, zodat elke ronde dezelfde melding bijwerkt in plaats van er een
+# nieuwe naast te zetten.
+TOKEN_MELDING_ID = "bio_lijstje_github_token"
+
+
+def _ha_dienst(domein, dienst, data):
+    """Roept een Home Assistant-dienst aan vanuit de app.
+
+    Zelfde weg als de sensor: via de Supervisor, met het token dat de app
+    meekrijgt. Buiten de app bestaat dat token niet en gebeurt er niets.
+    Mislukt het, dan is dat een logregel — een melding die niet aankomt mag de
+    ronde niet breken."""
+    token = (os.environ.get("SUPERVISOR_TOKEN") or "").strip()
+    if not token:
+        return False
+    import requests
+
+    try:
+        resp = requests.post(
+            f"http://supervisor/core/api/services/{domein}/{dienst}",
+            headers={"Authorization": f"Bearer {token}"},
+            timeout=15, json=data,
+        )
+        if resp.status_code >= 300:
+            log.warning(f"Melding in Home Assistant mislukt: {resp.status_code}")
+            return False
+        return True
+    except Exception as e:
+        log.warning(f"Melding in Home Assistant mislukt ({e})")
+        return False
+
+
+def _meld_token_in_home_assistant(dagen, vervalt):
+    """Zet of haalt de melding over het verlopende token weg.
+
+    Een waarschuwing in het log is geen waarschuwing: daar kijkt niemand uit
+    zichzelf. Op 15 oktober stond de site vier dagen stil en stond de oorzaak
+    al die tijd netjes in dat log. Dit zet hem in het meldingenpaneel van Home
+    Assistant, waar hij blijft staan tot er een nieuw token is.
+
+    Dezelfde melding wordt elke ronde bijgewerkt in plaats van herhaald, en
+    zodra het token weer ruim geldig is verdwijnt hij vanzelf."""
+    if dagen is None or dagen > TOKEN_WAARSCHUWING_DAGEN:
+        _ha_dienst("persistent_notification", "dismiss",
+                   {"notification_id": TOKEN_MELDING_ID})
+        return
+    if dagen < 0:
+        titel = "Het Bio Lijstje: GitHub-token verlopen"
+        tekst = (f"Het token is op {vervalt:%d-%m-%Y} verlopen. De lijst wordt wel "
+                 f"opgehaald maar niet meer gepubliceerd, dus hetbiolijstje.nl "
+                 f"staat stil. Maak een nieuw token en zet het in de app-opties.")
+    else:
+        dag = "dag" if dagen == 1 else "dagen"
+        titel = "Het Bio Lijstje: GitHub-token verloopt bijna"
+        tekst = (f"Over {dagen} {dag}, op {vervalt:%d-%m-%Y}. Daarna wordt de lijst "
+                 f"nog wel opgehaald maar niet meer gepubliceerd. Nieuw token maken "
+                 f"en in de app-opties zetten.")
+    _ha_dienst("persistent_notification", "create",
+               {"notification_id": TOKEN_MELDING_ID, "title": titel, "message": tekst})
+
+
 def _waarschuw_bij_verlopend_token(resp):
     """GitHub geeft de vervaldatum van een fine-grained token mee in een header.
 
@@ -1554,6 +1615,7 @@ def _waarschuw_bij_verlopend_token(resp):
         return
     nu = datetime.now(vervalt.tzinfo) if vervalt.tzinfo else datetime.now()
     dagen = (vervalt - nu).days
+    _meld_token_in_home_assistant(dagen, vervalt)
     if dagen < 0:
         log.warning(f"Het GitHub-token is op {vervalt:%d-%m-%Y} verlopen")
     elif dagen <= TOKEN_WAARSCHUWING_DAGEN:

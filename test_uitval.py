@@ -215,6 +215,47 @@ keur("zonder header gebeurt er niets", _waarschuwingen(None) == [])
 keur("een onleesbare header laat de ronde met rust",
      all(n != "WARNING" for n, _ in _waarschuwingen("nergens")))
 
+# Een waarschuwing in het log is geen waarschuwing: daar kijkt niemand uit
+# zichzelf, en precies daarom stond de site vier dagen stil. De melding moet in
+# het meldingenpaneel van Home Assistant komen.
+def _meldingen(dagen_vooruit):
+    import os as _o, requests as _r
+    from datetime import datetime as _dt, timedelta as _td, timezone as _tz
+    verstuurd = []
+
+    class Ok:
+        status_code = 200
+
+    echt_post, oud_token = _r.post, _o.environ.get("SUPERVISOR_TOKEN")
+    _o.environ["SUPERVISOR_TOKEN"] = "nep"
+    _r.post = lambda url, **k: (verstuurd.append((url, k.get("json") or {})), Ok())[1]
+    try:
+        kop = (_dt.now(_tz.utc) + _td(days=dagen_vooruit, hours=1)
+               ).strftime("%Y-%m-%d %H:%M:%S UTC")
+        bio._waarschuw_bij_verlopend_token(NepHeaders(kop))
+    finally:
+        _r.post = echt_post
+        if oud_token is None:
+            _o.environ.pop("SUPERVISOR_TOKEN", None)
+        else:
+            _o.environ["SUPERVISOR_TOKEN"] = oud_token
+    return verstuurd
+
+
+ruim = _meldingen(30)
+keur("een ruim geldig token haalt de melding juist weg",
+     len(ruim) == 1 and ruim[0][0].endswith("/dismiss"))
+bijna = _meldingen(9)
+keur("binnen twee weken komt er een melding",
+     len(bijna) == 1 and bijna[0][0].endswith("/create"))
+keur("met de datum erin", bijna and "28-10-2026" in str(bijna[0][1].get("message", ""))
+     or bijna and "-2026" in str(bijna[0][1].get("message", "")))
+keur("altijd hetzelfde nummer, dus bijwerken en niet stapelen",
+     bijna[0][1].get("notification_id") == bio.TOKEN_MELDING_ID)
+verlopen = _meldingen(-1)
+keur("een verlopen token zegt dat de site stilstaat",
+     "staat stil" in str(verlopen[0][1].get("message", "")))
+
 motor = (HIER / "fetch_bio_prices.py").read_text(encoding="utf-8")
 keur("de sensor wordt alleen gezet als alles gepubliceerd is",
      "if gepubliceerd == te_publiceren:" in motor)
