@@ -101,13 +101,15 @@ def voetnoot_seizoen(regel):
         "Residucijfers uit de "
         '<a href="https://www.pan-netherlands.org/eetwijzer/" rel="noopener">'
         "PesticidenEetwijzer</a> van PAN-NL. Geen live databron.<br>"
+        '<a href="/cijfers/">Cijfers</a> &middot; '
         '<a href="/over/">Over deze site en de bronnen</a>'
     )
 
 
 # Op /over/ zou die link naar zichzelf wijzen. Na 600 woorden tekst staat daar
 # liever de weg terug naar waar de bezoeker vandaan kwam.
-VOETNOOT_OVER = 'Terug naar <a href="/">de aanbiedingen</a>.'
+VOETNOOT_OVER = ('Terug naar <a href="/">de aanbiedingen</a>.'
+                 ' &middot; <a href="/over/">Over deze site</a>')
 
 
 # Grens waarboven en waaronder een product afwijkt van het gemiddelde van zijn
@@ -463,6 +465,10 @@ def overpagina(data):
       van PAN-Nederland, gebaseerd op NVWA-metingen over 2023 tot 2025. Het
       🧴 staat bij de soorten die ruim boven het gemiddelde van hun categorie
       uitkomen. Bij soorten die de NVWA niet apart meet staat geen cijfer.</p>
+
+      <p>Wat er uit al dat tellen komt staat op
+      <a href="/cijfers/">de cijferpagina</a>: hoe vaak biologische groente en
+      fruit eigenlijk in de aanbieding is, per supermarkt.</p>
 
       <p class="let-op"><strong>Belangrijk bij dat laatste:</strong> die
       metingen gaan over het hele handelskanaal, niet specifiek over biologisch.

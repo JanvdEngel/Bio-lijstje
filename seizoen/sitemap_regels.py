@@ -8,9 +8,18 @@ vragen om een sitemap die achterloopt. Dit leest dezelfde bron.
 """
 
 import json
+from datetime import date
 from pathlib import Path
 
 WORTEL = Path(__file__).parent.parent
+
+# De dag waarop deze pagina's zijn gebouwd. Alleen voor de pagina's die niet
+# elke dag veranderen: de seizoenskalender en /over/. De voorpagina en
+# /cijfers/ krijgen bewust geen lastmod, want die worden door de Pi
+# gepubliceerd en niet door dit script. Een datum van de laatste keer dat ik dit
+# draaide zou bij die twee zeggen "er is niets veranderd" terwijl ze elke
+# ochtend wel veranderen, en een verkeerd signaal is slechter dan geen signaal.
+GEBOUWD = date.today().isoformat()
 data = json.loads((WORTEL / "seizoen" / "seizoensdata.json").read_text(encoding="utf-8"))
 
 regels = [
@@ -23,6 +32,7 @@ regels = [
     "  </url>",
     "  <url>",
     "    <loc>https://hetbiolijstje.nl/seizoen/</loc>",
+    f"    <lastmod>{GEBOUWD}</lastmod>",
     "    <changefreq>monthly</changefreq>",
     "    <priority>0.8</priority>",
     "  </url>",
@@ -31,6 +41,7 @@ for m in data["maanden"]:
     regels += [
         "  <url>",
         f'    <loc>https://hetbiolijstje.nl/seizoen/{m["maand"]}/</loc>',
+        f"    <lastmod>{GEBOUWD}</lastmod>",
         "    <changefreq>yearly</changefreq>",
         "    <priority>0.6</priority>",
         "  </url>",
@@ -43,6 +54,7 @@ regels += [
     "  </url>",
     "  <url>",
     "    <loc>https://hetbiolijstje.nl/over/</loc>",
+    f"    <lastmod>{GEBOUWD}</lastmod>",
     "    <changefreq>yearly</changefreq>",
     "    <priority>0.4</priority>",
     "  </url>",

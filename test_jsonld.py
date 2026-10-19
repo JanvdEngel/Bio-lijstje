@@ -212,6 +212,30 @@ keur("elke gegenereerde pagina heeft de bezoekersteller",
      not zonder_teller, ", ".join(zonder_teller))
 keur("de voorpagina heeft hem ook", TELLER in voor)
 
+# /cijfers/ hing aan een enkele link in de voettekst van de voorpagina. Een
+# pagina waar vrijwel niets naartoe wijst, krijgt bij een zoekmachine weinig
+# prioriteit — en het is ook gewoon slecht te vinden voor een bezoeker.
+naar_cijfers = [p for p in paginas
+                if 'href="/cijfers/"' in p.read_text(encoding="utf-8")]
+keur("elke gegenereerde pagina linkt naar /cijfers/",
+     len(naar_cijfers) == len(paginas),
+     f"{len(naar_cijfers)} van {len(paginas)}")
+keur("de voorpagina ook", 'href="/cijfers/"' in voor)
+
+# lastmod alleen waar hij klopt: dit script bouwt de seizoenspagina's en
+# /over/, maar de voorpagina en /cijfers/ worden door de Pi gepubliceerd.
+import xml.etree.ElementTree as _E
+_kaart = HIER / "sitemap.xml"
+if _kaart.exists():
+    _n = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+    _urls = {u.find("s:loc", _n).text: u.find("s:lastmod", _n) for u in _E.parse(_kaart).getroot()}
+    _dagelijks = ["https://hetbiolijstje.nl/", "https://hetbiolijstje.nl/cijfers/"]
+    keur("de dagelijkse pagina's hebben geen lastmod",
+         all(_urls.get(u) is None for u in _dagelijks))
+    _rest = [u for u in _urls if u not in _dagelijks]
+    keur("de overige pagina's wel", all(_urls[u] is not None for u in _rest),
+         f"{sum(1 for u in _rest if _urls[u] is None)} zonder")
+
 print()
 if fouten:
     sys.exit(f"{fouten} controle(s) niet in orde")
