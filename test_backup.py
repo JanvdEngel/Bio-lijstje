@@ -13,6 +13,7 @@ sloopt is erger dan geen vangnet.
 import json
 import sys
 import tempfile
+from datetime import date
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -57,7 +58,11 @@ with tempfile.TemporaryDirectory() as tmp:
     over = sorted(p.name for p in map_.glob("geschiedenis-2*.json"))
     check(f"rotatie houdt er {f.HISTORY_BACKUPS} over", len(over) == f.HISTORY_BACKUPS,
           f"{len(over)}: {over}")
-    check("de nieuwste is bewaard", any("2026-09" in n for n in over), str(over))
+    # Niet op een vaste maand controleren: dit stond op "2026-09" omdat de test
+    # in september is geschreven, en viel om zodra het oktober werd. De
+    # back-up van vandaag heet naar vandaag.
+    vandaag = f"geschiedenis-{date.today().isoformat()}.json"
+    check("de back-up van vandaag is bewaard", vandaag in over, f"{vandaag} niet in {over}")
     check("de oudste is opgeruimd", "geschiedenis-2026-08-01.json" not in over)
 
 print("\nbij een onbeschrijfbare map:")

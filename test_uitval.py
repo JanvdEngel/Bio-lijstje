@@ -123,6 +123,54 @@ finally:
 keur('de paginagrens raken geeft status "onvolledig"', status == "onvolledig",
      f'kreeg "{status}"')
 
+# Publiceren is onderdeel van de ronde. Op 15 oktober 2026 verliep het
+# GitHub-token: de rondes bleven draaien, de sensor werd elke ochtend ververst,
+# de dertig uur werden nooit gehaald en de site stond vier dagen stil zonder
+# dat er een melding afging. Een ronde die nergens aankomt telt niet als klaar.
+print("\npubliceren")
+
+
+class NepAntwoord401:
+    status_code = 401
+    text = '{"message":"Bad credentials"}'
+    headers = {}
+
+    def json(self):
+        return {}
+
+
+import os as _os
+import requests as _requests
+
+_echt = (_requests.get, _requests.put)
+_bewaard = {k: _os.environ.get(k) for k in ("GITHUB_TOKEN", "GITHUB_REPO")}
+try:
+    _os.environ.pop("GITHUB_TOKEN", None)
+    _os.environ.pop("GITHUB_REPO", None)
+    keur("zonder token is er niets te publiceren (0 van 0)",
+         bio.publish_to_github() == (0, 0))
+
+    _os.environ["GITHUB_TOKEN"] = "nep"
+    _os.environ["GITHUB_REPO"] = "x/y"
+    _requests.get = lambda *a, **k: NepAntwoord401()
+    _requests.put = lambda *a, **k: NepAntwoord401()
+    gelukt, totaal = bio.publish_to_github()
+    keur("een verlopen token geeft nul geslaagde bestanden", gelukt == 0)
+    keur("maar wel het aantal dat het had moeten zijn", totaal == 3, str(totaal))
+    keur("gelukt is niet gelijk aan totaal, dus de sensor blijft staan",
+         gelukt != totaal)
+finally:
+    _requests.get, _requests.put = _echt
+    for k, v in _bewaard.items():
+        if v is None:
+            _os.environ.pop(k, None)
+        else:
+            _os.environ[k] = v
+
+motor = (HIER / "fetch_bio_prices.py").read_text(encoding="utf-8")
+keur("de sensor wordt alleen gezet als alles gepubliceerd is",
+     "if gepubliceerd == te_publiceren:" in motor)
+
 # ---------------------------------------------------------------------------
 # De pagina: heeft elke status een eigen tekst?
 # ---------------------------------------------------------------------------

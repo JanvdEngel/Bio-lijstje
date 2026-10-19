@@ -1306,12 +1306,21 @@ def schrijf_index_html(aanbiedingen, bijgewerkt):
 
 
 def meld_aan_home_assistant(bijgewerkt, winkelstatus, aantal):
-    """Zet de tijd van deze ronde in sensor.bio_lijstje_bijgewerkt.
+    """Zet de tijd van de laatst geslaagde publicatie in
+    sensor.bio_lijstje_bijgewerkt.
 
     Dit is de tegenhanger van de verouderingsbalk op de pagina: die vertelt een
     bezoeker dat de lijst oud is, deze sensor vertelt het aan Jan. Een
     automatisering in Home Assistant kijkt of de sensor dertig uur onveranderd
-    blijft — dat betekent dat er geen geslaagde ronde is geweest.
+    blijft.
+
+    Let op wat de sensor meet: niet of de ronde draaide, maar of het resultaat
+    de site heeft bereikt. Dat onderscheid kostte vier dagen. Op 15 oktober 2026
+    verliep het GitHub-token; de rondes bleven daarna gewoon draaien en deze
+    functie ververste elke ochtend netjes de sensor, dus de dertig uur werden
+    nooit gehaald en er ging geen melding af. De site stond stil en niets zei
+    het. Een ronde die nergens aankomt is voor een bezoeker hetzelfde als geen
+    ronde, en dus moet de sensor dat ook vinden.
 
     Werkt alleen binnen de add-on: SUPERVISOR_TOKEN wordt daar meegegeven, en
     config.yaml moet homeassistant_api aan hebben staan. Buiten de add-on (een
@@ -1527,7 +1536,9 @@ def publish_to_github():
     token = os.environ.get("GITHUB_TOKEN")
     repo = os.environ.get("GITHUB_REPO")
     if not token or not repo:
-        return
+        # Niet ingesteld is iets anders dan mislukt: dan is de lokale pagina
+        # het eindproduct en valt er niets te publiceren.
+        return 0, 0
 
     import base64
     import requests
@@ -1562,7 +1573,18 @@ def publish_to_github():
                 log.warning(f"GitHub-publish van {rel_path} mislukt: {put_resp.status_code} {put_resp.text[:200]}")
         except Exception as e:
             log.warning(f"GitHub-publish van {rel_path} mislukt: {e}")
-    log.info(f"Gepubliceerd naar github.com/{repo}: {gepubliceerd}/{len(GITHUB_PUBLISH_FILES)} bestanden")
+    totaal = len(GITHUB_PUBLISH_FILES)
+    # Dit was een INFO-regel, ook bij 0 van de 3. Op 15 oktober 2026 verliep het
+    # GitHub-token en stond de site vier dagen stil terwijl het log elke ochtend
+    # rustig "0/3 bestanden" meldde. Een mislukte publicatie is geen mededeling.
+    if gepubliceerd == totaal:
+        log.info(f"Gepubliceerd naar github.com/{repo}: {gepubliceerd}/{totaal} bestanden")
+    else:
+        log.warning(
+            f"Publiceren naar github.com/{repo} mislukt: {gepubliceerd}/{totaal} "
+            f"bestanden. De site blijft staan op de laatst gepubliceerde versie."
+        )
+    return gepubliceerd, totaal
 
 
 # ---------------------------------------------------------------------------
@@ -1753,13 +1775,22 @@ def main():
     except Exception as e:
         log.warning(f"/cijfers/ genereren mislukt ({e}); vorige versie blijft staan")
 
-    publish_to_github()
+    gepubliceerd, te_publiceren = publish_to_github()
 
-    # Als laatste: de ronde is dan echt af, inclusief publiceren.
-    meld_aan_home_assistant(
-        resultaat["laatst_bijgewerkt"], winkelstatus,
-        sum(len(v) for v in aanbiedingen.values()),
-    )
+    # Alleen melden als het resultaat ook echt op de site staat. Publiceren dat
+    # niet is ingesteld (0 van 0) telt als klaar: dan is de lokale pagina het
+    # eindproduct. Mislukt het wel, dan blijft de sensor op de vorige tijd
+    # staan, loopt de teller van dertig uur door en gaat de melding alsnog af.
+    if gepubliceerd == te_publiceren:
+        meld_aan_home_assistant(
+            resultaat["laatst_bijgewerkt"], winkelstatus,
+            sum(len(v) for v in aanbiedingen.values()),
+        )
+    else:
+        log.warning(
+            "sensor.bio_lijstje_bijgewerkt niet ververst: de nieuwe lijst staat "
+            "nog niet op de site. Zo gaat de melding in Home Assistant alsnog af."
+        )
 
 
 if __name__ == "__main__":
