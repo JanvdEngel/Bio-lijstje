@@ -1527,6 +1527,46 @@ def schrijf_cijfers_html(dagen):
         log.warning(f"cijfers/index.html schrijven mislukt ({e})")
 
 
+# Zoveel dagen van tevoren gaan we zeuren over een verlopend token. Twee weken
+# is genoeg om er rustig een nieuwe te maken, en kort genoeg om niet elke dag
+# een waarschuwing te zien bij een token van een jaar.
+TOKEN_WAARSCHUWING_DAGEN = 14
+
+
+def _waarschuw_bij_verlopend_token(resp):
+    """GitHub geeft de vervaldatum van een fine-grained token mee in een header.
+
+    Op 15 oktober 2026 verliep het token en stond de site vier dagen stil. Het
+    stond gewoon in de voorwaarden van dat token, alleen keek niemand ernaar.
+    Deze header kost niets en zegt het van tevoren.
+
+    Niet elk token heeft hem: een classic token zonder einddatum stuurt niets
+    mee, en dan gebeurt hier ook niets."""
+    rauw = (resp.headers or {}).get("github-authentication-token-expiration")
+    if not rauw:
+        return
+    try:
+        # Komt binnen als "2026-11-19 12:00:00 UTC" of als ISO-tijd.
+        schoon = rauw.replace(" UTC", "+00:00").replace(" ", "T", 1)
+        vervalt = datetime.fromisoformat(schoon)
+    except (TypeError, ValueError):
+        log.info(f"Vervaldatum van het GitHub-token niet te lezen: {rauw!r}")
+        return
+    nu = datetime.now(vervalt.tzinfo) if vervalt.tzinfo else datetime.now()
+    dagen = (vervalt - nu).days
+    if dagen < 0:
+        log.warning(f"Het GitHub-token is op {vervalt:%d-%m-%Y} verlopen")
+    elif dagen <= TOKEN_WAARSCHUWING_DAGEN:
+        log.warning(
+            f"Het GitHub-token verloopt over {dagen} "
+            f"{'dag' if dagen == 1 else 'dagen'}, op {vervalt:%d-%m-%Y}. "
+            f"Maak een nieuwe aan en zet hem in de app-opties, anders stopt de "
+            f"site met bijwerken zonder dat de ronde faalt."
+        )
+    else:
+        log.info(f"GitHub-token geldig tot {vervalt:%d-%m-%Y} ({dagen} dagen)")
+
+
 def publish_to_github():
     """Pusht www/ naar een GitHub-repo via de Contents API, zodat de pagina
     ook publiek bereikbaar is via GitHub Pages (voor delen buiten het
@@ -1548,6 +1588,7 @@ def publish_to_github():
         "Accept": "application/vnd.github+json",
     }
     gepubliceerd = 0
+    gekeken_naar_vervaldatum = False
     for rel_path in GITHUB_PUBLISH_FILES:
         local_path = WWW_DIR / rel_path
         if not local_path.exists():
@@ -1556,6 +1597,11 @@ def publish_to_github():
         url = f"https://api.github.com/repos/{repo}/contents/{rel_path}"
         try:
             get_resp = requests.get(url, headers=headers, timeout=15)
+            if not gekeken_naar_vervaldatum:
+                # Niet op gepubliceerd == 0 kijken: faalt het eerste bestand,
+                # dan blijft die nul staan en waarschuwt hij drie keer.
+                gekeken_naar_vervaldatum = True
+                _waarschuw_bij_verlopend_token(get_resp)
             sha = get_resp.json().get("sha") if get_resp.status_code == 200 else None
 
             payload = {

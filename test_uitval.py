@@ -167,6 +167,54 @@ finally:
         else:
             _os.environ[k] = v
 
+# GitHub geeft de vervaldatum van een fine-grained token mee in een header.
+# Die stond er op 15 oktober ook, alleen keek niemand ernaar.
+from datetime import datetime, timedelta, timezone
+
+
+class NepHeaders:
+    def __init__(self, vervalt=None):
+        self.headers = {} if vervalt is None else {
+            "github-authentication-token-expiration": vervalt}
+
+
+def _waarschuwingen(vervalt):
+    import logging as _l
+    opgevangen = []
+
+    class Vang(_l.Handler):
+        def emit(self, record):
+            opgevangen.append((record.levelname, record.getMessage()))
+
+    h = Vang()
+    bio.log.addHandler(h)
+    oud_niveau = bio.log.level
+    bio.log.setLevel(_l.INFO)
+    try:
+        bio._waarschuw_bij_verlopend_token(NepHeaders(vervalt))
+    finally:
+        bio.log.removeHandler(h)
+        bio.log.setLevel(oud_niveau)
+    return opgevangen
+
+
+def _over(dagen):
+    return (datetime.now(timezone.utc) + timedelta(days=dagen, hours=1)
+            ).strftime("%Y-%m-%d %H:%M:%S UTC")
+
+
+keur("een token van 30 dagen geeft geen waarschuwing",
+     all(n != "WARNING" for n, _ in _waarschuwingen(_over(30))))
+keur("binnen twee weken wel",
+     any(n == "WARNING" for n, _ in _waarschuwingen(_over(9))))
+keur("een verlopen token ook",
+     any(n == "WARNING" and "verlopen" in m for n, m in _waarschuwingen(_over(-1))))
+keur("een dag is enkelvoud",
+     any("over 1 dag," in m for _, m in _waarschuwingen(_over(1))))
+keur("zonder header gebeurt er niets", _waarschuwingen(None) == [])
+keur("een onleesbare header laat de ronde met rust",
+     all(n != "WARNING" for n, _ in _waarschuwingen("nergens")))
+
 motor = (HIER / "fetch_bio_prices.py").read_text(encoding="utf-8")
 keur("de sensor wordt alleen gezet als alles gepubliceerd is",
      "if gepubliceerd == te_publiceren:" in motor)
