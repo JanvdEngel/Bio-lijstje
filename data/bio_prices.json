@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-10-20T06:01:23.967073",
+  "laatst_bijgewerkt": "2026-10-21T06:01:12.198222",
   "aanbiedingen": {
     "AH": [
       {
@@ -25,139 +25,10 @@
     ],
     "Jumbo": [
       {
-        "naam": "Hak Spinazie met Room Bio 345 g",
-        "actieprijs": 0.99,
-        "normale_prijs": 2.99,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 6
-      },
-      {
-        "naam": "Hak Rode Bieten Sticks Bio 355 g",
-        "actieprijs": 0.99,
-        "normale_prijs": 2.59,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 6
-      },
-      {
-        "naam": "Jumbo Groene Pompoen Biologisch",
-        "actieprijs": 0.99,
-        "normale_prijs": 2.49,
-        "soort": "vers",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Jumbo Biologische Pompoen",
-        "actieprijs": 0.99,
-        "normale_prijs": 2.49,
-        "soort": "vers",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Jumbo Oranje Pompoen Biologisch",
-        "actieprijs": 0.99,
-        "normale_prijs": 2.49,
-        "soort": "vers",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Spaghetti Pompoen Biologisch",
-        "actieprijs": 0.99,
-        "normale_prijs": 2.49,
-        "soort": "vers",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Jumbo Bio Grijze Pompoen",
-        "actieprijs": 0.99,
-        "normale_prijs": 2.49,
-        "soort": "vers",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Hak Gesneden Bonen Bio 340 g",
-        "actieprijs": 0.99,
-        "normale_prijs": 2.39,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 6
-      },
-      {
-        "naam": "Hak Rode Bieten Schijven Bio 355 g",
-        "actieprijs": 0.99,
-        "normale_prijs": 2.19,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 6
-      },
-      {
-        "naam": "Hak Wijnzuurkool Bio 340 g",
-        "actieprijs": 0.99,
-        "normale_prijs": 1.99,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Hak Gebroken Sperziebonen Bio 340 g",
-        "actieprijs": 0.99,
-        "normale_prijs": 1.95,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 0.97,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 2
-      },
-      {
-        "naam": "Heinz Tomaten blokjes biologisch",
-        "actieprijs": 1.6,
-        "normale_prijs": 2.29,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-09-16",
-        "eerder_gezien": 2
-      },
-      {
-        "naam": "Heinz Tomaten gezeefd biologisch",
-        "actieprijs": 1.25,
-        "normale_prijs": 1.79,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-09-16",
-        "eerder_gezien": 5
-      },
-      {
-        "naam": "Jumbo Biologische Baby Boo pompoen 1ST",
-        "actieprijs": 0.99,
-        "normale_prijs": 1.49,
-        "soort": "vers",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Heinz Tomaten gepeld biologisch",
-        "actieprijs": 1.11,
-        "normale_prijs": 1.59,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-09-16",
-        "eerder_gezien": 5
+        "naam": "Jumbo Biologische Wortelen 1KG",
+        "actieprijs": 1.49,
+        "normale_prijs": 1.85,
+        "soort": "vers"
       }
     ],
     "Lidl": [],
