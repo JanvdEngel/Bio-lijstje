@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-10-21T06:01:12.198222",
+  "laatst_bijgewerkt": "2026-10-22T06:01:17.702444",
   "aanbiedingen": {
     "AH": [
       {
@@ -28,149 +28,16 @@
         "naam": "Jumbo Biologische Wortelen 1KG",
         "actieprijs": 1.49,
         "normale_prijs": 1.85,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.49,
+        "laagste_ooit_datum": "2026-10-21",
+        "eerder_gezien": 1
       }
     ],
     "Lidl": [],
     "Aldi": [],
     "Dirk": [],
-    "Plus": [
-      {
-        "naam": "BioToday Avocado-olie bio",
-        "actieprijs": 4.5,
-        "normale_prijs": 8.99,
-        "soort": "vers",
-        "laagste_ooit_prijs": 4.5,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Raw Organic Food Gojibessen biologisch",
-        "actieprijs": 4.04,
-        "normale_prijs": 8.09,
-        "soort": "vers",
-        "laagste_ooit_prijs": 4.04,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Smaakt Mangoreepjes Smaakt bio",
-        "actieprijs": 4.0,
-        "normale_prijs": 7.99,
-        "soort": "vers",
-        "laagste_ooit_prijs": 4.0,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Smaakt Zure kersen bio",
-        "actieprijs": 3.4,
-        "normale_prijs": 6.79,
-        "soort": "vers",
-        "laagste_ooit_prijs": 3.4,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Smaakt Pruimen zonder pit bio",
-        "actieprijs": 3.0,
-        "normale_prijs": 5.99,
-        "soort": "vers",
-        "laagste_ooit_prijs": 3.0,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "BioToday Citroen amandelkoeken biologisch",
-        "actieprijs": 2.1,
-        "normale_prijs": 4.19,
-        "soort": "vers",
-        "laagste_ooit_prijs": 2.1,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Smaakt Banaan gedroogd 250g bio",
-        "actieprijs": 2.0,
-        "normale_prijs": 3.99,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 2.0,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "BioToday Tomato-Courgette spread bio",
-        "actieprijs": 1.84,
-        "normale_prijs": 3.69,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.84,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Smaakt Dadels bio",
-        "actieprijs": 1.59,
-        "normale_prijs": 3.19,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.59,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Smaakt Mungbonen biologisch",
-        "actieprijs": 1.45,
-        "normale_prijs": 2.89,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 1.45,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Smaakt Zuurkool & gember/kurkuma bio",
-        "actieprijs": 1.34,
-        "normale_prijs": 2.69,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 1.34,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Smaakt Lupinebonen bio",
-        "actieprijs": 1.29,
-        "normale_prijs": 2.59,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 1.29,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Smaakt Adukibonen bio",
-        "actieprijs": 1.25,
-        "normale_prijs": 2.49,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 1.25,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Smaakt Zuurkool & rode biet bio",
-        "actieprijs": 1.25,
-        "normale_prijs": 2.49,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 1.25,
-        "laagste_ooit_datum": "2026-10-14",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Smaakt Zwarte bonen bio",
-        "actieprijs": 1.25,
-        "normale_prijs": 2.49,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 1.25,
-        "laagste_ooit_datum": "2026-10-15",
-        "eerder_gezien": 1
-      }
-    ]
+    "Plus": []
   },
   "winkelstatus": {
     "AH": "ok",
