@@ -1,7 +1,43 @@
 {
-  "laatst_bijgewerkt": "2026-10-25T06:01:41.600013",
+  "laatst_bijgewerkt": "2026-10-26T06:01:24.654788",
   "aanbiedingen": {
     "AH": [
+      {
+        "naam": "AH Biologisch Zoete kleine appeltjes",
+        "actieprijs": 2.57,
+        "normale_prijs": 4.29,
+        "soort": "vers",
+        "voorwaarde": "2 stapelen tot 40%",
+        "vanaf": 2
+      },
+      {
+        "naam": "AH Biologisch Flespompoen",
+        "actieprijs": 1.79,
+        "normale_prijs": 2.98,
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.23,
+        "laagste_ooit_datum": "2026-09-28",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "Bonduelle Crispy maïs bio",
+        "actieprijs": 1.0,
+        "normale_prijs": 2.19,
+        "soort": "voorraad",
+        "voorwaarde": "3 voor €2,99",
+        "vanaf": 3
+      },
+      {
+        "naam": "Bonduelle Rode kidneybonen bio",
+        "actieprijs": 1.0,
+        "normale_prijs": 2.09,
+        "soort": "voorraad",
+        "voorwaarde": "3 voor €2,99",
+        "vanaf": 3,
+        "laagste_ooit_prijs": 1.5,
+        "laagste_ooit_datum": "2026-09-07",
+        "eerder_gezien": 1
+      },
       {
         "naam": "Rodolfi Polpa tomatenpulp bio",
         "actieprijs": 0.99,
@@ -12,15 +48,19 @@
         "eerder_gezien": 2
       },
       {
-        "naam": "AH Biologisch Kastanjechampignons",
-        "actieprijs": 1.75,
-        "normale_prijs": 2.19,
+        "naam": "AH Biologisch Pompoen",
+        "actieprijs": 2.68,
+        "normale_prijs": 3.58,
         "soort": "vers",
-        "voorwaarde": "2 voor €3,49",
-        "vanaf": 2,
-        "laagste_ooit_prijs": 1.75,
-        "laagste_ooit_datum": "2026-10-19",
+        "laagste_ooit_prijs": 2.68,
+        "laagste_ooit_datum": "2026-09-21",
         "eerder_gezien": 1
+      },
+      {
+        "naam": "AH Biologisch Mandarijnen",
+        "actieprijs": 2.47,
+        "normale_prijs": 3.29,
+        "soort": "vers"
       }
     ],
     "Jumbo": [
@@ -35,7 +75,20 @@
       }
     ],
     "Lidl": [],
-    "Aldi": [],
+    "Aldi": [
+      {
+        "naam": "Biologische vastkokende aardappelen",
+        "actieprijs": 2.65,
+        "normale_prijs": 2.95,
+        "soort": "vers"
+      },
+      {
+        "naam": "Biologische komkommer",
+        "actieprijs": 1.29,
+        "normale_prijs": 1.49,
+        "soort": "vers"
+      }
+    ],
     "Dirk": [],
     "Plus": []
   },
