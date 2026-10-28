@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-10-27T06:01:22.295173",
+  "laatst_bijgewerkt": "2026-10-28T06:01:15.044341",
   "aanbiedingen": {
     "AH": [
       {
@@ -74,12 +74,21 @@
     ],
     "Jumbo": [
       {
-        "naam": "Jumbo Biologische Wortelen 1KG",
+        "naam": "Jumbo Biologische Pompoen",
         "actieprijs": 1.49,
-        "normale_prijs": 1.85,
+        "normale_prijs": 2.49,
         "soort": "vers",
-        "laagste_ooit_prijs": 1.49,
-        "laagste_ooit_datum": "2026-10-21",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "Jumbo Oranje Pompoen Biologisch",
+        "actieprijs": 1.49,
+        "normale_prijs": 1.99,
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-14",
         "eerder_gezien": 1
       }
     ],
@@ -104,8 +113,39 @@
         "eerder_gezien": 1
       }
     ],
-    "Dirk": [],
-    "Plus": []
+    "Dirk": [
+      {
+        "naam": "Bio+ Oesterzwammen bio",
+        "actieprijs": 1.79,
+        "normale_prijs": 2.19,
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.79,
+        "laagste_ooit_datum": "2026-08-14",
+        "eerder_gezien": 2
+      }
+    ],
+    "Plus": [
+      {
+        "naam": "Biologisch PLUS Tortelloni ricotta spinazie",
+        "actieprijs": 1.5,
+        "normale_prijs": 2.99,
+        "soort": "vers",
+        "voorwaarde": "2 voor €2,99",
+        "vanaf": 2
+      },
+      {
+        "naam": "Biologisch PLUS Rode kool",
+        "actieprijs": 1.49,
+        "normale_prijs": 1.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Biologisch PLUS Witte kool",
+        "actieprijs": 1.49,
+        "normale_prijs": 1.99,
+        "soort": "vers"
+      }
+    ]
   },
   "winkelstatus": {
     "AH": "ok",
