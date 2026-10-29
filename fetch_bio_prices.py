@@ -104,6 +104,18 @@ EXCLUDED_CATEGORIES = {
     "koffie-thee",
     "drogisterij",
     "bier-wijn-sterke-drank",
+    # Op 19 oktober 2026 splitste PrijsProfeet de drank op in "bier", "wijn" en
+    # "sterke-drank". De oude naam bleef bestaan voor wat niet in te delen is,
+    # dus hij bleef hier werken en het viel niet op — terwijl 938 rijen stilletjes
+    # naar de drie nieuwe namen verhuisden en daarmee langs dit filter konden.
+    # Zelfde valkuil als bij "drogisterij" hierboven, nu voor de tweede keer.
+    "bier",
+    "wijn",
+    "sterke-drank",
+    # En op 26 oktober kwam "maaltijden" erbij: verse en kant-en-klare
+    # maaltijden, bowls en maaltijdsalades. Dat is precies wat hier via een
+    # ingredient in de naam binnenkomt — "Edamame green curry" bij Ekoplaza.
+    "maaltijden",
     # Vlees, vis en kaas/vleeswaren horen per definitie niet in een
     # groente&fruit-lijst; hier kwamen bij het testen o.a. biologische
     # hamburgers, olijven en tomatentapenade uit.
@@ -356,6 +368,39 @@ AANBIEDINGEN_STORES = {
     "Aldi": ("aldi", None),
     "Dirk": ("dirk", None),
     "Plus": ("plus", None),
+    # Terug sinds 29 oktober 2026, nu op retailer_category in plaats van op de
+    # productnaam. Zie WINKELSCHAP_AGF hieronder: dat veld is wat er in
+    # september ontbrak.
+    "Ekoplaza": ("ekoplaza", None),
+}
+
+# Winkels waar we niet de productnaam maar het schap van de winkel zelf geloven.
+#
+# Ekoplaza lag er in september uit omdat zijn unified_category niets zei: quiche,
+# crackers en knackebrod stonden er onder "groente-fruit". Het filter moest dus
+# uit de naam opmaken wat groente was, en dat vroeg elke ronde een nieuw
+# naampatroon. Vier producten per dag was dat onderhoud niet waard.
+#
+# Het veld dat dat oplost stond al die tijd in hetzelfde record:
+# retailer_category, de indeling van de winkel zelf. Gemeten op 29 oktober 2026
+# over de hele Ekoplaza-catalogus (468 acties):
+#
+#   AGF                        9 producten, alle negen echt groente of fruit
+#   VLEES, VLEESWAREN EN VIS   de twee kant-en-klaarmaaltijden die het
+#                              naamfilter wel doorliet ("Taco beans", "Edamame
+#                              green curry")
+#
+# Het schap is dus niet alleen schoner dan de naam, het is ook ruimer: Aubergine,
+# Paddenstoelenmix, Butternut pompoenblokjes en Soepgroenten horen er wel bij
+# maar dragen geen trefwoord uit _AGF_SUBSTRING. Zeven treffers met twee fouten
+# worden zo negen treffers zonder.
+#
+# Alleen voor winkels die dit veld betrouwbaar vullen. Aldi vult het nergens
+# (0 van 460), dus daar zou deze regel alles weggooien; de andere vijf hebben het
+# wel maar hebben de naamregel niet nodig, want daar doet unified_category zijn
+# werk al.
+WINKELSCHAP_AGF = {
+    "ekoplaza": {"AGF"},
 }
 
 # Winkels waar het hele assortiment biologisch is. Daar volstaat het
@@ -379,6 +424,10 @@ VOLLEDIG_BIO_WINKELS = {"ekoplaza"}
 # alleen nooit "bio". Maar dat kan veranderen zonder dat iemand het meldt, en
 # elk kwartaal handmatig opnieuw uitzoeken is zonde. Daarom controleert
 # controleer_kandidaten() ze elke ronde en zegt het als er iets verschijnt.
+# Tussen 7 en 20 oktober 2026 ging PrijsProfeet van tien naar twintig ketens.
+# Gemeten op 29 oktober levert alleen Poiesz iets op (een biologische appel);
+# bij de andere negen draagt geen enkele actie een bio-label. Dat kan veranderen
+# zonder dat iemand het meldt, en daar is deze wachter voor.
 KANDIDAAT_WINKELS = {
     # Ekoplaza deed van 1 tot 2 september mee en is er weer uit. Niet omdat de
     # keten niets levert — vier echte producten per dag — maar omdat hun
@@ -389,10 +438,27 @@ KANDIDAAT_WINKELS = {
     # Blijft als kandidaat staan, dus de wachter meldt het als hun data verbetert.
     # Zie het werkplan: een andere ingang voor Ekoplaza (Folderz of een eigen
     # bron) staat op de lange baan.
-    "Ekoplaza": "ekoplaza",
+    #
+    # Nagekomen bericht, 29 oktober 2026: die andere ingang bleek niet nodig. Het
+    # veld retailer_category stond er al en doet wat de naampatronen moesten
+    # doen; Ekoplaza staat sindsdien in AANBIEDINGEN_STORES.
     "Hoogvliet": "hoogvliet",
     "DekaMarkt": "dekamarkt",
     "Vomar": "vomar",
+    # Poiesz heeft als enige van de tien nieuwkomers bio AGF: op 29 oktober een
+    # "Bio+ Biologische Appel". Een keten met een handvol winkels in het noorden
+    # en een treffer per dag is nog geen zevende kolom op de pagina waard, maar
+    # wel het kijken waard.
+    "Poiesz": "poiesz",
+    "Coop": "coop",
+    "Gewoon Coop": "gewoon_coop",
+    "MCD": "mcd",
+    "Boon's Markt": "boons_markt",
+    "Boni": "boni",
+    "SPAR": "spar",
+    "Nettorama": "nettorama",
+    "Dagwinkel": "dagwinkel",
+    "Amazing Oriental": "amazing_oriental",
 }
 
 PRIJSPROFEET_PRODUCTS_URL = "https://www.prijsprofeet.nl/api/v1/products"
@@ -663,8 +729,20 @@ def _als_bio_agf_actie(item):
     5. de actieprijs moet lager zijn dan de normale prijs, als die bekend is.
        Anders staat er een gewone schapprijs tussen de aanbiedingen."""
     naam = item.get("name") or ""
-    if not naam or not _is_agf(naam):
+    if not naam:
         return None
+    schap = WINKELSCHAP_AGF.get((item.get("retailer") or "").lower())
+    if schap is None:
+        if not _is_agf(naam):
+            return None
+    else:
+        # Bij deze winkels vervangt het schap de trefwoorden — maar niet de
+        # tegencheck: zet Ekoplaza morgen een jus d'orange op het AGF-schap, dan
+        # houdt _NIET_AGF_PATRONEN hem alsnog tegen.
+        if (item.get("retailer_category") or "").strip().upper() not in schap:
+            return None
+        if any(p.search(naam) for p in _NIET_AGF_PATRONEN):
+            return None
     if item.get("unified_category") in EXCLUDED_CATEGORIES:
         return None
     tags = item.get("dietary_tags") or []
@@ -1187,8 +1265,11 @@ def _jsonld(aanbiedingen, bijgewerkt):
         "@context": "https://schema.org",
         "@type": "CollectionPage",
         "name": "Het Bio Lijstje",
-        "description": ("De lopende biologische groente- en fruitaanbiedingen van zes "
-                        "Nederlandse supermarkten, elke ochtend opnieuw opgehaald."),
+        # Het aantal uit de data, niet uit het hoofd: "zes" stond hier als woord
+        # en werd onwaar op de dag dat Ekoplaza meeging.
+        "description": (f"De lopende biologische groente- en fruitaanbiedingen van "
+                        f"{_telwoord(len(aanbiedingen))} Nederlandse supermarkten, "
+                        f"elke ochtend opnieuw opgehaald."),
         "url": "https://hetbiolijstje.nl/",
         "inLanguage": "nl-NL",
         "dateModified": bijgewerkt,
@@ -1394,15 +1475,29 @@ def cijfers_uit_dagtellingen(dagen):
 
     Alleen dagen waarop alle winkels zijn opgehaald tellen mee. Een dag waarop
     een winkel ontbreekt geeft anders een nul die niets over die winkel zegt —
-    dezelfde fout als "geen acties" tegenover "niet opgehaald" op de voorpagina."""
+    dezelfde fout als "geen acties" tegenover "niet opgehaald" op de voorpagina.
+
+    "Alle winkels" is de ploeg van de eerste gemeten dag, niet iedereen die hier
+    ooit in stond. Dat verschil werd zichtbaar toen Ekoplaza op 29 oktober 2026
+    meeging: bij de vereniging van alle winkels voldeed opeens geen enkele dag
+    van de 69 ervoor, want op geen daarvan stond Ekoplaza. De reeks zou tot één
+    dag krimpen. Een winkel die later aanschuift hoort de meting niet te wissen,
+    en hoort ook geen nuldagen te krijgen over een tijd dat niemand hem telde —
+    dus blijft hij buiten dit overzicht tot hij zelf een reeks heeft."""
     if not dagen:
         return None
-    winkels = sorted({w for d in dagen.values() for w in d})
+    # De ploeg van de eerste dag. Latere aanwinsten staan wel in de tellingen
+    # (die blijven we bewaren) maar nog niet in deze cijfers.
+    eerste = min(dagen)
+    winkels = sorted(dagen[eerste])
+    later = sorted({w for d in dagen.values() for w in d} - set(winkels))
     volledig = {d: v for d, v in dagen.items() if all(w in v for w in winkels)}
     if not volledig:
         return None
 
-    totalen = {d: sum(v.values()) for d, v in volledig.items()}
+    # Alleen de ploeg optellen. Anders zou het gemiddelde "bij zes supermarkten
+    # samen" vanaf de dag dat Ekoplaza meedoet stilletjes zeven winkels tellen.
+    totalen = {d: sum(v.get(w, 0) for w in winkels) for d, v in volledig.items()}
     laagste_dag = min(totalen, key=lambda d: totalen[d])
     per_winkel = []
     for w in winkels:
@@ -1426,6 +1521,9 @@ def cijfers_uit_dagtellingen(dagen):
         "laagste": totalen[laagste_dag], "laagste_datum": laagste_dag,
         "hoogste": max(totalen.values()),
         "per_winkel": per_winkel,
+        # Winkels die na de eerste dag zijn aangeschoven. De pagina noemt ze,
+        # want anders telt de lezer zes winkels hier en zeven op de voorpagina.
+        "later": later,
     }
 
 
@@ -1467,6 +1565,16 @@ def cijferblok_html(c):
     """De inhoud tussen de merktekens op /cijfers/."""
     if not c:
         return "<p>Er is nog niet genoeg gemeten om iets te zeggen.</p>"
+    hoeveel = _telwoord(len(c["per_winkel"]))
+    nagekomen = ""
+    if c.get("later"):
+        namen = c["later"]
+        lijst = namen[0] if len(namen) == 1 else (
+            ", ".join(namen[:-1]) + " en " + namen[-1])
+        werkwoord = "doet" if len(namen) == 1 else "doen"
+        nagekomen = (f' {_html_escape(lijst)} {werkwoord} inmiddels ook mee op de '
+                     f'voorpagina, maar {"heeft" if len(namen) == 1 else "hebben"} '
+                     f'hier nog geen reeks.')
     rijen = "".join(
         f"<tr><td>{_html_escape(r['winkel'])}</td>"
         f"<td class=\"getal\">{r['nuldagen']}</td>"
@@ -1476,16 +1584,30 @@ def cijferblok_html(c):
     )
     return (
         f'<p class="kerngetal"><strong>{_komma(c["gemiddeld"])}</strong> biologische '
-        f'groente- en fruitaanbiedingen per dag, bij zes supermarkten samen.</p>'
+        f'groente- en fruitaanbiedingen per dag, bij {hoeveel} supermarkten samen.</p>'
         f'<p>Gemeten van {_leesbare_dag(c["van"])} tot en met {_leesbare_dag(c["tot"])}: '
         f'{c["dagen"]} dagen. Op de magerste dag stonden er {c["laagste"]}, op de rijkste '
-        f'{c["hoogste"]}.</p>'
+        f'{c["hoogste"]}.{nagekomen}</p>'
         f'<h3>Dagen zonder ook maar één biologische aanbieding</h3>'
         + _staafdiagram(c["per_winkel"], c["dagen"]) +
         f'<table class="cijfertabel"><thead><tr><th>Winkel</th>'
         f'<th class="getal">Dagen op nul</th><th class="getal">Langste reeks</th>'
         f'<th class="getal">Gemiddeld per dag</th></tr></thead><tbody>{rijen}</tbody></table>'
     )
+
+
+# Geschreven getallen tot twintig; daarboven zijn cijfers prettiger te lezen
+# en is de kans op een nieuwe keten ook klein.
+_TELWOORDEN = ("nul", "een", "twee", "drie", "vier", "vijf", "zes", "zeven",
+               "acht", "negen", "tien", "elf", "twaalf", "dertien", "veertien",
+               "vijftien", "zestien", "zeventien", "achttien", "negentien",
+               "twintig")
+
+
+def _telwoord(n):
+    """"zes supermarkten" stond als woord in de tekst en werd onwaar op de dag
+    dat Ekoplaza erbij kwam. Nu komt het uit de telling."""
+    return _TELWOORDEN[n] if 0 <= n < len(_TELWOORDEN) else str(n)
 
 
 def _komma(getal):

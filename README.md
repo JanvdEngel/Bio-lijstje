@@ -133,8 +133,13 @@ catalogus, niet tegen de lijst van vandaag.** Twee keer ging dat mis:
 
 - Ekoplaza leverde 23 treffers waarvan 21 quiche en chips. Na twee rondes extra
   filters kwamen er alsnog honing, crackers, knäckebröd en kombucha door. Hun
-  `unified_category` zegt niets, dus dat bleef terugkomen; de keten staat nu in
-  `KANDIDAAT_WINKELS` in plaats van in de lijst.
+  `unified_category` zegt niets, dus dat bleef terugkomen, en de keten ging eruit.
+  Eind oktober 2026 bleek het antwoord in hetzelfde record te staan:
+  `retailer_category`, de indeling van de winkel zelf. Alles op hun AGF-schap is
+  groente of fruit, en de twee kant-en-klaarmaaltijden die het naamfilter
+  doorliet staan daarbuiten. Zie `WINKELSCHAP_AGF`: voor die winkels vervangt het
+  schap de trefwoorden, de tegencheck blijft. Les: kijk eerst of de bron het
+  antwoord al levert, voor je het uit de productnaam gaat raden.
 - Een regel die alles met een hoeveelheid in milliliters zou weren, kostte niets
   tegen de aanbiedingen van dat moment. Tegen de hele catalogus haalde hij één
   product weg dat er wél hoort: "Bio appelmoes".
