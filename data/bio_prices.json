@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-10-29T20:43:06.479618",
+  "laatst_bijgewerkt": "2026-10-29T21:30:37.606028",
   "aanbiedingen": {
     "AH": [
       {
@@ -143,6 +143,62 @@
         "laagste_ooit_datum": "2026-10-28",
         "eerder_gezien": 1
       }
+    ],
+    "Ekoplaza": [
+      {
+        "naam": "Paksoi",
+        "actieprijs": 1.59,
+        "normale_prijs": 2.59,
+        "soort": "vers"
+      },
+      {
+        "naam": "Baby avocado",
+        "actieprijs": 2.29,
+        "normale_prijs": 2.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Aubergine",
+        "actieprijs": 1.39,
+        "normale_prijs": 1.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Red Love appels",
+        "actieprijs": 2.39,
+        "normale_prijs": 2.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Butternut pompoenblokjes",
+        "actieprijs": 1.99,
+        "normale_prijs": 2.59,
+        "soort": "vers"
+      },
+      {
+        "naam": "Witlof",
+        "actieprijs": 3.59,
+        "normale_prijs": 3.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Bleekselderij",
+        "actieprijs": 2.59,
+        "normale_prijs": 2.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Soepgroenten",
+        "actieprijs": 1.99,
+        "normale_prijs": 2.29,
+        "soort": "vers"
+      },
+      {
+        "naam": "Paddenstoelenmix",
+        "actieprijs": 2.99,
+        "normale_prijs": 3.29,
+        "soort": "vers"
+      }
     ]
   },
   "winkelstatus": {
@@ -151,6 +207,7 @@
     "Lidl": "ok",
     "Aldi": "ok",
     "Dirk": "ok",
-    "Plus": "ok"
+    "Plus": "ok",
+    "Ekoplaza": "ok"
   }
 }
