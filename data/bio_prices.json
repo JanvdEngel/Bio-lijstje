@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-10-29T21:30:37.606028",
+  "laatst_bijgewerkt": "2026-10-30T06:01:51.145888",
   "aanbiedingen": {
     "AH": [
       {
@@ -149,55 +149,82 @@
         "naam": "Paksoi",
         "actieprijs": 1.59,
         "normale_prijs": 2.59,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.59,
+        "laagste_ooit_datum": "2026-10-29",
+        "eerder_gezien": 1
       },
       {
         "naam": "Baby avocado",
         "actieprijs": 2.29,
         "normale_prijs": 2.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.29,
+        "laagste_ooit_datum": "2026-10-29",
+        "eerder_gezien": 1
       },
       {
         "naam": "Aubergine",
         "actieprijs": 1.39,
         "normale_prijs": 1.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.39,
+        "laagste_ooit_datum": "2026-10-29",
+        "eerder_gezien": 1
       },
       {
         "naam": "Red Love appels",
         "actieprijs": 2.39,
         "normale_prijs": 2.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.39,
+        "laagste_ooit_datum": "2026-10-29",
+        "eerder_gezien": 1
       },
       {
         "naam": "Butternut pompoenblokjes",
         "actieprijs": 1.99,
         "normale_prijs": 2.59,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.99,
+        "laagste_ooit_datum": "2026-10-29",
+        "eerder_gezien": 1
       },
       {
         "naam": "Witlof",
         "actieprijs": 3.59,
         "normale_prijs": 3.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 3.59,
+        "laagste_ooit_datum": "2026-10-29",
+        "eerder_gezien": 1
       },
       {
         "naam": "Bleekselderij",
         "actieprijs": 2.59,
         "normale_prijs": 2.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.59,
+        "laagste_ooit_datum": "2026-10-29",
+        "eerder_gezien": 1
       },
       {
         "naam": "Soepgroenten",
         "actieprijs": 1.99,
         "normale_prijs": 2.29,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.99,
+        "laagste_ooit_datum": "2026-10-29",
+        "eerder_gezien": 1
       },
       {
         "naam": "Paddenstoelenmix",
         "actieprijs": 2.99,
         "normale_prijs": 3.29,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.99,
+        "laagste_ooit_datum": "2026-10-29",
+        "eerder_gezien": 1
       }
     ]
   },
