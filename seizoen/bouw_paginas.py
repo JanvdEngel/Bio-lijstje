@@ -449,7 +449,7 @@ def overpagina(data):
     <div class="prose">
       <p><strong>De aanbiedingen</strong> komen van de
       <a href="https://www.prijsprofeet.nl/" rel="noopener">PrijsProfeet-API</a>,
-      die de actiecatalogus van tien Nederlandse ketens ontsluit. Daar filter ik
+      die de actiecatalogus van twintig Nederlandse ketens ontsluit. Daar filter ik
       zelf de biologische groente en het fruit uit. Dat is de enige bron voor de
       prijzen; er wordt geen enkele winkelsite door mij uitgelezen.</p>
 
