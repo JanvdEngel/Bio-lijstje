@@ -59,10 +59,14 @@ def actie(naam, retailer="ekoplaza", schap="AGF", categorie="groente-fruit",
 # 1. Het schap is ruimer dan de trefwoorden
 # ---------------------------------------------------------------------------
 print("Op het AGF-schap van Ekoplaza, zonder trefwoord in de naam:")
-# Alle vier stonden op 29 oktober 2026 in de aanbieding en werden gemist: geen
+# Alle drie stonden op 29 oktober 2026 in de aanbieding en werden gemist: geen
 # van deze namen draagt een woord uit _AGF_SUBSTRING of _AGF_TAIL.
-for naam in ["Soepgroenten", "Paddenstoelenmix", "Butternut pompoenblokjes",
-             "Aubergine"]:
+#
+# Aubergine stond hier ook bij en is er op 3 november uit gehaald: die kreeg
+# een eigen trefwoord toen hij in de seizoenskalender kwam, dus hij bewijst
+# niets meer over het schap. Dat de test daarover viel is precies de bedoeling
+# van de tweede keuring hieronder.
+for naam in ["Soepgroenten", "Paddenstoelenmix", "Butternut pompoenblokjes"]:
     keur(f"{naam!r} komt door", bio._als_bio_agf_actie(actie(naam)) is not None,
          "het schap zegt AGF, dus de naam hoeft niets te bewijzen")
     keur(f"{naam!r} zou op naam alleen afvallen", not bio._is_agf(naam),

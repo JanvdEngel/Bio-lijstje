@@ -69,6 +69,14 @@ AGF_KEYWORDS = [
     # in geen trefwoord, en pompoen mocht alleen aan het begin van een woord
     # matchen. Gemeld door Jan op 7 september, EUR 1,69 van EUR 2,49.
     "hokkaido",
+    # Aubergine ontbrak hier terwijl hij in de seizoenskalender kwam te staan.
+    # Hij glipte er tot nu toe alleen door bij Ekoplaza, en dan niet op zijn
+    # naam maar omdat hij op hun AGF-schap ligt. Gemeten op 3 november 2026
+    # tegen 11.920 producten van alle negen ketens: zes treffers, waarvan drie
+    # gewone aubergines in groente-fruit en drie bereidingen die hun categorie
+    # al tegenhoudt ("Klilah Aubergine babaganush" staat in vega, "AH Terra
+    # miso aubergine" in maaltijden). Geen enkele valse treffer dus.
+    "aubergine",
 ]
 
 # Matcht "bio", maar ook "biologisch"/"biologische" — AH, Jumbo en Plus noemen

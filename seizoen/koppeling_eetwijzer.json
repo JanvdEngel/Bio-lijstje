@@ -33,7 +33,9 @@
     "Ui": "Uien",
     "Venkel": "Knolvenkel",
     "Winterwortel": "Wortels",
-    "Witlof": "Witlof"
+    "Witlof": "Witlof",
+    "Aubergine": "Aubergines",
+    "Blauwe bessen": "Blauwe bessen"
   },
   "niet_gekoppeld": {
     "Boerenkool": "staat niet in de Eetwijzer",
@@ -54,7 +56,8 @@
     "Veldsla": "staat niet in de Eetwijzer",
     "Walnoot": "staat niet in de Eetwijzer",
     "Winterpostelein": "staat niet in de Eetwijzer",
-    "Witte kool": "de Eetwijzer meet Chinese kool en Rode kool; witte kool is geen van beide"
+    "Witte kool": "de Eetwijzer meet Chinese kool en Rode kool; witte kool is geen van beide",
+    "Mais": "staat niet in de Eetwijzer"
   },
   "kanttekeningen": {
     "Nieuwe aardappelen": "De Eetwijzer geeft een cijfer voor aardappelen in het algemeen, niet apart voor nieuwe aardappelen. Gekoppeld omdat het hetzelfde gewas is, maar het cijfer gaat over de hele oogst.",

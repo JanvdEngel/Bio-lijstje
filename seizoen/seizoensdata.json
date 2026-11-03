@@ -1,6 +1,6 @@
 {
-  "bron": "Handmatig samengesteld op basis van de klassieke NL-seizoenslogica (volle grond, plastic tunnel, onverwarmde kas). Het winterhalfjaar is op 3 november 2026 getoetst tegen de seizoenskalender van het Voedingscentrum; de zomermaanden nog niet. Geen live databron.",
-  "let_op_prijzen": "De richtprijzen zijn een eigen inschatting, geen meting: 17 unieke bedragen over 130 vermeldingen, allemaal afgerond. Ze staan hier bewaard maar worden niet meer op de site getoond. Zie het werkplan: echte prijzen komen via de koppeltabel met PrijsProfeet.",
+  "bron": "Handmatig samengesteld op basis van de klassieke NL-seizoenslogica (volle grond, plastic tunnel, onverwarmde kas). In november 2026 maand voor maand getoetst tegen de seizoenskalender van het Voedingscentrum. Waar wij korter zijn dan zij is dat een keuze: deze kalender zegt wanneer iets op zijn best is uit Nederlandse grond, niet wanneer het ergens nog te koop is. Daarom geen tomaat in oktober en geen bloemkool in maart. Geen live databron.",
+  "let_op_prijzen": "De richtprijzen zijn een eigen inschatting, geen meting: 29 unieke bedragen over 246 van de 253 vermeldingen, allemaal afgerond. Bij de soorten die er later bij kwamen staat geen bedrag; er valt niets te schatten wat toch niet getoond wordt. Zie het werkplan: echte prijzen komen via de koppeltabel met PrijsProfeet.",
   "maanden": [
     {
       "maand": "januari",
@@ -293,6 +293,11 @@
           "naam": "Pompoen",
           "tip": "Alleen nog hele exemplaren met gave schil.",
           "richtprijs": "€1,50 / kg"
+        },
+        {
+          "naam": "Raapstelen",
+          "tip": "Eerste snee van het jaar.",
+          "richtprijs": "€2,50 / bosje"
         }
       ],
       "fruit": [
@@ -337,10 +342,21 @@
           "naam": "Lente-ui",
           "tip": "Mild, ook rauw goed.",
           "richtprijs": "€1,00 / bosje"
+        },
+        {
+          "naam": "Raapstelen",
+          "tip": "Volop, kort door de pan.",
+          "richtprijs": "€2,50 / bosje"
         }
       ],
-      "fruit": [],
-      "intro": "De schraalste maand van het jaar: vijf soorten, en geen enkele daarvan fruit. De bewaarappels zijn op en de aardbeien beginnen pas in juni. Wel komen de asperges op gang, en loopt de rabarber uit."
+      "fruit": [
+        {
+          "naam": "Aardbei",
+          "tip": "Eerste uit de tunnel, nog prijzig.",
+          "richtprijs": "€2,50 / doosje"
+        }
+      ],
+      "intro": "De schraalste maand van het jaar: zeven soorten. De bewaarappels en -peren zijn op, en het enige fruit is de eerste tunnelaardbei — nog prijzig. Aan de groentekant komen de asperges op gang, loopt de rabarber uit en snijd je de eerste raapstelen."
     },
     {
       "maand": "mei",
@@ -380,10 +396,36 @@
           "naam": "Kropsla",
           "tip": "Volle krop, lang houdbaar in folie.",
           "richtprijs": "€1,00 / stuk"
+        },
+        {
+          "naam": "Andijvie",
+          "tip": "Eerste snee, mals en mild.",
+          "richtprijs": "€1,20 / stuk"
+        },
+        {
+          "naam": "Koolrabi",
+          "tip": "Eerste oogst, klein en zacht.",
+          "richtprijs": "€1,80 / kg"
+        },
+        {
+          "naam": "Raapstelen",
+          "tip": "Laatste voorjaarssnee.",
+          "richtprijs": "€2,50 / bosje"
+        },
+        {
+          "naam": "Spinazie",
+          "tip": "Voorjaarsoogst, blad nog jong.",
+          "richtprijs": "€2,50 / zak"
         }
       ],
-      "fruit": [],
-      "intro": "Aspergemaand. De oogst stopt traditioneel op 24 juni, Sint-Jan, zodat het gewas zich kan herstellen. Daarnaast beginnen de peulvruchten — doperwten en tuinbonen — die je het beste vlak voor gebruik dopt, en komt de eerste kropsla van de volle grond. Nederlands fruit is er ook deze maand nog niet."
+      "fruit": [
+        {
+          "naam": "Aardbei",
+          "tip": "Volle grond komt op gang, smaak wordt voller.",
+          "richtprijs": "€2,50 / doosje"
+        }
+      ],
+      "intro": "Aspergemaand. De oogst stopt traditioneel op 24 juni, Sint-Jan, zodat het gewas zich kan herstellen. Daarnaast beginnen de peulvruchten — doperwten en tuinbonen — die je het beste vlak voor gebruik dopt, komt de eerste kropsla van de volle grond, en haalt de aardbei de volle grond: vanaf nu wordt de smaak voller."
     },
     {
       "maand": "juni",
@@ -428,6 +470,41 @@
           "naam": "Tuinbonen",
           "tip": "Nog volop verkrijgbaar.",
           "richtprijs": "€3,50 / kg"
+        },
+        {
+          "naam": "Andijvie",
+          "tip": "Volop, krimpt sterk bij het stoven.",
+          "richtprijs": "€1,20 / stuk"
+        },
+        {
+          "naam": "Asperges",
+          "tip": "Tot Sint-Jan op 24 juni, daarna is het klaar.",
+          "richtprijs": "€7,50 / kg"
+        },
+        {
+          "naam": "Broccoli",
+          "tip": "Eerste oogst, stevige roosjes.",
+          "richtprijs": "€1,80 / stuk"
+        },
+        {
+          "naam": "Koolrabi",
+          "tip": "Volop, rauw het lekkerst.",
+          "richtprijs": "€1,80 / kg"
+        },
+        {
+          "naam": "Rabarber",
+          "tip": "Laatste weken, daarna wordt hij draderig.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Radijs",
+          "tip": "Snel gegroeid, knapperig.",
+          "richtprijs": "€1,00 / bosje"
+        },
+        {
+          "naam": "Spitskool",
+          "tip": "Volop, blijft zacht van structuur.",
+          "richtprijs": "€1,50 / stuk"
         }
       ],
       "fruit": [
@@ -440,9 +517,14 @@
           "naam": "Kersen",
           "tip": "Koel bewaren, snel eten.",
           "richtprijs": "€8,00 / kg"
+        },
+        {
+          "naam": "Framboos",
+          "tip": "Eerste pluk, zacht en snel te eten.",
+          "richtprijs": "€2,50 / doosje"
         }
       ],
-      "intro": "De maand waarin het zomerseizoen echt begint: aardbeien, kersen en de eerste nieuwe aardappelen liggen er tegelijk. Tegelijk sluit de aspergeoogst op 24 juni af, en zijn dit de laatste weken voor doperwten en tuinbonen."
+      "intro": "Het zomerseizoen begint echt: aardbeien, kersen, frambozen en de eerste nieuwe aardappelen liggen er tegelijk. De aspergeoogst sluit op 24 juni af, en de eerste broccoli, koolrabi en spitskool komen van het land."
     },
     {
       "maand": "juli",
@@ -482,6 +564,70 @@
           "naam": "Venkel",
           "tip": "Rauw in salade of geroosterd.",
           "richtprijs": "€2,00 / stuk"
+        },
+        {
+          "naam": "Andijvie",
+          "tip": "Zomerandijvie, fijner van blad.",
+          "richtprijs": "€1,20 / stuk"
+        },
+        {
+          "naam": "Bleekselderij",
+          "tip": "Eerste oogst, stevige stelen.",
+          "richtprijs": "€1,50 / stuk"
+        },
+        {
+          "naam": "Broccoli",
+          "tip": "Volop, kort garen voor de kleur.",
+          "richtprijs": "€1,80 / stuk"
+        },
+        {
+          "naam": "Doperwten",
+          "tip": "Laatste weken, dop ze vlak voor gebruik.",
+          "richtprijs": "€4,00 / kg"
+        },
+        {
+          "naam": "Koolrabi",
+          "tip": "Blijft mals bij regelmatige oogst.",
+          "richtprijs": "€1,80 / kg"
+        },
+        {
+          "naam": "Paprika",
+          "tip": "Eerste NL-oogst, groen kleurt later door.",
+          "richtprijs": "€3,50 / kg"
+        },
+        {
+          "naam": "Prei",
+          "tip": "Zomerprei, dunner en milder.",
+          "richtprijs": "€2,00 / kg"
+        },
+        {
+          "naam": "Radijs",
+          "tip": "Blijft doorkomen bij vochtig weer.",
+          "richtprijs": "€1,00 / bosje"
+        },
+        {
+          "naam": "Rode biet",
+          "tip": "Eerste jonge bieten, zacht van schil.",
+          "richtprijs": "€2,00 / kg"
+        },
+        {
+          "naam": "Spitskool",
+          "tip": "Laatste van de vroege teelt.",
+          "richtprijs": "€1,50 / stuk"
+        },
+        {
+          "naam": "Tomaat",
+          "tip": "Onverwarmde kas, smaak komt op gang.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Tuinbonen",
+          "tip": "Laatste weken, dubbel doppen loont.",
+          "richtprijs": "€3,50 / kg"
+        },
+        {
+          "naam": "Aubergine",
+          "tip": "Eerste NL-kasteelt, stevig vruchtvlees."
         }
       ],
       "fruit": [
@@ -519,9 +665,18 @@
           "naam": "Peer",
           "tip": "Vroege rassen starten.",
           "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Kersen",
+          "tip": "Piekseizoen, late rassen zijn het zoetst.",
+          "richtprijs": "€8,00 / kg"
+        },
+        {
+          "naam": "Blauwe bessen",
+          "tip": "Nederlandse oogst, kort houdbaar."
         }
       ],
-      "intro": "Zacht fruit neemt het over. Bramen, frambozen, nectarines, perziken en pruimen komen deze maand allemaal binnen, en de eerste peren volgen. Aan de groentekant verandert er weinig — juli is de enige maand waarin niets van de lijst verdwijnt."
+      "intro": "Zacht fruit neemt het over: bramen, frambozen, blauwe bessen, nectarines, perziken en pruimen komen allemaal binnen, en de eerste peren volgen. Aan de groentekant beginnen de vruchtgroenten — tomaat, paprika en aubergine uit de onverwarmde kas — terwijl doperwten en tuinbonen hun laatste weken hebben."
     },
     {
       "maand": "augustus",
@@ -596,6 +751,54 @@
           "naam": "Paprika",
           "tip": "NL-teelt op zijn best.",
           "richtprijs": "€3,50 / kg"
+        },
+        {
+          "naam": "Koolrabi",
+          "tip": "Grotere knollen, schil dikker.",
+          "richtprijs": "€1,80 / kg"
+        },
+        {
+          "naam": "Pompoen",
+          "tip": "Eerste pompoenen, schil nog zacht.",
+          "richtprijs": "€1,50 / kg"
+        },
+        {
+          "naam": "Radijs",
+          "tip": "Kan scherp worden bij droogte.",
+          "richtprijs": "€1,00 / bosje"
+        },
+        {
+          "naam": "Rode biet",
+          "tip": "Volop, ook het blad is eetbaar.",
+          "richtprijs": "€2,00 / kg"
+        },
+        {
+          "naam": "Rode kool",
+          "tip": "Eerste kolen van het nieuwe seizoen.",
+          "richtprijs": "€1,20 / kg"
+        },
+        {
+          "naam": "Savooiekool",
+          "tip": "Zomersavooie, losser van blad.",
+          "richtprijs": "€1,50 / stuk"
+        },
+        {
+          "naam": "Ui",
+          "tip": "Nieuwe oogst, nog zacht van schil.",
+          "richtprijs": "€1,20 / kg"
+        },
+        {
+          "naam": "Witte kool",
+          "tip": "Eerste kolen, nog los van blad.",
+          "richtprijs": "€1,00 / kg"
+        },
+        {
+          "naam": "Aubergine",
+          "tip": "Piekseizoen, glanzende schil is vers."
+        },
+        {
+          "naam": "Mais",
+          "tip": "Suikermais van de volle grond."
         }
       ],
       "fruit": [
@@ -633,9 +836,23 @@
           "naam": "Pruim",
           "tip": "Piekseizoen, ook goed voor jam.",
           "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Appel",
+          "tip": "Eerste vroege rassen, fris en zuur.",
+          "richtprijs": "€2,00 / kg"
+        },
+        {
+          "naam": "Druif",
+          "tip": "Eerste NL-kasdruiven komen binnen.",
+          "richtprijs": "€4,00 / kg"
+        },
+        {
+          "naam": "Blauwe bessen",
+          "tip": "Piekseizoen, goed in te vriezen."
         }
       ],
-      "intro": "Het hoogtepunt: eenentwintig soorten, bijna twee keer het jaargemiddelde. Tomaat en paprika van de volle grond hebben nu hun meeste smaak, en de overlap tussen zomer- en najaarsgewassen is op zijn grootst. Geniet ervan, want in september valt het merendeel hiervan weg."
+      "intro": "Het hoogtepunt, met vierendertig soorten. Tomaat, paprika en aubergine hebben nu hun meeste smaak, de eerste appels en pompoenen komen binnen, en de bewaargewassen — ui, rode kool, witte kool — worden geoogst. Zomer en najaar overlappen hier het sterkst."
     },
     {
       "maand": "september",
@@ -675,6 +892,109 @@
           "naam": "Pastinaak",
           "tip": "Eerste oogst.",
           "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Andijvie",
+          "tip": "Herfstoogst, weer wat steviger.",
+          "richtprijs": "€1,20 / stuk"
+        },
+        {
+          "naam": "Bleekselderij",
+          "tip": "Volop, kern is het malst.",
+          "richtprijs": "€1,50 / stuk"
+        },
+        {
+          "naam": "Bloemkool",
+          "tip": "Najaarskool, vaste struiken.",
+          "richtprijs": "€1,50 / stuk"
+        },
+        {
+          "naam": "Broccoli",
+          "tip": "Najaarsoogst, nog volop.",
+          "richtprijs": "€1,80 / stuk"
+        },
+        {
+          "naam": "Courgette",
+          "tip": "Laatste van de volle grond.",
+          "richtprijs": "€1,20 / kg"
+        },
+        {
+          "naam": "Knolselderij",
+          "tip": "Eerste oogst, nog licht van gewicht.",
+          "richtprijs": "€1,80 / kg"
+        },
+        {
+          "naam": "Komkommer",
+          "tip": "Laatste uit de onverwarmde kas.",
+          "richtprijs": "€0,70 / stuk"
+        },
+        {
+          "naam": "Koolrabi",
+          "tip": "Najaarsoogst, goed te bewaren.",
+          "richtprijs": "€1,80 / kg"
+        },
+        {
+          "naam": "Kropsla",
+          "tip": "Laatste van de volle grond.",
+          "richtprijs": "€0,80 / stuk"
+        },
+        {
+          "naam": "Paprika",
+          "tip": "Rood en zoet, einde van de teelt.",
+          "richtprijs": "€3,50 / kg"
+        },
+        {
+          "naam": "Radijs",
+          "tip": "Najaarszaai, weer milder.",
+          "richtprijs": "€1,00 / bosje"
+        },
+        {
+          "naam": "Rode biet",
+          "tip": "Oogst voor de bewaring begint.",
+          "richtprijs": "€2,00 / kg"
+        },
+        {
+          "naam": "Savooiekool",
+          "tip": "Volop, steviger naarmate het kouder wordt.",
+          "richtprijs": "€1,50 / stuk"
+        },
+        {
+          "naam": "Snijboon",
+          "tip": "Laatste pluk van het jaar.",
+          "richtprijs": "€3,50 / kg"
+        },
+        {
+          "naam": "Sperzieboon",
+          "tip": "Laatste oogst, blijft fijn van draad.",
+          "richtprijs": "€3,50 / kg"
+        },
+        {
+          "naam": "Spinazie",
+          "tip": "Najaarsoogst, steviger blad.",
+          "richtprijs": "€2,50 / zak"
+        },
+        {
+          "naam": "Tomaat",
+          "tip": "Laatste trossen, nog volop smaak.",
+          "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Ui",
+          "tip": "Geoogst en gedroogd voor de bewaring.",
+          "richtprijs": "€1,20 / kg"
+        },
+        {
+          "naam": "Venkel",
+          "tip": "Knolvenkel op zijn best, zoet van smaak.",
+          "richtprijs": "€2,00 / stuk"
+        },
+        {
+          "naam": "Aubergine",
+          "tip": "Laatste NL-oogst van het jaar."
+        },
+        {
+          "naam": "Mais",
+          "tip": "Laatste kolven, kook ze snel na het plukken."
         }
       ],
       "fruit": [
@@ -697,9 +1017,19 @@
           "naam": "Pruim",
           "tip": "Laatste ronde van het seizoen.",
           "richtprijs": "€2,50 / kg"
+        },
+        {
+          "naam": "Braam",
+          "tip": "Laatste pluk, rijp tot diep in de maand.",
+          "richtprijs": "€2,50 / doosje"
+        },
+        {
+          "naam": "Framboos",
+          "tip": "Herfstdragers geven een tweede oogst.",
+          "richtprijs": "€2,50 / doosje"
         }
       ],
-      "intro": "De oogstmaand kantelt naar het najaar. Pompoen, boerenkool en de eerste bewaarkolen komen op, samen met appels en druiven, terwijl vrijwel al het zachte zomerfruit verdwijnt. Wat er nu bij komt is grotendeels wat je de rest van het jaar uit de opslag zult eten."
+      "intro": "De oogstmaand kantelt naar het najaar. Pompoen, boerenkool, knolselderij en de eerste bewaarkolen komen op, samen met appels en druiven, terwijl het zachte zomerfruit op de braam en framboos na verdwijnt. Wat er nu bij komt is grotendeels wat je de rest van het jaar uit de opslag zult eten."
     },
     {
       "maand": "oktober",
