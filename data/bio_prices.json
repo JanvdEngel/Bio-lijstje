@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-11-02T06:01:41.778272",
+  "laatst_bijgewerkt": "2026-11-03T06:01:39.271245",
   "aanbiedingen": {
     "AH": [
       {
@@ -8,7 +8,10 @@
         "normale_prijs": 1.79,
         "soort": "vers",
         "voorwaarde": "2 voor €1,79",
-        "vanaf": 2
+        "vanaf": 2,
+        "laagste_ooit_prijs": 0.9,
+        "laagste_ooit_datum": "2026-11-02",
+        "eerder_gezien": 1
       },
       {
         "naam": "AH Biologisch Mandarijnen",
@@ -23,7 +26,10 @@
         "naam": "AH Biologisch Citroenen",
         "actieprijs": 1.19,
         "normale_prijs": 1.59,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.19,
+        "laagste_ooit_datum": "2026-11-02",
+        "eerder_gezien": 1
       }
     ],
     "Jumbo": [
@@ -54,13 +60,16 @@
         "soort": "vers",
         "laagste_ooit_prijs": 1.19,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 4
+        "eerder_gezien": 5
       },
       {
         "naam": "BIO ORGANIC Bio rode bieten",
         "actieprijs": 0.59,
-        "normale_prijs": 0.79,
-        "soort": "vers"
+        "normale_prijs": null,
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.59,
+        "laagste_ooit_datum": "2026-11-02",
+        "eerder_gezien": 1
       }
     ],
     "Aldi": [],
@@ -142,20 +151,20 @@
         "eerder_gezien": 1
       },
       {
-        "naam": "Witlof",
-        "actieprijs": 3.59,
-        "normale_prijs": 3.99,
-        "soort": "vers",
-        "laagste_ooit_prijs": 3.59,
-        "laagste_ooit_datum": "2026-10-29",
-        "eerder_gezien": 1
-      },
-      {
         "naam": "Bleekselderij",
         "actieprijs": 2.59,
         "normale_prijs": 2.99,
         "soort": "vers",
         "laagste_ooit_prijs": 2.59,
+        "laagste_ooit_datum": "2026-10-29",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "Witlof",
+        "actieprijs": 3.59,
+        "normale_prijs": 3.99,
+        "soort": "vers",
+        "laagste_ooit_prijs": 3.59,
         "laagste_ooit_datum": "2026-10-29",
         "eerder_gezien": 1
       },
