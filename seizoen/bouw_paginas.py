@@ -440,9 +440,9 @@ def overpagina(data):
     bronvermelding, wat de site niet belooft, en wat er met je gegevens gebeurt.
     """
     inhoud = """  <p class="intro">Elke ochtend de lopende biologische groente- en
-  fruitaanbiedingen van zeven supermarkten op één pagina, plus een
+  fruitaanbiedingen van negen supermarkten op één pagina, plus een
   seizoenskalender. Gemaakt omdat ik ze zelf wilde kunnen vergelijken zonder
-  zeven apps te openen.</p>
+  negen apps te openen.</p>
 
   <section class="group">
     <div class="group-title"><h2>Waar de cijfers vandaan komen</h2></div>

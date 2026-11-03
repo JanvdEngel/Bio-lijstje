@@ -372,6 +372,18 @@ AANBIEDINGEN_STORES = {
     # productnaam. Zie WINKELSCHAP_AGF hieronder: dat veld is wat er in
     # september ontbrak.
     "Ekoplaza": ("ekoplaza", None),
+    # Erbij op 3 november 2026, op aanwijzing van controleer_kandidaten(). Beide
+    # stonden maandenlang op nul en sprongen binnen een week omhoog: Poiesz van
+    # 1 naar 7, DekaMarkt van 0 naar 2. Het zijn allebei Superunie-ketens, en
+    # wat er doorkomt is dan ook de Bio+ lijn — dezelfde huismerkproducten als
+    # de Bio+ oesterzwammen die al via Dirk op de lijst stonden.
+    #
+    # Ze zijn regionaal: Poiesz in Friesland, Groningen en Drenthe, DekaMarkt in
+    # Noord-Holland. Dat is een redactionele keuze geweest, geen technische —
+    # een lezer buiten die provincies heeft er niets aan. Het alternatief was ze
+    # weglaten en daarmee negen echte aanbiedingen per dag niet tonen.
+    "Poiesz": ("poiesz", None),
+    "DekaMarkt": ("dekamarkt", None),
 }
 
 # Winkels waar we niet de productnaam maar het schap van de winkel zelf geloven.
@@ -443,13 +455,12 @@ KANDIDAAT_WINKELS = {
     # veld retailer_category stond er al en doet wat de naampatronen moesten
     # doen; Ekoplaza staat sindsdien in AANBIEDINGEN_STORES.
     "Hoogvliet": "hoogvliet",
-    "DekaMarkt": "dekamarkt",
     "Vomar": "vomar",
-    # Poiesz heeft als enige van de tien nieuwkomers bio AGF: op 29 oktober een
-    # "Bio+ Biologische Appel". Een keten met een handvol winkels in het noorden
-    # en een treffer per dag is nog geen zevende kolom op de pagina waard, maar
-    # wel het kijken waard.
-    "Poiesz": "poiesz",
+    # Poiesz en DekaMarkt stonden hier tot 3 november 2026. Op 29 oktober had
+    # Poiesz één appel en DekaMarkt niets; vijf dagen later zeven en twee. Dat
+    # is precies waar deze lijst voor bedoeld is — ketens waarvan de data kan
+    # veranderen zonder dat iemand het meldt — en het is de eerste keer dat de
+    # wachter een winkel heeft opgeleverd.
     "Coop": "coop",
     "Gewoon Coop": "gewoon_coop",
     "MCD": "mcd",
