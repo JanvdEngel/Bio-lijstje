@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-11-03T06:01:39.271245",
+  "laatst_bijgewerkt": "2026-11-03T20:40:55.859243",
   "aanbiedingen": {
     "AH": [
       {
@@ -69,7 +69,7 @@
         "soort": "vers",
         "laagste_ooit_prijs": 0.59,
         "laagste_ooit_datum": "2026-11-02",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       }
     ],
     "Aldi": [],
@@ -186,6 +186,65 @@
         "laagste_ooit_datum": "2026-10-29",
         "eerder_gezien": 1
       }
+    ],
+    "Poiesz": [
+      {
+        "naam": "Bio+ Gember",
+        "actieprijs": 1.0,
+        "normale_prijs": 2.19,
+        "soort": "vers",
+        "voorwaarde": "1 voor 1.00"
+      },
+      {
+        "naam": "Bio+ rode kool met appel",
+        "actieprijs": 1.0,
+        "normale_prijs": 1.79,
+        "soort": "vers"
+      },
+      {
+        "naam": "Bio+ Rode Bieten Gekookt",
+        "actieprijs": 1.0,
+        "normale_prijs": 1.49,
+        "soort": "voorraad"
+      },
+      {
+        "naam": "Bio+ wijnzuurkool",
+        "actieprijs": 1.0,
+        "normale_prijs": 1.29,
+        "soort": "vers"
+      },
+      {
+        "naam": "Bio+ kerriezuurkool",
+        "actieprijs": 1.0,
+        "normale_prijs": 1.19,
+        "soort": "vers"
+      },
+      {
+        "naam": "Bio+ Biologische Naturel Zuurkool",
+        "actieprijs": 1.0,
+        "normale_prijs": 1.09,
+        "soort": "vers"
+      },
+      {
+        "naam": "Bio+ kruidenzuurkool",
+        "actieprijs": 1.0,
+        "normale_prijs": 1.09,
+        "soort": "vers"
+      }
+    ],
+    "DekaMarkt": [
+      {
+        "naam": "Bio+ Biologische rode bieten gekookt",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.39,
+        "soort": "voorraad"
+      },
+      {
+        "naam": "Bio+ Biologische uien",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.29,
+        "soort": "vers"
+      }
     ]
   },
   "winkelstatus": {
@@ -195,6 +254,8 @@
     "Aldi": "ok",
     "Dirk": "ok",
     "Plus": "ok",
-    "Ekoplaza": "ok"
+    "Ekoplaza": "ok",
+    "Poiesz": "ok",
+    "DekaMarkt": "ok"
   }
 }
