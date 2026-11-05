@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-11-04T06:01:26.860459",
+  "laatst_bijgewerkt": "2026-11-05T06:01:28.683670",
   "aanbiedingen": {
     "AH": [
       {
@@ -59,13 +59,19 @@
         "naam": "Jumbo Biologische Appels 1 kg",
         "actieprijs": 3.07,
         "normale_prijs": 4.39,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 3.07,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Zoete Kleine Appeltjes Biologisch 1 kg",
         "actieprijs": 2.79,
         "normale_prijs": 3.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.79,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Bonduelle Crispy Maïs Bio 150 g",
@@ -73,7 +79,10 @@
         "normale_prijs": 2.19,
         "soort": "voorraad",
         "voorwaarde": "3 voor €2,99",
-        "vanaf": 3
+        "vanaf": 3,
+        "laagste_ooit_prijs": 1.0,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Bonduelle Rode kidneybonen Bio 160g",
@@ -81,7 +90,10 @@
         "normale_prijs": 1.99,
         "soort": "voorraad",
         "voorwaarde": "3 voor €2,99",
-        "vanaf": 3
+        "vanaf": 3,
+        "laagste_ooit_prijs": 1.0,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "De Kleine Keuken Biologische Rozijntjes met een Vleugje Appelsmaak 18+ Maanden 112 g",
@@ -89,7 +101,10 @@
         "normale_prijs": 3.59,
         "soort": "vers",
         "voorwaarde": "2 voor €5,38",
-        "vanaf": 2
+        "vanaf": 2,
+        "laagste_ooit_prijs": 2.69,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "De Kleine Keuken Biologische Dadeltjes Zonder Sulfiet 12+ Maanden 140 g",
@@ -97,7 +112,10 @@
         "normale_prijs": 3.29,
         "soort": "vers",
         "voorwaarde": "2 voor €4,94",
-        "vanaf": 2
+        "vanaf": 2,
+        "laagste_ooit_prijs": 2.47,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "De Kleine Keuken Biologische Dadel & Appel Reepjes 12+ Maanden 5 Stuks 75 g",
@@ -105,7 +123,10 @@
         "normale_prijs": 3.25,
         "soort": "vers",
         "voorwaarde": "2 voor €4,88",
-        "vanaf": 2
+        "vanaf": 2,
+        "laagste_ooit_prijs": 2.44,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "De Kleine Keuken Biologische Fruitmix Rozijn, Aardbei & Appel 18+ Maanden 6 Stuks 84 g",
@@ -113,13 +134,19 @@
         "normale_prijs": 3.09,
         "soort": "vers",
         "voorwaarde": "2 voor €4,63",
-        "vanaf": 2
+        "vanaf": 2,
+        "laagste_ooit_prijs": 2.32,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Jumbo Biologische Knolselderij 1ST",
         "actieprijs": 0.99,
         "normale_prijs": 1.69,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Ella's Kitchen Perziken + bananen 4+ biologisch 120 g",
@@ -127,7 +154,10 @@
         "normale_prijs": 1.99,
         "soort": "vers",
         "voorwaarde": "4 voor €5,97",
-        "vanaf": 4
+        "vanaf": 4,
+        "laagste_ooit_prijs": 1.49,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Ella's Kitchen Maize sticks wortels + maïs 7+ biologisch 16 g",
@@ -135,7 +165,10 @@
         "normale_prijs": 1.99,
         "soort": "vers",
         "voorwaarde": "4 voor €5,97",
-        "vanaf": 4
+        "vanaf": 4,
+        "laagste_ooit_prijs": 1.49,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Ella's Kitchen Maize Sticks tomaat + basilicum 7+ biologisch 16g",
@@ -143,7 +176,10 @@
         "normale_prijs": 1.99,
         "soort": "vers",
         "voorwaarde": "4 voor €5,97",
-        "vanaf": 4
+        "vanaf": 4,
+        "laagste_ooit_prijs": 1.49,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Ella's Kitchen Aardbeien + appels 4+ biologisch 120 g",
@@ -151,7 +187,10 @@
         "normale_prijs": 1.99,
         "soort": "vers",
         "voorwaarde": "4 voor €5,97",
-        "vanaf": 4
+        "vanaf": 4,
+        "laagste_ooit_prijs": 1.49,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       }
     ],
     "Lidl": [
@@ -180,13 +219,19 @@
         "naam": "Bio tauge",
         "actieprijs": 0.69,
         "normale_prijs": 0.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.69,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Bio+ Bio gele uien",
         "actieprijs": 0.79,
         "normale_prijs": 0.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.79,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       }
     ],
     "Plus": [
@@ -205,7 +250,10 @@
         "normale_prijs": 3.79,
         "soort": "voorraad",
         "voorwaarde": "2 voor €5,69",
-        "vanaf": 2
+        "vanaf": 2,
+        "laagste_ooit_prijs": 2.84,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Iglo Biologische spinazie a la creme",
@@ -228,28 +276,13 @@
         "eerder_gezien": 3
       },
       {
-        "naam": "Biologisch PLUS Rode kool",
-        "actieprijs": 1.49,
-        "normale_prijs": 1.99,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.49,
-        "laagste_ooit_datum": "2026-10-28",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Biologisch PLUS Witte kool",
-        "actieprijs": 1.49,
-        "normale_prijs": 1.99,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.49,
-        "laagste_ooit_datum": "2026-10-28",
-        "eerder_gezien": 1
-      },
-      {
         "naam": "Biologisch PLUS Rucola",
         "actieprijs": 1.0,
         "normale_prijs": 1.39,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.0,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       }
     ],
     "Ekoplaza": [
@@ -257,13 +290,19 @@
         "naam": "Rode bessen",
         "actieprijs": 3.59,
         "normale_prijs": 4.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 3.59,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Groene kool",
         "actieprijs": 2.29,
         "normale_prijs": 3.29,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.29,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Oesterzwammen",
@@ -278,43 +317,64 @@
         "naam": "Elstar appels",
         "actieprijs": 2.39,
         "normale_prijs": 2.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.39,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Doyenne du Comice peren",
         "actieprijs": 2.39,
         "normale_prijs": 2.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.39,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Romatomaten",
         "actieprijs": 2.49,
         "normale_prijs": 2.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.49,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Gesneden andijvie",
         "actieprijs": 2.59,
         "normale_prijs": 2.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.59,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Rucola",
         "actieprijs": 1.99,
         "normale_prijs": 2.29,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.99,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Ananas",
         "actieprijs": 3.29,
         "normale_prijs": 3.59,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 3.29,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       },
       {
         "naam": "Prei",
         "actieprijs": 1.99,
         "normale_prijs": 2.18,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.99,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
       }
     ],
     "Poiesz": [
