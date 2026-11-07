@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-11-06T06:01:44.046907",
+  "laatst_bijgewerkt": "2026-11-07T06:01:45.163192",
   "aanbiedingen": {
     "AH": [
       {
@@ -34,17 +34,6 @@
     ],
     "Jumbo": [
       {
-        "naam": "Jumbo Biologisch Aardappelen Kruimig 2,5 kg",
-        "actieprijs": 2.33,
-        "normale_prijs": 4.65,
-        "soort": "vers",
-        "voorwaarde": "2 voor €4,65",
-        "vanaf": 2,
-        "laagste_ooit_prijs": 2.33,
-        "laagste_ooit_datum": "2026-09-23",
-        "eerder_gezien": 2
-      },
-      {
         "naam": "Jumbo Biologisch Aardappelen Vastkokend 2,5KG",
         "actieprijs": 2.33,
         "normale_prijs": 4.65,
@@ -54,6 +43,17 @@
         "laagste_ooit_prijs": 2.33,
         "laagste_ooit_datum": "2026-09-23",
         "eerder_gezien": 3
+      },
+      {
+        "naam": "Jumbo Biologisch Aardappelen Kruimig 2,5 kg",
+        "actieprijs": 2.33,
+        "normale_prijs": 4.65,
+        "soort": "vers",
+        "voorwaarde": "2 voor €4,65",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 2.33,
+        "laagste_ooit_datum": "2026-09-23",
+        "eerder_gezien": 2
       },
       {
         "naam": "Jumbo Biologische Appels 1 kg",
@@ -87,7 +87,7 @@
       {
         "naam": "Bonduelle Rode kidneybonen Bio 160g",
         "actieprijs": 1.0,
-        "normale_prijs": 1.99,
+        "normale_prijs": 2.09,
         "soort": "voorraad",
         "voorwaarde": "3 voor €2,99",
         "vanaf": 3,
@@ -195,22 +195,22 @@
     ],
     "Lidl": [
       {
-        "naam": "Bio wortels",
-        "actieprijs": 1.29,
-        "normale_prijs": 1.69,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.19,
-        "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 5
-      },
-      {
         "naam": "BIO ORGANIC Bio rode bieten",
-        "actieprijs": 0.59,
+        "actieprijs": 1.58,
         "normale_prijs": null,
         "soort": "vers",
         "laagste_ooit_prijs": 0.59,
         "laagste_ooit_datum": "2026-11-02",
         "eerder_gezien": 2
+      },
+      {
+        "naam": "Bio wortels",
+        "actieprijs": 1.69,
+        "normale_prijs": null,
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.19,
+        "laagste_ooit_datum": "2026-08-14",
+        "eerder_gezien": 5
       }
     ],
     "Aldi": [],
