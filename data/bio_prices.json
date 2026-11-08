@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-11-07T06:01:45.163192",
+  "laatst_bijgewerkt": "2026-11-08T06:01:51.463850",
   "aanbiedingen": {
     "AH": [
       {
@@ -93,7 +93,7 @@
         "vanaf": 3,
         "laagste_ooit_prijs": 1.0,
         "laagste_ooit_datum": "2026-11-04",
-        "eerder_gezien": 1
+        "eerder_gezien": 2
       },
       {
         "naam": "De Kleine Keuken Biologische Rozijntjes met een Vleugje Appelsmaak 18+ Maanden 112 g",
@@ -201,7 +201,7 @@
         "soort": "vers",
         "laagste_ooit_prijs": 0.59,
         "laagste_ooit_datum": "2026-11-02",
-        "eerder_gezien": 2
+        "eerder_gezien": 3
       },
       {
         "naam": "Bio wortels",
@@ -210,7 +210,7 @@
         "soort": "vers",
         "laagste_ooit_prijs": 1.19,
         "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 5
+        "eerder_gezien": 6
       }
     ],
     "Aldi": [],
@@ -377,72 +377,7 @@
         "eerder_gezien": 1
       }
     ],
-    "Poiesz": [
-      {
-        "naam": "Bio+ Gember",
-        "actieprijs": 1.0,
-        "normale_prijs": 2.19,
-        "soort": "vers",
-        "voorwaarde": "1 voor 1.00",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-11-03",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Bio+ rode kool met appel",
-        "actieprijs": 1.0,
-        "normale_prijs": 1.79,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-11-03",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Bio+ Rode Bieten Gekookt",
-        "actieprijs": 1.0,
-        "normale_prijs": 1.49,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-11-03",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Bio+ wijnzuurkool",
-        "actieprijs": 1.0,
-        "normale_prijs": 1.29,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-11-03",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Bio+ kerriezuurkool",
-        "actieprijs": 1.0,
-        "normale_prijs": 1.19,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-11-03",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Bio+ Biologische Naturel Zuurkool",
-        "actieprijs": 1.0,
-        "normale_prijs": 1.09,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-11-03",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Bio+ kruidenzuurkool",
-        "actieprijs": 1.0,
-        "normale_prijs": 1.09,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-11-03",
-        "eerder_gezien": 1
-      }
-    ],
+    "Poiesz": [],
     "DekaMarkt": [
       {
         "naam": "Bio+ Biologische rode bieten gekookt",
