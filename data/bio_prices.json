@@ -1,21 +1,19 @@
 {
-  "laatst_bijgewerkt": "2026-11-08T06:01:51.463850",
+  "laatst_bijgewerkt": "2026-11-09T06:01:35.823484",
   "aanbiedingen": {
     "AH": [
       {
-        "naam": "AH Biologisch Zuurkool",
-        "actieprijs": 0.9,
-        "normale_prijs": 1.79,
+        "naam": "AH Biologisch Snoepgroente tomaat",
+        "actieprijs": 2.99,
+        "normale_prijs": 3.99,
         "soort": "vers",
-        "voorwaarde": "2 voor €1,79",
-        "vanaf": 2,
-        "laagste_ooit_prijs": 0.9,
-        "laagste_ooit_datum": "2026-11-02",
+        "laagste_ooit_prijs": 1.67,
+        "laagste_ooit_datum": "2026-09-28",
         "eerder_gezien": 1
       },
       {
         "naam": "AH Biologisch Mandarijnen",
-        "actieprijs": 2.47,
+        "actieprijs": 2.3,
         "normale_prijs": 3.29,
         "soort": "vers",
         "laagste_ooit_prijs": 2.47,
@@ -23,27 +21,57 @@
         "eerder_gezien": 1
       },
       {
-        "naam": "AH Biologisch Citroenen",
-        "actieprijs": 1.19,
-        "normale_prijs": 1.59,
+        "naam": "AH Biologisch Pompoen stukjes",
+        "actieprijs": 2.77,
+        "normale_prijs": 3.69,
+        "soort": "vers"
+      },
+      {
+        "naam": "Mutti Passata gezeefde tomaten bio",
+        "actieprijs": 2.62,
+        "normale_prijs": 3.49,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €5,24",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 2.33,
+        "laagste_ooit_datum": "2026-09-07",
+        "eerder_gezien": 2
+      },
+      {
+        "naam": "Mutti Gepelde tomaten bio",
+        "actieprijs": 1.87,
+        "normale_prijs": 2.49,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €3,74",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 1.66,
+        "laagste_ooit_datum": "2026-09-07",
+        "eerder_gezien": 2
+      },
+      {
+        "naam": "Mutti Tomatenpulp in stukjes bio",
+        "actieprijs": 1.87,
+        "normale_prijs": 2.49,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €3,74",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 1.66,
+        "laagste_ooit_datum": "2026-09-07",
+        "eerder_gezien": 2
+      },
+      {
+        "naam": "AH Biologisch Komkommer",
+        "actieprijs": 1.25,
+        "normale_prijs": 1.55,
         "soort": "vers",
-        "laagste_ooit_prijs": 1.19,
-        "laagste_ooit_datum": "2026-11-02",
+        "voorwaarde": "2 voor €2,49",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 1.29,
+        "laagste_ooit_datum": "2026-10-05",
         "eerder_gezien": 1
       }
     ],
     "Jumbo": [
-      {
-        "naam": "Jumbo Biologisch Aardappelen Vastkokend 2,5KG",
-        "actieprijs": 2.33,
-        "normale_prijs": 4.65,
-        "soort": "vers",
-        "voorwaarde": "2 voor €4,65",
-        "vanaf": 2,
-        "laagste_ooit_prijs": 2.33,
-        "laagste_ooit_datum": "2026-09-23",
-        "eerder_gezien": 3
-      },
       {
         "naam": "Jumbo Biologisch Aardappelen Kruimig 2,5 kg",
         "actieprijs": 2.33,
@@ -54,6 +82,17 @@
         "laagste_ooit_prijs": 2.33,
         "laagste_ooit_datum": "2026-09-23",
         "eerder_gezien": 2
+      },
+      {
+        "naam": "Jumbo Biologisch Aardappelen Vastkokend 2,5KG",
+        "actieprijs": 2.33,
+        "normale_prijs": 4.65,
+        "soort": "vers",
+        "voorwaarde": "2 voor €4,65",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 2.33,
+        "laagste_ooit_datum": "2026-09-23",
+        "eerder_gezien": 3
       },
       {
         "naam": "Jumbo Biologische Appels 1 kg",
@@ -195,22 +234,16 @@
     ],
     "Lidl": [
       {
-        "naam": "BIO ORGANIC Bio rode bieten",
-        "actieprijs": 1.58,
+        "naam": "Bio kiwi gold",
+        "actieprijs": 3.49,
         "normale_prijs": null,
-        "soort": "vers",
-        "laagste_ooit_prijs": 0.59,
-        "laagste_ooit_datum": "2026-11-02",
-        "eerder_gezien": 3
+        "soort": "vers"
       },
       {
-        "naam": "Bio wortels",
-        "actieprijs": 1.69,
+        "naam": "Bio bananen",
+        "actieprijs": 2.19,
         "normale_prijs": null,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.19,
-        "laagste_ooit_datum": "2026-08-14",
-        "eerder_gezien": 6
+        "soort": "vers"
       }
     ],
     "Aldi": [],
