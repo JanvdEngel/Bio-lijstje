@@ -1,30 +1,24 @@
 {
-  "laatst_bijgewerkt": "2026-11-09T06:01:35.823484",
+  "laatst_bijgewerkt": "2026-11-10T06:01:37.550402",
   "aanbiedingen": {
     "AH": [
-      {
-        "naam": "AH Biologisch Snoepgroente tomaat",
-        "actieprijs": 2.99,
-        "normale_prijs": 3.99,
-        "soort": "vers",
-        "laagste_ooit_prijs": 1.67,
-        "laagste_ooit_datum": "2026-09-28",
-        "eerder_gezien": 1
-      },
       {
         "naam": "AH Biologisch Mandarijnen",
         "actieprijs": 2.3,
         "normale_prijs": 3.29,
         "soort": "vers",
-        "laagste_ooit_prijs": 2.47,
-        "laagste_ooit_datum": "2026-10-26",
-        "eerder_gezien": 1
+        "laagste_ooit_prijs": 2.3,
+        "laagste_ooit_datum": "2026-11-09",
+        "eerder_gezien": 2
       },
       {
         "naam": "AH Biologisch Pompoen stukjes",
         "actieprijs": 2.77,
         "normale_prijs": 3.69,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.77,
+        "laagste_ooit_datum": "2026-11-09",
+        "eerder_gezien": 1
       },
       {
         "naam": "Mutti Passata gezeefde tomaten bio",
@@ -35,6 +29,17 @@
         "vanaf": 2,
         "laagste_ooit_prijs": 2.33,
         "laagste_ooit_datum": "2026-09-07",
+        "eerder_gezien": 2
+      },
+      {
+        "naam": "AH Biologisch Snoepgroente tomaat",
+        "actieprijs": 1.67,
+        "normale_prijs": 2.29,
+        "soort": "vers",
+        "voorwaarde": "3 voor €5,00",
+        "vanaf": 3,
+        "laagste_ooit_prijs": 1.67,
+        "laagste_ooit_datum": "2026-09-28",
         "eerder_gezien": 2
       },
       {
@@ -60,29 +65,37 @@
         "eerder_gezien": 2
       },
       {
+        "naam": "AH Biologisch Snoepgroente wortel",
+        "actieprijs": 1.67,
+        "normale_prijs": 1.99,
+        "soort": "vers",
+        "voorwaarde": "3 voor €5,00",
+        "vanaf": 3,
+        "laagste_ooit_prijs": 1.67,
+        "laagste_ooit_datum": "2026-09-28",
+        "eerder_gezien": 1
+      },
+      {
         "naam": "AH Biologisch Komkommer",
         "actieprijs": 1.25,
         "normale_prijs": 1.55,
         "soort": "vers",
         "voorwaarde": "2 voor €2,49",
         "vanaf": 2,
-        "laagste_ooit_prijs": 1.29,
-        "laagste_ooit_datum": "2026-10-05",
-        "eerder_gezien": 1
+        "laagste_ooit_prijs": 1.25,
+        "laagste_ooit_datum": "2026-11-09",
+        "eerder_gezien": 2
+      },
+      {
+        "naam": "AH Biologisch Ginger mango verse appel mango gember",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.19,
+        "soort": "vers",
+        "voorwaarde": "6 voor €5,95",
+        "vanaf": 6
       }
     ],
     "Jumbo": [
-      {
-        "naam": "Jumbo Biologisch Aardappelen Kruimig 2,5 kg",
-        "actieprijs": 2.33,
-        "normale_prijs": 4.65,
-        "soort": "vers",
-        "voorwaarde": "2 voor €4,65",
-        "vanaf": 2,
-        "laagste_ooit_prijs": 2.33,
-        "laagste_ooit_datum": "2026-09-23",
-        "eerder_gezien": 2
-      },
       {
         "naam": "Jumbo Biologisch Aardappelen Vastkokend 2,5KG",
         "actieprijs": 2.33,
@@ -93,6 +106,17 @@
         "laagste_ooit_prijs": 2.33,
         "laagste_ooit_datum": "2026-09-23",
         "eerder_gezien": 3
+      },
+      {
+        "naam": "Jumbo Biologisch Aardappelen Kruimig 2,5 kg",
+        "actieprijs": 2.33,
+        "normale_prijs": 4.65,
+        "soort": "vers",
+        "voorwaarde": "2 voor €4,65",
+        "vanaf": 2,
+        "laagste_ooit_prijs": 2.33,
+        "laagste_ooit_datum": "2026-09-23",
+        "eerder_gezien": 2
       },
       {
         "naam": "Jumbo Biologische Appels 1 kg",
@@ -237,13 +261,19 @@
         "naam": "Bio kiwi gold",
         "actieprijs": 3.49,
         "normale_prijs": null,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 3.49,
+        "laagste_ooit_datum": "2026-11-09",
+        "eerder_gezien": 1
       },
       {
         "naam": "Bio bananen",
         "actieprijs": 2.19,
         "normale_prijs": null,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.19,
+        "laagste_ooit_datum": "2026-11-09",
+        "eerder_gezien": 1
       }
     ],
     "Aldi": [],
@@ -411,26 +441,7 @@
       }
     ],
     "Poiesz": [],
-    "DekaMarkt": [
-      {
-        "naam": "Bio+ Biologische rode bieten gekookt",
-        "actieprijs": 0.99,
-        "normale_prijs": 1.39,
-        "soort": "voorraad",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-11-03",
-        "eerder_gezien": 1
-      },
-      {
-        "naam": "Bio+ Biologische uien",
-        "actieprijs": 0.99,
-        "normale_prijs": 1.29,
-        "soort": "vers",
-        "laagste_ooit_prijs": 0.99,
-        "laagste_ooit_datum": "2026-11-03",
-        "eerder_gezien": 1
-      }
-    ]
+    "DekaMarkt": []
   },
   "winkelstatus": {
     "AH": "ok",
