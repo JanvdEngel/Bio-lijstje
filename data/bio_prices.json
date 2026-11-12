@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-11-11T06:01:13.056178",
+  "laatst_bijgewerkt": "2026-11-12T06:01:18.940741",
   "aanbiedingen": {
     "AH": [
       {
@@ -9,7 +9,7 @@
         "soort": "vers",
         "laagste_ooit_prijs": 1.67,
         "laagste_ooit_datum": "2026-09-28",
-        "eerder_gezien": 3
+        "eerder_gezien": 4
       },
       {
         "naam": "AH Biologisch Mandarijnen",
@@ -102,21 +102,27 @@
         "actieprijs": 0.99,
         "normale_prijs": 1.55,
         "soort": "vers",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-11-11",
+        "eerder_gezien": 2
       },
       {
         "naam": "Jumbo Biologisch Rucola 40 g",
         "actieprijs": 0.99,
         "normale_prijs": 1.39,
         "soort": "vers",
-        "laagste_ooit_prijs": 1.0,
-        "laagste_ooit_datum": "2026-09-02",
-        "eerder_gezien": 1
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-11-11",
+        "eerder_gezien": 2
       }
     ],
     "Lidl": [
+      {
+        "naam": "Bio flespompoen",
+        "actieprijs": 1.99,
+        "normale_prijs": null,
+        "soort": "vers"
+      },
       {
         "naam": "Bio kiwi gold",
         "actieprijs": 3.49,
@@ -142,18 +148,21 @@
         "naam": "Bio komkommer",
         "actieprijs": 1.19,
         "normale_prijs": 1.39,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.19,
+        "laagste_ooit_datum": "2026-11-11",
+        "eerder_gezien": 1
       }
     ],
     "Plus": [
       {
-        "naam": "Biologisch Rode bieten",
+        "naam": "Biologisch PLUS Rode bieten",
         "actieprijs": 0.99,
         "normale_prijs": 1.49,
         "soort": "vers"
       },
       {
-        "naam": "Biologisch PLUS Nederlandse Wortelen",
+        "naam": "Biologisch PLUS Wortelen",
         "actieprijs": 1.49,
         "normale_prijs": 1.85,
         "soort": "vers"
@@ -164,37 +173,55 @@
         "naam": "Kaki",
         "actieprijs": 3.75,
         "normale_prijs": 4.77,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 3.75,
+        "laagste_ooit_datum": "2026-11-11",
+        "eerder_gezien": 1
       },
       {
         "naam": "Venkel",
         "actieprijs": 2.25,
         "normale_prijs": 3.14,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.25,
+        "laagste_ooit_datum": "2026-11-11",
+        "eerder_gezien": 1
       },
       {
         "naam": "Spitskool",
         "actieprijs": 2.49,
         "normale_prijs": 3.29,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.49,
+        "laagste_ooit_datum": "2026-11-11",
+        "eerder_gezien": 1
       },
       {
         "naam": "Santana appels",
         "actieprijs": 2.39,
         "normale_prijs": 2.99,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.39,
+        "laagste_ooit_datum": "2026-11-11",
+        "eerder_gezien": 1
       },
       {
         "naam": "Gemengde sla",
         "actieprijs": 1.99,
         "normale_prijs": 2.59,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.99,
+        "laagste_ooit_datum": "2026-11-11",
+        "eerder_gezien": 1
       },
       {
         "naam": "Witte champignons",
         "actieprijs": 1.99,
         "normale_prijs": 2.59,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.99,
+        "laagste_ooit_datum": "2026-11-11",
+        "eerder_gezien": 1
       }
     ],
     "Poiesz": [],
