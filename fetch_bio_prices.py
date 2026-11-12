@@ -825,6 +825,7 @@ def fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug):
     pogingen_429 = 0
     onvolledig = False
     stukgelopen = False
+    leeg_bij_start = False
     try:
         while pagina <= PRIJSPROFEET_MAX_PAGES:
             resp = requests.get(
@@ -872,6 +873,16 @@ def fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug):
             body = resp.json()
             producten = body.get("products") or body.get("results") or []
             if not producten:
+                # Nul producten op pagina 1 is geen lege week maar een storing.
+                # Een keten voert altijd acties; een HTTP 200 met een lege lijst
+                # betekent in de praktijk dat de API de winkel niet kent — een
+                # hernoemde retailer-slug, of een foutobject in plaats van een
+                # lijst. Dat gaf tot 12 november 2026 status "ok", en dan staat
+                # er voor altijd "vandaag geen bio-acties bij X" op de pagina
+                # terwijl de cijferpagina het als nuldagen meetelt. Niemand die
+                # het merkt, want de andere winkels leveren gewoon.
+                if pagina == 1:
+                    leeg_bij_start = True
                 break
             for item in producten:
                 actie = _als_bio_agf_actie(item)
@@ -904,6 +915,13 @@ def fetch_aanbiedingen_prijsprofeet(store_label, retailer_slug):
     # onwaar. Vandaar dat de status meereist tot in de HTML.
     if stukgelopen and pagina == 1:
         status = "mislukt"      # geen enkele pagina gelukt
+    elif leeg_bij_start:
+        log.warning(
+            f"{store_label}: de API gaf nul producten terug. Dat is geen lege "
+            f"week maar vrijwel zeker een storing of een hernoemde keten; de "
+            f"winkel telt vandaag als niet opgehaald."
+        )
+        status = "mislukt"
     elif stukgelopen or onvolledig:
         status = "onvolledig"   # halverwege afgebroken of op de snelheidsgrens
     else:
@@ -1197,6 +1215,64 @@ def _backup_history(tekst, aantal):
         log.warning(f"Back-up van de geschiedenis mislukt ({e}); de ronde gaat gewoon door")
 
 
+# Twee normale prijzen die meer dan dit schelen horen niet bij hetzelfde
+# product. "AH Biologisch Snoepgroente tomaat" ging van EUR 2,29 naar EUR 3,99
+# zonder van naam te veranderen: een andere verpakking onder dezelfde noemer.
+# Vergelijken met zo'n record zegt niets over de prijs en alles over de maat.
+HISTORIE_MAX_PRIJSVERSCHIL = 0.30
+
+
+def _vergelijkbare_records(eerdere, item):
+    """De records waarmee de prijs van vandaag eerlijk te vergelijken is.
+
+    Drie soorten records vallen af.
+
+    **De lopende actie zelf.** De geschiedenis schrijft alleen bij een
+    prijswijziging, dus het laatste record is de startdag van deze actie zodra
+    het gelijk is aan vandaag. De oude code sloot alleen vandaag uit — "anders
+    vergelijk je met jezelf" stond er al — maar vanaf dag twee stond die
+    startdag er gewoon in. Zo kreeg "AH Biologisch Mandarijnen" op 12 november
+    een trofee voor EUR 2,30, tegen de EUR 2,30 van zijn eigen actie van drie
+    dagen eerder.
+
+    **Een andere stapelvoorwaarde.** Een prijs die alleen bij drie stuks gold
+    is geen stuksprijs. Dit record is het nieuwe veld; zie hieronder.
+
+    **Een record zonder dat veld.** Alles van voor 12 november 2026 heeft geen
+    'vanaf', en dan weten we niet wat voor prijs het was. Zulke records gebruiken
+    we alleen als het huidige item ook geen voorwaarde heeft en de normale prijs
+    in de buurt ligt. Ze verdwijnen vanzelf naarmate de reeks zich vult."""
+    if not eerdere:
+        return []
+    vorige = eerdere[-1]
+    zelfde_actie = (
+        vorige.get("actieprijs") == item["actieprijs"]
+        and vorige.get("normale_prijs") == item.get("normale_prijs")
+        and vorige.get("vanaf") == item.get("vanaf")
+    )
+    kandidaten = eerdere[:-1] if zelfde_actie else eerdere
+
+    vanaf = item.get("vanaf")
+    normaal = item.get("normale_prijs")
+    bruikbaar = []
+    for r in kandidaten:
+        if "vanaf" in r:
+            if r["vanaf"] == vanaf:
+                bruikbaar.append(r)
+            continue
+        if vanaf is not None:
+            continue
+        oude_normaal = r.get("normale_prijs")
+        if not isinstance(oude_normaal, (int, float)) or oude_normaal <= 0:
+            continue
+        if not isinstance(normaal, (int, float)):
+            continue
+        if abs(oude_normaal - normaal) / oude_normaal > HISTORIE_MAX_PRIJSVERSCHIL:
+            continue
+        bruikbaar.append(r)
+    return bruikbaar
+
+
 def enrich_and_record_history(store, items, history, vandaag):
     """Zet per product de laagste ooit geziene prijs erbij (voordat we
     vandaag's prijs meetellen, anders vergelijk je met jezelf), en schrijft
@@ -1214,21 +1290,31 @@ def enrich_and_record_history(store, items, history, vandaag):
     for item in items:
         key = _history_key(store, item["naam"])
         eerdere = history.get(key, [])
-        if eerdere:
-            laagste = min(eerdere, key=lambda r: r["actieprijs"])
+        vergelijkbaar = _vergelijkbare_records(eerdere, item)
+        if vergelijkbaar:
+            laagste = min(vergelijkbaar, key=lambda r: r["actieprijs"])
             item["laagste_ooit_prijs"] = laagste["actieprijs"]
             item["laagste_ooit_datum"] = laagste["datum"]
-            item["eerder_gezien"] = len(eerdere)
+            # Het aantal gaat over de records waarmee we werkelijk vergeleken,
+            # niet over de hele reeks. De pagina zet dit getal in "laagste van
+            # N prijzen die ik zag" en eist er minstens twee; dat moeten er dan
+            # ook twee zijn die ergens op slaan.
+            item["eerder_gezien"] = len(vergelijkbaar)
         nieuw_record = {
             "datum": vandaag,
             "actieprijs": item["actieprijs"],
             "normale_prijs": item.get("normale_prijs"),
+            # Zonder dit veld is een stapelprijs later niet van een stuksprijs
+            # te onderscheiden. Ook None schrijven we op: de sleutel is het
+            # bewijs dat het record van na deze wijziging komt.
+            "vanaf": item.get("vanaf"),
         }
         vorige = eerdere[-1] if eerdere else None
         onveranderd = (
             vorige is not None
             and vorige.get("actieprijs") == nieuw_record["actieprijs"]
             and vorige.get("normale_prijs") == nieuw_record["normale_prijs"]
+            and vorige.get("vanaf") == nieuw_record["vanaf"]
         )
         if not onveranderd:
             history[key] = (eerdere + [nieuw_record])[-HISTORY_MAX_PER_PRODUCT:]
@@ -1460,12 +1546,20 @@ def meld_aan_home_assistant(bijgewerkt, winkelstatus, aantal):
         log.warning(f"Sensor bijwerken in Home Assistant mislukt ({e}); de ronde is wel klaar")
 
 
-def werk_dagtellingen_bij(aanbiedingen, vandaag):
+def werk_dagtellingen_bij(aanbiedingen, vandaag, winkelstatus=None):
     """Zet de telling van vandaag in dagtellingen.json en geeft alle dagen terug.
 
     Draait meerdere keren op een dag? Dan wint de laatste ronde, net als bij de
     gepubliceerde lijst. Faalt dit, dan is dat een logregel en geen fout: de
-    lijst is belangrijker dan de statistiek erover."""
+    lijst is belangrijker dan de statistiek erover.
+
+    Winkels die vandaag niet goed zijn opgehaald blijven uit de telling. Nul
+    acties omdat er niets in de folder stond is een meting; nul acties omdat de
+    API eruit lag is er geen, en het verschil is op de cijferpagina niet meer te
+    zien. cijfers_uit_dagtellingen() laat een dag waarop een winkel ontbreekt
+    vanzelf vallen, dus weglaten is genoeg — de docstring daar beloofde dit al
+    ("alleen dagen waarop alle winkels zijn opgehaald"), maar niets maakte het
+    waar."""
     dagen = {}
     try:
         if DAGTELLINGEN_PATH.exists():
@@ -1475,7 +1569,13 @@ def werk_dagtellingen_bij(aanbiedingen, vandaag):
         log.warning(f"dagtellingen.json onleesbaar ({e}); begint opnieuw")
         dagen = {}
 
-    dagen[vandaag] = {w: len(v) for w, v in aanbiedingen.items()}
+    status = winkelstatus or {}
+    dagen[vandaag] = {w: len(v) for w, v in aanbiedingen.items()
+                      if status.get(w, "ok") == "ok"}
+    overgeslagen = [w for w in aanbiedingen if status.get(w, "ok") != "ok"]
+    if overgeslagen:
+        log.info("Niet meegeteld op de cijferpagina (niet opgehaald): "
+                 + ", ".join(sorted(overgeslagen)))
     dagen = dict(sorted(dagen.items()))
     try:
         DAGTELLINGEN_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -1770,12 +1870,86 @@ def _waarschuw_bij_verlopend_token(resp):
         log.info(f"GitHub-token geldig tot {vervalt:%d-%m-%Y} ({dagen} dagen)")
 
 
+# De tak waar de site vandaan wordt geserveerd, en de tak waar de broncode
+# staat. Ze zijn bewust verschillend.
+#
+# Tot 12 november 2026 schreef de Pi elke ochtend drie bestanden naar main via
+# de Contents API. Dat gaf drie commits per dag, en daarmee stond er na 133
+# ronden een complete prijsreeks in een publieke repo: met `git log` haal je er
+# per product uit wat het elke dag kostte. De prijsgeschiedenis zelf wordt
+# bewust buiten de repo gehouden — artikel 7 van de API-voorwaarden staat toe
+# dat we eigen waarnemingen bewaren en tonen, maar niet dat we de reeks
+# doorleveren "in een publieke repository" — en langs deze weg gebeurde dat
+# alsnog.
+#
+# Nu schrijft de Pi één commit zonder voorganger naar GITHUB_PUBLISH_BRANCH en
+# overschrijft die elke ronde. Die tak heeft dus altijd precies één commit en
+# draagt geen gisteren. main krijgt niets meer van de Pi en houdt alleen de
+# broncode.
+#
+# Gevolg voor het dagelijks werk: een wijziging die je naar main pusht staat
+# niet meer binnen tien minuten live, maar bij de eerstvolgende ronde. Wil je
+# het meteen zien, herstart dan de app — die haalt bij het opstarten op.
+GITHUB_PUBLISH_BRANCH = "site"
+GITHUB_SOURCE_BRANCH = "main"
+
+
+PAGES_MELDING_ID = "bio_lijstje_pages_tak"
+
+
+def _controleer_pages_tak(sessie, repo):
+    """Serveert GitHub Pages wel van de tak waar wij naartoe schrijven?
+
+    Zo niet, dan slaagt het publiceren maar verandert er niets aan de site, en
+    dat is de ergste soort storing: de sensor wordt ververst, de dertig uur
+    worden nooit gehaald en niemand merkt iets. Precies wat er in oktober vier
+    dagen gebeurde, nu met een andere oorzaak.
+
+    Faalt de controle zelf, dan zwijgen we. Het is een extra zekering, geen
+    reden om een geslaagde ronde alsnog als mislukt te bestempelen."""
+    try:
+        resp = sessie.get(f"https://api.github.com/repos/{repo}/pages", timeout=15)
+        if resp.status_code != 200:
+            return
+        tak = ((resp.json() or {}).get("source") or {}).get("branch")
+    except Exception:
+        return
+    if tak == GITHUB_PUBLISH_BRANCH:
+        _ha_dienst("persistent_notification", "dismiss",
+                   {"notification_id": PAGES_MELDING_ID})
+        return
+    tekst = (f"De app publiceert naar de tak '{GITHUB_PUBLISH_BRANCH}', maar "
+             f"GitHub Pages serveert hetbiolijstje.nl van '{tak}'. Er wordt dus "
+             f"wel gepubliceerd en er verandert niets aan de site. Zet in de "
+             f"repo-instellingen onder Pages de bron op '{GITHUB_PUBLISH_BRANCH}'.")
+    log.warning(tekst)
+    _ha_dienst("persistent_notification", "create",
+               {"notification_id": PAGES_MELDING_ID,
+                "title": "Het Bio Lijstje: publiceert naar de verkeerde tak",
+                "message": tekst})
+
+
+def _gh(sessie, methode, repo, pad, **kw):
+    """Eén aanroep naar de Git Data API, met een leesbare fout bij een misser."""
+    url = f"https://api.github.com/repos/{repo}/{pad}"
+    resp = sessie.request(methode, url, timeout=20, **kw)
+    if resp.status_code >= 300:
+        raise RuntimeError(f"{methode} {pad}: {resp.status_code} {resp.text[:200]}")
+    return resp
+
+
 def publish_to_github():
-    """Pusht www/ naar een GitHub-repo via de Contents API, zodat de pagina
-    ook publiek bereikbaar is via GitHub Pages (voor delen buiten het
-    thuisnetwerk). Volledig optioneel: doet niets als GITHUB_TOKEN of
-    GITHUB_REPO niet gezet zijn (via de add-on-opties, zie config.yaml —
-    het token staat bewust niet in deze broncode)."""
+    """Zet de gegenereerde pagina's op GitHub Pages, als één commit zonder
+    historie.
+
+    Volledig optioneel: doet niets als GITHUB_TOKEN of GITHUB_REPO niet gezet
+    zijn (via de app-opties, zie config.yaml — het token staat bewust niet in
+    deze broncode).
+
+    De werkwijze, in zes aanroepen: pak de boom van de bronbranch, leg daar de
+    gegenereerde bestanden overheen, en hang die boom aan een commit zonder
+    ouder die de publicatietak overschrijft. De site krijgt dus de broncode van
+    main plus de lijst van vandaag, en de tak zelf onthoudt niets."""
     token = os.environ.get("GITHUB_TOKEN")
     repo = os.environ.get("GITHUB_REPO")
     if not token or not repo:
@@ -1786,55 +1960,78 @@ def publish_to_github():
     import base64
     import requests
 
-    headers = {
+    totaal = len(GITHUB_PUBLISH_FILES)
+    sessie = requests.Session()
+    sessie.headers.update({
         "Authorization": f"Bearer {token}",
         "Accept": "application/vnd.github+json",
-    }
-    gepubliceerd = 0
-    gekeken_naar_vervaldatum = False
-    for rel_path in GITHUB_PUBLISH_FILES:
-        local_path = WWW_DIR / rel_path
-        if not local_path.exists():
-            continue
-        content_b64 = base64.b64encode(local_path.read_bytes()).decode("ascii")
-        url = f"https://api.github.com/repos/{repo}/contents/{rel_path}"
+    })
+
+    try:
+        # 1. Waar staat de broncode nu?
+        ref = _gh(sessie, "GET", repo, f"git/ref/heads/{GITHUB_SOURCE_BRANCH}")
+        _waarschuw_bij_verlopend_token(ref)
+        bron_commit = ref.json()["object"]["sha"]
+        bron_boom = _gh(sessie, "GET", repo,
+                        f"git/commits/{bron_commit}").json()["tree"]["sha"]
+
+        # 2. De gegenereerde bestanden als blobs.
+        takken = []
+        for rel_path in GITHUB_PUBLISH_FILES:
+            lokaal = WWW_DIR / rel_path
+            if not lokaal.exists():
+                log.warning(f"{rel_path} bestaat niet; niet meegepubliceerd")
+                continue
+            inhoud = base64.b64encode(lokaal.read_bytes()).decode("ascii")
+            blob = _gh(sessie, "POST", repo, "git/blobs",
+                       json={"content": inhoud, "encoding": "base64"})
+            takken.append({"path": rel_path, "mode": "100644",
+                           "type": "blob", "sha": blob.json()["sha"]})
+        if not takken:
+            log.warning("Niets te publiceren: geen van de bestanden bestaat")
+            return 0, totaal
+
+        # 3. De broncodeboom met die bestanden eroverheen.
+        boom = _gh(sessie, "POST", repo, "git/trees",
+                   json={"base_tree": bron_boom, "tree": takken}).json()["sha"]
+
+        # 4. Een commit zonder ouder. Dit is wat de historie wegneemt: er is
+        #    geen vorige versie om naartoe te lopen.
+        commit = _gh(sessie, "POST", repo, "git/commits", json={
+            "message": f"Site van {datetime.now().isoformat(timespec='minutes')}",
+            "tree": boom,
+            "parents": [],
+        }).json()["sha"]
+
+        # 5. De publicatietak daarheen verplaatsen. Force, want de nieuwe commit
+        #    is geen nakomeling van de vorige — dat is het hele punt.
         try:
-            get_resp = requests.get(url, headers=headers, timeout=15)
-            if not gekeken_naar_vervaldatum:
-                # Niet op gepubliceerd == 0 kijken: faalt het eerste bestand,
-                # dan blijft die nul staan en waarschuwt hij drie keer.
-                gekeken_naar_vervaldatum = True
-                _waarschuw_bij_verlopend_token(get_resp)
-            sha = get_resp.json().get("sha") if get_resp.status_code == 200 else None
+            _gh(sessie, "PATCH", repo, f"git/refs/heads/{GITHUB_PUBLISH_BRANCH}",
+                json={"sha": commit, "force": True})
+        except RuntimeError:
+            # Bestaat de tak nog niet, dan is dit de eerste keer.
+            _gh(sessie, "POST", repo, "git/refs",
+                json={"ref": f"refs/heads/{GITHUB_PUBLISH_BRANCH}", "sha": commit})
+            log.info(f"Tak {GITHUB_PUBLISH_BRANCH} aangemaakt")
+    except Exception as e:
+        log.warning(
+            f"Publiceren naar github.com/{repo} mislukt: {e}. "
+            f"De site blijft staan op de laatst gepubliceerde versie."
+        )
+        return 0, totaal
 
-            payload = {
-                "message": f"Update {rel_path} ({datetime.now().isoformat(timespec='minutes')})",
-                "content": content_b64,
-                "branch": "main",
-            }
-            if sha:
-                payload["sha"] = sha
+    _controleer_pages_tak(sessie, repo)
 
-            put_resp = requests.put(url, headers=headers, json=payload, timeout=15)
-            if put_resp.status_code in (200, 201):
-                gepubliceerd += 1
-            else:
-                log.warning(f"GitHub-publish van {rel_path} mislukt: {put_resp.status_code} {put_resp.text[:200]}")
-        except Exception as e:
-            log.warning(f"GitHub-publish van {rel_path} mislukt: {e}")
-    totaal = len(GITHUB_PUBLISH_FILES)
-    # Dit was een INFO-regel, ook bij 0 van de 3. Op 15 oktober 2026 verliep het
-    # GitHub-token en stond de site vier dagen stil terwijl het log elke ochtend
-    # rustig "0/3 bestanden" meldde. Een mislukte publicatie is geen mededeling.
+    gepubliceerd = len(takken)
     if gepubliceerd == totaal:
-        log.info(f"Gepubliceerd naar github.com/{repo}: {gepubliceerd}/{totaal} bestanden")
+        log.info(f"Gepubliceerd naar github.com/{repo} ({GITHUB_PUBLISH_BRANCH}): "
+                 f"{gepubliceerd}/{totaal} bestanden in één commit")
     else:
         log.warning(
-            f"Publiceren naar github.com/{repo} mislukt: {gepubliceerd}/{totaal} "
-            f"bestanden. De site blijft staan op de laatst gepubliceerde versie."
+            f"Publiceren naar github.com/{repo} onvolledig: {gepubliceerd}/{totaal} "
+            f"bestanden."
         )
     return gepubliceerd, totaal
-
 
 # ---------------------------------------------------------------------------
 # Gedeeld
@@ -2019,7 +2216,7 @@ def main():
     # Losstaand afgeschermd, net als hierboven: de cijferpagina is een extraatje
     # bovenop de lijst en mag hem niet tegenhouden.
     try:
-        dagen = werk_dagtellingen_bij(aanbiedingen, vandaag)
+        dagen = werk_dagtellingen_bij(aanbiedingen, vandaag, winkelstatus)
         schrijf_cijfers_html(dagen)
     except Exception as e:
         log.warning(f"/cijfers/ genereren mislukt ({e}); vorige versie blijft staan")

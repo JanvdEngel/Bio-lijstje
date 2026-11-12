@@ -80,9 +80,27 @@ def draai(antwoorden):
 
 print("engine")
 
+# Dit legde tot 12 november 2026 het omgekeerde vast: een lege eerste pagina
+# gaf "ok". Dat leek redelijk — geen acties is geen storing — maar het gaat hier
+# om de hele catalogus van een keten, niet om de bio-acties daarin. Nul
+# producten bij een supermarkt bestaat niet. Wat het in de praktijk betekent is
+# een hernoemde retailer-slug of een foutobject met een HTTP 200, en dan zou de
+# winkel voor altijd op "vandaag geen bio-acties" staan terwijl de cijferpagina
+# nuldagen telt en niets alarm slaat.
 items, status = draai([NepAntwoord(producten=[])])
-keur('lege eerste pagina geeft status "ok"', status == "ok", f'kreeg "{status}"')
-keur("lege eerste pagina geeft geen items", items == [])
+keur('nul producten geeft status "mislukt"', status == "mislukt", f'kreeg "{status}"')
+keur("en levert geen items", items == [])
+
+# Een winkel die wél een catalogus heeft maar daarin geen bio-groente: dat is
+# de echte lege week, en die hoort gewoon "ok" te zijn.
+niet_bio = {
+    "name": "Coca-Cola", "price": 1.49, "original_price": 1.99,
+    "dietary_tags": [], "unified_category": "frisdrank",
+    "promotion_status": "active", "retailer": "test",
+}
+items, status = draai([NepAntwoord(producten=[niet_bio]), NepAntwoord(producten=[])])
+keur('een catalogus zonder bio-AGF blijft "ok"', status == "ok", f'kreeg "{status}"')
+keur("en levert ook geen items", items == [])
 
 items, status = draai([RuntimeError("dns weg")])
 keur('fout op pagina 1 geeft status "mislukt"', status == "mislukt", f'kreeg "{status}"')

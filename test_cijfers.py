@@ -89,6 +89,53 @@ if sjabloon.exists():
     keur("vermeldt de bron (verplicht)", "prijsprofeet.nl" in t)
     keur("heeft de bezoekersteller", "gc.zgo.at/count.js" in t)
 
+# ---------------------------------------------------------------------------
+# Een storing is geen nuldag
+# ---------------------------------------------------------------------------
+# cijfers_uit_dagtellingen() liet altijd al een dag vallen waarop een winkel
+# ontbrak, en de docstring beloofde "alleen dagen waarop alle winkels zijn
+# opgehaald". Maar werk_dagtellingen_bij() schreef simpelweg len(acties) voor
+# elke winkel en kende de status niet, dus een onbereikbare winkel kwam binnen
+# als een echte nul. De belofte en de code liepen uiteen.
+print("\nde telling van vandaag")
+import tempfile
+
+_tmp = Path(tempfile.mkdtemp())
+_echt_pad = bio.DAGTELLINGEN_PATH
+try:
+    aanbiedingen = {"AH": [1, 2, 3], "Aldi": [], "Jumbo": [1]}
+
+    bio.DAGTELLINGEN_PATH = _tmp / "alles-ok.json"
+    dag = bio.werk_dagtellingen_bij(aanbiedingen, "2026-11-12")["2026-11-12"]
+    keur("zonder status telt alles mee", dag == {"AH": 3, "Aldi": 0, "Jumbo": 1},
+         f"kreeg {dag}")
+
+    bio.DAGTELLINGEN_PATH = _tmp / "aldi-stuk.json"
+    dag = bio.werk_dagtellingen_bij(
+        aanbiedingen, "2026-11-12",
+        {"AH": "ok", "Aldi": "mislukt", "Jumbo": "ok"})["2026-11-12"]
+    keur("een mislukte winkel komt er niet in", "Aldi" not in dag, f"kreeg {dag}")
+    keur("de rest wel", dag == {"AH": 3, "Jumbo": 1}, f"kreeg {dag}")
+
+    bio.DAGTELLINGEN_PATH = _tmp / "aldi-half.json"
+    dag = bio.werk_dagtellingen_bij(
+        aanbiedingen, "2026-11-12",
+        {"AH": "ok", "Aldi": "onvolledig", "Jumbo": "ok"})["2026-11-12"]
+    keur("een half opgehaalde winkel ook niet", "Aldi" not in dag, f"kreeg {dag}")
+
+    # En dan laat de berekening die dag vanzelf vallen.
+    c = bio.cijfers_uit_dagtellingen({
+        "2026-11-10": {"AH": 2, "Aldi": 0, "Jumbo": 1},
+        "2026-11-11": {"AH": 3, "Aldi": 0, "Jumbo": 1},
+        "2026-11-12": {"AH": 3, "Jumbo": 1},
+    })
+    keur("een dag met een ontbrekende winkel telt niet mee", c["dagen"] == 2,
+         f"kreeg {c['dagen']}")
+    keur("en een echte nul telt nog gewoon als nuldag",
+         next(r["nuldagen"] for r in c["per_winkel"] if r["winkel"] == "Aldi") == 2)
+finally:
+    bio.DAGTELLINGEN_PATH = _echt_pad
+
 print()
 if fouten:
     sys.exit(f"{fouten} controle(s) niet in orde")
