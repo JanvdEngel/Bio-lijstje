@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-11-12T06:01:18.940741",
+  "laatst_bijgewerkt": "2026-11-12T20:25:04.111151",
   "aanbiedingen": {
     "AH": [
       {
@@ -118,12 +118,6 @@
     ],
     "Lidl": [
       {
-        "naam": "Bio flespompoen",
-        "actieprijs": 1.99,
-        "normale_prijs": null,
-        "soort": "vers"
-      },
-      {
         "naam": "Bio kiwi gold",
         "actieprijs": 3.49,
         "normale_prijs": null,
@@ -159,13 +153,19 @@
         "naam": "Biologisch PLUS Rode bieten",
         "actieprijs": 0.99,
         "normale_prijs": 1.49,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-11-12",
+        "eerder_gezien": 1
       },
       {
         "naam": "Biologisch PLUS Wortelen",
         "actieprijs": 1.49,
         "normale_prijs": 1.85,
-        "soort": "vers"
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.49,
+        "laagste_ooit_datum": "2026-11-12",
+        "eerder_gezien": 1
       }
     ],
     "Ekoplaza": [
