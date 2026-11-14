@@ -1,0 +1,20 @@
+# Voeg toe aan je dashboard (via de UI: kaart toevoegen > Handmatig)
+# Vereist geen extra HACS-cards, werkt met de ingebouwde Markdown-kaart.
+
+type: markdown
+title: 🥕 Beste bio supermarkt deze week
+content: >
+  **Winkel met de meeste beste deals: {{ states('sensor.bio_prijsvergelijking') }}**
+
+  {% set top = state_attr('sensor.bio_prijsvergelijking', 'top_20') %}
+  {% if top %}
+  | Product | Goedkoopst | Prijs | Duurst | Prijs | Verschil |
+  |---|---|---|---|---|---|
+  {% for p in top %}
+  | {{ p.product }} | {{ p.goedkoopste_winkel }} | €{{ '%.2f'|format(p.goedkoopste_prijs) }} | {{ p.duurste_winkel }} | €{{ '%.2f'|format(p.duurste_prijs) }} | {{ p.verschil_pct }}% |
+  {% endfor %}
+  {% else %}
+  Nog geen data — draai eerst de service `pyscript.supermarkt_bio_vergelijk_nu`.
+  {% endif %}
+
+  *Laatst bijgewerkt: {{ state_attr('sensor.bio_prijsvergelijking', 'laatst_bijgewerkt') }}*

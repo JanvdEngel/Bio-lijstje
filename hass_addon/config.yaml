@@ -1,0 +1,27 @@
+name: "Het Bio Lijstje"
+version: "1.6.1"
+slug: "bio_bord"
+description: "Dagelijkse biologische groente- en fruitaanbiedingen van negen supermarkten, losstaande webpagina op het lokale netwerk + optioneel publiek via GitHub Pages"
+arch:
+  - aarch64
+startup: application
+boot: auto
+init: false
+# Nodig om na elke geslaagde ronde sensor.bio_lijstje_bijgewerkt bij te werken.
+# Een automatisering slaat alarm als die sensor 30 uur niet verandert; dat is
+# het enige signaal dat de site stil is gevallen zonder dat iemand kijkt.
+homeassistant_api: true
+map:
+  - share:rw
+ports:
+  8099/tcp: 8099
+ports_description:
+  8099/tcp: "Het Bio Lijstje webinterface (http://<pi-ip>:8099)"
+options:
+  github_token: ""
+  github_repo: ""
+  prijsprofeet_key: ""
+schema:
+  github_token: password
+  github_repo: str
+  prijsprofeet_key: password?

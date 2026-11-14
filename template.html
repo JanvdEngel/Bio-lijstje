@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1b1a15">
+<title>Biologische aanbiedingen — alle supermarkten, dagelijks bijgewerkt</title>
+<meta name="description" content="Dagelijks de lopende biologische groente- en fruitaanbiedingen bij Albert Heijn, Jumbo, Lidl, Aldi, Dirk, Plus, Ekoplaza, Poiesz en DekaMarkt. Eén overzicht, met waarschuwing bij stapelkortingen en bij prijzen die eerder lager waren.">
+<!--JSONLD-->
+<!-- fetch_bio_prices.py vult hier de gestructureerde data in. Zolang dat niet
+     is gebeurd staat er niets: liever geen JSON-LD dan JSON-LD met een lege
+     lijst of een verzonnen datum erin. -->
+<!--/JSONLD-->
+<link rel="canonical" href="https://hetbiolijstje.nl/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hetbiolijstje.nl/">
+<meta property="og:title" content="Het Bio Lijstje — biologische aanbiedingen, dagelijks">
+<meta property="og:description" content="Alle biologische groente- en fruitaanbiedingen van negen supermarkten op één pagina. Geen advertenties, geen doorklikken.">
+<meta property="og:image" content="https://hetbiolijstje.nl/icon.png">
+<meta property="og:locale" content="nl_NL">
+<meta name="twitter:card" content="summary">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* Donker is de standaard, en dat blijft het ook als je systeem op licht
+     staat: dit is hoe de site hoort te zijn. Licht is een optie die je zelf
+     aanzet, geen automatisme. Het komt uit één klasse op <html>, gezet door
+     een klein scriptje in de <head>, en die keuze wordt onthouden.
+     Bewust één klasse en géén tweede palet in een @media-regel: dan staat elke
+     kleur op precies één plek. */
+  :root{
+    --bg: #1b1a15;
+    --bg-raised: #232019;
+    --text: #ece7db;
+    --muted: #928c7c;
+    --harvest: #c97d3f;
+    --warn: #db6454;      /* was #d95b4a: 4,29:1 op een kaart, net onder de eis */
+    --leaf: #8caa5c;
+    --line: #35322a;
+    /* Losgetrokken uit de opmaak zodat licht ze kan omzetten: deze stonden
+       eerder als kale rgba() in de regels zelf. */
+    --speck: #ffffff;      /* stipjes van de textuur */
+    --speck-op: 0.05;
+    --shadow: rgba(0,0,0,0.25);
+    --badge-ring: rgba(236,231,219,0.35);
+    --code-bg: rgba(0,0,0,0.25);
+    --dim: var(--line);    /* uitgezette winkel: net leesbaar, niet weg */
+    --ah: #5b8fd6;
+    --jumbo: #e0b23c;
+    --lidl: #4fb0a6;
+    --aldi: #8278d3;      /* was #7a6fd0: 4,16:1 */
+    --dirk: #db5959;      /* was #d43a3a: 3,71:1 met de donkere badgeletter erop */
+    --plus: #4f9260;      /* was #4a8f5c: 4,46:1 */
+    /* Ekoplaza's eigen merkgroen (#67bc46), iets opgetild voor leesbaarheid op
+       donker. Ligt dichter bij Plus dan ideaal, maar beide ketens zíjn groen;
+       de tinten schelen genoeg om ze naast elkaar te onderscheiden. */
+    --ekoplaza: #7cc457;
+    /* Poiesz is in het echt rood en DekaMarkt blauw, maar die twee plekken zijn
+       hier bezet door Dirk en AH. Dus de dichtstbijzijnde vrije tint: magenta
+       naast het rood, leisteen naast het blauw. Gemeten tegen de zeven andere
+       winkelkleuren staan deze twee er het verst vanaf. */
+    --poiesz: #d379b4;
+    --dekamarkt: #8fa8bd;
+  }
+
+  /* De winkelkleuren zijn niet zomaar te hergebruiken op wit: de badges zetten
+     de achtergrondkleur als tekstkleur (color: var(--bg)), dus in licht moet
+     elke winkelkleur donker genoeg zijn voor bijna-witte letters. Jumbo-geel
+     was daar het duidelijkste geval — #e0b23c op wit is vrijwel onleesbaar,
+     dus dat wordt een donkere oker. Alle negen zitten boven 4,5:1. */
+  :root.licht{
+    --bg: #faf8f2;
+    --bg-raised: #ffffff;
+    --text: #1f1d17;
+    --muted: #6b6455;
+    --harvest: #a8551f;
+    --warn: #b0342a;
+    --leaf: #3f6e34;
+    --line: #e2ddd0;
+    --speck: #1f1d17;
+    --speck-op: 0.035;
+    --shadow: rgba(31,29,23,0.14);
+    --badge-ring: rgba(31,29,23,0.12);
+    --code-bg: rgba(31,29,23,0.07);
+    --dim: #b8b1a0;
+    --ah: #1f5fa8;
+    --jumbo: #8a6410;
+    --lidl: #0f6f68;
+    --aldi: #4a3fa0;
+    --dirk: #b02525;
+    --plus: #2e6b3e;
+    --ekoplaza: #4a7412;   /* olijfgroener dan Plus, anders lijken de twee te veel op elkaar */
+    --poiesz: #9c3376;
+    --dekamarkt: #4c6578;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 3rem;
+  }
+  .chalk-texture{
+    position: fixed; inset: 0; pointer-events: none; opacity: var(--speck-op); mix-blend-mode: overlay;
+    background-image: radial-gradient(circle at 20% 30%, var(--speck) 0.5px, transparent 0.5px),
+                       radial-gradient(circle at 70% 60%, var(--speck) 0.5px, transparent 0.5px);
+    background-size: 4px 4px, 5px 5px;
+  }
+  header{
+    padding: 2.2rem 0 1rem;
+    text-align: center;
+    position: relative;
+  }
+  /* ---- Eén kader -----------------------------------------------------------
+     Staat identiek op beide pagina's. Dat is nodig omdat de themaknop aan dit
+     kader hangt: stond de kop op de voorpagina over de volle breedte en op
+     /seizoen in een kolom van 720px, dan sprong dat icoontje op een breed
+     scherm ruim 350 pixels opzij bij het wisselen van tab.
+
+     De inhoud eronder mag wél verschillen. Zeven winkelkolommen naast elkaar
+     hebben ruimte nodig (minimaal 230px per kolom), een leeskolom met twee
+     kaarten juist niet — die wordt daarbinnen op .leeskolom gehouden. Alles
+     staat gecentreerd op dezelfde as, dus het oogt als één opmaak. */
+  .kader{
+    max-width: 1180px;
+    margin: 0 auto;
+    padding-left: clamp(1rem, 4vw, 2rem);
+    padding-right: clamp(1rem, 4vw, 2rem);
+  }
+  /* Dezelfde zijmarges als het kader, anders raakt de inhoud op een telefoon
+     de schermrand — die marge zat eerst in .wrap en verhuisde met de kop mee. */
+  .leeskolom{
+    max-width: 720px;
+    margin: 0 auto;
+    padding-left: clamp(1rem, 4vw, 2rem);
+    padding-right: clamp(1rem, 4vw, 2rem);
+  }
+
+  /* ---- Gedeelde kop -------------------------------------------------------
+     Deze kop staat identiek op de voorpagina en op /seizoen. Dat is het punt:
+     eerder had elke pagina een eigen merknaam en een eigen indeling, en dan
+     lijken het twee sites die toevallig dezelfde kleuren hebben. Nu zie je
+     bovenaan altijd hetzelfde, en zegt alleen de regel onder de titel waar je
+     bent. Wijzig je hier iets, doe het dan in beide bestanden. */
+  .secties{
+    display:flex; justify-content:center; align-items:center;
+    gap:0.4rem; flex-wrap:wrap; margin-bottom:1.1rem;
+  }
+  .secties a{
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--muted);
+    background:none;
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:5px 12px;
+    text-decoration:none;
+    white-space:nowrap;
+    display:inline-flex; align-items:center;
+    transition:border-color .2s, color .2s, background-color .2s;
+  }
+  /* De pagina waar je nu bent is gevuld, niet alleen anders van kleur — op een
+     telefoon in de zon is een randverschil te weinig. */
+  .secties a.huidig{
+    background:var(--harvest); border-color:var(--harvest); color:var(--bg);
+  }
+
+  /* De themaknop hoort bewust níét in de sectierij. Daar stond hij eerst, in
+     dezelfde pilvorm, en dan zien twee dingen die volstrekt verschillend werken
+     er hetzelfde uit: het ene brengt je ergens, het andere verandert een
+     instelling. Nu een los icoontje rechtsboven, 40px groot zodat het op een
+     telefoon te raken is. */
+  .thema-knop{
+    position:absolute; top:0.7rem; right:0.7rem;
+    width:40px; height:40px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px; line-height:1;
+    color:var(--muted);
+    background:none; border:0; border-radius:50%;
+    cursor:pointer;
+    -webkit-appearance:none; appearance:none;
+    -webkit-tap-highlight-color:transparent;
+    transition:color .2s, background-color .2s;
+  }
+  @media (hover: hover){
+    .secties a:not(.huidig):hover{ border-color:var(--harvest); color:var(--harvest); }
+    .thema-knop:hover{ color:var(--harvest); background:var(--bg-raised); }
+  }
+  /* Zonder JavaScript kan de knop niets doen, dus dan staat hij er ook niet. */
+  html:not(.js) .thema-knop{ display:none; }
+  .wordmark{
+    font-family:'Fraunces', serif; font-weight:700;
+    font-size:3rem; line-height:0.95; margin:0;
+    color:var(--text); text-decoration:none; display:block;
+  }
+  a.wordmark:hover{ color:var(--harvest); }
+  /* Familie en dikte staan hier expliciet, want deze klasse zit op een <p>
+     (voorpagina, maandpagina's) én op een <h1> (/seizoen/, /over/). Er is
+     nergens een h1-regel, dus daar sloeg de browserstandaard font-weight:bold
+     toe: dezelfde tekst kwam op twee pagina's op 400 en op twee andere op 700.
+     Vetgedrukte uppercase op 11,5px met deze spatiëring leest als een ander
+     lettertype, en dat viel ook precies zo op. */
+  .pitch{
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: var(--muted);
+    /* Smal gehouden: één regel van 343px is op een telefoon te lang om
+       comfortabel te lezen, en gecentreerde tekst nog meer. */
+    max-width: 32ch;
+    margin: 0.55rem auto 0;
+  }
+  .updated{
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin: 0 0 0.8rem;
+  }
+
+
+
+  .summary-bar{
+    display: flex; justify-content: center; gap: 1.4rem;
+    margin: 0.4rem 0 1.6rem;
+    flex-wrap: wrap;
+  }
+
+  /* De aan/uit-staat wordt bewust met kleuren aangegeven en niet met opacity.
+     Op iPhone/iPad bleef de knop er "aan" uitzien terwijl de sectie wél
+     verdween; kleurwissels zijn overal betrouwbaar, een opacity-dimming
+     blijkbaar niet. Bijkomend voordeel: 40% doorzichtige tekst was toch al
+     slecht leesbaar. */
+  .store-toggle{
+    display:flex; align-items:center; gap:0.45rem;
+    background:none;
+    cursor:pointer;
+    border:1px solid var(--tc, var(--line));
+    border-radius:999px;
+    padding:0.3rem 0.75rem 0.3rem 0.3rem;
+    font-family:'Space Mono', monospace;
+    color: var(--text);
+    /* iOS geeft buttons eigen platformstyling; die zou onze rand en
+       achtergrond kunnen overrulen. */
+    -webkit-appearance:none;
+    appearance:none;
+    -webkit-tap-highlight-color:transparent;
+    transition: border-color .2s, color .2s;
+  }
+  .store-toggle-badge{
+    width:1.5rem; height:1.5rem; border-radius:50%;
+    background: var(--tc, var(--muted));
+    color: var(--bg); font-weight:700; font-size:0.65rem;
+    display:flex; align-items:center; justify-content:center;
+    flex:0 0 auto;
+    transition: background .2s, color .2s;
+  }
+  .store-toggle-label{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.03em; }
+  .store-toggle-count{ font-size:0.68rem; color:var(--muted); }
+
+  .store-toggle.off{
+    border-color: var(--line);
+    color: var(--muted);
+  }
+  /* Uit = hol bolletje in plaats van een gevuld bolletje. Een gevulde grijze
+     cirkel met grijze letter erin werkte in donker net, maar op wit werd het
+     lichtgrijs-op-lichtgrijs. Hol is in beide paletten leesbaar én leest
+     duidelijker als "uit". */
+  .store-toggle.off .store-toggle-badge{
+    background: transparent;
+    box-shadow: inset 0 0 0 1px var(--dim);
+    color: var(--dim);
+  }
+  .store-toggle.off .store-toggle-count{ color: var(--dim); }
+
+  /* Alleen op apparaten die echt hoveren. Zonder deze guard blijft de
+     hover-stijl op een touchscreen "hangen" na een tik, en dan lijkt een
+     uitgeschakelde winkel alsnog actief. */
+  @media (hover: hover) {
+    .store-toggle:hover{ border-color: var(--tc, var(--harvest)); }
+  }
+
+  .store-columns{
+    display: grid; grid-template-columns: 1fr; gap: 1.8rem;
+  }
+  @media (min-width: 760px){
+    .store-columns{ grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); align-items: start; }
+  }
+
+  .store-section{ margin-bottom: 1.6rem; }
+  @media (min-width: 760px){
+    .store-section{ margin-bottom: 0; }
+  }
+  .store-header{
+    display:flex; align-items:center; gap:0.7rem; margin-bottom: 0.9rem;
+  }
+  .store-badge{
+    flex: 0 0 auto;
+    width: 2.5rem; height: 2.5rem;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Mono', monospace; font-weight: 700; font-size: 1.1rem;
+    color: var(--bg);
+    box-shadow: 0 3px 8px var(--shadow);
+    border: 2px solid var(--badge-ring);
+  }
+  .store-header h2{
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.55rem;
+    margin: 0; color: var(--text);
+  }
+  .store-header .count{
+    font-size: 0.75rem; color: var(--muted); margin-left: 0.1rem;
+  }
+
+  .grid{
+    display: grid; grid-template-columns: 1fr; gap: 0.7rem;
+  }
+  @media (min-width: 560px) and (max-width: 759px){
+    .grid{ grid-template-columns: 1fr 1fr; }
+  }
+
+  .card{
+    position: relative;
+    background: var(--bg-raised);
+    border-radius: 10px;
+    padding: 0.85rem 1rem 0.95rem;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--card-accent, var(--leaf));
+    transition: border-color .2s;
+  }
+  .card:hover{ border-color: var(--leaf); }
+  .card .name{
+    font-size: 0.96rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .price-row{
+    display:flex; align-items:baseline; gap:0.55rem; margin-top:0.5rem; flex-wrap:wrap;
+  }
+  .price-now{ font-family:'Space Mono', monospace; font-size:1rem; font-weight:700; color: var(--harvest); }
+  .price-was{ font-family:'Space Mono', monospace; font-size:0.78rem; color: var(--muted); text-decoration: line-through; }
+  .savings{
+    margin-top:0.3rem; font-size:0.74rem; color: var(--leaf);
+  }
+  /* Het aantal hoort ín de prijsregel. Stond het er alleen onder, dan las de
+     prijs als losse stuksprijs — en dat was precies de terechte klacht over de
+     witte druiven: €1,75 gold vanaf 2 dozen, één doos had een andere korting. */
+  .prijs-mits{
+    font-family:'Space Mono', monospace; font-size:0.68rem;
+    letter-spacing:0.02em; color:var(--muted);
+    white-space:nowrap;
+  }
+
+  /* Actieprijs geldt pas bij meerdere stuks — hoort pal bij de prijs, anders
+     lijkt het een gewone stuksprijs. */
+  .voorwaarde{
+    margin-top:0.3rem; font-size:0.74rem; color: var(--harvest);
+    font-family:'Space Mono', monospace; line-height:1.35;
+  }
+  .history-note{
+    margin-top:0.4rem; font-size:0.74rem; padding-top:0.4rem;
+    border-top: 1px dashed var(--line);
+  }
+  .history-good{ color: var(--leaf); }
+  .history-warn{ color: var(--warn); }
+
+  /* Scheiding tussen vers en voorraad binnen één winkel. Bewust een kopje en
+     geen tweede kolom: met een handvol producten per winkel zou splitsen in
+     kolommen alleen maar lege ruimte opleveren. */
+  .soort-kop{
+    display:flex; align-items:baseline; gap:0.5rem; flex-wrap:wrap;
+    font-family:'Space Mono', monospace; font-size:0.7rem;
+    letter-spacing:0.08em; text-transform:uppercase; color:var(--muted);
+    margin:0.9rem 0 0.5rem; padding-top:0.7rem;
+    border-top:1px dashed var(--line);
+  }
+  .soort-kop.eerste{ margin-top:0; padding-top:0; border-top:none; }
+  .soort-uitleg{
+    /* Geen opacity: --muted op 80% geeft 3,6:1 op een kaart, en dit is uitleg
+       die je moet kunnen lezen, geen decoratie. Zonder opacity 4,85:1. */
+    font-size:0.68rem; letter-spacing:0.01em; text-transform:none;
+    color:var(--muted);
+    font-family:'IBM Plex Sans', sans-serif;
+  }
+
+  /* De statische lijst die het script in de HTML zet. Zichtbaar tot de
+     JavaScript hem vervangt, en dat is prima: dan zie je meteen inhoud in
+     plaats van "Nog niets geladen". */
+  .statische-lijst{ color:var(--muted); font-size:0.9rem; }
+  .statische-lijst h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.1rem;
+    color:var(--text); margin:1.2rem 0 0.3rem;
+  }
+  .statische-lijst ul{ margin:0; padding-left:1.1rem; }
+  .statische-lijst li{ margin-bottom:0.15rem; }
+
+  .card-extra{ display:none; }
+  .store-section.expanded .card-extra{ display:block; }
+  .toggle-more{
+    display:block;
+    width:100%;
+    margin-top:0.7rem;
+    font-family:'Space Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    background:none;
+    border:1px dashed var(--line);
+    border-radius:10px;
+    color:var(--muted);
+    padding:0.5rem;
+    cursor:pointer;
+    transition:border-color .2s, color .2s;
+  }
+  .toggle-more:hover{ border-color:var(--harvest); color:var(--harvest); }
+
+  .empty-note{
+    font-size: 0.82rem; color: var(--muted); font-style: italic;
+    padding: 0.6rem 0;
+  }
+
+  /* Een winkel die niet opgehaald kon worden is iets anders dan een winkel
+     zonder acties. Dat verschil stond eerder alleen in het log op de Pi. */
+  .uitval{
+    font-size:0.82rem; color:var(--warn);
+    padding:0.6rem 0;
+  }
+  .uitval strong{ font-weight:600; }
+
+  /* Als een ronde is overgeslagen blijft de vorige lijst staan, en die zag er
+     precies zo uit als een verse. Deze balk is het enige verschil. */
+  .verouderd{
+    font-size:0.82rem; color:var(--text);
+    background:var(--bg-raised);
+    border:1px solid var(--warn); border-left-width:3px; border-radius:8px;
+    padding:0.7rem 1rem; margin:0 0 1.2rem;
+  }
+
+  /* Geen alarm: de lijst eronder is nog steeds bruikbaar, alleen misschien
+     niet van vandaag. */
+  .fetch-mislukt{
+    font-size:0.8rem; color:var(--muted);
+    border:1px solid var(--line); border-radius:8px;
+    padding:0.6rem 0.9rem; margin:0 0 1.2rem;
+    text-align:center;
+  }
+
+  .empty-state{
+    text-align:center; padding: 2rem 1.5rem; color: var(--muted);
+    background: var(--bg-raised);
+    border-radius: 16px;
+    border: 1px dashed var(--line);
+  }
+  .empty-state .big{ font-family:'Fraunces', serif; font-weight:600; font-size:1.5rem; color: var(--text); display:block; margin-bottom:0.3rem;}
+  code{
+    background: var(--code-bg); padding:0.1rem 0.4rem; border-radius:5px; font-size:0.85em;
+  }
+  footer{
+    text-align:center; font-size:0.72rem; color: var(--muted); margin-top:2rem;
+  }
+
+  /* ---- Minder chrome op een telefoon ---------------------------------------
+     Op 375px stond de eerste aanbieding 347 pixels naar beneden: een kop van
+     167px, daarna een filterbalk die over twee rijen viel met 22px ertussen.
+     Wie de site opende zag dus vooral de site zelf en geen aanbieding.
+
+     Dit blok staat onderaan de stylesheet en niet bij .summary-bar hierboven.
+     Dat is geen ordening maar noodzaak: media-regels hebben geen extra
+     specificiteit, dus een basisregel die er later staat wint gewoon. Zo werd
+     .store-columns{gap:1.2rem} hier stil overschreven door de 1.8rem verderop,
+     en .store-toggle{flex:0 0 auto} idem.
+
+     De filterbalk wordt één rij die zijwaarts schuift. Dat is bewust een
+     afweging: je ziet drie van de negen winkels tegelijk in plaats van alle negen.
+     De knoppen blijven 35px hoog, dus aanraakbaar, en de balk is afgesneden te
+     zien — dat is wat vertelt dat er meer staat. */
+  @media (max-width: 559px){
+    header{ padding: 1.4rem 0 0.6rem; }
+    /* Op 32ch viel deze zin over drie regels binnen een kolom van 343px, en
+       dat is 29 pixels die je aan een aanbieding kwijt bent. */
+    .pitch{ max-width: none; }
+    .summary-bar{
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      gap: 0.6rem;
+      /* Onder de balk stond 14px lucht terwijl er tussen twee winkels 54px
+         zat. Daardoor plakte de eerste winkelkop tegen de knoppen aan en oogde
+         het bovenin druk, terwijl de rest juist ruim stond. Nu 32px hier en
+         40px tussen de winkels: hetzelfde ritme, en nog steeds korter dan de
+         347px van eerst. */
+      margin: 0.2rem 0 2rem;
+      overflow-x: auto;
+      /* De balk schuift, de pagina niet. */
+      scroll-snap-type: x proximity;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .summary-bar::-webkit-scrollbar{ display: none; }
+    .store-toggle{ scroll-snap-align: start; flex: 0 0 auto; }
+    /* 22,4 + 17,6 = 40px tussen twee winkels. */
+    .store-columns{ gap: 1.4rem; }
+    .store-section{ margin-bottom: 1.1rem; }
+  }
+</style>
+<!-- Moet in de <head> staan en niet onderaan: anders wordt de donkere versie
+     eerst getekend en zie je een flits voordat licht aanslaat. -->
+<script>
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  var keuze = null;
+  try { keuze = localStorage.getItem('bioBordThema'); } catch (e) {}
+  // Alleen licht als je er zelf voor gekozen hebt. Geen terugval op de
+  // systeeminstelling: donker is hoe de site bedoeld is.
+  if (keuze === 'licht') d.classList.add('licht');
+})();
+</script>
+</head>
+<body>
+<div class="chalk-texture"></div>
+
+<header class="kader">
+  <button class="thema-knop" type="button" id="themaKnop"></button>
+  <nav class="secties" aria-label="Secties">
+    <a href="/" class="huidig" aria-current="page">Aanbiedingen</a>
+    <a href="/seizoen/">Seizoen</a>
+  </nav>
+  <h1 class="wordmark">Het Bio Lijstje</h1>
+  <!-- Hier stond "Vandaag geldig". Dat zegt niet wat deze site is, en dat
+       stond nergens anders op de pagina: een bezoeker die hier binnenkwam moest
+       uit de winkellogo's en de prijzen zelf opmaken waar hij was. -->
+  <p class="pitch">Biologische groente en fruit in de aanbieding bij negen supermarkten, elke ochtend bijgewerkt.</p>
+</header>
+
+<main class="kader">
+  <!-- De inhoud tussen deze twee merktekens wordt door fetch_bio_prices.py
+       vervangen door een statische lijst, zodat de producten in de HTML staan
+       en niet alleen door JavaScript worden opgehaald. Zoekmachines zagen
+       anders letterlijk "Nog niets geladen". De JavaScript hieronder vervangt
+       dit blok daarna alsnog door de interactieve versie. -->
+  <div id="content">
+    <!--PRODUCTEN-->
+    <div class="empty-state">
+      <span class="big">Nog niets geladen</span>
+      Even geduld...
+    </div>
+    <!--/PRODUCTEN-->
+  </div>
+</main>
+
+<footer>
+  <!-- Een <time> met een machineleesbare datum: hier stond alleen losse tekst,
+       en zolang de fetch niet klaar is leest een crawler letterlijk "nog niets
+       geladen". Het datetime-attribuut wordt door het script gevuld. -->
+  <p class="updated">Bijgewerkt: <!--DATUM--><time id="updated" datetime="">nog niets geladen…</time><!--/DATUM--></p>
+  Prijzen zijn indicatief; controleer ze in de winkel.<br>
+  Aanbiedingen via <a href="https://www.prijsprofeet.nl/" style="color:inherit">PrijsProfeet</a> &middot;
+  <a href="/cijfers/" style="color:inherit">cijfers</a> &middot;
+  <a href="/over/" style="color:inherit">over deze site</a>
+</footer>
+
+<script>
+const STORE_COLORS = { AH: 'var(--ah)', Jumbo: 'var(--jumbo)', Lidl: 'var(--lidl)', Aldi: 'var(--aldi)', Dirk: 'var(--dirk)', Plus: 'var(--plus)', Ekoplaza: 'var(--ekoplaza)', Poiesz: 'var(--poiesz)', DekaMarkt: 'var(--dekamarkt)' };
+// Twee letters waar één er al bezet is: D is van Dirk en P van Plus. De
+// terugval hieronder is s[0], dus zonder deze twee regels zouden DekaMarkt en
+// Dirk allebei een "D" dragen, in hetzelfde grijs.
+const STORE_BADGES = { AH: 'ah', Jumbo: 'J', Lidl: 'L', Aldi: 'A', Dirk: 'D', Plus: 'P', Ekoplaza: 'E', Poiesz: 'Po', DekaMarkt: 'De' };
+let data = null;
+
+const HIDDEN_STORES_KEY = 'bioBordHiddenStores';
+let hiddenStores = new Set();
+try {
+  hiddenStores = new Set(JSON.parse(localStorage.getItem(HIDDEN_STORES_KEY) || '[]'));
+} catch (e) { /* corrupte opslag negeren, alles blijft zichtbaar */ }
+
+function saveHiddenStores() {
+  try { localStorage.setItem(HIDDEN_STORES_KEY, JSON.stringify([...hiddenStores])); } catch (e) {}
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' }) +
+         ' om ' + d.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+}
+
+function fmtShortDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' });
+}
+
+/* Nederlandse notatie: €1,75 en niet €1.75. toFixed geeft altijd een punt,
+   ongeacht de taal van de browser, dus dat moet hier gebeuren. */
+function prijs(bedrag) {
+  return '€' + bedrag.toFixed(2).replace('.', ',');
+}
+
+function renderHistoryNote(item) {
+  if (item.laagste_ooit_prijs === undefined || item.laagste_ooit_prijs === null) return '';
+  if (item.actieprijs <= item.laagste_ooit_prijs) {
+    // Met één eerdere meting zegt "laagste prijs die ik zag" niets — dan is er
+    // precies één ding om mee te vergelijken. Vanaf twee metingen wel, en dan
+    // staat het aantal erbij zodat de lezer weet hoe hard de claim is.
+    if (!item.eerder_gezien || item.eerder_gezien < 2) return '';
+    return `<div class="history-note history-good">&#127942; Laagste van ${item.eerder_gezien} prijzen die ik zag</div>`;
+  }
+  const verschil = item.actieprijs - item.laagste_ooit_prijs;
+  return `<div class="history-note history-warn">&#9888;&#65039; Eerder goedkoper: ${prijs(item.laagste_ooit_prijs)} op ${fmtShortDate(item.laagste_ooit_datum)} (nu ${prijs(verschil)} duurder)</div>`;
+}
+
+const VEROUDERD_NA_UREN = 30;
+const STORE_VISIBLE_CAP = 4;
+
+function renderAanbiedingCard(item, storeColor, isExtra) {
+  const savingsPct = item.normale_prijs
+    ? Math.round((1 - item.actieprijs / item.normale_prijs) * 100)
+    : null;
+  return `
+    <div class="card${isExtra ? ' card-extra' : ''}" style="--card-accent:${storeColor}">
+      <div class="name">${item.naam.toLowerCase()}</div>
+      <div class="price-row">
+        <span class="price-now">${prijs(item.actieprijs)}</span>
+        ${item.vanaf ? `<span class="prijs-mits">vanaf ${item.vanaf} stuks</span>` : ''}
+        ${item.normale_prijs ? `<span class="price-was">${prijs(item.normale_prijs)}</span>` : ''}
+      </div>
+      ${savingsPct && savingsPct > 0 ? `<div class="savings">${savingsPct}% korting</div>` : ''}
+      ${renderHistoryNote(item)}
+    </div>`;
+}
+
+function render() {
+  const content = document.getElementById('content');
+  if (!data) {
+    // Hier stond een instructie om fetch_bio_prices.py op de Pi te draaien.
+    // Die werd aan bezoekers getoond, en hij overschreef de productlijst die de
+    // Pi al in de HTML had gezet — dus wie hier kwam bij een haperende fetch
+    // zag geen aanbiedingen meer terwijl ze wel op de pagina stonden. Nu blijft
+    // die lijst staan en komt er alleen een regel bij dat verversen niet lukte.
+    const melding = document.createElement('p');
+    melding.className = 'fetch-mislukt';
+    melding.setAttribute('role', 'status');
+    melding.textContent = 'De lijst kon nu niet worden ververst; je ziet de laatst opgehaalde versie.';
+    content.insertAdjacentElement('afterbegin', melding);
+    return;
+  }
+
+  // Ook het datetime-attribuut vullen: dat is het enige machineleesbare
+  // signaal op de pagina over hoe vers de lijst is.
+  const tijd = document.getElementById('updated');
+  tijd.textContent = fmtDate(data.laatst_bijgewerkt);
+  tijd.setAttribute('datetime', data.laatst_bijgewerkt);
+
+  // De fetch draait elke ochtend om 06:00. Boven de 30 uur is er dus minstens
+  // één ronde overgeslagen, en dan staat er een lijst die van gisteren of
+  // eerder is. Zonder deze melding is dat op geen enkele manier te zien.
+  let verouderdHtml = '';
+  const urenOud = (Date.now() - new Date(data.laatst_bijgewerkt).getTime()) / 3.6e6;
+  if (Number.isFinite(urenOud) && urenOud > VEROUDERD_NA_UREN) {
+    const dagen = Math.floor(urenOud / 24);
+    const hoeOud = dagen >= 1
+      ? (dagen === 1 ? 'van gisteren of eerder' : `${dagen} dagen oud`)
+      : `${Math.floor(urenOud)} uur oud`;
+    // Als string, niet als element: hieronder wordt content.innerHTML op drie
+    // plekken overschreven, en een ingevoegd element is dan weer weg. Precies
+    // dat gebeurde in de eerste versie hiervan — de balk verscheen nooit.
+    verouderdHtml = `<p class="verouderd" role="status">Deze lijst is ` +
+      `<strong>${hoeOud}</strong>. De laatste ophaalronde is niet gelukt, dus ` +
+      `er kunnen aanbiedingen zijn afgelopen of bijgekomen.</p>`;
+  }
+
+  const aanbiedingen = data.aanbiedingen || {};
+  // Oudere bestanden hebben dit veld niet; die gelden als "ok", anders zou een
+  // bestand van voor deze wijziging elke winkel als storing tonen.
+  const status = data.winkelstatus || {};
+  const stores = Object.keys(aanbiedingen);
+  const totaal = stores.reduce((sum, s) => sum + (aanbiedingen[s] || []).length, 0);
+
+  const gefaald = stores.filter(s => status[s] === 'mislukt');
+
+  if (totaal === 0 && gefaald.length === stores.length && stores.length) {
+    // Alle winkels onbereikbaar. Dat is geen rustige week, dat is een storing,
+    // en "vandaag geen bio-acties" zou hier de onwaarheid zijn die deze hele
+    // wijziging moest wegnemen.
+    content.innerHTML = verouderdHtml + `
+      <div class="empty-state">
+        <span class="big">De lijst kon niet worden opgehaald</span>
+        Geen van de winkels was te bereiken bij de laatste ronde, dus we weten
+        vandaag niet welke aanbiedingen er lopen. Er staat hier bewust geen
+        oude lijst: dan zou je prijzen zien die misschien niet meer gelden.
+      </div>`;
+    return;
+  }
+
+  if (totaal === 0) {
+    content.innerHTML = verouderdHtml + `
+      <div class="empty-state">
+        <span class="big">Vandaag geen bio-acties</span>
+        Bij geen van de negen winkels loopt op dit moment een bio groente- of
+        fruitactie. Dat gebeurt vaker dan je zou denken &mdash; acties zijn
+        schaars. De lijst wordt elke ochtend opnieuw opgehaald, dus kom morgen
+        terug.
+      </div>`;
+    return;
+  }
+
+  const summaryHtml = `
+    <div class="summary-bar">
+      ${stores.map(s => {
+        const off = hiddenStores.has(s);
+        return `
+        <button class="store-toggle${off ? ' off' : ''}" type="button" data-store="${s}" style="--tc:${STORE_COLORS[s] || 'var(--muted)'}" aria-pressed="${!off}">
+          <span class="store-toggle-badge" aria-hidden="true">${STORE_BADGES[s] || s[0]}</span>
+          <span class="store-toggle-label">${s}</span>
+          <span class="store-toggle-count">${status[s] === 'mislukt' ? '?' : (aanbiedingen[s] || []).length}</span>
+        </button>`;
+      }).join('')}
+    </div>`;
+
+  const sectionsHtml = stores.map(s => {
+    const items = aanbiedingen[s] || [];
+    const color = STORE_COLORS[s] || 'var(--leaf)';
+    // Vers eerst, voorraad eronder achter een kopje. De cap voor "meer tonen"
+    // telt over het geheel, zodat een winkel met veel voorraad de pagina niet
+    // alsnog overneemt.
+    const vers = items.filter(i => (i.soort || 'vers') === 'vers');
+    const voorraad = items.filter(i => (i.soort || 'vers') === 'voorraad');
+    const extraCount = Math.max(0, items.length - STORE_VISIBLE_CAP);
+    let n = 0;
+    const groep = (lijst) => `<div class="grid">${lijst.map(i => renderAanbiedingCard(i, color, n++ >= STORE_VISIBLE_CAP)).join('')}</div>`;
+    // Een winkel die halverwege afbrak: wat er staat is echt, maar het is niet
+    // per definitie alles.
+    const deelsOp = status[s] === 'onvolledig'
+      ? `<p class="uitval">Deze winkel is niet volledig opgehaald; er kunnen
+         acties missen.</p>`
+      : '';
+    const body = deelsOp + (items.length
+      ? (vers.length ? groep(vers) : '') +
+        (voorraad.length ? `<p class="soort-kop${vers.length ? '' : ' eerste'}">Voorraad<span class="soort-uitleg">blik, pot, zak of vriezer</span></p>` + groep(voorraad) : '') +
+        (extraCount > 0 ? `<button class="toggle-more" type="button" aria-expanded="false" data-more="+${extraCount} meer tonen" data-less="Toon minder">+${extraCount} meer tonen</button>` : '')
+      : status[s] === 'mislukt'
+        ? `<p class="uitval"><strong>Niet opgehaald.</strong> ${s} was bij de
+           laatste ronde niet te bereiken, dus we weten niet of er acties
+           lopen.</p>`
+        : `<p class="empty-note">Vandaag geen bio-acties bij ${s}.</p>`);
+    return `
+      <div class="store-section" data-store="${s}"${hiddenStores.has(s) ? ' style="display:none"' : ''}>
+        <div class="store-header">
+          <span class="store-badge" style="background:${color}" aria-hidden="true">${STORE_BADGES[s] || s[0]}</span>
+          <h2>${s}</h2>
+          <span class="count">${status[s] === 'mislukt' ? '?' : items.length + ' ' + (items.length === 1 ? 'actie' : 'acties')}</span>
+        </div>
+        ${body}
+      </div>`;
+  }).join('');
+
+  content.innerHTML = `
+    ${verouderdHtml}
+    ${summaryHtml}
+    <div class="store-columns">${sectionsHtml}</div>
+  `;
+}
+
+document.addEventListener('click', (e) => {
+  const moreBtn = e.target.closest('.toggle-more');
+  if (moreBtn) {
+    const section = moreBtn.closest('.store-section');
+    const expanded = section.classList.toggle('expanded');
+    moreBtn.textContent = expanded ? moreBtn.dataset.less : moreBtn.dataset.more;
+    // Zonder dit hoort een schermlezer alleen dat de knoptekst verandert, niet
+    // dat er negen kaarten bij zijn gekomen.
+    moreBtn.setAttribute('aria-expanded', String(expanded));
+    return;
+  }
+
+  const toggleBtn = e.target.closest('.store-toggle');
+  if (toggleBtn) {
+    const store = toggleBtn.dataset.store;
+    const nowOff = toggleBtn.classList.toggle('off');
+    toggleBtn.setAttribute('aria-pressed', String(!nowOff));
+    if (nowOff) hiddenStores.add(store); else hiddenStores.delete(store);
+    saveHiddenStores();
+    const section = document.querySelector(`.store-section[data-store="${CSS.escape(store)}"]`);
+    if (section) section.style.display = nowOff ? 'none' : '';
+  }
+});
+
+/* ---- Licht/donker ----------------------------------------------------------
+   Het scriptje in de <head> heeft de klasse al gezet; hier komt alleen de knop
+   erbij. De knop laat zien waar je naartoe gaat, niet waar je nu bent — anders
+   moet je erover nadenken wat een indruk op de knop doet.
+   Zolang er niets is opgeslagen volgt de site de systeeminstelling live mee;
+   na één druk op de knop staat de keuze vast, ook na herladen. */
+const THEMA_KEY = 'bioBordThema';
+const themaKnop = document.getElementById('themaKnop');
+
+function themaIsLicht() { return document.documentElement.classList.contains('licht'); }
+
+function themaToon() {
+  if (!themaKnop) return;
+  const naarLicht = !themaIsLicht();
+  // Het icoon toont waar je heen gaat, niet waar je nu bent. Alleen een glyph,
+  // dus de bedoeling moet volledig uit het label komen — vandaar ook title.
+  themaKnop.textContent = naarLicht ? '☀' : '☽';
+  const label = naarLicht ? 'Naar het lichte thema' : 'Naar het donkere thema';
+  themaKnop.setAttribute('aria-label', label);
+  themaKnop.setAttribute('title', label);
+  // De browserbalk op mobiel kleurt mee; zonder dit blijft die donker op wit.
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', themaIsLicht() ? '#faf8f2' : '#1b1a15');
+}
+
+function themaZet(licht, onthouden) {
+  document.documentElement.classList.toggle('licht', licht);
+  if (onthouden) { try { localStorage.setItem(THEMA_KEY, licht ? 'licht' : 'donker'); } catch (e) {} }
+  themaToon();
+}
+
+if (themaKnop) {
+  themaKnop.addEventListener('click', () => themaZet(!themaIsLicht(), true));
+  themaToon();
+}
+
+fetch('data/bio_prices.json', { cache: 'no-store' })
+  .then(r => { if (!r.ok) throw new Error('geen data'); return r.json(); })
+  .then(json => { data = json; render(); })
+  .catch(() => { data = null; render(); });
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+<!-- GoatCounter: privacyvriendelijke bezoekersstatistiek (geen cookies, geen
+     persoonsgegevens). Expliciet https i.p.v. protocol-relatief //, zodat het
+     script ook versleuteld laadt zolang de site nog via http bereikbaar is. -->
+<script data-goatcounter="https://hetbiolijstje.goatcounter.com/count"
+        async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>

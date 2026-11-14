@@ -1,0 +1,241 @@
+{
+  "bron": "PesticidenEetwijzer, Pesticide Action Network Netherlands",
+  "bron_url": "https://www.pan-netherlands.org/eetwijzer/",
+  "pdf": "https://www.pan-netherlands.org/wp-content/uploads/2026/08/cijfers26.pdf",
+  "editie": "cijfers26, gepubliceerd 24 augustus 2026",
+  "grondslag": "NVWA-testresultaten van de afgelopen drie jaar, 3.333 testen. Producten die weinig getest zijn, zijn weggelaten.",
+  "eenheid": "gemiddeld aantal verschillende residuen per monster",
+  "gemiddelde_fruit": 2.6,
+  "gemiddelde_groente": 1.3,
+  "fruit": [
+    {
+      "rang": 1,
+      "naam": "Citrusvruchten",
+      "residuen": 4.4
+    },
+    {
+      "rang": 2,
+      "naam": "Aardbeien",
+      "residuen": 4.2
+    },
+    {
+      "rang": 3,
+      "naam": "Kersen",
+      "residuen": 4
+    },
+    {
+      "rang": 4,
+      "naam": "Peren",
+      "residuen": 3.8
+    },
+    {
+      "rang": 5,
+      "naam": "Druiven",
+      "residuen": 3.8
+    },
+    {
+      "rang": 6,
+      "naam": "Perziken",
+      "residuen": 3.2
+    },
+    {
+      "rang": 7,
+      "naam": "Appelen",
+      "residuen": 3.1
+    },
+    {
+      "rang": 8,
+      "naam": "Frambozen",
+      "residuen": 3.1
+    },
+    {
+      "rang": 9,
+      "naam": "Nectarines",
+      "residuen": 2.7
+    },
+    {
+      "rang": 10,
+      "naam": "Bananen",
+      "residuen": 2.6
+    },
+    {
+      "rang": 11,
+      "naam": "Blauwe bessen",
+      "residuen": 2.5
+    },
+    {
+      "rang": 12,
+      "naam": "Pruimen",
+      "residuen": 1.6
+    },
+    {
+      "rang": 13,
+      "naam": "Meloenen",
+      "residuen": 1.6
+    },
+    {
+      "rang": 14,
+      "naam": "Mango's",
+      "residuen": 1.3
+    },
+    {
+      "rang": 15,
+      "naam": "Ananassen",
+      "residuen": 0.9
+    },
+    {
+      "rang": 16,
+      "naam": "Watermeloenen",
+      "residuen": 0.9
+    },
+    {
+      "rang": 17,
+      "naam": "Kiwi's",
+      "residuen": 0.5
+    }
+  ],
+  "groente": [
+    {
+      "rang": 1,
+      "naam": "Spinazie",
+      "residuen": 2.3
+    },
+    {
+      "rang": 2,
+      "naam": "Paprika's",
+      "residuen": 2.3
+    },
+    {
+      "rang": 3,
+      "naam": "Andijvie",
+      "residuen": 2.2
+    },
+    {
+      "rang": 4,
+      "naam": "Paksoi",
+      "residuen": 2.2
+    },
+    {
+      "rang": 5,
+      "naam": "Knolselderij",
+      "residuen": 2.1
+    },
+    {
+      "rang": 6,
+      "naam": "Tomaten",
+      "residuen": 2
+    },
+    {
+      "rang": 7,
+      "naam": "Bleekselderij",
+      "residuen": 1.9
+    },
+    {
+      "rang": 8,
+      "naam": "Spruitjes",
+      "residuen": 1.9
+    },
+    {
+      "rang": 9,
+      "naam": "Uien",
+      "residuen": 1.6
+    },
+    {
+      "rang": 10,
+      "naam": "Sperziebonen",
+      "residuen": 1.5
+    },
+    {
+      "rang": 11,
+      "naam": "Knolvenkel",
+      "residuen": 1.5
+    },
+    {
+      "rang": 12,
+      "naam": "Komkommer",
+      "residuen": 1.4
+    },
+    {
+      "rang": 13,
+      "naam": "Broccoli",
+      "residuen": 1.3
+    },
+    {
+      "rang": 14,
+      "naam": "Preien",
+      "residuen": 1.3
+    },
+    {
+      "rang": 15,
+      "naam": "IJsbergsla",
+      "residuen": 1.2
+    },
+    {
+      "rang": 16,
+      "naam": "Courgettes",
+      "residuen": 1.2
+    },
+    {
+      "rang": 17,
+      "naam": "Aubergines",
+      "residuen": 1.1
+    },
+    {
+      "rang": 18,
+      "naam": "Chinese kool",
+      "residuen": 1
+    },
+    {
+      "rang": 19,
+      "naam": "Spitskool",
+      "residuen": 1
+    },
+    {
+      "rang": 20,
+      "naam": "Wortels",
+      "residuen": 1
+    },
+    {
+      "rang": 21,
+      "naam": "Avocados",
+      "residuen": 0.7
+    },
+    {
+      "rang": 22,
+      "naam": "Rode kool",
+      "residuen": 0.7
+    },
+    {
+      "rang": 23,
+      "naam": "Bloemkolen",
+      "residuen": 0.4
+    },
+    {
+      "rang": 24,
+      "naam": "Witlof",
+      "residuen": 0.4
+    },
+    {
+      "rang": 25,
+      "naam": "Pompoenen",
+      "residuen": 0.2
+    },
+    {
+      "rang": 26,
+      "naam": "Rode bieten",
+      "residuen": 0.1
+    },
+    {
+      "rang": 26,
+      "naam": "Asperges",
+      "residuen": 0
+    }
+  ],
+  "overig": [
+    {
+      "naam": "Aardappelen",
+      "residuen": 0.6
+    }
+  ],
+  "let_op": "De laatste twee groenten staan in de PDF allebei op rang 26; vermoedelijk 26 en 27 in een samengevoegde cel. De scores zijn wel eenduidig. Deze lijst is nog NIET gekoppeld aan de seizoensproducten in index.html — dat vraagt een expliciete koppeltabel, want naamgelijkenis matcht Perzik op Peren en Koolraap op Rode kool."
+}

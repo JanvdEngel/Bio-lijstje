@@ -1,0 +1,187 @@
+{
+  "laatst_bijgewerkt": "2026-11-14T06:01:36.055749",
+  "aanbiedingen": {
+    "AH": [
+      {
+        "naam": "AH Biologisch Snoepgroente tomaat",
+        "actieprijs": 2.99,
+        "normale_prijs": 3.99,
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.99,
+        "laagste_ooit_datum": "2026-11-09",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "AH Biologisch Mandarijnen",
+        "actieprijs": 2.3,
+        "normale_prijs": 3.29,
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.47,
+        "laagste_ooit_datum": "2026-10-26",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "AH Biologisch Pompoen stukjes",
+        "actieprijs": 2.77,
+        "normale_prijs": 3.69,
+        "soort": "vers"
+      },
+      {
+        "naam": "Mutti Passata gezeefde tomaten bio",
+        "actieprijs": 2.62,
+        "normale_prijs": 3.49,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €5,24",
+        "vanaf": 2
+      },
+      {
+        "naam": "Mutti Gepelde tomaten bio",
+        "actieprijs": 1.87,
+        "normale_prijs": 2.49,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €3,74",
+        "vanaf": 2
+      },
+      {
+        "naam": "Mutti Tomatenpulp in stukjes bio",
+        "actieprijs": 1.87,
+        "normale_prijs": 2.49,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €3,74",
+        "vanaf": 2
+      },
+      {
+        "naam": "AH Biologisch Snoepgroente wortel",
+        "actieprijs": 1.67,
+        "normale_prijs": 1.99,
+        "soort": "vers",
+        "voorwaarde": "3 voor €5,00",
+        "vanaf": 3
+      },
+      {
+        "naam": "AH Biologisch Komkommer",
+        "actieprijs": 1.25,
+        "normale_prijs": 1.55,
+        "soort": "vers",
+        "voorwaarde": "2 voor €2,49",
+        "vanaf": 2
+      },
+      {
+        "naam": "AH Biologisch Ginger mango verse appel mango gember",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.19,
+        "soort": "vers",
+        "voorwaarde": "6 voor €5,95",
+        "vanaf": 6
+      }
+    ],
+    "Jumbo": [
+      {
+        "naam": "Jumbo Biologisch Veldsla 40 g",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.55,
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.0,
+        "laagste_ooit_datum": "2026-09-02",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "Jumbo Biologisch Rucola 40 g",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.39,
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.0,
+        "laagste_ooit_datum": "2026-09-02",
+        "eerder_gezien": 1
+      }
+    ],
+    "Lidl": [
+      {
+        "naam": "Bio kiwi gold",
+        "actieprijs": 3.49,
+        "normale_prijs": null,
+        "soort": "vers"
+      },
+      {
+        "naam": "Bio bananen",
+        "actieprijs": 2.19,
+        "normale_prijs": null,
+        "soort": "vers"
+      }
+    ],
+    "Aldi": [],
+    "Dirk": [
+      {
+        "naam": "Bio komkommer",
+        "actieprijs": 1.19,
+        "normale_prijs": 1.39,
+        "soort": "vers"
+      }
+    ],
+    "Plus": [
+      {
+        "naam": "Biologisch PLUS Rode bieten",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.49,
+        "soort": "vers"
+      },
+      {
+        "naam": "Biologisch PLUS Wortelen",
+        "actieprijs": 1.49,
+        "normale_prijs": 1.85,
+        "soort": "vers"
+      }
+    ],
+    "Ekoplaza": [
+      {
+        "naam": "Kaki",
+        "actieprijs": 3.75,
+        "normale_prijs": 4.77,
+        "soort": "vers"
+      },
+      {
+        "naam": "Venkel",
+        "actieprijs": 2.25,
+        "normale_prijs": 3.14,
+        "soort": "vers"
+      },
+      {
+        "naam": "Spitskool",
+        "actieprijs": 2.49,
+        "normale_prijs": 3.29,
+        "soort": "vers"
+      },
+      {
+        "naam": "Santana appels",
+        "actieprijs": 2.39,
+        "normale_prijs": 2.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Witte champignons",
+        "actieprijs": 1.99,
+        "normale_prijs": 2.59,
+        "soort": "vers"
+      },
+      {
+        "naam": "Gemengde sla",
+        "actieprijs": 1.99,
+        "normale_prijs": 2.59,
+        "soort": "vers"
+      }
+    ],
+    "Poiesz": [],
+    "DekaMarkt": []
+  },
+  "winkelstatus": {
+    "AH": "ok",
+    "Jumbo": "ok",
+    "Lidl": "ok",
+    "Aldi": "ok",
+    "Dirk": "ok",
+    "Plus": "ok",
+    "Ekoplaza": "ok",
+    "Poiesz": "ok",
+    "DekaMarkt": "ok"
+  }
+}

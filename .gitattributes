@@ -1,0 +1,10 @@
+# Alles met LF-regeleindes in de working tree, ook op Windows.
+#
+# Zonder dit checkt git op Windows run.sh en Dockerfile uit met CRLF, en dan
+# faalt de add-on met "exec /run.sh: no such file or directory": de kernel
+# zoekt een interpreter die "sh\r" heet. In de Dockerfile belandt de \r zelfs
+# in de crontab-regel, waardoor de cron stil niet draait.
+* text=auto eol=lf
+
+# Binair, nooit converteren.
+*.png binary
