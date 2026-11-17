@@ -15,3 +15,8 @@ geschiedenis.json
 
 # Conceptmail, geen onderdeel van de site
 mail-prijsprofeet*.md
+
+# Conceptteksten om te versturen, geen onderdeel van de site. Zelfde reden
+# als de mail hierboven: wat je nog niet verstuurd hebt hoeft niet publiek
+# vindbaar te zijn.
+pitch*.md
