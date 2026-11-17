@@ -1586,6 +1586,112 @@ def meld_aan_home_assistant(bijgewerkt, winkelstatus, aantal):
         log.warning(f"Sensor bijwerken in Home Assistant mislukt ({e}); de ronde is wel klaar")
 
 
+# ---------------------------------------------------------------------------
+# Van productnaam naar seizoenssoort
+# ---------------------------------------------------------------------------
+# Hiermee beantwoordt /cijfers/ twee vragen die de losse aanbiedingen niet
+# kunnen: hoeveel van wat er in de aanbieding ligt is ook van het seizoen, en
+# welke soort het vaakst terugkomt.
+#
+# De volgorde in deze tabel is betekenisvol: de eerste die past wint. "Rode
+# kool", "Witte kool", "Savooiekool", "Spitskool", "Boerenkool", "Koolraap" en
+# "Koolrabi" delen allemaal "kool", en "Peer" zit in "Perzik" — de koppeltabel
+# voor de Eetwijzer waarschuwde daar al voor, want een prefix-match zette Perzik
+# ooit op Peren. Vandaar specifiek eerst.
+#
+# Gemeten tegen 1.241 verse waarnemingen uit 88 gepubliceerde dagen: 80% krijgt
+# een soort. Wat overblijft is terecht niets — mandarijnen, bananen, citroenen,
+# ananas, kiwi en avocado staan in geen Nederlandse seizoenskalender, en dat ze
+# niet van het seizoen zijn is precies wat het cijfer moet laten zien.
+_SEIZOEN_SOORTEN = (
+    ("Boerenkool", r"boerenkool"),
+    ("Rode kool", r"rode\s?kool|rodekool"),
+    ("Witte kool", r"witte\s?kool|wittekool"),
+    ("Savooiekool", r"savooie?kool"),
+    ("Spitskool", r"spitskool"),
+    ("Koolrabi", r"koolrabi"),
+    ("Koolraap", r"koolraap"),
+    ("Perzik", r"perzik"),
+    ("Nectarine", r"nectarine"),
+    ("Peer", r"\bperen\b|\bpeer\b|handperen|stoofperen|bewaarperen"),
+    # Niet sinaasappel of granaatappel, wel appeltjes en bewaarappels.
+    ("Appel", r"(?<!sinaas)(?<!granaat)\bappel\w*"),
+    ("Aardbei", r"aardbei"),
+    ("Blauwe bessen", r"blauwe\s?bes|bosbes"),
+    ("Braam", r"braam|bramen"),
+    ("Framboos", r"frambo"),
+    ("Kersen", r"\bkers(en)?\b"),
+    ("Pruim", r"pruim"),
+    ("Druif", r"druif|druiven"),
+    ("Meloen", r"meloen"),
+    ("Walnoot", r"walnoot|walnoten"),
+    ("Winterwortel", r"wortel|\bpeen\b|winterpeen|bospeen"),
+    ("Pastinaak", r"pastinaak"),
+    ("Knolselderij", r"knolselderij"),
+    ("Bleekselderij", r"bleekselderij"),
+    ("Rode biet", r"biet"),
+    ("Lente-ui", r"lente-?ui|bosui"),
+    ("Ui", r"\bui(en|tjes)?\b"),
+    ("Prei", r"\bprei\b"),
+    ("Andijvie", r"andijvie"),
+    ("Spinazie", r"spinazie"),
+    ("Veldsla", r"veldsla"),
+    ("Winterpostelein", r"postelein"),
+    ("Kropsla", r"kropsla|ijsbergsla|slamix|slaharten|\bsla\b"),
+    ("Raapstelen", r"raapstel"),
+    ("Paksoi", r"paksoi"),
+    ("Tomaat", r"tomaat|tomaten"),
+    ("Komkommer", r"komkommer"),
+    ("Courgette", r"courgette"),
+    ("Paprika", r"paprika"),
+    ("Aubergine", r"aubergine"),
+    ("Pompoen", r"pompoen|hokkaido"),
+    ("Mais", r"\bma[i\u00ef]s\b|maiskolf"),
+    ("Bloemkool", r"bloemkool"),
+    ("Broccoli", r"broccoli|bimi"),
+    ("Spruitjes", r"spruit"),
+    ("Venkel", r"venkel"),
+    ("Witlof", r"witlof"),
+    ("Rabarber", r"rabarber"),
+    ("Radijs", r"radijs"),
+    ("Asperges", r"asperge"),
+    ("Sperzieboon", r"sperzieboon|sperziebonen"),
+    ("Snijboon", r"snijboon|snijbonen"),
+    ("Doperwten", r"doperwt"),
+    ("Tuinbonen", r"tuinboon|tuinbonen"),
+)
+_SEIZOEN_PATRONEN = tuple(
+    (naam, re.compile(patroon, re.IGNORECASE)) for naam, patroon in _SEIZOEN_SOORTEN
+)
+
+# Welke soorten in welke maand van het seizoen zijn. Gemaakt door
+# seizoen/bouw_paginas.py uit seizoensdata.json, zodat er één bron is en de
+# engine niet de hele kalender met tips hoeft mee te dragen.
+SEIZOEN_KALENDER_PATH = Path(__file__).parent / "seizoen_per_maand.json"
+
+
+def _seizoenssoort(naam):
+    """Welke soort uit de seizoenskalender is dit product? None als het er geen
+    is — import, een bereiding, of iets wat hier niet groeit."""
+    for soort, patroon in _SEIZOEN_PATRONEN:
+        if patroon.search(naam or ""):
+            return soort
+    return None
+
+
+def _seizoen_van_de_maand(maand):
+    """De soorten die in deze maand van het seizoen zijn, als set.
+
+    Ontbreekt het kalenderbestand, dan geeft dit een lege set en slaat de
+    seizoensvergelijking zichzelf over. De lijst is belangrijker dan de
+    statistiek erover."""
+    try:
+        kalender = json.loads(SEIZOEN_KALENDER_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return set()
+    return set(kalender.get(str(int(maand)), []))
+
+
 def werk_dagtellingen_bij(aanbiedingen, vandaag, winkelstatus=None):
     """Zet de telling van vandaag in dagtellingen.json en geeft alle dagen terug.
 
@@ -1600,159 +1706,295 @@ def werk_dagtellingen_bij(aanbiedingen, vandaag, winkelstatus=None):
     vanzelf vallen, dus weglaten is genoeg — de docstring daar beloofde dit al
     ("alleen dagen waarop alle winkels zijn opgehaald"), maar niets maakte het
     waar."""
-    dagen = {}
+    bestand = {}
     try:
         if DAGTELLINGEN_PATH.exists():
-            dagen = (json.loads(DAGTELLINGEN_PATH.read_text(encoding="utf-8"))
-                     or {}).get("dagen", {})
+            bestand = json.loads(DAGTELLINGEN_PATH.read_text(encoding="utf-8")) or {}
     except (json.JSONDecodeError, OSError) as e:
         log.warning(f"dagtellingen.json onleesbaar ({e}); begint opnieuw")
-        dagen = {}
+        bestand = {}
+    dagen = bestand.get("dagen", {})
+    seizoen = bestand.get("seizoen", {})
+    soorten = bestand.get("soorten", {})
 
     status = winkelstatus or {}
-    dagen[vandaag] = {w: len(v) for w, v in aanbiedingen.items()
-                      if status.get(w, "ok") == "ok"}
+    geteld = {w: v for w, v in aanbiedingen.items() if status.get(w, "ok") == "ok"}
+    dagen[vandaag] = {w: len(v) for w, v in geteld.items()}
     overgeslagen = [w for w in aanbiedingen if status.get(w, "ok") != "ok"]
     if overgeslagen:
         log.info("Niet meegeteld op de cijferpagina (niet opgehaald): "
                  + ", ".join(sorted(overgeslagen)))
+
+    # Wat was er vandaag van het seizoen? Alleen over de verse aanbiedingen: een
+    # pot Hak of een zak gedroogde dadels is per definitie niet "nu van
+    # Nederlandse bodem", en meetellen zou het aandeel kunstmatig drukken.
+    kalender = _seizoen_van_de_maand(vandaag[5:7])
+    vers = vandaag_soorten = 0
+    gezien = set()
+    for items in geteld.values():
+        for a in items:
+            if not isinstance(a, dict):
+                continue
+            if a.get("soort", "vers") != "vers":
+                continue
+            vers += 1
+            s = _seizoenssoort(a.get("naam"))
+            if s:
+                gezien.add(s)
+                if s in kalender:
+                    vandaag_soorten += 1
+    if kalender:
+        seizoen[vandaag] = {"vers": vers, "van_het_seizoen": vandaag_soorten}
+        soorten[vandaag] = sorted(gezien)
+
     dagen = dict(sorted(dagen.items()))
     try:
         DAGTELLINGEN_PATH.parent.mkdir(parents=True, exist_ok=True)
         tijdelijk = DAGTELLINGEN_PATH.with_suffix(".json.nieuw")
         tijdelijk.write_text(
-            json.dumps({"winkels": list(aanbiedingen), "dagen": dagen},
+            json.dumps({"winkels": list(aanbiedingen), "dagen": dagen,
+                        "seizoen": dict(sorted(seizoen.items())),
+                        "soorten": dict(sorted(soorten.items()))},
                        indent=2, ensure_ascii=False), encoding="utf-8")
         os.replace(tijdelijk, DAGTELLINGEN_PATH)
     except OSError as e:
         log.warning(f"dagtellingen wegschrijven mislukt ({e})")
-    return dagen
+    return {"dagen": dagen, "seizoen": seizoen, "soorten": soorten}
 
 
-def cijfers_uit_dagtellingen(dagen):
+# Onder dit aantal gemeten dagen komt een winkel niet in de tabel: één dag
+# "nul dagen op nul" leest als een prestatie terwijl het een meting van niets is.
+CIJFERS_MINIMUM_DAGEN = 7
+
+
+def cijfers_uit_dagtellingen(tellingen):
     """Rekent uit wat er op /cijfers/ komt te staan.
 
-    Alleen dagen waarop alle winkels zijn opgehaald tellen mee. Een dag waarop
-    een winkel ontbreekt geeft anders een nul die niets over die winkel zegt —
-    dezelfde fout als "geen acties" tegenover "niet opgehaald" op de voorpagina.
+    Neemt de map die werk_dagtellingen_bij teruggeeft, of alleen de dagen — dat
+    laatste om oudere bestanden en de tests te laten werken.
 
-    "Alle winkels" is de ploeg van de eerste gemeten dag, niet iedereen die hier
-    ooit in stond. Dat verschil werd zichtbaar toen Ekoplaza op 29 oktober 2026
-    meeging: bij de vereniging van alle winkels voldeed opeens geen enkele dag
-    van de 69 ervoor, want op geen daarvan stond Ekoplaza. De reeks zou tot één
-    dag krimpen. Een winkel die later aanschuift hoort de meting niet te wissen,
-    en hoort ook geen nuldagen te krijgen over een tijd dat niemand hem telde —
-    dus blijft hij buiten dit overzicht tot hij zelf een reeks heeft."""
+    Twee soorten getallen, met verschillende noemers, en dat onderscheid is de
+    hele truc van deze pagina.
+
+    **Het kerngetal** gaat over de ploeg van de eerste gemeten dag, en alleen
+    over dagen waarop die ploeg compleet was. Een winkel die later aanschuift
+    mag die reeks niet korter maken, en hoort geen nuldagen te krijgen over een
+    tijd dat niemand hem telde. Toen Ekoplaza op 29 oktober 2026 meeging zou de
+    reeks anders van 69 dagen naar één zijn gekrompen.
+
+    **De tabel** geeft elke winkel zijn eigen noemer. Dat kwam ervoor in de
+    plaats van wachten: met vier ketens die in drie weken aanschoven zou een
+    gezamenlijk venster steeds opnieuw bij nul beginnen, en zou Ekoplaza tot
+    ver in het voorjaar een voetnoot blijven. Met de kolom "dagen" erbij is het
+    eerlijk — je ziet dat zijn nul over twintig dagen gaat en die van AH over
+    achtentachtig."""
+    if isinstance(tellingen, dict) and "dagen" in tellingen:
+        dagen = tellingen.get("dagen") or {}
+        seizoen_per_dag = tellingen.get("seizoen") or {}
+        soorten_per_dag = tellingen.get("soorten") or {}
+    else:
+        dagen, seizoen_per_dag, soorten_per_dag = tellingen or {}, {}, {}
     if not dagen:
         return None
-    # De ploeg van de eerste dag. Latere aanwinsten staan wel in de tellingen
-    # (die blijven we bewaren) maar nog niet in deze cijfers.
+
     eerste = min(dagen)
-    winkels = sorted(dagen[eerste])
-    later = sorted({w for d in dagen.values() for w in d} - set(winkels))
-    volledig = {d: v for d, v in dagen.items() if all(w in v for w in winkels)}
+    ploeg = sorted(dagen[eerste])
+    volledig = {d: v for d, v in dagen.items() if all(w in v for w in ploeg)}
     if not volledig:
         return None
 
-    # Alleen de ploeg optellen. Anders zou het gemiddelde "bij zes supermarkten
-    # samen" vanaf de dag dat Ekoplaza meedoet stilletjes zeven winkels tellen.
-    totalen = {d: sum(v.get(w, 0) for w in winkels) for d, v in volledig.items()}
+    totalen = {d: sum(v.get(w, 0) for w in ploeg) for d, v in volledig.items()}
     laagste_dag = min(totalen, key=lambda d: totalen[d])
+
+    # Elke winkel over zijn eigen gemeten dagen.
     per_winkel = []
-    for w in winkels:
-        nul, langste, lopend = 0, 0, 0
-        for d in sorted(volledig):
-            if volledig[d].get(w, 0) == 0:
+    for w in sorted({k for v in dagen.values() for k in v}):
+        eigen = sorted(d for d in dagen if w in dagen[d])
+        nul = langste = lopend = 0
+        for d in eigen:
+            if dagen[d][w] == 0:
                 nul += 1
                 lopend += 1
                 langste = max(langste, lopend)
             else:
                 lopend = 0
         per_winkel.append({
-            "winkel": w, "nuldagen": nul, "langste_reeks": langste,
-            "gemiddeld": sum(volledig[d].get(w, 0) for d in volledig) / len(volledig),
+            "winkel": w,
+            "dagen": len(eigen),
+            "nuldagen": nul,
+            "aandeel_nul": nul / len(eigen),
+            "langste_reeks": langste,
+            "gemiddeld": sum(dagen[d][w] for d in eigen) / len(eigen),
         })
-    per_winkel.sort(key=lambda x: (-x["nuldagen"], x["winkel"]))
+    te_kort = sorted(r["winkel"] for r in per_winkel
+                     if r["dagen"] < CIJFERS_MINIMUM_DAGEN)
+    per_winkel = [r for r in per_winkel if r["dagen"] >= CIJFERS_MINIMUM_DAGEN]
+    per_winkel.sort(key=lambda x: (-x["aandeel_nul"], x["winkel"]))
+
+    # Per maand, over de ploeg, zodat de maanden onderling vergelijkbaar zijn.
+    per_maand = {}
+    for d, totaal in sorted(totalen.items()):
+        per_maand.setdefault(d[:7], []).append(totaal)
+    maanden = [{"maand": m, "dagen": len(v), "gemiddeld": sum(v) / len(v)}
+               for m, v in sorted(per_maand.items()) if len(v) >= 7]
+
+    # Hoeveel van de verse aanbiedingen was ook van het seizoen?
+    vers = sum(r.get("vers", 0) for r in seizoen_per_dag.values())
+    vhs = sum(r.get("van_het_seizoen", 0) for r in seizoen_per_dag.values())
+    seizoen = ({"dagen": len(seizoen_per_dag), "vers": vers, "van_het_seizoen": vhs,
+                "aandeel": vhs / vers} if vers else None)
+
+    # Welke soort stond het vaakst in de aanbieding?
+    vaak = {}
+    for lijst in soorten_per_dag.values():
+        for s in lijst:
+            vaak[s] = vaak.get(s, 0) + 1
+    vaakst = [{"soort": s, "dagen": n}
+              for s, n in sorted(vaak.items(), key=lambda x: (-x[1], x[0]))[:8]]
+
     return {
         "dagen": len(volledig),
         "van": min(volledig), "tot": max(volledig),
         "gemiddeld": sum(totalen.values()) / len(totalen),
         "laagste": totalen[laagste_dag], "laagste_datum": laagste_dag,
         "hoogste": max(totalen.values()),
+        "ploeg": ploeg,
         "per_winkel": per_winkel,
-        # Winkels die na de eerste dag zijn aangeschoven. De pagina noemt ze,
-        # want anders telt de lezer zes winkels hier en zeven op de voorpagina.
-        "later": later,
+        "te_kort": te_kort,
+        "maanden": maanden,
+        "seizoen": seizoen,
+        "vaakst": vaakst,
+        "soorten_dagen": len(soorten_per_dag),
     }
 
+def _staafdiagram(per_winkel):
+    """Horizontale staven: het deel van de gemeten dagen zonder bio-aanbieding.
 
-def _staafdiagram(per_winkel, dagen):
-    """Horizontale staven: dagen zonder enkele bio-aanbieding, per winkel.
+    Dit toonde eerst het kale aantal nuldagen, met de lengte van de reeks als
+    schaal. Dat kan niet meer nu elke winkel zijn eigen noemer heeft: acht
+    nuldagen van DekaMarkt (van vijftien) zijn iets heel anders dan acht van
+    AH (van achtentachtig). De staaf geeft dus het aandeel, en het getal
+    ernaast blijft het aantal — met de noemer in de tabel eronder.
 
-    Met de hand getekende SVG en geen bibliotheek, om dezelfde reden als de
-    rest van deze site: het moet werken zonder dat er iets van buiten geladen
-    wordt, en het moet in beide thema's kloppen. Vandaar currentColor en de
-    kleurvariabelen van de pagina."""
+    Met de hand getekende SVG en geen bibliotheek, om dezelfde reden als de rest
+    van deze site: het moet werken zonder dat er iets van buiten geladen wordt,
+    en het moet in beide thema's kloppen."""
     regel_h, top = 30, 8
     hoogte = top + len(per_winkel) * regel_h + 22
-    breedte, links, rechts = 480, 78, 42
+    breedte, links, rechts = 480, 78, 52
     baan = breedte - links - rechts
     staven = []
     for i, r in enumerate(per_winkel):
         y = top + i * regel_h
-        w = 0 if not dagen else baan * r["nuldagen"] / dagen
+        w = baan * r["aandeel_nul"]
         staven.append(
             f'<text x="{links - 10}" y="{y + 15}" text-anchor="end" class="d-naam">'
             f'{_html_escape(r["winkel"])}</text>'
             f'<rect x="{links}" y="{y + 4}" width="{w:.1f}" height="15" rx="3" class="d-staaf"/>'
-            f'<text x="{links + w + 7:.1f}" y="{y + 16}" class="d-getal">{r["nuldagen"]}</text>'
+            f'<text x="{links + w + 7:.1f}" y="{y + 16}" class="d-getal">'
+            f'{r["nuldagen"]} van {r["dagen"]}</text>'
         )
     return (
         f'<svg viewBox="0 0 {breedte} {hoogte}" class="diagram" role="img" '
-        f'aria-label="Dagen zonder biologische aanbieding per supermarkt, '
-        f'van {dagen} gemeten dagen">'
+        f'aria-label="Aandeel gemeten dagen zonder biologische aanbieding, per supermarkt">'
         + "".join(staven)
         + f'<line x1="{links}" y1="{top}" x2="{links}" y2="{hoogte - 20}" class="d-as"/>'
-        f'<text x="{links}" y="{hoogte - 5}" class="d-onder">0</text>'
+        f'<text x="{links}" y="{hoogte - 5}" class="d-onder">0%</text>'
         f'<text x="{breedte - rechts}" y="{hoogte - 5}" text-anchor="end" class="d-onder">'
-        f'{dagen} dagen</text>'
+        f'100% van de gemeten dagen</text>'
         "</svg>"
     )
-
 
 def cijferblok_html(c):
     """De inhoud tussen de merktekens op /cijfers/."""
     if not c:
         return "<p>Er is nog niet genoeg gemeten om iets te zeggen.</p>"
-    hoeveel = _telwoord(len(c["per_winkel"]))
-    nagekomen = ""
-    if c.get("later"):
-        namen = c["later"]
-        lijst = namen[0] if len(namen) == 1 else (
-            ", ".join(namen[:-1]) + " en " + namen[-1])
-        werkwoord = "doet" if len(namen) == 1 else "doen"
-        nagekomen = (f' {_html_escape(lijst)} {werkwoord} inmiddels ook mee op de '
-                     f'voorpagina, maar {"heeft" if len(namen) == 1 else "hebben"} '
-                     f'hier nog geen reeks.')
+
+    hoeveel = _telwoord(len(c["ploeg"]))
     rijen = "".join(
         f"<tr><td>{_html_escape(r['winkel'])}</td>"
+        f"<td class=\"getal\">{r['dagen']}</td>"
         f"<td class=\"getal\">{r['nuldagen']}</td>"
         f"<td class=\"getal\">{r['langste_reeks']}</td>"
         f"<td class=\"getal\">{_komma(r['gemiddeld'])}</td></tr>"
         for r in c["per_winkel"]
     )
-    return (
+    blok = (
         f'<p class="kerngetal"><strong>{_komma(c["gemiddeld"])}</strong> biologische '
         f'groente- en fruitaanbiedingen per dag, bij {hoeveel} supermarkten samen.</p>'
         f'<p>Gemeten van {_leesbare_dag(c["van"])} tot en met {_leesbare_dag(c["tot"])}: '
         f'{c["dagen"]} dagen. Op de magerste dag stonden er {c["laagste"]}, op de rijkste '
-        f'{c["hoogste"]}.{nagekomen}</p>'
+        f'{c["hoogste"]}.</p>'
         f'<h3>Dagen zonder ook maar één biologische aanbieding</h3>'
-        + _staafdiagram(c["per_winkel"], c["dagen"]) +
+        + _staafdiagram(c["per_winkel"]) +
         f'<table class="cijfertabel"><thead><tr><th>Winkel</th>'
+        f'<th class="getal">Dagen gemeten</th>'
         f'<th class="getal">Dagen op nul</th><th class="getal">Langste reeks</th>'
         f'<th class="getal">Gemiddeld per dag</th></tr></thead><tbody>{rijen}</tbody></table>'
+        f'<p class="bronregel">Niet elke winkel is even lang gemeten: wie later '
+        f'is aangesloten heeft een kortere reeks, en de kolom ernaast zegt hoeveel '
+        f'dagen het er zijn.'
+        + (f' {_html_escape(", ".join(c["te_kort"]))} staat er nog niet bij: '
+           f'minder dan {CIJFERS_MINIMUM_DAGEN} gemeten dagen.'
+           if c.get("te_kort") else '')
+        + '</p>'
     )
+
+    # Van het seizoen
+    s = c.get("seizoen")
+    if s:
+        blok += (
+            f'<h3>Hoeveel ervan is ook van het seizoen?</h3>'
+            f'<p class="kerngetal"><strong>{round(100 * s["aandeel"])}%</strong> '
+            f'van de verse aanbiedingen staat ook in de seizoenskalender van die '
+            f'maand.</p>'
+            f'<p>Geteld over {s["vers"]} verse aanbiedingen in {s["dagen"]} dagen. '
+            f'De rest is import of groeit hier niet: mandarijnen, bananen, '
+            f'citroenen, ananas. Bewerkte waar telt niet mee — een pot of een zak '
+            f'gedroogd is per definitie niet van dit seizoen.</p>'
+        )
+
+    # Per maand
+    if c.get("maanden") and len(c["maanden"]) >= 2:
+        mrijen = "".join(
+            f'<tr><td>{_leesbare_maand(m["maand"])}</td>'
+            f'<td class="getal">{m["dagen"]}</td>'
+            f'<td class="getal">{_komma(m["gemiddeld"])}</td></tr>'
+            for m in c["maanden"]
+        )
+        blok += (
+            f'<h3>Per maand</h3>'
+            f'<table class="cijfertabel"><thead><tr><th>Maand</th>'
+            f'<th class="getal">Dagen</th>'
+            f'<th class="getal">Gemiddeld per dag</th></tr></thead>'
+            f'<tbody>{mrijen}</tbody></table>'
+        )
+
+    # Welke soort het vaakst
+    if c.get("vaakst"):
+        vrijen = "".join(
+            f'<tr><td>{_html_escape(v["soort"])}</td>'
+            f'<td class="getal">{v["dagen"]}</td></tr>'
+            for v in c["vaakst"]
+        )
+        blok += (
+            f'<h3>Wat het vaakst in de aanbieding stond</h3>'
+            f'<table class="cijfertabel"><thead><tr><th>Soort</th>'
+            f'<th class="getal">Dagen</th></tr></thead><tbody>{vrijen}</tbody></table>'
+            f'<p class="bronregel">Op hoeveel van de {c["soorten_dagen"]} gemeten '
+            f'dagen deze soort ergens in de aanbieding stond, bij welke winkel dan '
+            f'ook.</p>'
+        )
+    return blok
+
+
+def _leesbare_maand(jjjjmm):
+    """"2026-09" wordt "september 2026"."""
+    try:
+        jaar, maand = jjjjmm.split("-")
+        return f"{_MAANDEN_NL[int(maand) - 1]} {jaar}"
+    except (ValueError, IndexError):
+        return jjjjmm
 
 
 # Geschreven getallen tot twintig; daarboven zijn cijfers prettiger te lezen
@@ -2254,8 +2496,8 @@ def main():
     # Losstaand afgeschermd, net als hierboven: de cijferpagina is een extraatje
     # bovenop de lijst en mag hem niet tegenhouden.
     try:
-        dagen = werk_dagtellingen_bij(aanbiedingen, vandaag, winkelstatus)
-        schrijf_cijfers_html(dagen)
+        tellingen = werk_dagtellingen_bij(aanbiedingen, vandaag, winkelstatus)
+        schrijf_cijfers_html(tellingen)
     except Exception as e:
         log.warning(f"/cijfers/ genereren mislukt ({e}); vorige versie blijft staan")
 

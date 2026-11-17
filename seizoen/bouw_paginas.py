@@ -615,6 +615,27 @@ def main():
         rel = p["pad"].relative_to(HIER.parent)
         print(f"  {str(rel).replace(chr(92), '/'):34} {n:6} bytes   {p['titel'][:52]}")
     print(f"\n{len(paginas)} pagina's gebouwd uit {DATA.name}")
+    schrijf_kalender_voor_de_engine(data)
+
+
+def schrijf_kalender_voor_de_engine(data):
+    """Zet een uitgeklede kalender naast de engine: alleen maandnummer en
+    soortnamen.
+
+    /cijfers/ vergelijkt de aanbiedingen van vandaag met de kalender van deze
+    maand, en die berekening draait op de Pi. Daar staat seizoensdata.json niet
+    — en het hoeft er ook niet te staan: de engine heeft de tips, richtprijzen
+    en residucijfers niet nodig. Eén bron blijft seizoensdata.json; dit is een
+    afgeleide die meeverhuist met fetch_bio_prices.py."""
+    per_maand = {
+        str(m["nummer"]): [p["naam"] for p in m["groente"] + m["fruit"]]
+        for m in data["maanden"]
+    }
+    pad = HIER.parent / "seizoen_per_maand.json"
+    pad.write_text(json.dumps(per_maand, indent=1, ensure_ascii=False) + "\n",
+                   encoding="utf-8", newline="\n")
+    soorten = len({n for v in per_maand.values() for n in v})
+    print(f"{pad.name} geschreven: {soorten} soorten over twaalf maanden")
 
 
 if __name__ == "__main__":

@@ -30,15 +30,21 @@ def keur(wat, ok, extra=""):
 
 
 print("rekenen")
+# Zeven dagen, want onder CIJFERS_MINIMUM_DAGEN komt een winkel niet in de
+# tabel. Die ondergrens bestaat omdat Vomar na één meetdag met "nul dagen op
+# nul" bovenaan zou staan alsof hij nooit een gat heeft.
 dagen = {
     "2026-09-01": {"AH": 2, "Jumbo": 0, "Lidl": 0},
     "2026-09-02": {"AH": 4, "Jumbo": 0, "Lidl": 0},
     "2026-09-03": {"AH": 0, "Jumbo": 3, "Lidl": 0},
     "2026-09-04": {"AH": 6, "Jumbo": 1, "Lidl": 2},
+    "2026-09-05": {"AH": 1, "Jumbo": 2, "Lidl": 1},
+    "2026-09-06": {"AH": 1, "Jumbo": 2, "Lidl": 1},
+    "2026-09-07": {"AH": 1, "Jumbo": 2, "Lidl": 1},
 }
 c = bio.cijfers_uit_dagtellingen(dagen)
-keur("vier dagen geteld", c["dagen"] == 4, str(c["dagen"]))
-keur("gemiddelde klopt (18/4)", abs(c["gemiddeld"] - 4.5) < 1e-9, str(c["gemiddeld"]))
+keur("zeven dagen geteld", c["dagen"] == 7, str(c["dagen"]))
+keur("gemiddelde klopt (30/7)", abs(c["gemiddeld"] - 30 / 7) < 1e-9, str(c["gemiddeld"]))
 keur("laagste dag is 2 op 2026-09-01",
      c["laagste"] == 2 and c["laagste_datum"] == "2026-09-01",
      f'{c["laagste"]} op {c["laagste_datum"]}')
@@ -55,15 +61,15 @@ keur("meest lege winkel staat bovenaan", c["per_winkel"][0]["winkel"] == "Lidl")
 # Een dag waarop een winkel ontbreekt telt niet mee: die nul zegt niets over
 # die winkel, net als "geen acties" tegenover "niet opgehaald" op de voorpagina.
 half = dict(dagen)
-half["2026-09-05"] = {"AH": 1}
+half["2026-09-08"] = {"AH": 1}
 keur("onvolledige dag telt niet mee",
-     bio.cijfers_uit_dagtellingen(half)["dagen"] == 4)
+     bio.cijfers_uit_dagtellingen(half)["dagen"] == 7)
 keur("zonder dagen geen cijfers", bio.cijfers_uit_dagtellingen({}) is None)
 
 print("\nde pagina")
 blok = bio.cijferblok_html(c)
 keur("kerngetal staat erin", "kerngetal" in blok)
-keur("komma en geen punt", "4,5" in blok and "4.5" not in blok)
+keur("komma en geen punt", "4,3" in blok and "4.3" not in blok)
 keur("diagram staat erin", 'class="diagram"' in blok)
 keur("diagram heeft een aria-label", "aria-label=" in blok)
 keur("tabel staat erin", "cijfertabel" in blok)
@@ -106,33 +112,32 @@ try:
     aanbiedingen = {"AH": [1, 2, 3], "Aldi": [], "Jumbo": [1]}
 
     bio.DAGTELLINGEN_PATH = _tmp / "alles-ok.json"
-    dag = bio.werk_dagtellingen_bij(aanbiedingen, "2026-11-12")["2026-11-12"]
+    dag = bio.werk_dagtellingen_bij(aanbiedingen, "2026-11-12")["dagen"]["2026-11-12"]
     keur("zonder status telt alles mee", dag == {"AH": 3, "Aldi": 0, "Jumbo": 1},
          f"kreeg {dag}")
 
     bio.DAGTELLINGEN_PATH = _tmp / "aldi-stuk.json"
     dag = bio.werk_dagtellingen_bij(
         aanbiedingen, "2026-11-12",
-        {"AH": "ok", "Aldi": "mislukt", "Jumbo": "ok"})["2026-11-12"]
+        {"AH": "ok", "Aldi": "mislukt", "Jumbo": "ok"})["dagen"]["2026-11-12"]
     keur("een mislukte winkel komt er niet in", "Aldi" not in dag, f"kreeg {dag}")
     keur("de rest wel", dag == {"AH": 3, "Jumbo": 1}, f"kreeg {dag}")
 
     bio.DAGTELLINGEN_PATH = _tmp / "aldi-half.json"
     dag = bio.werk_dagtellingen_bij(
         aanbiedingen, "2026-11-12",
-        {"AH": "ok", "Aldi": "onvolledig", "Jumbo": "ok"})["2026-11-12"]
+        {"AH": "ok", "Aldi": "onvolledig", "Jumbo": "ok"})["dagen"]["2026-11-12"]
     keur("een half opgehaalde winkel ook niet", "Aldi" not in dag, f"kreeg {dag}")
 
     # En dan laat de berekening die dag vanzelf vallen.
-    c = bio.cijfers_uit_dagtellingen({
-        "2026-11-10": {"AH": 2, "Aldi": 0, "Jumbo": 1},
-        "2026-11-11": {"AH": 3, "Aldi": 0, "Jumbo": 1},
-        "2026-11-12": {"AH": 3, "Jumbo": 1},
-    })
-    keur("een dag met een ontbrekende winkel telt niet mee", c["dagen"] == 2,
+    reeks = {f"2026-11-{d:02d}": {"AH": 2, "Aldi": 0, "Jumbo": 1}
+             for d in range(3, 11)}
+    reeks["2026-11-11"] = {"AH": 3, "Jumbo": 1}      # Aldi ontbreekt deze dag
+    c = bio.cijfers_uit_dagtellingen(reeks)
+    keur("een dag met een ontbrekende winkel telt niet mee", c["dagen"] == 8,
          f"kreeg {c['dagen']}")
     keur("en een echte nul telt nog gewoon als nuldag",
-         next(r["nuldagen"] for r in c["per_winkel"] if r["winkel"] == "Aldi") == 2)
+         next(r["nuldagen"] for r in c["per_winkel"] if r["winkel"] == "Aldi") == 8)
 finally:
     bio.DAGTELLINGEN_PATH = _echt_pad
 
