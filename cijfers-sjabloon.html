@@ -9,6 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <title>Hoe vaak is biologische groente en fruit in de aanbieding?</title>
 <meta name="description" content="Hoe vaak biologische groente en fruit bij zes Nederlandse supermarkten in de aanbieding staat, dagelijks geteld sinds augustus 2026.">
@@ -21,8 +22,6 @@
 <meta property="og:image" content="https://hetbiolijstje.nl/icon.png">
 <meta property="og:locale" content="nl_NL">
 <meta name="twitter:card" content="summary">
-<link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="/icon.png">
 <style>
   /* Zelfde opzet als op de voorpagina: donker is de basis, licht komt uit één
      klasse die het scriptje hieronder zet. Zie de toelichting daar. */
@@ -220,10 +219,18 @@
      Het 🧴 hoort bij dezelfde regel als de oranje tekst, zodat pictogram en
      woorden hetzelfde zeggen. */
   .residu{
-    font-family:'Space Mono', monospace; font-size:10.5px;
+    font-family:'Space Mono', monospace; font-size:11.5px;
     letter-spacing:0.02em; color:var(--muted);
     margin:6px 0 0;
+    /* Van alinea naar knop: de toelichting met de werkelijke cijfers stond op
+       dertien kaarten in de HTML maar was alleen te openen op de vijf met een
+       🧴. De andere acht waren te lezen voor een crawler en niet voor een
+       bezoeker. Nu opent de regel zelf de toelichting, op elke kaart. */
+    background:none; border:0; padding:4px 0; text-align:left;
+    font-weight:inherit; cursor:pointer;
+    border-bottom:1px dotted currentColor;
   }
+  .residu:focus-visible{ outline:2px solid var(--leaf); outline-offset:2px; }
   .residu.meer{ color:var(--harvest); }
   .residu.minder{ color:var(--leaf); }
 
@@ -530,7 +537,7 @@
   de aanbieding? Deze site telt het sinds augustus 2026 elke dag.</p>
 
   <section class="group">
-    <div class="group-title"><h2>Wat we zien</h2></div>
+    <div class="group-title"><h2>Wat de telling laat zien</h2></div>
     <div class="prose">
 <!--CIJFERS-->
       <p>Nog niet berekend.</p>
@@ -549,7 +556,7 @@
 
 
   <footer>
-    Terug naar <a href="/">de aanbiedingen</a>. &middot; <a href="/over/">Over deze site</a>
+    Terug naar <a href="/">de aanbiedingen</a>. &middot; <a href="/seizoen/">Seizoenswijzer</a> &middot; <a href="/cijfers/">Cijfers</a>
   </footer>
 </div>
 
@@ -559,8 +566,13 @@
    markering van de huidige maand — dat laatste kan een statische pagina niet
    zelf weten. */
 document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.bio-flag');
-  if (btn) btn.closest('.card').classList.toggle('bio-open');
+  const btn = e.target.closest('.bio-flag, .residu');
+  if (btn) {
+    const kaart = btn.closest('.card');
+    const open = kaart.classList.toggle('bio-open');
+    kaart.querySelectorAll('.bio-flag, .residu').forEach(
+      (k) => k.setAttribute('aria-expanded', String(open)));
+  }
 });
 
 const dezeMaand = new Date().getMonth() + 1;

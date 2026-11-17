@@ -392,6 +392,15 @@ AANBIEDINGEN_STORES = {
     # weglaten en daarmee negen echte aanbiedingen per dag niet tonen.
     "Poiesz": ("poiesz", None),
     "DekaMarkt": ("dekamarkt", None),
+    # Erbij op 17 november 2026, weer op aanwijzing van de wachter. Vomar stond
+    # sinds de meting van 31 augustus op nul dieet-labels; nu levert hij Bio+
+    # bietjes en biologische appels. Derde Superunie-keten op rij, en het is
+    # steeds dezelfde huismerklijn die binnenkomt.
+    #
+    # Vomar vult retailer_category niet (0 van 179 acties), net als Aldi. Daar
+    # doet het naamfilter dus het werk; de schapregel is hier niet van
+    # toepassing.
+    "Vomar": ("vomar", None),
 }
 
 # Winkels waar we niet de productnaam maar het schap van de winkel zelf geloven.
@@ -463,7 +472,6 @@ KANDIDAAT_WINKELS = {
     # veld retailer_category stond er al en doet wat de naampatronen moesten
     # doen; Ekoplaza staat sindsdien in AANBIEDINGEN_STORES.
     "Hoogvliet": "hoogvliet",
-    "Vomar": "vomar",
     # Poiesz en DekaMarkt stonden hier tot 3 november 2026. Op 29 oktober had
     # Poiesz één appel en DekaMarkt niets; vijf dagen later zeven en twee. Dat
     # is precies waar deze lijst voor bedoeld is — ketens waarvan de data kan
@@ -658,12 +666,19 @@ _VOORRAAD_PATRONEN = (
     re.compile(r"diepvries|ingevroren|\bbevroren\b", re.IGNORECASE),
     re.compile(r"zoetzuur|\bconserven\b", re.IGNORECASE),
     re.compile(r"gekookt|voorgekookt", re.IGNORECASE),
+    # Gepubliceerd als "vers" terwijl het bewaarde of gedroogde waar is: alle
+    # zuurkool (AH, en vijf soorten bij Poiesz), "Bio appelmoes", "Smaakt
+    # Dadels", "Mangoreepjes", "Pruimen zonder pit" en "Gojibessen".
+    re.compile(r"zuurkool", re.IGNORECASE),
+    re.compile(r"moes", re.IGNORECASE),
+    re.compile(r"dadel", re.IGNORECASE),
+    re.compile(r"reepjes", re.IGNORECASE),
+    re.compile(r"zonder pit", re.IGNORECASE),
+    re.compile(r"goji", re.IGNORECASE),
 )
 # Categorieën van PrijsProfeet die de indeling kunnen bepalen als de naam niets
 # verraadt. Folderz levert geen categorie, dus daar blijft het bij de naam.
 _VOORRAAD_CATEGORIEEN = {"soepen-conserven-sauzen", "diepvries"}
-_VERS_CATEGORIEEN = {"groente-fruit"}
-
 
 def _soort(naam, categorie=None):
     """Bepaalt of een product bij "Vers" of bij "Voorraad" hoort.
@@ -678,8 +693,9 @@ def _soort(naam, categorie=None):
             return "voorraad"
     if categorie in _VOORRAAD_CATEGORIEEN:
         return "voorraad"
-    if categorie in _VERS_CATEGORIEEN:
-        return "vers"
+    # Hier stond nog een controle op _VERS_CATEGORIEEN. Die deed niets: beide
+    # takken gaven "vers", net als de terugval eronder. Weg, zodat het hier
+    # leest zoals het werkt — alles wat geen voorraadsignaal draagt is vers.
     return "vers"
 
 
@@ -767,7 +783,7 @@ def _als_bio_agf_actie(item):
     tags = item.get("dietary_tags") or []
     label_zegt_bio = "bio" in tags
     naam_zegt_bio = bool(BIO_PATTERN.search(naam))
-    if (item.get("retailer") or "") in VOLLEDIG_BIO_WINKELS:
+    if (item.get("retailer") or "").lower() in VOLLEDIG_BIO_WINKELS:
         # Daar is het label genoeg; zie de toelichting bij die set.
         if not label_zegt_bio:
             return None
@@ -1100,8 +1116,20 @@ def _hersleutel(history):
 def load_history():
     if HISTORY_PATH.exists():
         try:
-            return _hersleutel(json.loads(HISTORY_PATH.read_text()))
-        except (json.JSONDecodeError, OSError) as e:
+            # encoding= stond er niet. Op de Pi gaat dat goed, maar een lokale
+            # draai op Windows leest dan cp1252 en struikelt over de eerste
+            # accent-e in een productnaam — met een UnicodeDecodeError die deze
+            # except niet ving.
+            rauw = json.loads(HISTORY_PATH.read_text(encoding="utf-8"))
+            if not isinstance(rauw, dict) or not rauw:
+                # Geldige JSON die geen gevulde map is: een lege {}, een lijst,
+                # null. Dat gaf ofwel stil een lege geschiedenis ofwel een
+                # AttributeError diep in _hersleutel die de hele ronde brak.
+                # Allebei zijn het hetzelfde geval als onleesbaar: ga naar de
+                # back-up.
+                raise ValueError(f"geen gevulde map maar {type(rauw).__name__}")
+            return _hersleutel(rauw)
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError, ValueError) as e:
             # Hier stond "begin opnieuw", en dat was het stilste soort dataverlies
             # dat dit project kende: de teller ging naar nul, de site zag er
             # normaal uit, en pas weken later zou opvallen dat er niets meer werd
@@ -1130,10 +1158,16 @@ def _herstel_history():
     map_ = ADDON_DATA_DIR / "geschiedenis-backup"
     if not map_.is_dir():
         return None
-    # Nieuwste eerst: de vaste kopie, dan de gedateerde van nieuw naar oud.
-    kandidaten = [map_ / "geschiedenis.json"] + sorted(
-        map_.glob("geschiedenis-2*.json"), reverse=True
-    )
+    # Gedateerde kopieën eerst, van nieuw naar oud, en de vaste kopie als
+    # laatste. Die volgorde stond andersom, en dat kon je de nieuwste kopie
+    # kosten: de vaste kopie mag niet krimpen (zie _backup_history), maar
+    # _hersleutel voegt sleutels samen en verlaagt het aantal producten dus
+    # soms terecht. Dan bevriest de vaste kopie op de oude stand terwijl er
+    # nieuwere gedateerde kopieën naast liggen — en juist die bevroren versie
+    # werd dan teruggezet.
+    kandidaten = sorted(map_.glob("geschiedenis-2*.json"), reverse=True) + [
+        map_ / "geschiedenis.json"
+    ]
     for pad in kandidaten:
         if not pad.exists():
             continue
@@ -1391,8 +1425,14 @@ def _jsonld(aanbiedingen, bijgewerkt):
             "itemListElement": items,
         },
     }
+    # De < uit productnamen omzetten naar <. JSON-LD staat in een
+    # <script>-blok, en daar sluit een letterlijke </script> in een naam het
+    # blok af — de rest van de gestructureerde data valt dan als tekst op de
+    # pagina. De namen komen van een API van derden, dus dit is niet aan ons om
+    # te vertrouwen. Een JSON-lezer ziet geen verschil.
     return ('<script type="application/ld+json">'
-            + json.dumps(blok, ensure_ascii=False, separators=(",", ":"))
+            + json.dumps(blok, ensure_ascii=False,
+                         separators=(",", ":")).replace("<", "\\u003c")
             + "</script>")
 
 
@@ -2184,9 +2224,6 @@ def main():
         _toon_droogdraai(aanbiedingen)
         return
 
-    # Na de echte winkels, want dit mag de lijst niet vertragen als het misgaat.
-    controleer_kandidaten()
-
     save_history(history)
 
     if not any(aanbiedingen.values()):
@@ -2203,7 +2240,8 @@ def main():
     }
 
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(json.dumps(resultaat, indent=2, ensure_ascii=False))
+    OUTPUT_PATH.write_text(json.dumps(resultaat, indent=2, ensure_ascii=False),
+                           encoding="utf-8")
     log.info(f"Klaar. Geschreven naar {OUTPUT_PATH}")
 
     # Losstaand afgeschermd: de HTML is een extraatje bovenop de data, dus een
@@ -2237,6 +2275,13 @@ def main():
             "sensor.bio_lijstje_bijgewerkt niet ververst: de nieuwe lijst staat "
             "nog niet op de site. Zo gaat de melding in Home Assistant alsnog af."
         )
+
+    # Helemaal achteraan, want dit is een terzijde. Het stond vóór save_history
+    # en publish_to_github, met het commentaar dat het de lijst niet mocht
+    # vertragen — maar daar deed het precies dat: elf extra ketens ophalen
+    # voordat er iets bewaard of gepubliceerd was. Bij een trage API kost dat
+    # minuten, en wordt de app in die tijd herstart dan is de ronde weg.
+    controleer_kandidaten()
 
 
 if __name__ == "__main__":

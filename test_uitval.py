@@ -266,8 +266,18 @@ keur("een ruim geldig token haalt de melding juist weg",
 bijna = _meldingen(9)
 keur("binnen twee weken komt er een melding",
      len(bijna) == 1 and bijna[0][0].endswith("/create"))
-keur("met de datum erin", bijna and "28-10-2026" in str(bijna[0][1].get("message", ""))
-     or bijna and "-2026" in str(bijna[0][1].get("message", "")))
+# Dit zocht letterlijk "28-10-2026" of anders "-2026" in de melding. Dat tweede
+# hield het een tijdje vol, maar vanaf eind december ligt "vandaag plus negen
+# dagen" in 2027 en valt de test om zonder dat er iets stuk is. Nu de datum die
+# er volgens de klok hoort te staan.
+from datetime import datetime as _dtm, timedelta as _tdl, timezone as _tzn
+
+# Zelfde rekensom als _meldingen() hierboven, en zonder omzetten naar lokale
+# tijd: de engine leest de UTC-datum uit de header en zet die zo in de melding.
+_verwacht = (_dtm.now(_tzn.utc) + _tdl(days=9, hours=1)).strftime("%d-%m-%Y")
+keur(f"met de datum erin ({_verwacht})",
+     bool(bijna) and _verwacht in str(bijna[0][1].get("message", "")),
+     f'kreeg: {str(bijna[0][1].get("message", ""))[:70] if bijna else "niets"}')
 keur("altijd hetzelfde nummer, dus bijwerken en niet stapelen",
      bijna[0][1].get("notification_id") == bio.TOKEN_MELDING_ID)
 verlopen = _meldingen(-1)

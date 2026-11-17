@@ -109,7 +109,8 @@ def voetnoot_seizoen(regel):
 # Op /over/ zou die link naar zichzelf wijzen. Na 600 woorden tekst staat daar
 # liever de weg terug naar waar de bezoeker vandaan kwam.
 VOETNOOT_OVER = ('Terug naar <a href="/">de aanbiedingen</a>.'
-                 ' &middot; <a href="/over/">Over deze site</a>')
+                 ' &middot; <a href="/seizoen/">Seizoenswijzer</a>'
+                 ' &middot; <a href="/cijfers/">Cijfers</a>')
 
 
 # Grens waarboven en waaronder een product afwijkt van het gemiddelde van zijn
@@ -195,9 +196,11 @@ def kaart(product, residu):
         hoog = r["oordeel"] == "meer"
         if hoog:
             vlag = ('<button class="bio-flag" type="button" '
-                    'aria-label="Wat betekent dit?">\U0001F9F4</button>')
-        regel = (f'\n        <p class="residu {r["oordeel"]}">'
-                 f'{OORDEEL[r["oordeel"]]}</p>')
+                    'aria-expanded="false" '
+                    'aria-label="Toelichting op de bestrijdingsmiddelen">\U0001F9F4</button>')
+        regel = (f'\n        <button class="residu {r["oordeel"]}" '
+                 f'type="button" aria-expanded="false">'
+                 f'{OORDEEL[r["oordeel"]]}</button>')
         uitleg = (
             f'\n        <p class="bio-note">In monsters van '
             f'{esc(r["eetwijzer_naam"].lower())} vond de NVWA gemiddeld {getal} '
@@ -328,7 +331,7 @@ def overzichtspagina(data):
     # Het bovenschrift is hier dus de h1.
     inhoud = (
         '  <p class="intro">Welke groente en welk fruit in Nederland van het seizoen zijn, '
-        'maand voor maand. Kies een maand voor de volledige lijst met bewaartips.</p>\n\n'
+        'maand voor maand. Kies een maand voor de volledige lijst, met een tip per soort.</p>\n\n'
         '  <section class="group">\n'
         '    <div class="grid grid-maanden">\n' + "\n".join(kaarten) + "\n    </div>\n"
         '  </section>\n'
@@ -385,7 +388,7 @@ def cijferpagina():
   de aanbieding? Deze site telt het sinds augustus 2026 elke dag.</p>
 
   <section class="group">
-    <div class="group-title"><h2>Wat we zien</h2></div>
+    <div class="group-title"><h2>Wat de telling laat zien</h2></div>
     <div class="prose">
 <!--CIJFERS-->
       <p>Nog niet berekend.</p>
@@ -440,9 +443,9 @@ def overpagina(data):
     bronvermelding, wat de site niet belooft, en wat er met je gegevens gebeurt.
     """
     inhoud = """  <p class="intro">Elke ochtend de lopende biologische groente- en
-  fruitaanbiedingen van negen supermarkten op één pagina, plus een
+  fruitaanbiedingen van tien supermarkten op één pagina, plus een
   seizoenskalender. Gemaakt omdat ik ze zelf wilde kunnen vergelijken zonder
-  negen apps te openen.</p>
+  tien apps te openen.</p>
 
   <section class="group">
     <div class="group-title"><h2>Waar de cijfers vandaan komen</h2></div>
@@ -466,10 +469,6 @@ def overpagina(data):
       🧴 staat bij de soorten die ruim boven het gemiddelde van hun categorie
       uitkomen. Bij soorten die de NVWA niet apart meet staat geen cijfer.</p>
 
-      <p>Wat er uit al dat tellen komt staat op
-      <a href="/cijfers/">de cijferpagina</a>: hoe vaak biologische groente en
-      fruit eigenlijk in de aanbieding is, per supermarkt.</p>
-
       <p class="let-op"><strong>Belangrijk bij dat laatste:</strong> die
       metingen gaan over het hele handelskanaal, niet specifiek over biologisch.
       Als hier bij een peer staat dat er meer bestrijdingsmiddelen op zitten dan
@@ -477,6 +476,10 @@ def overpagina(data):
       biologische peer die je hiernaast in de aanbieding ziet. Het cijfer is een
       reden om bij dat product eens naar bio te kijken, geen uitspraak over de
       bio-variant zelf.</p>
+
+      <p>Wat er uit al dat tellen komt staat op
+      <a href="/cijfers/">de cijferpagina</a>: hoe vaak biologische groente en
+      fruit eigenlijk in de aanbieding is, per supermarkt.</p>
     </div>
   </section>
 
