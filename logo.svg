@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512"
+     role="img" aria-label="Het Bio Lijstje">
+  <title>Het Bio Lijstje</title>
+  <!-- Vectorversie van icon.png, uitgemeten uit de pixels van dat bestand:
+       wortel y240-480 met bovenrand x166-346, vier ribbels van 6px, blad
+       y110-240. Zelfde kleuren als het app-icoon (#1c2b23 / #e8823c / sage),
+       dus dit is hetzelfde merk en geen nieuw ontwerp.
+
+       Het vlak zit er bewust in: op een lichte kaart valt de bleke sage van de
+       blaadjes anders weg. Voor een transparante variant zie
+       logo-transparant.svg. -->
+  <rect width="512" height="512" rx="96" fill="#1c2b23"/>
+
+  <!-- blad -->
+  <g fill="none" stroke-linecap="round">
+    <path d="M256 242 C 252 200 236 160 198 126" stroke="#7c9885" stroke-width="7"/>
+    <path d="M256 242 C 262 198 286 158 316 128" stroke="#7c9885" stroke-width="7"/>
+    <path d="M256 242 C 254 196 258 150 262 112" stroke="#9ab5a1" stroke-width="12"/>
+  </g>
+
+  <!-- wortel met de ribbels als uitsparing, zodat het vlak erdoorheen valt -->
+  <mask id="ribbels">
+    <rect width="512" height="512" fill="#fff"/>
+    <rect x="186" y="268" width="140" height="6" fill="#000"/>
+    <rect x="200" y="313" width="112" height="6" fill="#000"/>
+    <rect x="214" y="358" width="84"  height="6" fill="#000"/>
+    <rect x="228" y="403" width="56"  height="6" fill="#000"/>
+  </mask>
+  <path d="M166 240 H346 L256 480 Z" fill="#e8823c" mask="url(#ribbels)"/>
+</svg>

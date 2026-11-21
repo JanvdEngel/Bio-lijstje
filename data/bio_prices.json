@@ -1,0 +1,295 @@
+{
+  "laatst_bijgewerkt": "2026-11-21T06:01:25.157223",
+  "aanbiedingen": {
+    "AH": [
+      {
+        "naam": "Bonduelle Crispy mais bio",
+        "actieprijs": 1.5,
+        "normale_prijs": 2.99,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €2,99",
+        "vanaf": 2
+      },
+      {
+        "naam": "Bonduelle Crispy maïs bio",
+        "actieprijs": 1.09,
+        "normale_prijs": 2.19,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €2,19",
+        "vanaf": 2
+      },
+      {
+        "naam": "AH Biologisch Pompoen",
+        "actieprijs": 2.51,
+        "normale_prijs": 3.58,
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.68,
+        "laagste_ooit_datum": "2026-09-21",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "AH Biologisch Sweet Cherry trostomaten",
+        "actieprijs": 1.94,
+        "normale_prijs": 2.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Bonduelle Rode kidneybonen bio",
+        "actieprijs": 1.04,
+        "normale_prijs": 2.09,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €2,09",
+        "vanaf": 2
+      },
+      {
+        "naam": "AH Biologisch Flespompoen",
+        "actieprijs": 2.09,
+        "normale_prijs": 2.98,
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.79,
+        "laagste_ooit_datum": "2026-10-26",
+        "eerder_gezien": 2
+      },
+      {
+        "naam": "AH Biologisch Snoepgroente tomaat",
+        "actieprijs": 1.67,
+        "normale_prijs": 2.29,
+        "soort": "vers",
+        "voorwaarde": "3 voor €5,00",
+        "vanaf": 3
+      },
+      {
+        "naam": "Heinz Tomaten gepeld biologisch",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.59,
+        "soort": "voorraad"
+      },
+      {
+        "naam": "AH Biologisch Snoepgroente wortel",
+        "actieprijs": 1.67,
+        "normale_prijs": 1.99,
+        "soort": "vers",
+        "voorwaarde": "3 voor €5,00",
+        "vanaf": 3
+      },
+      {
+        "naam": "AH Biologisch Ginger mango verse appel mango gember",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.19,
+        "soort": "vers",
+        "voorwaarde": "6 voor €5,95",
+        "vanaf": 6
+      }
+    ],
+    "Jumbo": [
+      {
+        "naam": "Hak Spinazie met Room Bio 345 g",
+        "actieprijs": 1.0,
+        "normale_prijs": 2.99,
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 5
+      },
+      {
+        "naam": "Hak Rode Bieten Sticks Bio 355 g",
+        "actieprijs": 1.0,
+        "normale_prijs": 2.59,
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 5
+      },
+      {
+        "naam": "Hak Gesneden Bonen Bio 340 g",
+        "actieprijs": 1.0,
+        "normale_prijs": 2.39,
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 5
+      },
+      {
+        "naam": "Hak Rode Bieten Schijven Bio 355 g",
+        "actieprijs": 1.0,
+        "normale_prijs": 2.19,
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-10-14",
+        "eerder_gezien": 5
+      },
+      {
+        "naam": "Hak Wijnzuurkool Bio 340 g",
+        "actieprijs": 1.0,
+        "normale_prijs": 1.99,
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 0.99,
+        "laagste_ooit_datum": "2026-09-02",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "Hak Gebroken Sperziebonen Bio 340 g",
+        "actieprijs": 1.0,
+        "normale_prijs": 1.95,
+        "soort": "voorraad",
+        "laagste_ooit_prijs": 0.97,
+        "laagste_ooit_datum": "2026-09-02",
+        "eerder_gezien": 2
+      }
+    ],
+    "Lidl": [
+      {
+        "naam": "Bio flespompoen",
+        "actieprijs": 1.99,
+        "normale_prijs": null,
+        "soort": "vers"
+      }
+    ],
+    "Aldi": [],
+    "Dirk": [
+      {
+        "naam": "Bio+ Biologische rode bieten gekookt",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.25,
+        "soort": "voorraad"
+      }
+    ],
+    "Plus": [
+      {
+        "naam": "Biologisch PLUS Oesterzwammen",
+        "actieprijs": 1.69,
+        "normale_prijs": 2.25,
+        "soort": "vers"
+      },
+      {
+        "naam": "BIO+ Wijnzuurkool",
+        "actieprijs": 0.89,
+        "normale_prijs": 1.25,
+        "soort": "voorraad"
+      },
+      {
+        "naam": "Biologisch PLUS Portobello",
+        "actieprijs": 1.69,
+        "normale_prijs": 1.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "BIO+ Kruidenzuurkool",
+        "actieprijs": 0.89,
+        "normale_prijs": 1.09,
+        "soort": "voorraad"
+      },
+      {
+        "naam": "BIO+ Zuurkool naturel",
+        "actieprijs": 0.89,
+        "normale_prijs": 1.09,
+        "soort": "voorraad"
+      }
+    ],
+    "Ekoplaza": [
+      {
+        "naam": "Groene kool",
+        "actieprijs": 1.59,
+        "normale_prijs": 3.29,
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.29,
+        "laagste_ooit_datum": "2026-11-04",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "Vastkokende kriel aardappeltjes",
+        "actieprijs": 1.79,
+        "normale_prijs": 2.49,
+        "soort": "vers"
+      },
+      {
+        "naam": "Paksoi",
+        "actieprijs": 1.89,
+        "normale_prijs": 2.59,
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.59,
+        "laagste_ooit_datum": "2026-10-29",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "Conference peren",
+        "actieprijs": 2.39,
+        "normale_prijs": 2.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Rode van Boskoop appels",
+        "actieprijs": 2.39,
+        "normale_prijs": 2.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Gesneden boerenkool",
+        "actieprijs": 2.59,
+        "normale_prijs": 2.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Spruiten",
+        "actieprijs": 3.59,
+        "normale_prijs": 3.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Komkommer",
+        "actieprijs": 1.39,
+        "normale_prijs": 1.79,
+        "soort": "vers"
+      },
+      {
+        "naam": "Mandarijnen",
+        "actieprijs": 3.69,
+        "normale_prijs": 3.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Kastanjechampignons",
+        "actieprijs": 2.29,
+        "normale_prijs": 2.59,
+        "soort": "vers"
+      }
+    ],
+    "Poiesz": [
+      {
+        "naam": "Bio+ Biologische Appel",
+        "actieprijs": 2.0,
+        "normale_prijs": 3.29,
+        "soort": "vers",
+        "voorwaarde": "2 voor €4,00",
+        "vanaf": 2
+      }
+    ],
+    "DekaMarkt": [],
+    "Vomar": [
+      {
+        "naam": "Biologische Appels",
+        "actieprijs": 1.99,
+        "normale_prijs": 2.39,
+        "soort": "vers"
+      },
+      {
+        "naam": "Bio+ Bietjes",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.25,
+        "soort": "vers"
+      }
+    ]
+  },
+  "winkelstatus": {
+    "AH": "ok",
+    "Jumbo": "ok",
+    "Lidl": "ok",
+    "Aldi": "ok",
+    "Dirk": "ok",
+    "Plus": "ok",
+    "Ekoplaza": "ok",
+    "Poiesz": "ok",
+    "DekaMarkt": "ok",
+    "Vomar": "ok"
+  }
+}
