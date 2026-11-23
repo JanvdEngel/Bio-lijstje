@@ -177,5 +177,39 @@ keur("twee bruikbare records geven er ook twee", it.get("eerder_gezien") == 2)
 keur("en de laagste daarvan is de laagste", it.get("laagste_ooit_prijs") == 2.50)
 
 
+# ---------------------------------------------------------------------------
+# 6. Een klantenkaartprijs is geen gewone prijs
+# ---------------------------------------------------------------------------
+# Zelfde redenering als bij de stapelprijs. EUR 0,39 met Lidl Plus hoort niet
+# vergeleken te worden met een losse EUR 0,89, en toen de courgette op
+# 23 november van EUR 0,99 (schapprijs, ten onrechte gepubliceerd) naar EUR 0,39
+# (met kaart) ging, waren dat twee onvergelijkbare prijspunten.
+print("")
+print("Een prijs met de klantenkaart telt apart:")
+
+kaart = dict(item(prijs=0.39, normaal=0.99))
+kaart["kaart"] = True
+
+it_, _ = draai([record("2026-11-01", 0.89, 1.09, vanaf=None)], kaart)
+keur("kaartprijs vergelijkt niet met een gewone prijs",
+     "laagste_ooit_prijs" not in it_, f"kreeg {it_.get('laagste_ooit_prijs')}")
+
+eerder_kaart = record("2026-11-01", 0.49, 0.99, vanaf=None)
+eerder_kaart["kaart"] = True
+it_, _ = draai([eerder_kaart], kaart)
+keur("maar wel met een eerdere kaartprijs", it_.get("laagste_ooit_prijs") == 0.49)
+
+_, reeks = draai([], kaart)
+keur("het record legt vast dat het een kaartprijs was",
+     reeks[-1].get("kaart") is True)
+
+_, reeks = draai([], item(prijs=0.89, normaal=1.09))
+keur("en bij een gewone prijs staat er False", reeks[-1].get("kaart") is False)
+
+# Precies het geval van 23 november: eerst de schapprijs, daarna de kaartprijs.
+_, reeks = draai([record("2026-11-23", 0.99, None, vanaf=None)], kaart)
+keur("van schapprijs naar kaartprijs geeft een nieuw record", len(reeks) == 2)
+
+
 print(f"\n{fouten} fout" if fouten else "\nalles goed")
 sys.exit(1 if fouten else 0)

@@ -155,5 +155,58 @@ keur("groente-fruit blijft er gewoon in",
      "groente-fruit" not in bio.EXCLUDED_CATEGORIES)
 
 
+# ---------------------------------------------------------------------------
+# 6. De prijs die er staat moet de prijs van de aanbieding zijn
+# ---------------------------------------------------------------------------
+# Op 23 november 2026 stond "BIO Bio courgette" voor EUR 0,99 op de voorpagina en
+# kon Jan hem niet in de folder vinden. Terecht: EUR 0,99 was de schapprijs en de
+# actie was EUR 0,39 met Lidl Plus. Twee gaten tegelijk - de klantenkaartprijs
+# werd genegeerd, en zonder normale prijs werd er helemaal niet op korting
+# gecontroleerd.
+print("")
+print("De klantenkaartprijs is de actieprijs:")
+
+
+def lidl(**extra):
+    rec = {"name": "BIO Bio courgette", "price": 0.99, "original_price": None,
+           "discount_percentage": 0.0, "savings_percentage": 0.0,
+           "dietary_tags": ["bio"], "unified_category": "groente-fruit",
+           "promotion_status": "active", "retailer": "lidl"}
+    rec.update(extra)
+    return rec
+
+
+a = bio._als_bio_agf_actie(lidl(loyalty_price=0.39, loyalty_program="Lidl Plus",
+                                promotional_keywords=["met Lidl Plus"]))
+keur("de kaartprijs wordt de actieprijs", bool(a) and a["actieprijs"] == 0.39,
+     f"kreeg {a and a.get('actieprijs')}")
+keur("de schapprijs wordt de normale prijs", bool(a) and a["normale_prijs"] == 0.99)
+keur("en de kaart staat als voorwaarde erbij",
+     bool(a) and a.get("voorwaarde") == "met Lidl Plus",
+     f"kreeg {a and a.get('voorwaarde')}")
+
+a = bio._als_bio_agf_actie(lidl(loyalty_price=0.39, loyalty_program=None))
+keur("zonder programmanaam een algemene voorwaarde",
+     bool(a) and a.get("voorwaarde") == "met de klantenkaart")
+
+keur("een hogere kaartprijs telt niet als korting",
+     bio._als_bio_agf_actie(lidl(loyalty_price=1.49, loyalty_program="Lidl Plus")) is None)
+
+print("")
+print("Zonder normale prijs moet de API zelf korting melden:")
+keur("nul procent korting en geen normale prijs valt af",
+     bio._als_bio_agf_actie(lidl()) is None)
+keur("een echt kortingspercentage komt wel door",
+     bio._als_bio_agf_actie(lidl(discount_percentage=25.0)) is not None)
+keur("savings_percentage telt ook",
+     bio._als_bio_agf_actie(lidl(savings_percentage=12.0)) is not None)
+keur("met een normale prijs blijft de oude vergelijking gelden",
+     bio._als_bio_agf_actie(lidl(original_price=1.29)) is not None)
+keur("een normale prijs gelijk aan de actieprijs valt af",
+     bio._als_bio_agf_actie(lidl(original_price=0.99)) is None)
+keur("een prijs van nul is geen prijs",
+     bio._als_bio_agf_actie(lidl(price=0, discount_percentage=50.0)) is None)
+
+
 print(f"\n{fouten} fout" if fouten else "\nalles goed")
 sys.exit(1 if fouten else 0)

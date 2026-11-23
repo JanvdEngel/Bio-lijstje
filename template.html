@@ -651,6 +651,7 @@ function renderAanbiedingCard(item, storeColor, isExtra) {
         ${item.normale_prijs ? `<span class="price-was">${prijs(item.normale_prijs)}</span>` : ''}
       </div>
       ${savingsPct && savingsPct > 0 ? `<div class="savings">${savingsPct}% korting</div>` : ''}
+      ${!item.vanaf && item.voorwaarde ? `<div class="voorwaarde">${esc(item.voorwaarde)}</div>` : ''}
       ${renderHistoryNote(item)}
     </div>`;
 }

@@ -793,22 +793,58 @@ def _als_bio_agf_actie(item):
     if status is not None and status != "active":
         return None
     actieprijs = item.get("price")
-    if not isinstance(actieprijs, (int, float)):
+    if not isinstance(actieprijs, (int, float)) or actieprijs <= 0:
         return None
-    # Geen korting is geen aanbieding. De API levert ook gewone schapprijzen
-    # met promotion_status "active"; bij Ekoplaza stond zo "Gemengde sla" op
-    # €2,59 van €2,59. Alleen vergelijken als de normale prijs bekend is —
-    # Folderz levert die nooit, en daar is dit dus geen test.
     normale_prijs = item.get("original_price")
+
+    # Een prijs die alleen met de klantenkaart geldt is wél de aanbieding, maar
+    # niet de prijs die aan de kassa staat zonder die kaart. Jan zag op
+    # 23 november "BIO Bio courgette" voor EUR 0,99 op de pagina staan en kon
+    # hem niet in de folder vinden — terecht: EUR 0,99 was de schapprijs, en de
+    # actie was EUR 0,39 met Lidl Plus. Wij publiceerden dus de gewone prijs
+    # alsof het de aanbieding was.
+    #
+    # Nu is de klantenkaartprijs de actieprijs, met de gewone prijs ernaast en
+    # de kaart als voorwaarde — net als bij "vanaf 2 stuks". Gemeten over 165
+    # Lidl-acties: 68 dragen zo'n prijs, elk lager dan zijn eigen schapprijs,
+    # dus het veld is betrouwbaar.
+    kaartprijs = item.get("loyalty_price")
+    kaartvoorwaarde = None
+    if (isinstance(kaartprijs, (int, float)) and 0 < kaartprijs < actieprijs):
+        programma = item.get("loyalty_program")
+        kaartvoorwaarde = (f"met {programma}" if isinstance(programma, str) and programma
+                           else "met de klantenkaart")
+        normale_prijs = actieprijs
+        actieprijs = kaartprijs
+
+    # Geen korting is geen aanbieding. De API levert ook gewone schapprijzen met
+    # promotion_status "active"; bij Ekoplaza stond zo "Gemengde sla" op EUR 2,59
+    # van EUR 2,59.
     if isinstance(normale_prijs, (int, float)) and actieprijs >= normale_prijs:
         return None
+    if normale_prijs is None and kaartvoorwaarde is None:
+        # Zonder normale prijs valt er niets te vergelijken, dus dan moet de API
+        # zelf zeggen dat er korting is. Dit gat liet die courgette door: het
+        # oude commentaar hier zei dat de test bij een ontbrekende normale prijs
+        # werd overgeslagen omdat Folderz die nooit leverde — maar Folderz staat
+        # sinds september uit, en PrijsProfeet vult wél een kortingspercentage.
+        korting = item.get("discount_percentage")
+        bespaard = item.get("savings_percentage")
+        if not any(isinstance(x, (int, float)) and x > 0 for x in (korting, bespaard)):
+            return None
+
     actie = {
         "naam": naam,
         "actieprijs": float(actieprijs),
         "normale_prijs": normale_prijs,
         "soort": _soort(naam, item.get("unified_category")),
     }
-    voorwaarde = _actievoorwaarde(item)
+    if kaartvoorwaarde:
+        # Expliciet, en niet af te leiden uit de voorwaardetekst: de
+        # prijsgeschiedenis moet een kaartprijs van een gewone prijs kunnen
+        # onderscheiden, net als een stapelprijs van een stuksprijs.
+        actie["kaart"] = True
+    voorwaarde = _actievoorwaarde(item) or kaartvoorwaarde
     if voorwaarde:
         actie["voorwaarde"] = voorwaarde
         vanaf = _vanaf_aantal(voorwaarde)
@@ -1283,15 +1319,20 @@ def _vergelijkbare_records(eerdere, item):
         vorige.get("actieprijs") == item["actieprijs"]
         and vorige.get("normale_prijs") == item.get("normale_prijs")
         and vorige.get("vanaf") == item.get("vanaf")
+        and bool(vorige.get("kaart")) == bool(item.get("kaart"))
     )
     kandidaten = eerdere[:-1] if zelfde_actie else eerdere
 
     vanaf = item.get("vanaf")
+    kaart = bool(item.get("kaart"))
     normaal = item.get("normale_prijs")
     bruikbaar = []
     for r in kandidaten:
         if "vanaf" in r:
-            if r["vanaf"] == vanaf:
+            # Een prijs die alleen met de klantenkaart geldt is net zo min een
+            # gewone prijs als een stapelprijs dat is. EUR 0,39 met Lidl Plus
+            # hoort niet vergeleken te worden met een losse EUR 0,89.
+            if r["vanaf"] == vanaf and bool(r.get("kaart")) == kaart:
                 bruikbaar.append(r)
             continue
         if vanaf is not None:
@@ -1342,6 +1383,7 @@ def enrich_and_record_history(store, items, history, vandaag):
             # te onderscheiden. Ook None schrijven we op: de sleutel is het
             # bewijs dat het record van na deze wijziging komt.
             "vanaf": item.get("vanaf"),
+            "kaart": bool(item.get("kaart")),
         }
         vorige = eerdere[-1] if eerdere else None
         onveranderd = (
@@ -1349,6 +1391,7 @@ def enrich_and_record_history(store, items, history, vandaag):
             and vorige.get("actieprijs") == nieuw_record["actieprijs"]
             and vorige.get("normale_prijs") == nieuw_record["normale_prijs"]
             and vorige.get("vanaf") == nieuw_record["vanaf"]
+            and bool(vorige.get("kaart")) == nieuw_record["kaart"]
         )
         if not onveranderd:
             history[key] = (eerdere + [nieuw_record])[-HISTORY_MAX_PER_PRODUCT:]
