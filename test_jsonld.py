@@ -1,0 +1,242 @@
+#!/usr/bin/env python3
+"""Controleert de gestructureerde data en de leesbare datum.
+
+    python test_jsonld.py
+
+Op veertien pagina's stond nul JSON-LD, en op de plek waar de versheid van de
+lijst hoort te staan las een crawler letterlijk "nog niets geladen" met een leeg
+datetime-attribuut.
+
+Eén keuze staat hier expliciet in: nergens Product- of Offer-markup. Die zegt
+tegen een zoekmachine dat het product op deze pagina te koop is, en dat is het
+niet — wij zijn niet de verkoper en er is niets af te rekenen. De verleiding is
+groot omdat er prijzen op de pagina staan, dus deze test houdt dat besluit vast.
+"""
+
+import importlib.util
+import json
+import logging
+import re
+import sys
+from pathlib import Path
+
+logging.basicConfig(level=logging.WARNING)
+HIER = Path(__file__).parent
+spec = importlib.util.spec_from_file_location("bio", HIER / "fetch_bio_prices.py")
+bio = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(bio)
+
+fouten = 0
+
+
+def keur(wat, ok, extra=""):
+    global fouten
+    if ok:
+        print(f"  ok    {wat}")
+    else:
+        fouten += 1
+        print(f"  FOUT  {wat}" + (f" — {extra}" if extra else ""))
+
+
+# ---------------------------------------------------------------------------
+# De leesbare datum
+# ---------------------------------------------------------------------------
+print("leesbare datum")
+# Locale-instellingen zijn geen optie op een kale Alpine-container, dus de
+# dag- en maandnamen staan met de hand in de code. Dan moeten ze ook kloppen.
+for iso, verwacht in [
+    ("2026-01-01T12:00", "donderdag 1 januari 2026 om 12:00"),
+    ("2026-09-03T20:42:11", "donderdag 3 september 2026 om 20:42"),
+    ("2026-09-07T06:01", "maandag 7 september 2026 om 06:01"),
+    ("2026-12-31T23:59", "donderdag 31 december 2026 om 23:59"),
+]:
+    got = bio._leesbare_datum(iso)
+    keur(f"{iso} -> {verwacht}", got == verwacht, f'kreeg "{got}"')
+
+keur("onleesbare invoer geeft geen brok en geen leugen",
+     bio._leesbare_datum("nergens") == "nergens")
+keur("None geeft geen uitzondering", bio._leesbare_datum(None) is None)
+
+# ---------------------------------------------------------------------------
+# De JSON-LD van de voorpagina
+# ---------------------------------------------------------------------------
+print("\nvoorpagina")
+aanb = {
+    "AH": [{"naam": "AH Biologisch Witte druiven pitloos", "actieprijs": 1.75,
+            "normale_prijs": 3.49, "soort": "vers"}],
+    "Jumbo": [],
+    "Lidl": [{"naam": "Bio Fairtrade bananen", "actieprijs": 1.49,
+              "normale_prijs": 2.19, "soort": "vers"}],
+}
+script = bio._jsonld(aanb, "2026-09-03T20:42:11")
+ruw = script[script.index(">") + 1:script.rindex("</script>")]
+try:
+    d = json.loads(ruw)
+    keur("is geldige JSON", True)
+except json.JSONDecodeError as e:
+    keur("is geldige JSON", False, str(e))
+    sys.exit(1)
+
+keur("@type is CollectionPage", d.get("@type") == "CollectionPage", d.get("@type"))
+keur("dateModified is de echte tijd", d.get("dateModified") == "2026-09-03T20:42:11")
+keur("taal staat erbij", d.get("inLanguage") == "nl-NL")
+keur("hoort bij één website", d.get("isPartOf", {}).get("@type") == "WebSite")
+lijst = d.get("mainEntity", {})
+keur("mainEntity is een ItemList", lijst.get("@type") == "ItemList")
+keur("het aantal klopt met de echte lijst", lijst.get("numberOfItems") == 2,
+     str(lijst.get("numberOfItems")))
+namen = [i["name"] for i in lijst.get("itemListElement", [])]
+keur("de productnamen staan erin",
+     any("Fairtrade bananen" in n for n in namen), str(namen[:2]))
+keur("de prijs staat erin", any("1,49" in n for n in namen))
+keur("de winkel staat erin", any("Lidl" in n for n in namen))
+keur("posities lopen vanaf 1",
+     [i["position"] for i in lijst.get("itemListElement", [])] == [1, 2])
+
+keur("GEEN Product- of Offer-markup (wij verkopen niets)",
+     '"Product"' not in ruw and '"Offer"' not in ruw)
+keur("een lege lijst geeft geen verzonnen items",
+     json.loads(bio._jsonld({"AH": []}, "2026-09-03T20:42:11")
+                .split(">", 1)[1].rsplit("</script>", 1)[0]
+                )["mainEntity"]["numberOfItems"] == 0)
+
+# ---------------------------------------------------------------------------
+# De veertien gegenereerde pagina's
+# ---------------------------------------------------------------------------
+print("\ngegenereerde pagina's")
+paginas = sorted(HIER.glob("seizoen/*/index.html")) + [
+    HIER / "seizoen" / "index.html", HIER / "over" / "index.html"]
+paginas = [p for p in paginas if p.exists()]
+keur("er zijn veertien pagina's", len(paginas) == 14, f"{len(paginas)}")
+
+zonder = []
+kapot = []
+zonder_kruimel = []
+met_product = []
+for p in paginas:
+    t = p.read_text(encoding="utf-8")
+    blokken = re.findall(r'<script type="application/ld\+json">(.*?)</script>', t, re.S)
+    if len(blokken) != 1:
+        zonder.append(f"{p.parent.name} ({len(blokken)})")
+        continue
+    try:
+        d = json.loads(blokken[0])
+    except json.JSONDecodeError as e:
+        kapot.append(f"{p.parent.name}: {e}")
+        continue
+    if not d.get("breadcrumb", {}).get("itemListElement"):
+        zonder_kruimel.append(p.parent.name)
+    if '"Product"' in blokken[0] or '"Offer"' in blokken[0]:
+        met_product.append(p.parent.name)
+
+keur("elke pagina heeft precies één JSON-LD-blok", not zonder, ", ".join(zonder))
+keur("alle blokken zijn geldige JSON", not kapot, "; ".join(kapot))
+keur("elke pagina heeft een kruimelpad", not zonder_kruimel, ", ".join(zonder_kruimel))
+keur("nergens Product- of Offer-markup", not met_product, ", ".join(met_product))
+
+# De maandpagina's moeten de producten van díe maand opsommen.
+data = json.loads((HIER / "seizoen" / "seizoensdata.json").read_text(encoding="utf-8"))
+mis = []
+for m in data["maanden"]:
+    p = HIER / "seizoen" / m["maand"] / "index.html"
+    if not p.exists():
+        continue
+    blok = re.search(r'<script type="application/ld\+json">(.*?)</script>',
+                     p.read_text(encoding="utf-8"), re.S)
+    lijst = json.loads(blok.group(1)).get("mainEntity", {})
+    verwacht = len(m["groente"] + m["fruit"])
+    if lijst.get("numberOfItems") != verwacht:
+        mis.append(f"{m['maand']}: {lijst.get('numberOfItems')} i.p.v. {verwacht}")
+keur("elke maandpagina somt de producten van die maand op", not mis, "; ".join(mis))
+
+# ---------------------------------------------------------------------------
+# Eén stramien: dezelfde tekststijl op elke pagina
+# ---------------------------------------------------------------------------
+print("\nstramien")
+# De eyebrow zit op een <p> (voorpagina, maandpagina's) en op een <h1>
+# (/seizoen/, /over/). Zonder eigen font-weight sloeg de browserstandaard
+# h1{font-weight:bold} toe: dezelfde tekst op 400 én op 700.
+# Alleen het seizoenssjabloon: daar zit .eyebrow op een <p> (maandpagina's) en
+# op een <h1> (/seizoen/, /over/). De voorpagina heeft er geen meer; die zegt
+# nu in een gewone zin wat de site is.
+for naam, pad in [("seizoenssjabloon", HIER / "seizoen" / "_sjabloon.html")]:
+    css = pad.read_text(encoding="utf-8")
+    blok = re.search(r"\.eyebrow\{(.*?)\}", css, re.S)
+    keur(f"{naam}: .eyebrow bestaat", blok is not None)
+    if blok:
+        keur(f"{naam}: .eyebrow zet zijn eigen lettertype",
+             "font-family" in blok.group(1))
+        keur(f"{naam}: .eyebrow zet zijn eigen dikte",
+             "font-weight" in blok.group(1))
+        dikte = re.search(r"font-weight\s*:\s*(\d+)", blok.group(1))
+        keur(f"{naam}: die dikte is 400, zoals op de voorpagina",
+             dikte is not None and dikte.group(1) == "400",
+             dikte.group(1) if dikte else "geen")
+
+# De voorpagina moet zeggen wat de site is. Dat stond er niet: "Vandaag geldig"
+# zegt niets over waar je bent.
+voor = (HIER / "template.html").read_text(encoding="utf-8")
+keur("de voorpagina heeft een uitleg onder de titel", 'class="pitch"' in voor)
+keur("die uitleg noemt waar het over gaat",
+     "Biologische groente en fruit" in voor and "supermarkten" in voor)
+# Zonder de commentaren, want daarin wordt de oude tekst aangehaald als
+# toelichting bij waarom hij weg is.
+zonder_commentaar = re.sub(r"<!--.*?-->", "", voor, flags=re.S)
+keur('"Vandaag geldig" staat niet meer in de opmaak',
+     "Vandaag geldig" not in zonder_commentaar)
+
+# WCAG 2.5.8: een raakvlak is minimaal 24x24 CSS-pixels, of de middelpunten
+# liggen ver genoeg uiteen. Twaalf stippen van 8px met 6px ertussen haalden
+# geen van beide.
+sjab = (HIER / "seizoen" / "_sjabloon.html").read_text(encoding="utf-8")
+blok = re.search(r"\n  \.dot\{(.*?)\}", sjab, re.S)
+keur(".dot bestaat", blok is not None)
+if blok:
+    breed = re.search(r"width\s*:\s*(\d+)px", blok.group(1))
+    hoog = re.search(r"height\s*:\s*(\d+)px", blok.group(1))
+    keur("het raakvlak van een maandstip is minstens 24x24",
+         breed is not None and hoog is not None
+         and int(breed.group(1)) >= 24 and int(hoog.group(1)) >= 24,
+         f"{breed.group(1) if breed else '?'}x{hoog.group(1) if hoog else '?'}")
+keur("de zichtbare stip blijft 8px", ".dot::before{" in sjab.replace(" ", "")
+     or ".dot::before {" in sjab)
+
+# De teller stond alleen op de voorpagina. Toen de seizoenspagina's gegenereerd
+# gingen worden uit _sjabloon.html is het script niet meegekomen, en sindsdien
+# waren veertien pagina's onzichtbaar in de statistiek. Dat is geen bevinding
+# over bezoekers maar een meetfout, en die wil je niet twee keer maken.
+TELLER = "gc.zgo.at/count.js"
+zonder_teller = [p.parent.name for p in paginas
+                 if TELLER not in p.read_text(encoding="utf-8")]
+keur("elke gegenereerde pagina heeft de bezoekersteller",
+     not zonder_teller, ", ".join(zonder_teller))
+keur("de voorpagina heeft hem ook", TELLER in voor)
+
+# /cijfers/ hing aan een enkele link in de voettekst van de voorpagina. Een
+# pagina waar vrijwel niets naartoe wijst, krijgt bij een zoekmachine weinig
+# prioriteit — en het is ook gewoon slecht te vinden voor een bezoeker.
+naar_cijfers = [p for p in paginas
+                if 'href="/cijfers/"' in p.read_text(encoding="utf-8")]
+keur("elke gegenereerde pagina linkt naar /cijfers/",
+     len(naar_cijfers) == len(paginas),
+     f"{len(naar_cijfers)} van {len(paginas)}")
+keur("de voorpagina ook", 'href="/cijfers/"' in voor)
+
+# lastmod alleen waar hij klopt: dit script bouwt de seizoenspagina's en
+# /over/, maar de voorpagina en /cijfers/ worden door de Pi gepubliceerd.
+import xml.etree.ElementTree as _E
+_kaart = HIER / "sitemap.xml"
+if _kaart.exists():
+    _n = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+    _urls = {u.find("s:loc", _n).text: u.find("s:lastmod", _n) for u in _E.parse(_kaart).getroot()}
+    _dagelijks = ["https://hetbiolijstje.nl/", "https://hetbiolijstje.nl/cijfers/"]
+    keur("de dagelijkse pagina's hebben geen lastmod",
+         all(_urls.get(u) is None for u in _dagelijks))
+    _rest = [u for u in _urls if u not in _dagelijks]
+    keur("de overige pagina's wel", all(_urls[u] is not None for u in _rest),
+         f"{sum(1 for u in _rest if _urls[u] is None)} zonder")
+
+print()
+if fouten:
+    sys.exit(f"{fouten} controle(s) niet in orde")
+print("gestructureerde data en datum zijn in orde")

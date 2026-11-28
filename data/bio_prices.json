@@ -1,0 +1,249 @@
+{
+  "laatst_bijgewerkt": "2026-11-28T06:01:30.104825",
+  "aanbiedingen": {
+    "AH": [
+      {
+        "naam": "AH Biologisch Snoepgroente tomaat",
+        "actieprijs": 1.67,
+        "normale_prijs": 2.29,
+        "soort": "vers",
+        "voorwaarde": "3 voor €5,00",
+        "vanaf": 3
+      },
+      {
+        "naam": "AH Biologisch Rode kool met appeltjes",
+        "actieprijs": 1.31,
+        "normale_prijs": 1.75,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €2,62",
+        "vanaf": 2
+      },
+      {
+        "naam": "AH Biologisch Rode kool met peertjes en kaneel",
+        "actieprijs": 1.27,
+        "normale_prijs": 1.69,
+        "soort": "vers",
+        "voorwaarde": "2 voor €2,54",
+        "vanaf": 2
+      },
+      {
+        "naam": "AH Biologisch Snoepgroente wortel",
+        "actieprijs": 1.67,
+        "normale_prijs": 1.99,
+        "soort": "vers",
+        "voorwaarde": "3 voor €5,00",
+        "vanaf": 3
+      },
+      {
+        "naam": "AH Biologisch Wijnzuurkool",
+        "actieprijs": 0.94,
+        "normale_prijs": 1.25,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €1,88",
+        "vanaf": 2
+      },
+      {
+        "naam": "AH Biologisch Kruidenzuurkool",
+        "actieprijs": 0.82,
+        "normale_prijs": 1.09,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €1,64",
+        "vanaf": 2
+      },
+      {
+        "naam": "AH Biologisch Zuurkool naturel",
+        "actieprijs": 0.82,
+        "normale_prijs": 1.09,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €1,64",
+        "vanaf": 2
+      },
+      {
+        "naam": "AH Biologisch Ginger mango verse appel mango gember",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.19,
+        "soort": "vers",
+        "voorwaarde": "6 voor €5,95",
+        "vanaf": 6
+      }
+    ],
+    "Jumbo": [
+      {
+        "naam": "Bonduelle Rode Kidneybonen Bio 310 g",
+        "actieprijs": 1.45,
+        "normale_prijs": 2.89,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €2,89",
+        "vanaf": 2
+      },
+      {
+        "naam": "Bonduelle Rode kidneybonen Bio 160g",
+        "actieprijs": 1.04,
+        "normale_prijs": 2.09,
+        "soort": "voorraad",
+        "voorwaarde": "2 voor €2,09",
+        "vanaf": 2
+      },
+      {
+        "naam": "Jumbo Gekookte Bietjes Biologisch 500 g",
+        "actieprijs": 1.29,
+        "normale_prijs": 1.49,
+        "soort": "voorraad"
+      }
+    ],
+    "Lidl": [
+      {
+        "naam": "BIO Bio courgette",
+        "actieprijs": 0.39,
+        "normale_prijs": 0.99,
+        "soort": "vers",
+        "kaart": true,
+        "voorwaarde": "met Lidl Plus"
+      }
+    ],
+    "Aldi": [
+      {
+        "naam": "Biologische rode bieten",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.25,
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.19,
+        "laagste_ooit_datum": "2026-09-07",
+        "eerder_gezien": 1
+      }
+    ],
+    "Dirk": [
+      {
+        "naam": "Bio+ Kastanje champignons bio",
+        "actieprijs": 1.69,
+        "normale_prijs": 1.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Bio+ Biologische zuurkool naturel",
+        "actieprijs": 0.89,
+        "normale_prijs": 0.94,
+        "soort": "voorraad"
+      }
+    ],
+    "Plus": [
+      {
+        "naam": "De Kleine Keuken Bio 18+ aardbei",
+        "actieprijs": 2.39,
+        "normale_prijs": 3.19,
+        "soort": "vers"
+      },
+      {
+        "naam": "De Kleine Keuken BIO Fruitjes met Wortel +18M",
+        "actieprijs": 1.27,
+        "normale_prijs": 1.69,
+        "soort": "vers"
+      },
+      {
+        "naam": "Biologisch PLUS Rode kool",
+        "actieprijs": 1.79,
+        "normale_prijs": 1.99,
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.49,
+        "laagste_ooit_datum": "2026-10-28",
+        "eerder_gezien": 1
+      },
+      {
+        "naam": "Biologisch PLUS Witte kool",
+        "actieprijs": 1.79,
+        "normale_prijs": 1.99,
+        "soort": "vers",
+        "laagste_ooit_prijs": 1.49,
+        "laagste_ooit_datum": "2026-10-28",
+        "eerder_gezien": 1
+      }
+    ],
+    "Ekoplaza": [
+      {
+        "naam": "Verse dadels",
+        "actieprijs": 3.99,
+        "normale_prijs": 5.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Spitskool",
+        "actieprijs": 2.49,
+        "normale_prijs": 3.29,
+        "soort": "vers"
+      },
+      {
+        "naam": "Venkel",
+        "actieprijs": 2.09,
+        "normale_prijs": 2.7,
+        "soort": "vers",
+        "laagste_ooit_prijs": 2.25,
+        "laagste_ooit_datum": "2026-11-11",
+        "eerder_gezien": 2
+      },
+      {
+        "naam": "Doyenne du Comice peren",
+        "actieprijs": 2.39,
+        "normale_prijs": 2.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Red Love appels",
+        "actieprijs": 2.39,
+        "normale_prijs": 2.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Portobello",
+        "actieprijs": 1.99,
+        "normale_prijs": 2.59,
+        "soort": "vers"
+      },
+      {
+        "naam": "Cranberries",
+        "actieprijs": 3.99,
+        "normale_prijs": 4.59,
+        "soort": "vers"
+      },
+      {
+        "naam": "Gember",
+        "actieprijs": 0.99,
+        "normale_prijs": 1.49,
+        "soort": "vers"
+      },
+      {
+        "naam": "Babyspinazie",
+        "actieprijs": 2.59,
+        "normale_prijs": 2.99,
+        "soort": "vers"
+      },
+      {
+        "naam": "Soepgroenten",
+        "actieprijs": 1.99,
+        "normale_prijs": 2.29,
+        "soort": "vers"
+      }
+    ],
+    "Poiesz": [
+      {
+        "naam": "Bio+ Gember",
+        "actieprijs": 1.0,
+        "normale_prijs": 2.19,
+        "soort": "vers"
+      }
+    ],
+    "DekaMarkt": [],
+    "Vomar": []
+  },
+  "winkelstatus": {
+    "AH": "ok",
+    "Jumbo": "ok",
+    "Lidl": "ok",
+    "Aldi": "ok",
+    "Dirk": "ok",
+    "Plus": "ok",
+    "Ekoplaza": "ok",
+    "Poiesz": "ok",
+    "DekaMarkt": "ok",
+    "Vomar": "ok"
+  }
+}
